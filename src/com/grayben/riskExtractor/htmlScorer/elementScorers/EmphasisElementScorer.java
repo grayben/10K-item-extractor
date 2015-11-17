@@ -5,7 +5,7 @@ import org.jsoup.nodes.Element;
 /**
  * Score the emphasis of an {@link org.jsoup.nodes.Element} based upon the Tag and Attributes it contains.
  */
-public class EmphasisElementScorer implements Scorer<Element> {
+public class EmphasisElementScorer implements ElementScorer<Element> {
 	
 	TagScorer tagScorer;
 	TagAndAttributeScorer comboScorer;
