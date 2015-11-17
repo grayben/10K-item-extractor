@@ -7,7 +7,7 @@ import java.util.Map;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 
-public class TagScorer implements ElementScorer<Tag> {
+public class TagScorer implements Scorer<Tag> {
 	
 	List<Tag> tagScores = null;
 	

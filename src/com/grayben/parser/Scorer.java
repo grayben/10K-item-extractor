@@ -8,7 +8,7 @@ package com.grayben.parser;
  * @author beng
  *
  */
-public interface ElementScorer<T> {
+public interface Scorer<T> {
 	
 	/**
 	 * 

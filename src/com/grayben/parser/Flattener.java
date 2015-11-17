@@ -12,8 +12,8 @@ public class Flattener implements NodeVisitor {
 	
 	int emphasisScore = 0;
 	int separationScore = 0;
-	ElementScorer emphScorer;
-	ElementScorer segrScorer;
+	Scorer emphScorer;
+	Scorer segrScorer;
 	
 
 	public Flattener(/* the flat structure to populate */) {
