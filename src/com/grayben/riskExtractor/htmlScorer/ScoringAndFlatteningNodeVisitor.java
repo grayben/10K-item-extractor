@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.HtmlScorer;
+package com.grayben.riskExtractor.htmlScorer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.jsoup.nodes.*;
 import org.jsoup.select.NodeVisitor;
 
-import com.grayben.riskExtractor.HtmlScorer.scorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.scorers.Scorer;
 
 public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	

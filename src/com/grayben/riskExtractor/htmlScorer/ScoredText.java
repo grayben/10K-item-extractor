@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.HtmlScorer;
+package com.grayben.riskExtractor.htmlScorer;
 
 public class ScoredText {
 	String text = null;

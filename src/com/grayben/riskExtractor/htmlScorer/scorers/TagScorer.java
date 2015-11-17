@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.HtmlScorer.scorers;
+package com.grayben.riskExtractor.htmlScorer.scorers;
 
 import java.util.ArrayList;
 import java.util.List;

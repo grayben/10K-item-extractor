@@ -1,6 +1,6 @@
-package com.grayben.riskExtractor.HtmlScorer.scorers;
+package com.grayben.riskExtractor.htmlScorer.scorers;
 
-import com.grayben.riskExtractor.HtmlScorer.TagAndAttribute;
+import com.grayben.riskExtractor.htmlScorer.TagAndAttribute;
 
 public class TagAndAttributeScorer implements Scorer<TagAndAttribute> {
 
