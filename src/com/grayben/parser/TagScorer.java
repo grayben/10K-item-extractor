@@ -7,19 +7,18 @@ import java.util.Map;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 
-public class ElementEmphasisScorer extends ElementScorer {
+public class TagScorer implements ElementScorer<Tag> {
 	
-
-	@Override
+	List<Tag> tagScores = null;
+	
 	public int score(Element element) {
 		
 		return 0;
 	}
 
-	@Override
 	public void useDefaultMap() {
 		
-		Map<Tag, Integer> tagScores = this.getTagScores();
+		//Map<Tag, Integer> tagScores = this.getTagScores();
 		List<Tag> tags = new ArrayList<Tag>();
 		tags.add(Tag.valueOf("b"));
 		tags.add(Tag.valueOf("strong"));
@@ -29,12 +28,15 @@ public class ElementEmphasisScorer extends ElementScorer {
 		tags.add(Tag.valueOf("h4"));
 		tags.add(Tag.valueOf("h5"));
 		tags.add(Tag.valueOf("u"));
-		// tags.add(Tag.valueOf("font"));
-		// tags.add(Tag.valueOf("b"));
-		// tags.add(Tag.valueOf("b"));
 		
-		this.setTagScores(tagScores);
+		//this.setTagScores(tagScores);
 		
+	}
+
+	@Override
+	public int score(Tag input) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
