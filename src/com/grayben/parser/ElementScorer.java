@@ -6,9 +6,9 @@ import java.util.Map;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 
-public class ElementScorer {
+public abstract class ElementScorer { 
 	
-	final private Map<Tag, Integer> tagScores;
+	private Map<Tag, Integer> tagScores;
 	
 	private int defaultScore = 0;
 
@@ -42,6 +42,10 @@ public class ElementScorer {
 		return tagScores;
 	}
 	
+	public void setTagScores(Map<Tag, Integer> tagScores){
+		this.tagScores = tagScores;
+	}
+	
 	public int getDefaultScore() {
 		return defaultScore;
 	}
@@ -49,4 +53,6 @@ public class ElementScorer {
 	public void setDefaultScore(int defaultScore) {
 		this.defaultScore = defaultScore;
 	}
+	
+	abstract public void useDefaultMap();
 }
