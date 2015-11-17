@@ -9,7 +9,7 @@ import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
 
-public class Parser {
+public class HtmlScorer {
 
 	public static void main(String[] args) throws IOException {
 		System.out.println("Starting parse");
