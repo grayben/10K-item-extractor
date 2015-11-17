@@ -6,7 +6,7 @@ import java.util.List;
 import org.jsoup.nodes.*;
 import org.jsoup.select.NodeVisitor;
 
-import com.grayben.riskExtractor.htmlScorer.scorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.elementScorers.Scorer;
 
 public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	

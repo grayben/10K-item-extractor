@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.htmlScorer.scorers;
+package com.grayben.riskExtractor.htmlScorer.elementScorers;
 
 
 /**
