@@ -6,7 +6,7 @@ import java.util.List;
 import org.jsoup.nodes.*;
 import org.jsoup.select.NodeVisitor;
 
-public class Flattener implements NodeVisitor {
+public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	
 	final List<ScoredText> flatText = new ArrayList<ScoredText>(500);
 	
@@ -16,7 +16,7 @@ public class Flattener implements NodeVisitor {
 	Scorer segrScorer;
 	
 
-	public Flattener(/* the flat structure to populate */) {
+	public ScoringAndFlatteningNodeVisitor(/* the flat structure to populate */) {
 		// TODO Auto-generated constructor stub
 	}
 

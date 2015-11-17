@@ -23,7 +23,7 @@ public class Parser {
 					String toHtml = elements.text();
 					System.out.print(toHtml);
 					
-					NodeVisitor flattener = new Flattener();
+					NodeVisitor flattener = new ScoringAndFlatteningNodeVisitor();
 					NodeTraversor nt = new NodeTraversor(flattener);
 					nt.traverse(doc);
 		
