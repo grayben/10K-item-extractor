@@ -1,4 +1,4 @@
-package com.grayben.parser;
+package com.grayben.riskExtractor.HtmlScorer;
 
 import java.io.File;
 import java.io.IOException;
