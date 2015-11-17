@@ -6,7 +6,7 @@ import java.util.List;
 import org.jsoup.nodes.*;
 import org.jsoup.select.NodeVisitor;
 
-import com.grayben.riskExtractor.htmlScorer.elementScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.elementScorers.ElementScorer;
 
 public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	
@@ -14,8 +14,8 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	
 	int emphasisScore = 0;
 	int separationScore = 0;
-	Scorer emphScorer;
-	Scorer segrScorer;
+	ElementScorer<Element> emphScorer;
+	ElementScorer<Element> segrScorer;
 	
 
 	public ScoringAndFlatteningNodeVisitor(/* the flat structure to populate */) {
