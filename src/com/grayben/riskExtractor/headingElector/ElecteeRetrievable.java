@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.headingSelector;
+package com.grayben.riskExtractor.headingElector;
 
 import java.util.List;
 
