@@ -1,25 +1,28 @@
 package com.grayben.riskExtractor.htmlScorer;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jsoup.nodes.*;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.NodeVisitor;
 
 import com.grayben.riskExtractor.htmlScorer.elementScorers.ElementScorer;
+import com.grayben.riskExtractor.htmlScorer.elementScorers.EmphasisElementScorer;
+import com.grayben.riskExtractor.htmlScorer.elementScorers.SegmentationElementScorer;
 
 public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	
-	ScoredText flatText = new ScoredText();
+	ScoredText flatText;
 	
 	int emphasisScore = 0;
 	int separationScore = 0;
 	ElementScorer<Element> emphScorer;
-	ElementScorer<Element> segrScorer;
+	ElementScorer<Element> segmScorer;
 	
 
-	public ScoringAndFlatteningNodeVisitor(/* the flat structure to populate */) {
-		// TODO Auto-generated constructor stub
+	public ScoringAndFlatteningNodeVisitor() {
+		super();
+		this.flatText = new ScoredText();
+		this.emphScorer = new EmphasisElementScorer();
+		this.segmScorer = new SegmentationElementScorer();
 	}
 
 	@Override
@@ -48,12 +51,6 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	public void tail(Node node, int depth) {
 		// TODO Auto-generated method stub
 
-	}
-	
-	private static boolean isEmphasisTag(Element element){
-		
-		return false;
-		
 	}
 
 }
