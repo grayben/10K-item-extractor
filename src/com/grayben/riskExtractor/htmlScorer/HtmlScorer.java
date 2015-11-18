@@ -10,5 +10,5 @@ import java.io.File;
  *
  */
 public interface HtmlScorer {
-	public ScoredText scoreHtml(File htmlFile, String charsetName); 
+	public ArrayListScoredText scoreHtml(File htmlFile, String charsetName); 
 }

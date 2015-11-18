@@ -10,7 +10,7 @@ import com.grayben.riskExtractor.htmlScorer.elementScorers.SegmentationElementSc
 
 public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	
-	ScoredText flatText;
+	ArrayListScoredText flatText;
 	
 	int emphasisScore = 0;
 	int separationScore = 0;
@@ -20,7 +20,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 
 	public ScoringAndFlatteningNodeVisitor() {
 		super();
-		this.flatText = new ScoredText();
+		this.flatText = new ArrayListScoredText();
 		this.emphScorer = new EmphasisElementScorer();
 		this.segmScorer = new SegmentationElementScorer();
 	}
@@ -29,8 +29,9 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	public void head(Node node, int depth) {
 		Element element = null;
 		if(!node.getClass().equals(Element.class)){
-			System.err.println("The node was not an " + Element.class
+			/* System.err.println("The node was not an " + Element.class
 					+ ": " + node.toString());
+					*/
 			return;
 		} else {
 			element = (Element) node;

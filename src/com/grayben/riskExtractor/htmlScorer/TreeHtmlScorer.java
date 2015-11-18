@@ -25,7 +25,7 @@ public class TreeHtmlScorer implements HtmlScorer {
 
 
 	@Override
-	public ScoredText scoreHtml(File htmlFile, String charsetName) {
+	public ArrayListScoredText scoreHtml(File htmlFile, String charsetName) {
 		Document doc = parseHtmlFile(htmlFile, charsetName);
 		if(doc != null){
 			nt.traverse(doc);
