@@ -1,19 +1,13 @@
-package com.grayben.riskExtractor.headingSelector;
+package com.grayben.riskExtractor.headingIdentifier;
 
 import java.util.List;
 
 import com.grayben.riskExtractor.htmlScorer.StringList;
 
-public class ElectedTextList implements NomineeAndElecteeRetrievable, StringList {
+public class NominatedStringList implements NomineeRetrievable, StringList {
 
 	@Override
 	public List<Integer> getNomineeIndexes() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Integer> getElecteeIndexes() {
 		// TODO Auto-generated method stub
 		return null;
 	}
