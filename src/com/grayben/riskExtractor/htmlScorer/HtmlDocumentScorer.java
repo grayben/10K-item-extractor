@@ -3,7 +3,7 @@ package com.grayben.riskExtractor.htmlScorer;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
 
-public class DocumentScorer {
+public class HtmlDocumentScorer {
 	
 	NodeTraversor nt;
 	NodeVisitor nv;
@@ -13,7 +13,7 @@ public class DocumentScorer {
 	 * @param nt the NodeTraversor to traverse the 
 	 * @param nv
 	 */
-	public DocumentScorer(NodeTraversor nt, NodeVisitor nv) {
+	public HtmlDocumentScorer(NodeTraversor nt, NodeVisitor nv) {
 		super();
 		this.nt = nt;
 		this.nv = nv;

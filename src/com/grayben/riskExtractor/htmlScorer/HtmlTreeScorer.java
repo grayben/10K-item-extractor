@@ -7,14 +7,14 @@ import org.jsoup.parser.Parser;
 public class HtmlTreeScorer implements HtmlScorer {
 	
 	Parser parser;
-	DocumentScorer documentScorer;
+	HtmlDocumentScorer documentScorer;
 	
 
 	/**
 	 * @param parser
 	 * @param documentScorer
 	 */
-	public HtmlTreeScorer(Parser parser, DocumentScorer documentScorer) {
+	public HtmlTreeScorer(Parser parser, HtmlDocumentScorer documentScorer) {
 		super();
 		this.parser = parser;
 		this.documentScorer = documentScorer;
