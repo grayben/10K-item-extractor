@@ -10,7 +10,7 @@ import com.grayben.riskExtractor.htmlScorer.elementScorers.ElementScorer;
 
 public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	
-	final List<ScoredTextElement> flatText = new ArrayList<ScoredTextElement>(500);
+	ScoredText flatText = new ScoredText();
 	
 	int emphasisScore = 0;
 	int separationScore = 0;
