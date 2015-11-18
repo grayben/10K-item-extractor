@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.NodeTraversor;
 
 public class TreeHtmlScorer implements HtmlScorer {
