@@ -21,7 +21,6 @@ public class ScoredTextElement {
 		return text;
 	}
 	
-	
 	public Map<String, Integer> getScores() {
 		return scores;
 	}
