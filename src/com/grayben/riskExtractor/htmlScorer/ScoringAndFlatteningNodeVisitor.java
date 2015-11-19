@@ -1,5 +1,8 @@
 package com.grayben.riskExtractor.htmlScorer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.NodeVisitor;
@@ -40,9 +43,11 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 		if(/* test for attributes */ true){
 			// flatStructure.element(id).incrementEmphasis();
 		}
+		Map<String, Integer> scores = new HashMap<String, Integer>();
+		scores.put("emphasis", this.emphasisScore);
+		scores.put("segmentation", this.separationScore);
 		ScoredTextElement st = new ScoredTextElement(element.ownText(),
-							this.emphasisScore,
-							this.separationScore);
+							scores);
 		
 		flatText.add(st);
 
