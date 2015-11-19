@@ -2,6 +2,7 @@ package com.grayben.riskExtractor.htmlScorer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,7 +26,7 @@ public class TreeHtmlScorer implements HtmlScorer {
 
 
 	@Override
-	public ArrayListScoredText scoreHtml(File htmlFile, String charsetName) {
+	public List<ScoredTextElement> scoreHtml(File htmlFile, String charsetName) {
 		Document doc = parseHtmlFile(htmlFile, charsetName);
 		if(doc != null){
 			nt.traverse(doc);

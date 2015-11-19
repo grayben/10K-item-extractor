@@ -1,9 +1,10 @@
 package com.grayben.riskExtractor;
 
 import java.io.File;
+import java.util.List;
 
 import com.grayben.riskExtractor.htmlScorer.HtmlScorer;
-import com.grayben.riskExtractor.htmlScorer.ArrayListScoredText;
+import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
 
 public class RiskExtractor {
@@ -15,7 +16,7 @@ public class RiskExtractor {
 		File htmlFile = new File(fileName);
 		String charsetName = args[1];
 		HtmlScorer scorer = new TreeHtmlScorer();
-		ArrayListScoredText scoredText = scorer.scoreHtml(htmlFile, charsetName);
+		List<ScoredTextElement> scoredText = scorer.scoreHtml(htmlFile, charsetName);
 		System.out.print(scoredText.toString());
 		System.out.println();
 		System.out.println("Program finished.");
