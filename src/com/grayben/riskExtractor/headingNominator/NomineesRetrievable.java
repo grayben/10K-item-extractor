@@ -1,7 +1,9 @@
 package com.grayben.riskExtractor.headingNominator;
 
-import com.grayben.riskExtractor.ListOfTextCandidates;
+import java.util.List;
+
+import com.grayben.riskExtractor.TextCandidate;
 
 public interface NomineesRetrievable {
-	ListOfTextCandidates getNominees();
+	List<TextCandidate> getNominees();
 }

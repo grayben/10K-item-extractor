@@ -1,7 +1,9 @@
 package com.grayben.riskExtractor.headingElector;
 
-import com.grayben.riskExtractor.ListOfTextCandidates;
+import java.util.List;
+
+import com.grayben.riskExtractor.TextCandidate;
 
 public interface ElecteesRetrievable {
-	public ListOfTextCandidates getElectees();
+	public List<TextCandidate> getElectees();
 }

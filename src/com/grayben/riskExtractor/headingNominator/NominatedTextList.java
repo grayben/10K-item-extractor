@@ -1,14 +1,15 @@
 package com.grayben.riskExtractor.headingNominator;
 
-import com.grayben.riskExtractor.ListOfTextCandidates;
-import com.grayben.riskExtractor.Text;
+import java.util.List;
 
-public class NominatedTextList extends Text implements NomineesRetrievable {
+import com.grayben.riskExtractor.TextCandidate;
+
+public class NominatedTextList implements NomineesRetrievable {
 	
-	ListOfTextCandidates nominees;
+	List<TextCandidate> nominees;
 
 	@Override
-	public ListOfTextCandidates getNominees() {
+	public List<TextCandidate> getNominees() {
 		// TODO Auto-generated method stub
 		return null;
 	}

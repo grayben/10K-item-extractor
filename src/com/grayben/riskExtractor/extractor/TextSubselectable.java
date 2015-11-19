@@ -1,7 +1,7 @@
 package com.grayben.riskExtractor.extractor;
 
-import com.grayben.riskExtractor.Text;
+import java.util.List;
 
 public interface TextSubselectable {
-	Text subselection(int fromIndex, int toIndex);
+	List<String> subselection(int fromIndex, int toIndex);
 }
