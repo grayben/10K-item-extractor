@@ -14,6 +14,13 @@ public class RiskExtractor {
 	public static void main(String[] args) {
 		startingMain();
 		
+		boolean testParse = true;
+		if(testParse == true){
+			testParse("http://google.com");
+		} else {
+			takeArgs(args);
+		}
+		
 		completingMain();
 	}
 	
@@ -36,6 +43,12 @@ public class RiskExtractor {
 		long currentTime = System.currentTimeMillis();
 		long secondsElapsed = (currentTime - startTime)/1000;
 		System.out.println("Time elapsed: " + secondsElapsed);
+	}
+	
+	private static void testParse(String url){
+		HtmlScorer scorer = new TreeHtmlScorer();
+		List<ScoredTextElement> scoredText = scorer.scoreHtml(url);
+		System.out.print(scoredText.toString());
 	}
 	
 	private static void takeArgs(String[] args){
