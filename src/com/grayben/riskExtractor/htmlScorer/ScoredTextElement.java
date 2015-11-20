@@ -25,4 +25,9 @@ public class ScoredTextElement {
 		return scores;
 	}
 	
+	@Override
+	public String toString(){
+		return this.getText();
+	}
+	
 }
