@@ -40,8 +40,8 @@ public class RiskExtractor {
 	
 	private static void printTimeElapsed(){
 		long currentTime = System.currentTimeMillis();
-		long secondsElapsed = (currentTime - startTime)/1000;
-		System.out.println("Time elapsed: " + secondsElapsed);
+		float secondsElapsed = (float)(currentTime - startTime)/1000;
+		System.out.println("Time elapsed: " + secondsElapsed + " seconds");
 	}
 	
 	private static void testParse(String url){

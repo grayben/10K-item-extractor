@@ -64,8 +64,4 @@ public class TreeHtmlScorer implements HtmlScorer {
 		}
 		return doc;
 	}
-
-
-	
-
 }
