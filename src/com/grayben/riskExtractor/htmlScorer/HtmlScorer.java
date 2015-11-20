@@ -11,5 +11,6 @@ import java.util.List;
  *
  */
 public interface HtmlScorer {
-	public List<ScoredTextElement> scoreHtml(File htmlFile, String charsetName); 
+	public List<ScoredTextElement> scoreHtml(File htmlFile, String charsetName);
+	public List<ScoredTextElement> scoreHtml(String url);
 }

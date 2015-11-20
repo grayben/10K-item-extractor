@@ -23,19 +23,40 @@ public class TreeHtmlScorer implements HtmlScorer {
 		this.nv = new ScoringAndFlatteningNodeVisitor();
 		this.nt = new NodeTraversor(this.nv);
 	}
+	
+	private List<ScoredTextElement> traverse(Document doc)
+			throws NullPointerException {
+		if(doc != null){
+			nt.traverse(doc);
+		} else {
+			throw new NullPointerException();
+		}
+		return nv.flatText;
+	}
 
 
 	@Override
 	public List<ScoredTextElement> scoreHtml(File htmlFile, String charsetName) {
 		Document doc = parseHtmlFile(htmlFile, charsetName);
-		if(doc != null){
-			nt.traverse(doc);
-		} else {
-			return null;
-		}
-		return nv.flatText;
+		return traverse(doc);
 	}
 	
+	@Override
+	public List<ScoredTextElement> scoreHtml(String url) {
+		Document doc = parseHtmlUrl(url);
+		return traverse(doc);
+	}
+	
+	private Document parseHtmlUrl(String url) {
+		Document doc = null;
+		try {
+			doc = Jsoup.connect(url).get();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return doc;
+	}
+
 	private Document parseHtmlFile(File htmlFile, String charsetName){
 		Document doc = null;
 		try {
@@ -45,5 +66,8 @@ public class TreeHtmlScorer implements HtmlScorer {
 		}
 		return doc;
 	}
+
+
+	
 
 }
