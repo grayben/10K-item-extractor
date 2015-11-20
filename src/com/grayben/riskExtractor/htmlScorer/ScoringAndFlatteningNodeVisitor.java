@@ -1,8 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.jsoup.nodes.Element;
@@ -15,7 +13,7 @@ import com.grayben.riskExtractor.htmlScorer.elementScorers.SegmentationElementSc
 
 public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	
-	List<ScoredTextElement> flatText;
+	ScoredText flatText;
 	
 	int emphasisScore = 0;
 	int separationScore = 0;
@@ -25,7 +23,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 
 	public ScoringAndFlatteningNodeVisitor() {
 		super();
-		this.flatText = new ArrayList<ScoredTextElement>();
+		this.flatText = new ScoredText();
 		this.emphScorer = new EmphasisElementScorer();
 		this.segmScorer = new SegmentationElementScorer();
 	}
@@ -57,8 +55,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 
 	@Override
 	public void tail(Node node, int depth) {
-		// TODO Auto-generated method stub
+		return;
 
 	}
-
 }

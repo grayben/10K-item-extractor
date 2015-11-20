@@ -2,8 +2,6 @@ package com.grayben.riskExtractor.htmlScorer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.NodeTraversor;
@@ -24,7 +22,7 @@ public class TreeHtmlScorer implements HtmlScorer {
 		this.nt = new NodeTraversor(this.nv);
 	}
 	
-	private List<ScoredTextElement> traverse(Document doc)
+	private ScoredText traverse(Document doc)
 			throws NullPointerException {
 		if(doc != null){
 			nt.traverse(doc);
@@ -36,13 +34,13 @@ public class TreeHtmlScorer implements HtmlScorer {
 
 
 	@Override
-	public List<ScoredTextElement> scoreHtml(File htmlFile, String charsetName) {
+	public ScoredText scoreHtml(File htmlFile, String charsetName) {
 		Document doc = parseHtmlFile(htmlFile, charsetName);
 		return traverse(doc);
 	}
 	
 	@Override
-	public List<ScoredTextElement> scoreHtml(String url) {
+	public ScoredText scoreHtml(String url) {
 		Document doc = parseHtmlUrl(url);
 		return traverse(doc);
 	}
