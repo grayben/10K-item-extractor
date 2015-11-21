@@ -2,7 +2,6 @@ package com.grayben.riskExtractor.headingMarker;
 
 import java.util.List;
 
-import com.grayben.riskExtractor.TextCandidate;
 import com.grayben.riskExtractor.extractor.SectionExtractable;
 import com.grayben.riskExtractor.headingMarker.elector.ElectedTextList;
 
