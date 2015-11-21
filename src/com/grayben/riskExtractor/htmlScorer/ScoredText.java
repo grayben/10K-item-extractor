@@ -6,8 +6,6 @@ import java.util.List;
 public class ScoredText {
 	private List<ScoredTextElement> text;
 	
-	
-	
 	/**
 	 * @param text
 	 */

@@ -2,7 +2,7 @@ package com.grayben.riskExtractor.headingMarker.nominator;
 
 import java.util.List;
 
-import com.grayben.riskExtractor.TextCandidate;
+import com.grayben.riskExtractor.headingMarker.TextCandidate;
 
 public class NominatedTextList implements NomineesRetrievable {
 	
