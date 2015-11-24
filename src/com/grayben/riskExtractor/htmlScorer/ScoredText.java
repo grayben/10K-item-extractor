@@ -19,6 +19,7 @@ public class ScoredText {
 		StringBuilder sb = new StringBuilder();
 		for(ScoredTextElement element : text){
 			sb.append(element.getTextElement());
+			sb.append("\n");
 		}
 		return sb.toString();
 	}

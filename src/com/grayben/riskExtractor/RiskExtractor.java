@@ -1,6 +1,8 @@
 package com.grayben.riskExtractor;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 import com.grayben.riskExtractor.htmlScorer.HtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
@@ -58,6 +60,17 @@ public class RiskExtractor {
 		HtmlScorer scorer = new TreeHtmlScorer();
 		ScoredText scoredText = scorer.scoreHtml(htmlFile, charsetName);
 		System.out.print(scoredText.toString());
+		File outFile = new File("/Volumes/MBS Data/EDGAR-Form10K/output.txt");
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(outFile);
+			writer.print(scoredText.toString());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	private static void checkArgs(String[] args){
