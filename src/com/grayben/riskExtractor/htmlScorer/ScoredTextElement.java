@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScoredTextElement {
-	private String text = null;
+	private String textElement = null;
 	Map<String, Integer> scores = new HashMap<String, Integer>(8, 0.5f);
 	
 	public ScoredTextElement(String text, Map<String, Integer> scores) {
 		super();
-		this.text = text;
+		this.textElement = text;
 		this.scores = scores;
 	}
 	
@@ -17,8 +17,8 @@ public class ScoredTextElement {
 		super();
 	}
 	
-	public String getText() {
-		return text;
+	public String getTextElement() {
+		return textElement;
 	}
 	
 	public Map<String, Integer> getScores() {
@@ -27,7 +27,7 @@ public class ScoredTextElement {
 	
 	@Override
 	public String toString(){
-		return this.getText();
+		return this.getTextElement();
 	}
 	
 }

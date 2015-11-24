@@ -13,7 +13,7 @@ public class RiskExtractor {
 	public static void main(String[] args) {
 		startingMain();
 		
-		boolean testParse = true;
+		boolean testParse = false;
 		if(testParse == true){
 			testParse("http://google.com");
 		} else {

@@ -18,7 +18,7 @@ public class ScoredText {
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		for(ScoredTextElement element : text){
-			sb.append(element.getText());
+			sb.append(element.getTextElement());
 		}
 		return sb.toString();
 	}
