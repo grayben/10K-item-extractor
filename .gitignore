@@ -8,6 +8,9 @@
 *.war
 *.ear
 
+# Mac OS crap #
+.DS_Store
+
 # Eclipse configs #
 .project
 
