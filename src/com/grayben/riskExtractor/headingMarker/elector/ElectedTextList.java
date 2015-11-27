@@ -5,9 +5,9 @@ import java.util.List;
 import com.grayben.riskExtractor.headingMarker.TextCandidate;
 import com.grayben.riskExtractor.headingMarker.nominator.NomineesRetrievable;
 
-public abstract class ElectedTextList
-	implements NomineesRetrievable,
-		ElecteesRetrievable {
+public abstract class ElectedTextList implements
+	NomineesRetrievable,
+	ElecteesRetrievable {
 	
 	List<TextCandidate> nominees;
 	List<TextCandidate> electees;
