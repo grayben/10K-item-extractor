@@ -2,8 +2,14 @@ package com.grayben.riskExtractor.htmlScorer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ListIterator;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 
 public class TreeHtmlScorer implements HtmlScorer {
@@ -22,10 +28,10 @@ public class TreeHtmlScorer implements HtmlScorer {
 		this.nt = new NodeTraversor(this.nv);
 	}
 	
-	private ScoredText traverse(Document doc)
+	private ScoredText traverse(Node node)
 			throws NullPointerException {
-		if(doc != null){
-			nt.traverse(doc);
+		if(node != null){
+			nt.traverse(node);
 		} else {
 			throw new NullPointerException();
 		}
@@ -36,9 +42,23 @@ public class TreeHtmlScorer implements HtmlScorer {
 	@Override
 	public ScoredText scoreHtml(File htmlFile, String charsetName) {
 		Document doc = parseHtmlFile(htmlFile, charsetName);
-		return traverse(doc);
+		Element body = getHtmlBody(doc);
+		return traverse(body);
 	}
 	
+	private Element getHtmlBody(Document doc) {
+		Elements elements = doc.select("html > body");
+		ListIterator<Element> iterator = elements.listIterator();
+		int i = 1;
+		while (iterator.hasNext()){
+			System.out.println(i++);
+			System.out.println(iterator.next().html());	
+		}
+		
+		
+		return null;
+	}
+
 	@Override
 	public ScoredText scoreHtml(String url) {
 		Document doc = parseHtmlUrl(url);
@@ -62,6 +82,34 @@ public class TreeHtmlScorer implements HtmlScorer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		String crapHtml = "<SEC-DOCUMENT> all this crap\n"
+				+ "more crap"
+				+ "<html>"
+				+ "<head>a header</head>"
+				+ "<body>"
+				+ "real HTML"
+				+ "</body>"
+				+ "</html>"
+				+ "even more crap";
+		
+		System.out.println();
+		System.out.println("CRAP HTML");
+		System.out.println(crapHtml);
+		System.out.println();
+		
+		Whitelist wl = Whitelist.relaxed();
+		String cleanHtml = Jsoup.clean(crapHtml, wl);
+		
+		System.out.println("CLEANED HTML");
+		System.out.println();
+		System.out.print(cleanHtml);
+		System.out.println();
+		
+		doc = Jsoup.parse(cleanHtml);
+		System.out.println("PARSED HTML");
+		System.out.println();
+		System.out.print(doc.html());
+		System.out.println();
 		return doc;
 	}
 }
