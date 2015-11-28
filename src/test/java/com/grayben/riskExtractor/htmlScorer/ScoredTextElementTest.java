@@ -30,9 +30,4 @@ public class ScoredTextElementTest {
     public void testGetScores() throws Exception {
 
     }
-
-    @Test
-    public void testToString() throws Exception {
-
-    }
 }
