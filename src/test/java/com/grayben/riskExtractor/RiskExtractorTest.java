@@ -23,6 +23,6 @@ public class RiskExtractorTest {
 
     @Test
     public void testMain() throws Exception {
-
+        fail("Test not written");
     }
 }
