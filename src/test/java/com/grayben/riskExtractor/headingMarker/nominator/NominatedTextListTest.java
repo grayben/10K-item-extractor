@@ -11,11 +11,6 @@ import static org.junit.Assert.*;
  */
 public class NominatedTextListTest {
 
-    @Test
-    public void testGetNominees() throws Exception {
-
-    }
-
     @Before
     public void setUp() throws Exception {
 
@@ -27,7 +22,7 @@ public class NominatedTextListTest {
     }
 
     @Test
-    public void testGetNominees1() throws Exception {
+    public void testGetNominees() throws Exception {
 
     }
 }

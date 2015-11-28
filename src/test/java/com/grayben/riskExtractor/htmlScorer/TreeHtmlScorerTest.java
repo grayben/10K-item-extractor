@@ -25,9 +25,4 @@ public class TreeHtmlScorerTest {
     public void testScoreHtml() throws Exception {
 
     }
-
-    @Test
-    public void testScoreHtml1() throws Exception {
-
-    }
 }

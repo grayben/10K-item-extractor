@@ -25,9 +25,4 @@ public class RiskExtractorTest {
     public void testMain() throws Exception {
 
     }
-
-    @Test
-    public void testMain1() throws Exception {
-
-    }
 }

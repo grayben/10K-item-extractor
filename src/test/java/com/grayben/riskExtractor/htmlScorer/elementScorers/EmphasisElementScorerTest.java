@@ -11,11 +11,6 @@ import static org.junit.Assert.*;
  */
 public class EmphasisElementScorerTest extends ElementScorerTest {
 
-    @Test
-    public void testScore() throws Exception {
-
-    }
-
     @Before
     public void setUp() throws Exception {
 
@@ -27,7 +22,7 @@ public class EmphasisElementScorerTest extends ElementScorerTest {
     }
 
     @Test
-    public void testScore1() throws Exception {
+    public void testScore() throws Exception {
 
     }
 }

@@ -11,10 +11,7 @@ import static org.junit.Assert.*;
  */
 public class MarkedTextTest {
 
-    @Test
-    public void testSubselection() throws Exception {
 
-    }
 
     @Before
     public void setUp() throws Exception {
@@ -27,7 +24,7 @@ public class MarkedTextTest {
     }
 
     @Test
-    public void testSubselection1() throws Exception {
+    public void testSubselection() throws Exception {
 
     }
 }

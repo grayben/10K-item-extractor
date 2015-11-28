@@ -30,9 +30,4 @@ public class TagScorerTest {
     public void testUseDefaultMap() throws Exception {
 
     }
-
-    @Test
-    public void testScore1() throws Exception {
-
-    }
 }
