@@ -2,6 +2,7 @@ package com.grayben.riskExtractor.htmlScorer;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -45,6 +46,7 @@ public class ScoredTextElementTest {
 
     }
 
+    @Ignore
     @Test
     public void testGetScores() throws Exception {
 

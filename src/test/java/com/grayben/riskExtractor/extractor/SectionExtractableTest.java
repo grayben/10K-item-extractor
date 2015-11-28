@@ -3,6 +3,7 @@ package com.grayben.riskExtractor.extractor;
 import com.grayben.riskExtractor.headingMarker.TextCandidate;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import static org.junit.Assert.*;
 /**
  * Created by beng on 28/11/2015.
  */
+@Ignore
 public abstract class SectionExtractableTest {
 
     SectionExtractable sectionExtractable;
