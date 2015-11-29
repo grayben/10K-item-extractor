@@ -12,7 +12,7 @@ public class MarkedText {
         this.text = text;
     }
 
-    public List<String> subselections() {
+    public List<String> subSelections() {
         return null;
     }
 

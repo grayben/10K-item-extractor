@@ -34,8 +34,13 @@ public class MarkedTextTest {
     }
 
     @Test
-    public void test_Subselections_ReturnNonNull_Always() throws Exception {
-        List<String> subselectionsReturned = markedTextSUT.subselections();
-        assertNotNull(subselectionsReturned);
+    public void test_Init_ThrowsInvalidArgumentException_WhenTextArgumentIsNull(){
+
+    }
+
+    @Test
+    public void test_SubSelections_ReturnNonNull_Always() throws Exception {
+        List<String> subSelectionsReturned = markedTextSUT.subSelections();
+        assertNotNull(subSelectionsReturned);
     }
 }
