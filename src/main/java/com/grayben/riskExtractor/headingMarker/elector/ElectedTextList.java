@@ -24,7 +24,7 @@ public class ElectedTextList implements
     @Override
     public List<TextCandidate> getNominees() {
         // TODO Auto-generated method stub
-        return null;
+        return this.nominees;
     }
 
     public void setNominees(List<TextCandidate> nominees) {
@@ -37,7 +37,7 @@ public class ElectedTextList implements
     @Override
     public List<TextCandidate> getElectees() {
         // TODO Auto-generated method stub
-        return null;
+        return this.electees;
     }
 
     public void setElectees(List<TextCandidate> electees) {
