@@ -1,7 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
 import com.grayben.riskExtractor.headingMarker.TextCandidate;
-import com.grayben.riskExtractor.headingMarker.nominator.INomineesRetrievableTest;
+import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextListTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,9 +19,10 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ElectedTextListTest
+        extends
+        NominatedTextListTest
         implements
-        IElecteesRetrievableTest,
-        INomineesRetrievableTest {
+        IElecteesRetrievableTest {
 
     ElectedTextList electedTextList;
 
@@ -36,43 +37,13 @@ public class ElectedTextListTest
 
     @Before
     public void setUp() throws Exception {
+        super.setUp();
         electedTextList = new ElectedTextList(stringListMock, nomineesMock, electeesMock);
     }
 
     @After
     public void tearDown() throws Exception {
-
-    }
-
-    @Override
-    @Test
-    public void test_GetNominees_ReturnsNonNull_Always() throws Exception {
-        //setup data
-
-        //setup expectations
-
-        //exercise
-        List<TextCandidate> nominees = electedTextList.getNominees();
-        //verify
-        assertNotNull(nominees);
-    }
-
-    @Test
-    public void test_GetNominees_ReturnsConstructedNominees_OnlyWhenNoOverwrite() throws Exception {
-        //setup data
-        List<TextCandidate> newNomineesMock = (List<TextCandidate>) mock(List.class);
-
-        //setup expectations
-
-        //exercise
-        List<TextCandidate> nomineesReturned = electedTextList.getNominees();
-        electedTextList.setNominees(newNomineesMock);
-        List<TextCandidate> newNomineesReturned = electedTextList.getNominees();
-
-        //verify
-        assertEquals(nomineesMock, nomineesReturned);
-        assertEquals(newNomineesMock, newNomineesReturned);
-        assertNotEquals(nomineesMock, newNomineesReturned);
+        super.tearDown();
     }
 
     @Override
