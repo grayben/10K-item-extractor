@@ -3,7 +3,9 @@ package com.grayben.riskExtractor.headingMarker;
 import com.grayben.riskExtractor.headingMarker.elector.ElectedTextList;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -21,6 +23,9 @@ public class MarkedTextTest {
     @Mock
     ElectedTextList electedTextListMock;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     MarkedText markedTextSUT;
 
     @Before
@@ -34,8 +39,10 @@ public class MarkedTextTest {
     }
 
     @Test
-    public void test_Init_ThrowsInvalidArgumentException_WhenTextArgumentIsNull(){
-
+    public void test_Init_ThrowsIllegalArgumentException_WhenTextArgumentIsNull(){
+        expectedException.expect(IllegalArgumentException.class);
+        ElectedTextList electedTextListArgument = null;
+        markedTextSUT = new MarkedText(electedTextListArgument);
     }
 
     @Test
