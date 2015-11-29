@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  * Created by beng on 28/11/2015.
  */
 @RunWith(MockitoJUnitRunner.class)
-public abstract class MarkedTextTest {
+public class MarkedTextTest {
 
     @Mock
     ElectedTextList electedTextListMock;
