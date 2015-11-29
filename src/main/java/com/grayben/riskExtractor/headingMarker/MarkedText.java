@@ -2,10 +2,18 @@ package com.grayben.riskExtractor.headingMarker;
 
 import com.grayben.riskExtractor.headingMarker.elector.ElectedTextList;
 
-public abstract class MarkedText {
+import java.util.List;
+
+public class MarkedText {
 	
 	ElectedTextList text;
 
-	public abstract String subselection();
+    public MarkedText(ElectedTextList text) {
+        this.text = text;
+    }
+
+    public List<String> subselections() {
+        return null;
+    }
 
 }
