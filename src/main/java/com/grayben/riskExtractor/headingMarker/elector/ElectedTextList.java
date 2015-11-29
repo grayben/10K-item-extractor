@@ -18,7 +18,7 @@ public class ElectedTextList implements
     public void setTextList(List<String> textList) {
         this.textList = textList;
     }
-    
+
 	List<TextCandidate> nominees;
 
     @Override
