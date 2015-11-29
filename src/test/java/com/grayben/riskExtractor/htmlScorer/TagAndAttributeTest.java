@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class TagAndAttributeTest {
 
-    TagAndAttribute tagAndAttribute;
+    TagAndAttribute tagAndAttributeSUT;
 
     @Mock
     Tag tagMock;
@@ -29,7 +29,7 @@ public class TagAndAttributeTest {
 
     @Before
     public void setUp() throws Exception {
-        tagAndAttribute = new TagAndAttribute(tagMock, attributeMock);
+        tagAndAttributeSUT = new TagAndAttribute(tagMock, attributeMock);
     }
 
     @After
@@ -40,24 +40,24 @@ public class TagAndAttributeTest {
     @Test
     public void test_Initialise_ThrowsIllegalArgumentException_WhenTagArgumentIsNull(){
         thrown.expect(IllegalArgumentException.class);
-        tagAndAttribute = new TagAndAttribute(null, attributeMock);
+        tagAndAttributeSUT = new TagAndAttribute(null, attributeMock);
     }
 
     @Test
     public void test_Initialise_ThrowsIllegalArgumentException_WhenAttributeArgumentIsNull(){
         thrown.expect(IllegalArgumentException.class);
-        tagAndAttribute = new TagAndAttribute(tagMock, null);
+        tagAndAttributeSUT = new TagAndAttribute(tagMock, null);
     }
 
     @Test
     public void test_GetTag_IsNotNull_Always(){
-        Tag tag = tagAndAttribute.getTag();
+        Tag tag = tagAndAttributeSUT.getTag();
         assertNotNull(tag);
     }
 
     @Test
     public void test_GetAttribute_IsNotNull_Always(){
-        Attribute attribute = tagAndAttribute.getAttribute();
+        Attribute attribute = tagAndAttributeSUT.getAttribute();
         assertNotNull(attribute);
     }
 }

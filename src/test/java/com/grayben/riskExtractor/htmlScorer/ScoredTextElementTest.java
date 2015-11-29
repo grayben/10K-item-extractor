@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  */
 public class ScoredTextElementTest {
 
-    ScoredTextElement scoredTextElement;
+    ScoredTextElement scoredTextElementSUT;
 
     @Mock
     Map<String, Integer> scoresMock;
@@ -25,7 +25,7 @@ public class ScoredTextElementTest {
 
     @Before
     public void setUp() throws Exception {
-        scoredTextElement = new ScoredTextElement(textElementMock, scoresMock);
+        scoredTextElementSUT = new ScoredTextElement(textElementMock, scoresMock);
     }
 
     @After
@@ -35,21 +35,21 @@ public class ScoredTextElementTest {
 
     @Test
     private void test_GetTextElement_IsNotNull_Always(){
-        String textElementReturned = scoredTextElement.getTextElement();
+        String textElementReturned = scoredTextElementSUT.getTextElement();
 
         assertNotNull(textElementReturned);
     }
 
     @Test
     private void test_GetScores_IsNotNull_Always(){
-        Map<String, Integer> scoresReturned = scoredTextElement.getScores();
+        Map<String, Integer> scoresReturned = scoredTextElementSUT.getScores();
 
         assertNotNull(scoresReturned);
     }
 
     @Test
     public void testGetTextElement_ReturnsMockedScores_Always() throws Exception {
-        Map scoresReturned = scoredTextElement.getScores();
+        Map scoresReturned = scoredTextElementSUT.getScores();
 
         assertEquals(scoresMock, scoresReturned);
 
@@ -58,7 +58,7 @@ public class ScoredTextElementTest {
     @Test
     public void testGetTextElement_ReturnsMockedTextElement_Always() throws Exception {
         String textElementReturned;
-        textElementReturned = scoredTextElement.getTextElement();
+        textElementReturned = scoredTextElementSUT.getTextElement();
 
         assertEquals(textElementMock, textElementReturned);
 

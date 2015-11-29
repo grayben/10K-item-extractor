@@ -23,7 +23,7 @@ public class NominatedTextListTest
         implements
         INomineesRetrievableTest {
 
-    NominatedTextList nominatedTextList;
+    NominatedTextList nominatedTextListSUT;
 
     @Mock
     protected List<String> stringListMock;
@@ -33,7 +33,7 @@ public class NominatedTextListTest
 
     @Before
     public void setUp() throws Exception {
-        nominatedTextList = new NominatedTextList(stringListMock, nomineesMock);
+        nominatedTextListSUT = new NominatedTextList(stringListMock, nomineesMock);
     }
 
     @After
@@ -49,7 +49,7 @@ public class NominatedTextListTest
         //setup expectations
 
         //execute
-        List<TextCandidate> nominees = nominatedTextList.getNominees();
+        List<TextCandidate> nominees = nominatedTextListSUT.getNominees();
 
         //validate
         assertNotNull(nominees);
@@ -63,9 +63,9 @@ public class NominatedTextListTest
         //setup expectations
 
         //exercise
-        List<TextCandidate> nomineesReturned = nominatedTextList.getNominees();
-        nominatedTextList.setNominees(newNomineesMock);
-        List<TextCandidate> newNomineesReturned = nominatedTextList.getNominees();
+        List<TextCandidate> nomineesReturned = nominatedTextListSUT.getNominees();
+        nominatedTextListSUT.setNominees(newNomineesMock);
+        List<TextCandidate> newNomineesReturned = nominatedTextListSUT.getNominees();
 
         //verify
         assertEquals(nomineesMock, nomineesReturned);

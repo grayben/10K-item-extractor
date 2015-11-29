@@ -24,7 +24,7 @@ public class ElectedTextListTest
         implements
         IElecteesRetrievableTest {
 
-    ElectedTextList electedTextList;
+    ElectedTextList electedTextListSUT;
 
     @Mock
     protected List<String> stringListMock;
@@ -38,7 +38,7 @@ public class ElectedTextListTest
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        electedTextList = new ElectedTextList(stringListMock, nomineesMock, electeesMock);
+        electedTextListSUT = new ElectedTextList(stringListMock, nomineesMock, electeesMock);
     }
 
     @After
@@ -54,7 +54,7 @@ public class ElectedTextListTest
         //setup expectations
 
         //exercise
-        List<TextCandidate> electees = electedTextList.getElectees();
+        List<TextCandidate> electees = electedTextListSUT.getElectees();
         //verify
         assertNotNull(electees);
     }
@@ -67,9 +67,9 @@ public class ElectedTextListTest
         //setup expectations
 
         //exercise
-        List<TextCandidate> electeesReturned = electedTextList.getElectees();
-        electedTextList.setElectees(newElecteesMock);
-        List<TextCandidate> newElecteesReturned = electedTextList.getElectees();
+        List<TextCandidate> electeesReturned = electedTextListSUT.getElectees();
+        electedTextListSUT.setElectees(newElecteesMock);
+        List<TextCandidate> newElecteesReturned = electedTextListSUT.getElectees();
 
         //verify
         assertEquals(electeesMock, electeesReturned);

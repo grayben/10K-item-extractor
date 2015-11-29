@@ -21,10 +21,11 @@ public class MarkedTextTest {
     @Mock
     ElectedTextList electedTextListMock;
 
-    MarkedText markedText;
+    MarkedText markedTextSUT;
+
     @Before
     public void setUp() throws Exception {
-        markedText = new MarkedText(electedTextListMock);
+        markedTextSUT = new MarkedText(electedTextListMock);
     }
 
     @After
@@ -34,7 +35,7 @@ public class MarkedTextTest {
 
     @Test
     public void test_Subselections_ReturnNonNull_Always() throws Exception {
-        List<String> subselections = markedText.subselections();
+        List<String> subselections = markedTextSUT.subselections();
         assertNotNull(subselections);
     }
 }
