@@ -76,4 +76,6 @@ public class ElectedTextListTest
         assertEquals(newElecteesMock, newElecteesReturned);
         assertNotEquals(electeesMock, newElecteesReturned);
     }
+
+    //TODO: write tests that all the lists are equivalent
 }
