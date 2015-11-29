@@ -51,13 +51,13 @@ public class TagAndAttributeTest {
 
     @Test
     public void test_GetTag_IsNotNull_Always(){
-        Tag tag = tagAndAttributeSUT.getTag();
-        assertNotNull(tag);
+        Tag tagReturned = tagAndAttributeSUT.getTag();
+        assertNotNull(tagReturned);
     }
 
     @Test
     public void test_GetAttribute_IsNotNull_Always(){
-        Attribute attribute = tagAndAttributeSUT.getAttribute();
-        assertNotNull(attribute);
+        Attribute attributeReturned = tagAndAttributeSUT.getAttribute();
+        assertNotNull(attributeReturned);
     }
 }

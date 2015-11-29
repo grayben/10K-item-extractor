@@ -54,9 +54,9 @@ public class ElectedTextListTest
         //setup expectations
 
         //exercise
-        List<TextCandidate> electees = electedTextListSUT.getElectees();
+        List<TextCandidate> electeesReturned = electedTextListSUT.getElectees();
         //verify
-        assertNotNull(electees);
+        assertNotNull(electeesReturned);
     }
 
     @Test

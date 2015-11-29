@@ -35,7 +35,7 @@ public class MarkedTextTest {
 
     @Test
     public void test_Subselections_ReturnNonNull_Always() throws Exception {
-        List<String> subselections = markedTextSUT.subselections();
-        assertNotNull(subselections);
+        List<String> subselectionsReturned = markedTextSUT.subselections();
+        assertNotNull(subselectionsReturned);
     }
 }

@@ -49,10 +49,10 @@ public class NominatedTextListTest
         //setup expectations
 
         //execute
-        List<TextCandidate> nominees = nominatedTextListSUT.getNominees();
+        List<TextCandidate> nomineesReturned = nominatedTextListSUT.getNominees();
 
         //validate
-        assertNotNull(nominees);
+        assertNotNull(nomineesReturned);
     }
 
     @Test
