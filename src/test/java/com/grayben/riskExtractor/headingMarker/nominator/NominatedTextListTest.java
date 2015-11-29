@@ -9,7 +9,9 @@ import static org.junit.Assert.*;
 /**
  * Created by beng on 28/11/2015.
  */
-public class NominatedTextListTest {
+public class NominatedTextListTest
+        implements
+        INomineesRetrievableTest {
 
     @Before
     public void setUp() throws Exception {
@@ -21,8 +23,8 @@ public class NominatedTextListTest {
 
     }
 
-    @Test
-    public void testGetNominees() throws Exception {
+    @Override
+    public void test_GetNominees_ReturnsNonNull_Always() throws Exception {
 
     }
 }
