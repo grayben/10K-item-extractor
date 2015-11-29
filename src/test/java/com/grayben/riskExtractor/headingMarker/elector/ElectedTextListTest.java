@@ -1,9 +1,9 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
 import com.grayben.riskExtractor.headingMarker.TextCandidate;
+import com.grayben.riskExtractor.headingMarker.nominator.INomineesRetrievableTest;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -18,7 +18,10 @@ import static org.mockito.Mockito.*;
  * Created by beng on 28/11/2015.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ElectedTextListTest {
+public class ElectedTextListTest
+        implements
+        IElecteesRetrievableTest,
+        INomineesRetrievableTest {
 
     ElectedTextList electedTextList;
 
@@ -41,6 +44,7 @@ public class ElectedTextListTest {
 
     }
 
+    @Override
     @Test
     public void test_GetNominees_ReturnsNonNull_Always() throws Exception {
         //setup data
@@ -71,6 +75,7 @@ public class ElectedTextListTest {
         assertNotEquals(nomineesMock, newNomineesReturned);
     }
 
+    @Override
     @Test
     public void test_GetElectees_ReturnsNonNull_Always() throws Exception {
         //setup data

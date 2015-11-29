@@ -10,21 +10,8 @@ import static org.junit.Assert.*;
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
-public class ElecteesRetrievableTest {
-
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
+public interface IElecteesRetrievableTest {
 
     @Test
-    public void testGetElectees() throws Exception {
-
-    }
+    void test_GetElectees_ReturnsNonNull_Always() throws Exception;
 }
