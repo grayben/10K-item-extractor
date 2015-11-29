@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.mockito.Mock;
 
 import java.util.Map;
 
@@ -16,12 +16,16 @@ import static org.junit.Assert.*;
 public class ScoredTextElementTest {
 
     ScoredTextElement scoredTextElement;
-    Map<String, Integer> mockedScores;
+
+    @Mock
+    Map<String, Integer> scoresMock;
+
+    @Mock
+    String textElementMock;
 
     @Before
     public void setUp() throws Exception {
-        mockedScores = Mockito.mock(Map.class);
-        scoredTextElement = new ScoredTextElement("Section 1A: Risk", mockedScores);
+        scoredTextElement = new ScoredTextElement(textElementMock, scoresMock);
     }
 
     @After
@@ -30,19 +34,33 @@ public class ScoredTextElementTest {
     }
 
     @Test
-    public void testGetTextElement_ReturnsScores_Always() throws Exception {
-        //setup data
+    private void test_GetTextElement_IsNotNull_Always(){
+        String textElementReturned = scoredTextElement.getTextElement();
 
+        assertNotNull(textElementReturned);
+    }
 
-        //setup expectation
+    @Test
+    private void test_GetScores_IsNotNull_Always(){
+        Map<String, Integer> scoresReturned = scoredTextElement.getScores();
 
+        assertNotNull(scoresReturned);
+    }
 
-        //execute
-        Map scores;
-        scores = scoredTextElement.getScores();
+    @Test
+    public void testGetTextElement_ReturnsMockedScores_Always() throws Exception {
+        Map scoresReturned = scoredTextElement.getScores();
 
-        //verify
-        assertEquals(mockedScores, scores);
+        assertEquals(scoresMock, scoresReturned);
+
+    }
+
+    @Test
+    public void testGetTextElement_ReturnsMockedTextElement_Always() throws Exception {
+        String textElementReturned;
+        textElementReturned = scoredTextElement.getTextElement();
+
+        assertEquals(textElementMock, textElementReturned);
 
     }
 
