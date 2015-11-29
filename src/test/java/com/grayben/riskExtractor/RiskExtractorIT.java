@@ -10,8 +10,7 @@ import static org.junit.Assert.*;
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
-public class RiskExtractorTest {
+public class RiskExtractorIT {
 
     @Before
     public void setUp() throws Exception {
