@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
 import com.grayben.riskExtractor.headingMarker.TextCandidate;
+import com.grayben.riskExtractor.headingMarker.TextCandidates;
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextListTest;
 import org.junit.After;
 import org.junit.Before;

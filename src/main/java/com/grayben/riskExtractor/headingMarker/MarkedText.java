@@ -25,15 +25,16 @@ public class MarkedText {
      * @return
      */
     public List<String> subSelections() {
-
-        /* First, extract the list of indexes */
+        return null;
+        /*
+        *//* First, extract the list of indexes *//*
         ArrayList<Integer> indexes; // =something;
 
 
         List<String> subSelections = new ArrayList<>();
         for (TextCandidate electee : text.getElectees()) {
 
-            /* Identify the current start and finishing indexes */
+            *//* Identify the current start and finishing indexes *//*
             int startIndex = 0; // = something
             int endIndex = 0; //  = something
 
@@ -46,7 +47,7 @@ public class MarkedText {
 
             }
         }
-        return null;
+        return null;*/
     }
 
 }
