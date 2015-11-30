@@ -4,7 +4,9 @@ import com.grayben.riskExtractor.headingMarker.TextCandidate;
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextListTest;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -30,15 +32,21 @@ public class ElectedTextListTest
     protected List<String> stringListMock;
 
     @Mock
-    protected List<TextCandidate> nomineesMock;
+    protected TextCandidates nomineesMock;
 
     @Mock
-    protected List<TextCandidate> electeesMock;
+    protected TextCandidates electeesMock;
+
+    @Rule
+    ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        when(nomineesMock.getTextList()).thenReturn(stringListMock);
+        when(electeesMock.getTextList()).thenReturn(stringListMock);
         electedTextListSUT = new ElectedTextList(stringListMock, nomineesMock, electeesMock);
+
     }
 
     @After
@@ -77,5 +85,23 @@ public class ElectedTextListTest
         assertNotEquals(electeesMock, newElecteesReturned);
     }
 
-    //TODO: write tests that all the lists are equivalent
+    @Test
+    public void test_constructorAcceptsEqualLists(){
+        electedTextListSUT = new ElectedTextList(
+                stringListMock,
+                nomineesMock,
+                electeesMock);
+
+        assertNotNull(electedTextListSUT);
+    }
+
+    @Test
+    public void test_constructorDoesNotAcceptUnequalLists(){
+        List<String> otherTextListMock = mock(List.class);
+        when(nomineesMock.getTextList()).thenReturn(otherTextListMock);
+
+        thrown.expect(IllegalArgumentException.class);
+
+        electedTextListSUT = new ElectedTextList(stringListMock, nomineesMock, electeesMock);
+    }
 }
