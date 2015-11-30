@@ -5,22 +5,23 @@ import java.util.List;
 public class TextCandidate {
 	private List<String> list;
 
-    public List<String> getList() {
-        return list;
+    public TextCandidate(List<String> list, int index) {
+        if(index < 0 || index >= list.size())
+            throw new IllegalArgumentException("The index " +
+                    "passed is not within the bounds " +
+                    "of the list passed");
+        this.list = list;
+        this.index = index;
     }
 
-    public void setList(List<String> list) {
-        this.list = list;
+    public List<String> getList() {
+        return list;
     }
 
     private int index;
 
     public int getIndex() {
         return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     public boolean textIsEqualTo(List<String> other){
