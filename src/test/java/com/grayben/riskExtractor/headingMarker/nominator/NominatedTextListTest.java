@@ -59,7 +59,7 @@ public class NominatedTextListTest
     @Test
     public void test_GetNominees_ReturnsConstructedNominees_OnlyWhenNoOverwrite() throws Exception {
         //setup data
-        TextCandidates newNomineesMock = (TextCandidates) mock(List.class);
+        TextCandidates newNomineesMock = mock(TextCandidates.class);
 
         //setup expectations
 

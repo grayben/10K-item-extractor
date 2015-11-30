@@ -71,7 +71,7 @@ public class ElectedTextListTest
     @Test
     public void test_GetElectees_ReturnsConstructedElectees_OnlyWhenNoOverwrite() throws Exception {
         //setup data
-        TextCandidates newElecteesMock = (TextCandidates) mock(List.class);
+        TextCandidates newElecteesMock = mock(TextCandidates.class);
 
         //setup expectations
 
