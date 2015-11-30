@@ -62,7 +62,7 @@ public class ElectedTextListTest
         //setup expectations
 
         //exercise
-        List<TextCandidate> electeesReturned = electedTextListSUT.getElectees();
+        TextCandidates electeesReturned = electedTextListSUT.getElectees();
         //verify
         assertNotNull(electeesReturned);
     }
@@ -70,14 +70,14 @@ public class ElectedTextListTest
     @Test
     public void test_GetElectees_ReturnsConstructedElectees_OnlyWhenNoOverwrite() throws Exception {
         //setup data
-        List<TextCandidate> newElecteesMock = (List<TextCandidate>) mock(List.class);
+        TextCandidates newElecteesMock = (TextCandidates) mock(List.class);
 
         //setup expectations
 
         //exercise
-        List<TextCandidate> electeesReturned = electedTextListSUT.getElectees();
+        TextCandidates electeesReturned = electedTextListSUT.getElectees();
         electedTextListSUT.setElectees(newElecteesMock);
-        List<TextCandidate> newElecteesReturned = electedTextListSUT.getElectees();
+        TextCandidates newElecteesReturned = electedTextListSUT.getElectees();
 
         //verify
         assertEquals(electeesMock, electeesReturned);

@@ -19,32 +19,32 @@ public class ElectedTextList implements
         this.textList = textList;
     }
 
-	List<TextCandidate> nominees;
+	TextCandidates nominees;
 
     @Override
-    public List<TextCandidate> getNominees() {
+    public TextCandidates getNominees() {
         // TODO Auto-generated method stub
         return this.nominees;
     }
 
-    public void setNominees(List<TextCandidate> nominees) {
+    public void setNominees(TextCandidates nominees) {
         this.nominees = nominees;
     }
 
 
-    List<TextCandidate> electees;
+    TextCandidates electees;
 
     @Override
-    public List<TextCandidate> getElectees() {
+    public TextCandidates getElectees() {
         // TODO Auto-generated method stub
         return this.electees;
     }
 
-    public void setElectees(List<TextCandidate> electees) {
+    public void setElectees(TextCandidates electees) {
         this.electees = electees;
     }
 
-	public ElectedTextList(List<String> textList, List<TextCandidate> nominees, List<TextCandidate> electees){
+	public ElectedTextList(List<String> textList, TextCandidates nominees, TextCandidates electees){
 		super();
 		this.textList = textList;
 		this.nominees = nominees;

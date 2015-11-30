@@ -29,7 +29,7 @@ public class NominatedTextListTest
     protected List<String> stringListMock;
 
     @Mock
-    protected List<TextCandidate> nomineesMock;
+    protected TextCandidates nomineesMock;
 
     @Before
     public void setUp() throws Exception {
@@ -49,7 +49,7 @@ public class NominatedTextListTest
         //setup expectations
 
         //execute
-        List<TextCandidate> nomineesReturned = nominatedTextListSUT.getNominees();
+        TextCandidates nomineesReturned = nominatedTextListSUT.getNominees();
 
         //validate
         assertNotNull(nomineesReturned);
@@ -58,14 +58,14 @@ public class NominatedTextListTest
     @Test
     public void test_GetNominees_ReturnsConstructedNominees_OnlyWhenNoOverwrite() throws Exception {
         //setup data
-        List<TextCandidate> newNomineesMock = (List<TextCandidate>) mock(List.class);
+        TextCandidates newNomineesMock = (TextCandidates) mock(List.class);
 
         //setup expectations
 
         //exercise
-        List<TextCandidate> nomineesReturned = nominatedTextListSUT.getNominees();
+        TextCandidates nomineesReturned = nominatedTextListSUT.getNominees();
         nominatedTextListSUT.setNominees(newNomineesMock);
-        List<TextCandidate> newNomineesReturned = nominatedTextListSUT.getNominees();
+        TextCandidates newNomineesReturned = nominatedTextListSUT.getNominees();
 
         //verify
         assertEquals(nomineesMock, nomineesReturned);

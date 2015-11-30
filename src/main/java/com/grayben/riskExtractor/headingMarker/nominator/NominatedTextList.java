@@ -16,18 +16,18 @@ public class NominatedTextList implements NomineesRetrievable {
 		this.textList = textList;
 	}
 
-	List<TextCandidate> nominees;
+	TextCandidates nominees;
 
-	public void setNominees(List<TextCandidate> nominees) {
+	public void setNominees(TextCandidates nominees) {
 		this.nominees = nominees;
 	}
 
 	@Override
-	public List<TextCandidate> getNominees() {
+	public TextCandidates getNominees() {
 		return this.nominees;
 	}
 
-    public NominatedTextList(List<String> textList, List<TextCandidate> nominees) {
+    public NominatedTextList(List<String> textList, TextCandidates nominees) {
         this.textList = textList;
         this.nominees = nominees;
     }
