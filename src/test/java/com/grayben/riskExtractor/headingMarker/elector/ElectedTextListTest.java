@@ -39,7 +39,7 @@ public class ElectedTextListTest
     protected TextCandidates electeesMock;
 
     @Rule
-    ExpectedException thrown = ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
