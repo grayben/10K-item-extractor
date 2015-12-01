@@ -5,23 +5,30 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.UnaryOperator;
 
 /**
  * Created by beng on 30/11/2015.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class TextCandidatesTest {
 
-    @Mock
     List<TextCandidate> listOfCandidates;
 
     @Mock
-    Collection<String> collectionOfStrings;
+    Collection<String> collectionOfStringsMock;
+
+    @Mock
+    List<String> stringListMock;
+
+    @Mock
+    TextCandidate textCandidateMock;
 
     TextCandidates textCandidatesSUT;
 
@@ -30,8 +37,17 @@ public class TextCandidatesTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    private void initListOfCandidates(){
+        listOfCandidates = new ArrayList<>();
+        listOfCandidates.add(textCandidateMock);
+        listOfCandidates.add(textCandidateMock);
+        listOfCandidates.add(textCandidateMock);
+    }
+
     @Before
     public void setUp() throws Exception {
+        initListOfCandidates();
+        Mockito.when(textCandidateMock.getList()).thenReturn(stringListMock);
         textCandidatesSUT = new TextCandidates(listOfCandidates);
         textListReturned = textCandidatesSUT.getTextList();
     }
@@ -62,7 +78,7 @@ public class TextCandidatesTest {
     test_ReturnedTextListThrowsUnsupportedOperationException_WhenAddAllCollection
             () throws Exception {
         thrown.expect(UnsupportedOperationException.class);
-        textListReturned.addAll(collectionOfStrings);
+        textListReturned.addAll(collectionOfStringsMock);
     }
 
     @Test
@@ -70,7 +86,7 @@ public class TextCandidatesTest {
     test_ReturnedTextListThrowsUnsupportedOperationException_WhenAddAllCollectionWithIndex
             () throws Exception {
         thrown.expect(UnsupportedOperationException.class);
-        textListReturned.addAll(0, collectionOfStrings);
+        textListReturned.addAll(0, collectionOfStringsMock);
     }
 
     @Test
@@ -86,7 +102,7 @@ public class TextCandidatesTest {
     test_ReturnedTextListThrowsUnsupportedOperationException_WhenRemoveAll
             () throws Exception {
         thrown.expect(UnsupportedOperationException.class);
-        textListReturned.removeAll(collectionOfStrings);
+        textListReturned.removeAll(collectionOfStringsMock);
     }
 
     @Test
@@ -107,7 +123,7 @@ public class TextCandidatesTest {
     test_ReturnedTextListThrowsUnsupportedOperationException_WhenRetainAll
             () throws Exception {
         thrown.expect(UnsupportedOperationException.class);
-        textListReturned.retainAll(collectionOfStrings);
+        textListReturned.retainAll(collectionOfStringsMock);
     }
 
     @Test
