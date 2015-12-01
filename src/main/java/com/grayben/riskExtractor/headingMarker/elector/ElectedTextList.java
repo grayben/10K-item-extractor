@@ -4,11 +4,16 @@ import java.util.List;
 
 import com.grayben.riskExtractor.headingMarker.TextCandidate;
 import com.grayben.riskExtractor.headingMarker.TextCandidates;
+import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextList;
 import com.grayben.riskExtractor.headingMarker.nominator.NomineesRetrievable;
 
-public class ElectedTextList implements
-	NomineesRetrievable,
-	ElecteesRetrievable {
+public class ElectedTextList
+
+        extends
+        NominatedTextList
+
+        implements
+	    ElecteesRetrievable {
 
 	List<String> textList;
 
@@ -19,19 +24,6 @@ public class ElectedTextList implements
     public void setTextList(List<String> textList) {
         this.textList = textList;
     }
-
-	TextCandidates nominees;
-
-    @Override
-    public TextCandidates getNominees() {
-        // TODO Auto-generated method stub
-        return this.nominees;
-    }
-
-    public void setNominees(TextCandidates nominees) {
-        this.nominees = nominees;
-    }
-
 
     TextCandidates electees;
 
@@ -46,9 +38,7 @@ public class ElectedTextList implements
     }
 
 	public ElectedTextList(List<String> textList, TextCandidates nominees, TextCandidates electees){
-		super();
-		this.textList = textList;
-		this.nominees = nominees;
+		super(textList, nominees);
 		this.electees = electees;
 	}
 
