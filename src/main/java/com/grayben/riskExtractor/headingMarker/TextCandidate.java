@@ -7,7 +7,7 @@ public class TextCandidate {
 
     public TextCandidate(List<String> list, int index) {
         if(index < 0 || index >= list.size())
-            throw new IllegalArgumentException("The index " +
+            throw new IndexOutOfBoundsException("The index " +
                     "passed is not within the bounds " +
                     "of the list passed");
         this.list = list;

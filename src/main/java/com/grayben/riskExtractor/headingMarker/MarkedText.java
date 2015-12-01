@@ -14,7 +14,7 @@ public class MarkedText {
     public MarkedText(ElectedTextList text) {
         super();
         if(text == null){
-            throw new IllegalArgumentException("The argument passed was null");
+            throw new NullPointerException("The argument passed was null");
         }
         this.text = text;
     }
