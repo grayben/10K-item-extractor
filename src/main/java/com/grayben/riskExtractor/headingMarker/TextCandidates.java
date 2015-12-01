@@ -16,7 +16,7 @@ public class TextCandidates
         return this.textList;
     }
 
-    private List<String> getTextList(Collection<? extends  TextCandidate> c){
+    private List<String> extractTextListFrom(Collection<? extends  TextCandidate> c){
         List<String> prospectiveTextList = null;
         for (TextCandidate element: c ) {
             if(prospectiveTextList == null){
@@ -37,7 +37,7 @@ public class TextCandidates
         assert this.textList == null;
 
         //safely get the textList of the collection and assign
-        this.textList = getTextList(c);
+        this.textList = extractTextListFrom(c);
 
         //now actually assign the collection
         this.textCandidates = new ArrayList<>(c);
