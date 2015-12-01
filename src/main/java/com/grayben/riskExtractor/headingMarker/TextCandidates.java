@@ -86,6 +86,10 @@ public class TextCandidates
         return true;
     }
 
+    public boolean textIsConsistentWith(TextCandidates other){
+        return false;
+    }
+
     public boolean textIsConsistentWith(TextCandidate element){
         if( ! this.hasTextList()) {
             return true;
