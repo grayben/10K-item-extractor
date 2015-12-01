@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.headingMarker;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TextCandidate {
@@ -15,7 +16,7 @@ public class TextCandidate {
     }
 
     public List<String> getList() {
-        return list;
+        return Collections.unmodifiableList(list);
     }
 
     private int index;
