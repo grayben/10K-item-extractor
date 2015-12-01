@@ -19,6 +19,8 @@ public class TextCandidateTest {
 
     TextCandidate textCandidateSUT;
 
+    List<String> stringListReturned;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -32,6 +34,7 @@ public class TextCandidateTest {
     public void setUp() throws Exception {
         Mockito.when(list.size()).thenReturn(listSize);
         textCandidateSUT = new TextCandidate(list, index);
+        stringListReturned = textCandidateSUT.getList();
     }
 
     @After
@@ -69,5 +72,75 @@ public class TextCandidateTest {
         thrown.expect(NullPointerException.class);
 
         textCandidateSUT = new TextCandidate(null, index);
+    }
+
+    @Test
+    public void
+    test_ReturnedTextListThrowsUnsupportedOperationException_WhenAddObject
+            () throws Exception {
+        fail("This test has not been implemented");
+    }
+
+    @Test
+    public void
+    test_ReturnedTextListThrowsUnsupportedOperationException_WhenAddObjectWithIndex
+            () throws Exception {
+        fail("This test has not been implemented");
+    }
+
+    @Test
+    public void
+    test_ReturnedTextListThrowsUnsupportedOperationException_WhenAddAllCollection
+            () throws Exception {
+        fail("This test has not been implemented");
+    }
+
+    @Test
+    public void
+    test_ReturnedTextListThrowsUnsupportedOperationException_WhenAddAllCollectionWithIndex
+            () throws Exception {
+        fail("This test has not been implemented");
+    }
+
+    @Test
+    public void
+    test_ReturnedTextListThrowsUnsupportedOperationException_WhenClear
+            () throws Exception {
+        fail("This test has not been implemented");
+    }
+
+    @Test
+    public void
+    test_ReturnedTextListThrowsUnsupportedOperationException_WhenRemoveAll
+            () throws Exception {
+        fail("This test has not been implemented");
+    }
+
+    @Test
+    public void
+    test_ReturnedTextListThrowsUnsupportedOperationException_WhenReplaceAll
+            () throws Exception {
+        fail("This test has not been implemented");
+    }
+
+    @Test
+    public void
+    test_ReturnedTextListThrowsUnsupportedOperationException_WhenRetainAll
+            () throws Exception {
+        fail("This test has not been implemented");
+    }
+
+    @Test
+    public void
+    test_ReturnedTextListThrowsUnsupportedOperationException_WhenSet
+            () throws Exception {
+        fail("This test has not been implemented");
+    }
+
+    @Test
+    public void
+    test_ReturnedTextListThrowsUnsupportedOperationException_WhenSort
+            () throws Exception {
+        fail("This test has not been implemented");
     }
 }
