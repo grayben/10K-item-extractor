@@ -13,7 +13,7 @@ public class TextCandidates
     private List<String> textList = null;
 
     public List<String> getTextList() {
-        return this.textList;
+        return Collections.unmodifiableList(this.textList);
     }
 
     private List<String> extractTextListFrom(Collection<? extends  TextCandidate> c){
