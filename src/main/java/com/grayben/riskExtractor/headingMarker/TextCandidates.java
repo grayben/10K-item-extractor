@@ -31,7 +31,7 @@ public class TextCandidates
         return prospectiveTextList;
     }
 
-    public TextCandidates(Collection<? extends TextCandidate> c) {
+    public TextCandidates(List<? extends TextCandidate> c) {
 
         //this should not have a textList assigned yet
         assert this.textList == null;
@@ -45,17 +45,6 @@ public class TextCandidates
         //should have already thrown an exception if input is inconsistent
         assert(this.textIsConsistent());
 
-    }
-
-    public TextCandidates(int initialCapacity) {
-        super();
-        this.textCandidates = new ArrayList<>(initialCapacity);
-
-    }
-
-    public TextCandidates() {
-        super();
-        this.textCandidates = new ArrayList<>();
     }
 
     boolean textIsConsistent() {
@@ -142,36 +131,31 @@ public class TextCandidates
 
     @Override
     public Iterator<TextCandidate> iterator() {
-        return this.textCandidates.iterator();
+        return Collections.unmodifiableList(this.textCandidates).iterator();
     }
 
     @Override
     public Object[] toArray() {
-        return this.textCandidates.toArray();
+        return Collections.unmodifiableList(this.textCandidates).toArray();
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return this.textCandidates.toArray(a);
+        return Collections.unmodifiableList(this.textCandidates).toArray(a);
     }
 
     @Override
-    public boolean add(TextCandidate element) {
-        if( ! this.textIsConsistentWith(element)){
-            throw new IllegalArgumentException("Attempted " +
-                    "to add an element with inconsistent textList");
-        }
-        this.textList = element.getList();
-        return textCandidates.add(element);
+    public boolean add(TextCandidate textCandidate) {
+        throw new UnsupportedOperationException(
+                "This list is not modifiable"
+        );
     }
 
     @Override
     public boolean remove(Object o) {
-        boolean removed = textCandidates.remove(o);
-        if(this.size() == 0){
-            this.setTextList(null);
-        }
-        return removed;
+        throw new UnsupportedOperationException(
+                "This list is not modifiable"
+        );
     }
 
     @Override
@@ -181,81 +165,63 @@ public class TextCandidates
 
     @Override
     public boolean addAll(Collection<? extends TextCandidate> c) {
-        List<String> textList = getTextList(c);
-        if( ! this.textIsConsistentWith(textList)){
-            throw new IllegalArgumentException("Tried to add collection " +
-                    "with text list inconsistent with this");
-        }
-        this.setTextList(textList);
-        return this.textCandidates.addAll(c);
+        throw new UnsupportedOperationException(
+                "This list is not modifiable"
+        );
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends TextCandidate> c) {
-        List<String> textList =  getTextList(c);
-        if( ! this.textIsConsistentWith(textList)){
-            throw new IllegalArgumentException("Tried to add collection " +
-                    "with text list inconsistent with this");
-        }
-        this.setTextList(textList);
-        return this.textCandidates.addAll(index, c);
+        throw new UnsupportedOperationException(
+                "This list is not modifiable"
+        );
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        boolean removed = this.textCandidates.removeAll(c);
-        if(this.size() == 0){
-            this.setTextList(null);
-        }
-        return removed;
+        throw new UnsupportedOperationException(
+                "This list is not modifiable"
+        );
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        boolean retained = this.textCandidates.retainAll(c);
-        if(this.size() == 0){
-            this.setTextList(null);
-        }
-        return retained;
+        throw new UnsupportedOperationException(
+                "This list is not modifiable"
+        );
     }
 
     @Override
     public void clear() {
-        this.textList = null;
-        this.textCandidates.clear();
+        throw new UnsupportedOperationException(
+                "This list is not modifiable"
+        );
     }
 
     @Override
     public TextCandidate get(int index) {
-        return textCandidates.get(index);
+        return Collections.unmodifiableList(textCandidates).get(index);
     }
 
     @Override
     public TextCandidate set(int index, TextCandidate element) {
-        if( ! this.textIsConsistentWith(element)){
-            throw new IllegalArgumentException("Attempted " +
-                    "to add an element with inconsistent textList");
-        }
-        this.textList = element.getList();
-        return textCandidates.set(index, element);
+        throw new UnsupportedOperationException(
+                "This list is not modifiable"
+        );
     }
 
     @Override
     public void add(int index, TextCandidate element) {
-        if( ! this.textIsConsistentWith(element)){
-            throw new IllegalArgumentException("Attempted " +
-                    "to add an element with inconsistent textList");
-        }
-        this.textList = element.getList();
-        textCandidates.add(index, element);
-
+        throw new UnsupportedOperationException(
+                "This list is not modifiable"
+        );
     }
 
     @Override
     public TextCandidate remove(int index) {
-        TextCandidate removed = textCandidates.remove(index);
-        if(textCandidates.size() == 0) this.textList = null;
-        return removed;
+        throw new UnsupportedOperationException(
+                "This list is not modifiable"
+        );
     }
 
     @Override
@@ -270,16 +236,16 @@ public class TextCandidates
 
     @Override
     public ListIterator<TextCandidate> listIterator() {
-        return this.textCandidates.listIterator();
+        return Collections.unmodifiableList(this.textCandidates).listIterator();
     }
 
     @Override
     public ListIterator<TextCandidate> listIterator(int index) {
-        return this.textCandidates.listIterator(index);
+        return Collections.unmodifiableList(this.textCandidates).listIterator(index);
     }
 
     @Override
     public List<TextCandidate> subList(int fromIndex, int toIndex) {
-        return this.textCandidates.subList(fromIndex, toIndex);
+        return Collections.unmodifiableList(this.textCandidates).subList(fromIndex, toIndex);
     }
 }
