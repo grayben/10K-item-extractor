@@ -41,30 +41,32 @@ public class TextCandidateTest {
 
     @Test
     public void
-    test_ConstructorThrowsIllegalArgumentException_WhenIndexIsNegative(){
+    test_ConstructorThrowsIndexOutOfBoundsException_WhenIndexIsNegative(){
         index = -1;
 
-        thrown.expect(IllegalArgumentException.class);
+        thrown.expect(IndexOutOfBoundsException.class);
 
         textCandidateSUT = new TextCandidate(list, index);
     }
 
     @Test
     public void
-    test_ConstructorThrowsIllegalArgumentException_WhenIndexIsTooHigh(){
+    test_ConstructorThrowsIndexOutOfBoundsException_WhenIndexIsTooHigh
+            () throws Exception {
         Mockito.when(list.size()).thenReturn(listSize);
         index = listSize + 1;
 
-        thrown.expect(IllegalArgumentException.class);
+        thrown.expect(IndexOutOfBoundsException.class);
 
         textCandidateSUT = new TextCandidate(list, index);
     }
 
     @Test
     public void
-    test_ConstructorThrowsIllegalArgumentException_WhenListIsNull(){
+    test_ConstructorThrowsNullPointerException_WhenListIsNull
+            () throws Exception {
 
-        thrown.expect(IllegalArgumentException.class);
+        thrown.expect(NullPointerException.class);
 
         textCandidateSUT = new TextCandidate(null, index);
     }

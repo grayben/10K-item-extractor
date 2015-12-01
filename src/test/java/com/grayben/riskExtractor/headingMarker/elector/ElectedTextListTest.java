@@ -87,7 +87,9 @@ public class ElectedTextListTest
     }
 
     @Test
-    public void test_constructorAcceptsEqualLists(){
+    public void test_constructorAcceptsEqualLists()
+        throws Exception {
+
         electedTextListSUT = new ElectedTextList(
                 stringListMock,
                 nomineesMock,
@@ -97,7 +99,8 @@ public class ElectedTextListTest
     }
 
     @Test
-    public void test_constructorDoesNotAcceptUnequalLists(){
+    public void test_constructorDoesNotAcceptUnequalLists()
+        throws Exception {
         List<String> otherTextListMock = mock(List.class);
         when(nomineesMock.getTextList()).thenReturn(otherTextListMock);
 

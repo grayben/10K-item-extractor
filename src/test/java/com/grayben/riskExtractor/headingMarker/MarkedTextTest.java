@@ -24,7 +24,7 @@ public class MarkedTextTest {
     ElectedTextList electedTextListMock;
 
     @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none();
 
     MarkedText markedTextSUT;
 
@@ -39,8 +39,9 @@ public class MarkedTextTest {
     }
 
     @Test
-    public void test_Init_ThrowsIllegalArgumentException_WhenTextArgumentIsNull(){
-        expectedException.expect(IllegalArgumentException.class);
+    public void test_Init_ThrowsNullPointerException_WhenTextArgumentIsNull
+            () throws Exception {
+        thrown.expect(NullPointerException.class);
         ElectedTextList electedTextListArgument = null;
         markedTextSUT = new MarkedText(electedTextListArgument);
     }

@@ -38,25 +38,27 @@ public class TagAndAttributeTest {
     }
 
     @Test
-    public void test_Initialise_ThrowsIllegalArgumentException_WhenTagArgumentIsNull(){
+    public void test_Initialise_ThrowsIllegalArgumentException_WhenTagArgumentIsNull
+            () throws Exception {
         thrown.expect(IllegalArgumentException.class);
         tagAndAttributeSUT = new TagAndAttribute(null, attributeMock);
     }
 
     @Test
-    public void test_Initialise_ThrowsIllegalArgumentException_WhenAttributeArgumentIsNull(){
+    public void test_Initialise_ThrowsIllegalArgumentException_WhenAttributeArgumentIsNull
+            () throws Exception {
         thrown.expect(IllegalArgumentException.class);
         tagAndAttributeSUT = new TagAndAttribute(tagMock, null);
     }
 
     @Test
-    public void test_GetTag_IsNotNull_Always(){
+    public void test_GetTag_IsNotNull_Always() throws Exception {
         Tag tagReturned = tagAndAttributeSUT.getTag();
         assertNotNull(tagReturned);
     }
 
     @Test
-    public void test_GetAttribute_IsNotNull_Always(){
+    public void test_GetAttribute_IsNotNull_Always() throws Exception {
         Attribute attributeReturned = tagAndAttributeSUT.getAttribute();
         assertNotNull(attributeReturned);
     }

@@ -34,14 +34,16 @@ public class ScoredTextElementTest {
     }
 
     @Test
-    public void test_GetTextElement_IsNotNull_Always(){
+    public void test_GetTextElement_IsNotNull_Always
+            () throws Exception {
         String textElementReturned = scoredTextElementSUT.getTextElement();
 
         assertNotNull(textElementReturned);
     }
 
     @Test
-    public void test_GetScores_IsNotNull_Always(){
+    public void test_GetScores_IsNotNull_Always
+            () throws Exception {
         Map<String, Integer> scoresReturned = scoredTextElementSUT.getScores();
 
         assertNotNull(scoresReturned);
