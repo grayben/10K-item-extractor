@@ -1,6 +1,5 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
-import com.grayben.riskExtractor.headingMarker.TextCandidate;
 import com.grayben.riskExtractor.headingMarker.TextCandidates;
 import org.junit.After;
 import org.junit.Before;
@@ -20,11 +19,11 @@ import static org.mockito.Mockito.mock;
  * Created by beng on 28/11/2015.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NominatedTextListTest
+public class NominatedTextTest
         implements
         INomineesRetrievableTest {
 
-    NominatedTextList nominatedTextListSUT;
+    NominatedText nominatedTextSUT;
 
     @Mock
     protected List<String> stringListMock;
@@ -34,7 +33,7 @@ public class NominatedTextListTest
 
     @Before
     public void setUp() throws Exception {
-        nominatedTextListSUT = new NominatedTextList(stringListMock, nomineesMock);
+        nominatedTextSUT = new NominatedText(stringListMock, nomineesMock);
     }
 
     @After
@@ -50,7 +49,7 @@ public class NominatedTextListTest
         //setup expectations
 
         //execute
-        TextCandidates nomineesReturned = nominatedTextListSUT.getNominees();
+        TextCandidates nomineesReturned = nominatedTextSUT.getNominees();
 
         //validate
         assertNotNull(nomineesReturned);
@@ -64,9 +63,9 @@ public class NominatedTextListTest
         //setup expectations
 
         //exercise
-        TextCandidates nomineesReturned = nominatedTextListSUT.getNominees();
-        nominatedTextListSUT.setNominees(newNomineesMock);
-        TextCandidates newNomineesReturned = nominatedTextListSUT.getNominees();
+        TextCandidates nomineesReturned = nominatedTextSUT.getNominees();
+        nominatedTextSUT.setNominees(newNomineesMock);
+        TextCandidates newNomineesReturned = nominatedTextSUT.getNominees();
 
         //verify
         assertEquals(nomineesMock, nomineesReturned);

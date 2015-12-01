@@ -1,17 +1,14 @@
 package com.grayben.riskExtractor.headingMarker;
 
-import com.grayben.riskExtractor.headingMarker.elector.ElectedTextList;
+import com.grayben.riskExtractor.headingMarker.elector.ElectedText;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.jar.Pack200;
 
 public class MarkedText {
 	
-	ElectedTextList text;
+	ElectedText text;
 
-    public MarkedText(ElectedTextList text) {
+    public MarkedText(ElectedText text) {
         super();
         if(text == null){
             throw new NullPointerException("The argument passed was null");
@@ -39,7 +36,7 @@ public class MarkedText {
             int endIndex = 0; //  = something
 
 
-            ListIterator<String> it = text.getTextList().listIterator(startIndex);
+            ListIterator<String> it = text.getText().listIterator(startIndex);
             while(it.hasNext()){
                 if(it.nextIndex() == endIndex){
                     // then stop appending strings

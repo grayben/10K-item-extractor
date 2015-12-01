@@ -1,8 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
-import com.grayben.riskExtractor.headingMarker.TextCandidate;
 import com.grayben.riskExtractor.headingMarker.TextCandidates;
-import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextListTest;
+import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,11 +22,11 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ElectedTextListTest
         extends
-        NominatedTextListTest
+        NominatedTextTest
         implements
         IElecteesRetrievableTest {
 
-    ElectedTextList electedTextListSUT;
+    ElectedText electedTextListSUT;
 
     @Mock
     protected List<String> stringListMock;
@@ -46,7 +45,7 @@ public class ElectedTextListTest
         super.setUp();
         when(nomineesMock.getTextList()).thenReturn(stringListMock);
         when(electeesMock.getTextList()).thenReturn(stringListMock);
-        electedTextListSUT = new ElectedTextList(stringListMock, nomineesMock, electeesMock);
+        electedTextListSUT = new ElectedText(stringListMock, nomineesMock, electeesMock);
 
     }
 
@@ -90,7 +89,7 @@ public class ElectedTextListTest
     public void test_constructorAcceptsEqualLists()
         throws Exception {
 
-        electedTextListSUT = new ElectedTextList(
+        electedTextListSUT = new ElectedText(
                 stringListMock,
                 nomineesMock,
                 electeesMock);
@@ -106,6 +105,6 @@ public class ElectedTextListTest
 
         thrown.expect(IllegalArgumentException.class);
 
-        electedTextListSUT = new ElectedTextList(stringListMock, nomineesMock, electeesMock);
+        electedTextListSUT = new ElectedText(stringListMock, nomineesMock, electeesMock);
     }
 }
