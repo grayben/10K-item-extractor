@@ -85,6 +85,14 @@ public class TextCandidateTest {
 
     @Test
     public void
+    test_GetListReturnsNonNull
+            () throws Exception {
+        List<String> returnedList = textCandidateSUT.getList();
+        assertNotNull(returnedList);
+    }
+
+    @Test
+    public void
     test_ReturnedTextListThrowsUnsupportedOperationException_WhenAddObject
             () throws Exception {
         thrown.expect(UnsupportedOperationException.class);
@@ -172,4 +180,6 @@ public class TextCandidateTest {
             }
         });
     }
+
+
 }
