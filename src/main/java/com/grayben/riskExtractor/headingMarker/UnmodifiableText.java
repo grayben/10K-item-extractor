@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.headingMarker;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,13 +9,13 @@ import java.util.List;
  */
 public class UnmodifiableText {
 
-    private List<String> stringList;
+    private ArrayList<String> stringList;
 
     public UnmodifiableText(List<String> stringList){
         if(stringList == null)
             throw new NullPointerException("Attempted " +
                     "to construct with null pointer");
-        this.stringList = stringList;
+        this.stringList = new ArrayList<>(stringList);
     }
 
     public UnmodifiableText(UnmodifiableText unmodifiableText){
