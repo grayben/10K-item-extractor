@@ -1,6 +1,5 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
-import com.grayben.riskExtractor.headingMarker.TextCandidates;
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextTest;
 import org.junit.After;
 import org.junit.Before;
@@ -32,10 +31,10 @@ public class ElectedTextListTest
     protected List<String> stringListMock;
 
     @Mock
-    protected TextCandidates nomineesMock;
+    protected List<Integer> nomineesMock;
 
     @Mock
-    protected TextCandidates electeesMock;
+    protected List<Integer> electeesMock;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -43,8 +42,6 @@ public class ElectedTextListTest
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        when(nomineesMock.getTextList()).thenReturn(stringListMock);
-        when(electeesMock.getTextList()).thenReturn(stringListMock);
         electedTextListSUT = new ElectedText(stringListMock, nomineesMock, electeesMock);
 
     }
@@ -62,27 +59,9 @@ public class ElectedTextListTest
         //setup expectations
 
         //exercise
-        TextCandidates electeesReturned = electedTextListSUT.getElectees();
+        List<Integer> electeesReturned = electedTextListSUT.getElectees();
         //verify
         assertNotNull(electeesReturned);
-    }
-
-    @Test
-    public void test_GetElectees_ReturnsConstructedElectees_OnlyWhenNoOverwrite() throws Exception {
-        //setup data
-        TextCandidates newElecteesMock = mock(TextCandidates.class);
-
-        //setup expectations
-
-        //exercise
-        TextCandidates electeesReturned = electedTextListSUT.getElectees();
-        electedTextListSUT.setElectees(newElecteesMock);
-        TextCandidates newElecteesReturned = electedTextListSUT.getElectees();
-
-        //verify
-        assertEquals(electeesMock, electeesReturned);
-        assertEquals(newElecteesMock, newElecteesReturned);
-        assertNotEquals(electeesMock, newElecteesReturned);
     }
 
     @Test
@@ -95,16 +74,5 @@ public class ElectedTextListTest
                 electeesMock);
 
         assertNotNull(electedTextListSUT);
-    }
-
-    @Test
-    public void test_constructorDoesNotAcceptUnequalLists()
-        throws Exception {
-        List<String> otherTextListMock = mock(List.class);
-        when(nomineesMock.getTextList()).thenReturn(otherTextListMock);
-
-        thrown.expect(IllegalArgumentException.class);
-
-        electedTextListSUT = new ElectedText(stringListMock, nomineesMock, electeesMock);
     }
 }
