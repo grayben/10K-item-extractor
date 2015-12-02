@@ -11,11 +11,14 @@ public class UnmodifiableText {
     private List<String> stringList;
 
     public UnmodifiableText(List<String> stringList){
+        if(stringList == null)
+            throw new NullPointerException("Attempted " +
+                    "to construct with null pointer");
         this.stringList = stringList;
     }
 
     public UnmodifiableText(UnmodifiableText unmodifiableText){
-        this.stringList = unmodifiableText.getStringList();
+        this(unmodifiableText.getStringList());
 
     }
 
