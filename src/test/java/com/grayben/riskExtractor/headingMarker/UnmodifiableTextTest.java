@@ -22,7 +22,7 @@ public class UnmodifiableTextTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
-    public void setUp() throws Exception {
+    final public void setUp() throws Exception {
         stringListArgument = new ArrayList<>();
         stringListArgument.add("one");
         stringListArgument.add("two");
@@ -31,9 +31,31 @@ public class UnmodifiableTextTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    final public void tearDown() throws Exception {
         unmodifiableTextSUT = null;
         stringListArgument = null;
+    }
+
+    @Test
+    public void
+    test_ConstructingThrowsNullPointerException_WhenStringListIsNull
+            () throws Exception {
+        thrown.expect(NullPointerException.class);
+
+        stringListArgument = null;
+
+        new UnmodifiableText(stringListArgument);
+    }
+
+    @Test
+    public void
+    test_ConstructingThrowsNullPointerException_WhenPrototypeIsNull
+            () throws Exception {
+        thrown.expect(NullPointerException.class);
+
+        UnmodifiableText prototype = null;
+
+        new UnmodifiableText(prototype);
     }
 
     @Test
