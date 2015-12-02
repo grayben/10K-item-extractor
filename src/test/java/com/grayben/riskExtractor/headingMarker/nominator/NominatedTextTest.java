@@ -99,13 +99,13 @@ public class NominatedTextTest
 
     @Test
     public void
-    test_PrototypeConstructorThrowsNullPointerException_WhenUnmodifiableTextIsNull
+    test_PrototypeConstructorThrowsNullPointerException_WhenPrototypeIsNull
             () throws Exception {
-        nominatedTextSUT = null;
+        setNominatedTextSUT(null);
 
         thrown.expect(NullPointerException.class);
 
-        new NominatedText(nominatedTextSUT);
+        new NominatedText(getNominatedTextSUT());
     }
 
     @Test
