@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.grayben.riskExtractor.headingMarker.UnmodifiableText;
@@ -12,6 +13,9 @@ public class NominatedText
 
     public NominatedText(List<String> stringList, List<Integer> nominees) {
         super(stringList);
+        if (nominees == null) {
+            throw new NullPointerException("Attempted to pass null argument");
+        }
         this.nominees = nominees;
     }
 
@@ -19,6 +23,9 @@ public class NominatedText
             UnmodifiableText unmodifiableText,
             List<Integer> nominees){
         super(unmodifiableText);
+        if (nominees == null) {
+            throw new NullPointerException("Attempted to pass null argument");
+        }
         this.nominees = nominees;
     }
 
@@ -28,6 +35,6 @@ public class NominatedText
 
     @Override
     public List<Integer> getNominees() {
-        return nominees;
+        return Collections.unmodifiableList(this.nominees);
     }
 }
