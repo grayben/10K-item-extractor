@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
  * Created by beng on 28/11/2015.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ElectedTextListTest
+public class ElectedTextTest
         extends
         NominatedTextTest
         implements
