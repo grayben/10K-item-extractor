@@ -98,8 +98,6 @@ public class NominatedTextTest
         new NominatedText(nominatedTextSUT);
     }
 
-
-
     @Test
     public void
     test_GetNominees_ReturnsNonNull_Always
