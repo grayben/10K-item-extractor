@@ -3,9 +3,7 @@ package com.grayben.riskExtractor.headingMarker.elector;
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextTest;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -13,7 +11,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * Created by beng on 28/11/2015.
@@ -25,28 +22,31 @@ public class ElectedTextTest
         implements
         IElecteesRetrievableTest {
 
-    ElectedText electedTextListSUT;
+    private ElectedText electedTextSUT;
+
+    public void setElectedTextSUT(ElectedText electedTextSUT) {
+        this.electedTextSUT = electedTextSUT;
+        this.setNominatedTextSUT(this.electedTextSUT);
+    }
 
     @Mock
-    protected List<String> stringListMock;
-
-    @Mock
-    protected List<Integer> nomineesMock;
-
-    @Mock
-    protected List<Integer> electeesMock;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    private List<Integer> electeesMock;
 
     @Before
-    public void setUp() throws Exception {
-        electedTextListSUT = new ElectedText(stringListMock, nomineesMock, electeesMock);
+    final public void setUpElectedText() throws Exception {
+        this.setElectedTextSUT(
+                new ElectedText(
+                        stringListArgument,
+                        nomineesMock,
+                        electeesMock
+                )
+        );
+
 
     }
 
     @After
-    public void tearDown() throws Exception {
+    final public void tearDownElectedText() throws Exception {
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ElectedTextTest
         //setup expectations
 
         //exercise
-        List<Integer> electeesReturned = electedTextListSUT.getElectees();
+        List<Integer> electeesReturned = electedTextSUT.getElectees();
         //verify
         assertNotNull(electeesReturned);
     }
@@ -66,11 +66,11 @@ public class ElectedTextTest
     public void test_constructorAcceptsEqualLists()
         throws Exception {
 
-        electedTextListSUT = new ElectedText(
-                stringListMock,
+        electedTextSUT = new ElectedText(
+                stringListArgument,
                 nomineesMock,
                 electeesMock);
 
-        assertNotNull(electedTextListSUT);
+        assertNotNull(electedTextSUT);
     }
 }

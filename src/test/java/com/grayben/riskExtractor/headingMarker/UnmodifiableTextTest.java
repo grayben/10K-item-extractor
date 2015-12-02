@@ -14,12 +14,21 @@ import java.util.List;
  */
 public class UnmodifiableTextTest {
 
-    protected UnmodifiableText unmodifiableTextSUT = null;
+    private UnmodifiableText unmodifiableTextSUT = null;
 
     protected List<String> stringListArgument = null;
 
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    public UnmodifiableText getUnmodifiableTextSUT() {
+        return unmodifiableTextSUT;
+    }
+
+    public void setUnmodifiableTextSUT(UnmodifiableText unmodifiableTextSUT) {
+        this.unmodifiableTextSUT = unmodifiableTextSUT;
+    }
 
     @Before
     final public void setUpUnmodifiableText() throws Exception {

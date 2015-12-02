@@ -27,19 +27,29 @@ public class NominatedTextTest
         implements
         INomineesRetrievableTest {
 
-    NominatedText nominatedTextSUT = null;
+    private NominatedText nominatedTextSUT = null;
+
+    public NominatedText getNominatedTextSUT() {
+        return nominatedTextSUT;
+    }
+
+    public void setNominatedTextSUT(NominatedText nominatedTextSUT) {
+        this.nominatedTextSUT = nominatedTextSUT;
+        this.setUnmodifiableTextSUT(this.nominatedTextSUT);
+    }
 
     @Mock
     protected List<Integer> nomineesMock = null;
 
     @Before
-    public void setUpNominatedText() throws Exception {
-        this.nominatedTextSUT = new NominatedText(stringListArgument, nomineesMock);
-        super.unmodifiableTextSUT = this.nominatedTextSUT;
+    final public void setUpNominatedText() throws Exception {
+        this.setNominatedTextSUT(
+                new NominatedText(stringListArgument, nomineesMock)
+        );
     }
 
     @After
-    public void tearDownNominatedText() throws Exception {
+    final public void tearDownNominatedText() throws Exception {
         nominatedTextSUT = null;
     }
 
@@ -69,11 +79,11 @@ public class NominatedTextTest
     public void
     test_IncrementalConstructorThrowsNullPointerException_WhenUnmodifiableTextIsNull
             () throws Exception {
-        unmodifiableTextSUT = null;
+        this.setNominatedTextSUT(null);
 
         thrown.expect(NullPointerException.class);
 
-        new NominatedText(unmodifiableTextSUT, nomineesMock);
+        new NominatedText(this.getUnmodifiableTextSUT(), nomineesMock);
     }
 
     @Test
@@ -84,7 +94,7 @@ public class NominatedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new NominatedText(unmodifiableTextSUT, nomineesMock);
+        new NominatedText(this.getUnmodifiableTextSUT(), nomineesMock);
     }
 
     @Test
