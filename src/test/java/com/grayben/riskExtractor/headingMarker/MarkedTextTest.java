@@ -1,6 +1,6 @@
 package com.grayben.riskExtractor.headingMarker;
 
-import com.grayben.riskExtractor.headingMarker.elector.ElectedTextList;
+import com.grayben.riskExtractor.headingMarker.elector.ElectedText;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 public class MarkedTextTest {
 
     @Mock
-    ElectedTextList electedTextListMock;
+    ElectedText electedTextListMock;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -42,7 +42,7 @@ public class MarkedTextTest {
     public void test_Init_ThrowsNullPointerException_WhenTextArgumentIsNull
             () throws Exception {
         thrown.expect(NullPointerException.class);
-        ElectedTextList electedTextListArgument = null;
+        ElectedText electedTextListArgument = null;
         markedTextSUT = new MarkedText(electedTextListArgument);
     }
 
