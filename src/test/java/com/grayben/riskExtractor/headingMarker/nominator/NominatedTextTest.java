@@ -34,7 +34,6 @@ public class NominatedTextTest
 
     @Before
     public void setUpNominatedText() throws Exception {
-        assertNotNull (stringListArgument);
         this.nominatedTextSUT = new NominatedText(stringListArgument, nomineesMock);
         super.unmodifiableTextSUT = this.nominatedTextSUT;
     }
@@ -44,17 +43,81 @@ public class NominatedTextTest
         nominatedTextSUT = null;
     }
 
-    @Override
     @Test
-    public void test_GetNominees_ReturnsNonNull_Always() throws Exception {
-        //setup data
+    public void
+    test_BasicConstructorThrowsNullPointerException_WhenStringListIsNull
+            () throws Exception {
+        stringListArgument = null;
 
-        //setup expectations
+        thrown.expect(NullPointerException.class);
 
-        //execute
+        new NominatedText(stringListArgument, nomineesMock);
+    }
+
+    @Test
+    public void
+    test_BasicConstructorThrowsNullPointerException_WhenNomineesIsNull
+            () throws Exception {
+        nomineesMock = null;
+
+        thrown.expect(NullPointerException.class);
+
+        new NominatedText(stringListArgument, nomineesMock);
+    }
+
+    @Test
+    public void
+    test_IncrementalConstructorThrowsNullPointerException_WhenUnmodifiableTextIsNull
+            () throws Exception {
+        unmodifiableTextSUT = null;
+
+        thrown.expect(NullPointerException.class);
+
+        new NominatedText(unmodifiableTextSUT, nomineesMock);
+    }
+
+    @Test
+    public void
+    test_IncrementalConstructorThrowsNullPointerException_WhenNomineesIsNull
+            () throws Exception {
+        nomineesMock = null;
+
+        thrown.expect(NullPointerException.class);
+
+        new NominatedText(unmodifiableTextSUT, nomineesMock);
+    }
+
+    @Test
+    public void
+    test_PrototypeConstructorThrowsNullPointerException_WhenUnmodifiableTextIsNull
+            () throws Exception {
+        nominatedTextSUT = null;
+
+        thrown.expect(NullPointerException.class);
+
+        new NominatedText(nominatedTextSUT);
+    }
+
+
+
+    @Test
+    public void
+    test_GetNominees_ReturnsNonNull_Always
+            () throws Exception {
+
         List<Integer> nomineesReturned = nominatedTextSUT.getNominees();
 
-        //validate
         assertNotNull(nomineesReturned);
+    }
+
+    @Test
+    public void
+    test_ModifyingReturnedNomineesThrowsUnsupportedOperationException
+            () throws Exception {
+        List<Integer> returnedIntegerList = nominatedTextSUT.getNominees();
+
+        thrown.expect(UnsupportedOperationException.class);
+
+        returnedIntegerList.add(1);
     }
 }
