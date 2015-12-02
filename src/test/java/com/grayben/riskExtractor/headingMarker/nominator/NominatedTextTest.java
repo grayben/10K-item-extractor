@@ -33,15 +33,14 @@ public class NominatedTextTest
     protected List<Integer> nomineesMock = null;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUpNominatedText() throws Exception {
         assertNotNull (stringListArgument);
         this.nominatedTextSUT = new NominatedText(stringListArgument, nomineesMock);
         super.unmodifiableTextSUT = this.nominatedTextSUT;
     }
 
     @After
-    public void tearDown() throws Exception {
-        super.tearDown();
+    public void tearDownNominatedText() throws Exception {
         nominatedTextSUT = null;
     }
 

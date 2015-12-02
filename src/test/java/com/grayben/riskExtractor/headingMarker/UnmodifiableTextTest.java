@@ -22,7 +22,7 @@ public class UnmodifiableTextTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
-    final public void setUp() throws Exception {
+    final public void setUpUnmodifiableText() throws Exception {
         stringListArgument = new ArrayList<>();
         stringListArgument.add("one");
         stringListArgument.add("two");
@@ -31,7 +31,7 @@ public class UnmodifiableTextTest {
     }
 
     @After
-    final public void tearDown() throws Exception {
+    final public void tearDownUnmodifiableText() throws Exception {
         unmodifiableTextSUT = null;
         stringListArgument = null;
     }

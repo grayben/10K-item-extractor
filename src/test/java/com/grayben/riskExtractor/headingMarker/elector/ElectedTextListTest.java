@@ -41,14 +41,12 @@ public class ElectedTextListTest
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         electedTextListSUT = new ElectedText(stringListMock, nomineesMock, electeesMock);
 
     }
 
     @After
     public void tearDown() throws Exception {
-        super.tearDown();
     }
 
     @Override
