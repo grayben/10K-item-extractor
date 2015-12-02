@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class NominatedTextTest
-        extends UnmodifiableTextTest
+            extends UnmodifiableTextTest
         implements
         INomineesRetrievableTest {
 
