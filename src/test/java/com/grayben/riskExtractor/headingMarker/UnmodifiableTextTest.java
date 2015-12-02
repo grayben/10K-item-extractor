@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,35 +14,34 @@ import java.util.List;
  */
 public class UnmodifiableTextTest {
 
-    UnmodifiableText unmodifiableTextSUT;
+    protected UnmodifiableText unmodifiableTextSUT = null;
 
-    List<String> stringList;
-
-    List<String> returnedStringList;
+    protected List<String> stringListArgument = null;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
-        stringList = new ArrayList<>();
-        stringList.add("one");
-        stringList.add("two");
-        stringList.add("cow");
-        unmodifiableTextSUT = new UnmodifiableText(stringList);
-        returnedStringList = unmodifiableTextSUT.getStringList();
+        stringListArgument = new ArrayList<>();
+        stringListArgument.add("one");
+        stringListArgument.add("two");
+        stringListArgument.add("cow");
+        unmodifiableTextSUT = new UnmodifiableText(stringListArgument);
     }
 
     @After
     public void tearDown() throws Exception {
-
+        unmodifiableTextSUT = null;
+        stringListArgument = null;
     }
 
     @Test
     public void
     test_ReturnedStringListEqualsStringList
             () throws Exception {
-        assert(returnedStringList.equals(stringList));
+        List<String> returnedStringList = unmodifiableTextSUT.getStringList();
+        assert(returnedStringList.equals(stringListArgument));
     }
 
     @Test

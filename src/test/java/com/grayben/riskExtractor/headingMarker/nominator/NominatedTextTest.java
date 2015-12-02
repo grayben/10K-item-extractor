@@ -1,12 +1,16 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
+import com.grayben.riskExtractor.headingMarker.UnmodifiableText;
+import com.grayben.riskExtractor.headingMarker.UnmodifiableTextTest;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -19,25 +23,26 @@ import static org.mockito.Mockito.mock;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class NominatedTextTest
+    extends UnmodifiableTextTest
         implements
         INomineesRetrievableTest {
 
-    NominatedText nominatedTextSUT;
+    NominatedText nominatedTextSUT = null;
 
     @Mock
-    protected List<String> stringListMock;
-
-    @Mock
-    protected List<Integer> nomineesMock;
+    protected List<Integer> nomineesMock = null;
 
     @Before
     public void setUp() throws Exception {
-        nominatedTextSUT = new NominatedText(stringListMock, nomineesMock);
+        assertNotNull (stringListArgument);
+        this.nominatedTextSUT = new NominatedText(stringListArgument, nomineesMock);
+        super.unmodifiableTextSUT = this.nominatedTextSUT;
     }
 
     @After
     public void tearDown() throws Exception {
-
+        super.tearDown();
+        nominatedTextSUT = null;
     }
 
     @Override
