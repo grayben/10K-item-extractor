@@ -14,6 +14,11 @@ public class UnmodifiableText {
         this.stringList = stringList;
     }
 
+    public UnmodifiableText(UnmodifiableText unmodifiableText){
+        this.stringList = unmodifiableText.getStringList();
+
+    }
+
     public List<String> getStringList(){
         return Collections.unmodifiableList(this.stringList);
     }

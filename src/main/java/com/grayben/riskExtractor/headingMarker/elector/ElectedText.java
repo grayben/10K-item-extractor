@@ -2,7 +2,6 @@ package com.grayben.riskExtractor.headingMarker.elector;
 
 import java.util.List;
 
-import com.grayben.riskExtractor.headingMarker.TextCandidates;
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedText;
 
 public class ElectedText
@@ -13,19 +12,21 @@ public class ElectedText
         implements
 	    ElecteesRetrievable {
 
-	List<String> textList;
 
-    public ElectedText(List<String> textList, List<Integer> nominees, TextCandidates electees){
+    List<Integer> electees;
+
+    public ElectedText(List<String> textList, List<Integer> nominees, List<Integer> electees){
         super(textList, nominees);
         this.electees = electees;
     }
 
-    public List<String> getText() {
-        return textList;
+    public ElectedText(NominatedText nominatedText, List<Integer> electees){
+        super(nominatedText);
+        this.electees = electees;
     }
 
-    public void setText(List<String> textList) {
-        this.textList = textList;
+    public ElectedText(ElectedText electedText){
+        this(electedText, electedText.getElectees());
     }
 
     @Override

@@ -8,11 +8,22 @@ public class NominatedText
 		extends UnmodifiableText
 		implements NomineesRetrievable {
 
-    private int[] nominees;
+    private List<Integer> nominees;
 
-    public NominatedText(List<String> stringList, int[] nominees) {
+    public NominatedText(List<String> stringList, List<Integer> nominees) {
         super(stringList);
         this.nominees = nominees;
+    }
+
+    public NominatedText(
+            UnmodifiableText unmodifiableText,
+            List<Integer> nominees){
+        super(unmodifiableText);
+        this.nominees = nominees;
+    }
+
+    public NominatedText(NominatedText nominatedText){
+        this(nominatedText, nominatedText.getNominees());
     }
 
     @Override
