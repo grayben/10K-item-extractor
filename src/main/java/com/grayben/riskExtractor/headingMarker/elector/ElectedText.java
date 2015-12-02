@@ -17,11 +17,17 @@ public class ElectedText
 
     public ElectedText(List<String> textList, List<Integer> nominees, List<Integer> electees){
         super(textList, nominees);
+        if (electees == null) {
+            throw new NullPointerException("Attempted to pass illegal null argument");
+        }
         this.electees = electees;
     }
 
     public ElectedText(NominatedText nominatedText, List<Integer> electees){
         super(nominatedText);
+        if (electees == null) {
+            throw new NullPointerException("Attempted to pass illegal null argument");
+        }
         this.electees = electees;
     }
 
