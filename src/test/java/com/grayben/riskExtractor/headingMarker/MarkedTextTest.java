@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -48,7 +49,7 @@ public class MarkedTextTest {
 
     @Test
     public void test_SubSelections_ReturnNonNull_Always() throws Exception {
-        List<String> subSelectionsReturned = markedTextSUT.subSelections();
+        Collection<String> subSelectionsReturned = markedTextSUT.subSelections();
         assertNotNull(subSelectionsReturned);
     }
 }
