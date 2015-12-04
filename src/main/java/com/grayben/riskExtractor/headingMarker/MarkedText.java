@@ -9,7 +9,7 @@ final public class MarkedText
 
     Map<Integer, Integer> stringIndexPairs = null;
 
-    Collection<String> selectedSections = null;
+    List<String> selectedSections = null;
 
     public MarkedText(ElectedText text) {
         super(text);
@@ -55,7 +55,7 @@ final public class MarkedText
         return this.stringIndexPairs;
     }
 
-    private Collection<String> getSelectedSections(){
+    private List<String> getSelectedSections(){
 
         if(this.selectedSections == null){
             Iterator<Map.Entry<Integer, Integer>> pairIterator
@@ -82,7 +82,7 @@ final public class MarkedText
             this.selectedSections = selectedSections;
         }
 
-        return Collections.unmodifiableCollection(this.selectedSections);
+        return Collections.unmodifiableList(this.selectedSections);
 
 
     }
@@ -92,7 +92,7 @@ final public class MarkedText
      * Assumes that all the lists and indexes are equivalent!
      * @return
      */
-    public Collection<String> subSelections() {
+    public List<String> subSelections() {
 
         //TODO: variable and method naming semantics
 
