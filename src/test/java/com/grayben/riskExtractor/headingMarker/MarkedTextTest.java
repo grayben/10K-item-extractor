@@ -77,25 +77,34 @@ public class MarkedTextTest
             static final String SELECTED_CONTENT = "selected content";
             static final String EXCLUDED_CONTENT = "excluded content";
 
-            List<Integer> nomineeIndex = null;
-            List<Integer> electeeIndex = null;
-            List<Integer> includedTextIndex = null;
-            List<Integer> excludedTextIndex = null;
+            MarkedText testInput = null;
 
-            List<String> testTextList = null;
+            List<String> testExpectedOutput = null;
 
             public TestOracle(){
-                setupTestList(defaultClassifications());
+                List<StringClassification> defaults = defaultClassifications();
+                setupTestInput(defaults);
+                setupTestOutput(defaults);
             }
 
             public TestOracle(List<StringClassification> classifiedList){
-                setupTestList(classifiedList);
+                setupTestInput(classifiedList);
+                setupTestOutput(classifiedList);
             }
 
-
+            private void
+            setupTestOutput(List<StringClassification> classificationList){
+                List<String> testExpectedOutput;
+            }
 
             private void
-            setupTestList (List<StringClassification> classificationList){
+            setupTestInput(List<StringClassification> classificationList){
+
+                List<Integer> nomineeIndex = new ArrayList<>();
+                List<Integer> electeeIndex = new ArrayList<>();
+                List<Integer> includedTextIndex = new ArrayList<>();
+                List<Integer> excludedTextIndex = new ArrayList<>();
+
 
                 List<String> stringList = new ArrayList<>();
 
@@ -124,10 +133,13 @@ public class MarkedTextTest
                     }
                 }
 
-                this.testTextList = stringList;
+                ElectedText electedText = new ElectedText(
+                        stringList,
+                        nomineeIndex,
+                        electeeIndex
+                );
 
-                return;
-
+                this.testInput = new MarkedText(electedText);
             }
 
             public MarkedText getMarkedText(){
@@ -139,6 +151,11 @@ public class MarkedTextTest
                 );
 
                 return new MarkedText(electedText);
+            }
+
+            public boolean validateResult(List<String> result){
+                List<String> expectedResult = new ArrayList<>();
+                return false;
             }
 
             private List<StringClassification> defaultClassifications(){
@@ -169,13 +186,6 @@ public class MarkedTextTest
             }
 
         }
-
-
-
-
-
-
-
 
     }
 
