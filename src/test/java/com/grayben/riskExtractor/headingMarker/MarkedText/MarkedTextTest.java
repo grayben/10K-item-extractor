@@ -60,14 +60,6 @@ public class MarkedTextTest
         assertNotNull(subSelectionsReturned);
     }
 
-    private void
-    setupElectedTextList(){
-        //define test data output
-
-
-
-    }
-
     @Test
     public void
     test_SubselectionReturnsNonNull_Normally
@@ -81,11 +73,14 @@ public class MarkedTextTest
     test_SubselectionsReturnsNonNull_WhenTextInputIsEmpty
             () throws Exception {
         List<TextElementClass> textElementClasses = new ArrayList();
-        //oracle = new MarkedTextOracle()
+        oracle = new MarkedTextOracle(textElementClasses);
+        markedTextSUT = new MarkedText(oracle.getTestInput());
+        assertNotNull(markedTextSUT.subSelections());
     }
+
     @Test
     public void
-    test_SubSelectionsReturnsExpectedOutput_Simple
+    test_SubSelectionsReturnsExpectedOutput_WhenSimpleInput
             () throws Exception {
 
         ElectedText input = oracle.getTestInput();

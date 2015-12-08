@@ -1,17 +1,18 @@
 package com.grayben.riskExtractor.headingMarker.markedText;
 
 import com.grayben.riskExtractor.headingMarker.elector.ElectedText;
+import com.grayben.riskExtractor.headingMarker.elector.electedText.ElectedTextOracle;
 
 import java.util.*;
 
 /**
  * Created by beng on 4/12/2015.
  */
-class MarkedTextOracle {
+class MarkedTextOracle extends ElectedTextOracle {
 
-    private List<Integer> nomineeIndex;
-    private List<Integer> electeeIndex;
-    private List<String> textInput;
+    protected List<Integer> getTargetTextIndex() {
+        return targetTextIndex;
+    }
 
     private List<Integer> targetTextIndex;
 
@@ -27,28 +28,29 @@ class MarkedTextOracle {
     }
 
     protected MarkedTextOracle(){
+        //TODO: work out pattern for constructor inheritence
+        super();
         List<TextElementClass> defaults = defaultClassifications();
         setupData(defaults);
+        generateTestInput();
+        constructExpectedOutput();
     }
 
     protected MarkedTextOracle(List<TextElementClass> classifiedList){
+        super(classifiedList);
         setupData(classifiedList);
     }
 
+    @Override
     protected boolean validateResult(List<String> result){
         List<String> expectedResult = new ArrayList<>();
         return false;
     }
 
-
-    private void constructIntermediateData(List<TextElementClass> params){
-        List<String> textInput = new ArrayList<>();
-
-        List<Integer> nomineeIndex = new ArrayList<>();
-        List<Integer> electeeIndex = new ArrayList<>();
+    @Override
+    protected void setupData(List<TextElementClass> params){
 
         List<Integer> targetTextIndex = new ArrayList<>();
-
 
         ListIterator<TextElementClass> it
                 = params.listIterator();
@@ -58,94 +60,53 @@ class MarkedTextOracle {
         while(it.hasNext()){
             int index = it.nextIndex();
             TextElementClass elementType = it.next();
-            String stringToAdd = index + ": " + elementType.archetype();
-            textInput.add(stringToAdd);
 
             if(elementType.equals(TextElementClass.ELECTED_HEADING)) {
-                electeeIndex.add(index);
-
                 targetTextIndex.add(index);
-
                 onSelectedContent = true;
             }
-            else if(elementType.equals(TextElementClass.NOMINATED_HEADING)) {
-                nomineeIndex.add(index);
 
+            else if(elementType.equals(TextElementClass.NOMINATED_HEADING))
                 onSelectedContent = false;
-            }
-            else if(elementType.equals(TextElementClass.NON_HEADING_CONTENT)) {
 
+            else if(elementType.equals(TextElementClass.NON_HEADING_CONTENT)) {
                 if(onSelectedContent) {
                     targetTextIndex.add(index);
                 }
             }
         }
         this.targetTextIndex = targetTextIndex;
-
-        this.electeeIndex = electeeIndex;
-        this.nomineeIndex = nomineeIndex;
-        this.textInput = textInput;
     }
 
-    private void setupData(List<TextElementClass> params){
-        constructIntermediateData(params);
-        constructTestInput();
-        constructExpectedOutput();
-    }
-
-    private void constructTestInput(){
+    @Override
+    private void generateTestInput(){
         ElectedText electedText
                 = new ElectedText(
-                this.textInput, this.nomineeIndex, this.electeeIndex
+                this.getTextInput(), this.getNomineeIndex(), this.getElecteeIndex()
         );
         this.testInput = electedText;
     }
 
+    @Override
     private void
     constructExpectedOutput(){
-        ListIterator<Integer> it = this.targetTextIndex.listIterator();
+        ListIterator<Integer> it = this.getTargetTextIndex().listIterator();
         List<String> testExpectedOutput = new ArrayList<>();
         while(it.hasNext()){
-            testExpectedOutput.add(this.textInput.get(it.next()));
+            testExpectedOutput.add(this.getTextInput().get(it.next()));
         }
         this.testExpectedOutput = testExpectedOutput;
     }
 
-    private List<TextElementClass> defaultClassifications(){
-        List<TextElementClass> list = new ArrayList<>();
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.ELECTED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.ELECTED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.ELECTED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-
-        return list;
-    }
-
+    @Override
     void printData(){
         System.out.println("### TEXT INPUT ##########");
-        System.out.println(this.textInput);
+        System.out.println(this.getTextInput());
         System.out.println("### NOMINEE INDEX #######");
-        System.out.println(this.nomineeIndex);
+        System.out.println(this.getNomineeIndex());
         System.out.println("### ELECTEE INDEX #######");
-        System.out.println(this.electeeIndex);
+        System.out.println(this.getElecteeIndex());
         System.out.println("### TARGET TEXT INDEX ###");
-        System.out.println(this.targetTextIndex);
+        System.out.println(this.getTargetTextIndex());
     }
 }
