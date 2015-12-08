@@ -9,22 +9,6 @@ import java.util.*;
  */
 class MarkedTextOracle {
 
-    private enum StringClass {
-        ELECTED_HEADING("ELECTED HEADING"),
-        NOMINATED_HEADING("NOMINATED HEADING"),
-        NON_HEADING_CONTENT("non-heading content");
-
-        private final String archetype;
-
-        StringClass(String archetype){
-            this.archetype = archetype;
-        }
-
-        String archetype(){
-            return this.archetype;
-        }
-    }
-
     private List<Integer> nomineeIndex;
     private List<Integer> electeeIndex;
     private List<String> textInput;
@@ -43,11 +27,11 @@ class MarkedTextOracle {
     }
 
     protected MarkedTextOracle(){
-        List<StringClass> defaults = defaultClassifications();
+        List<TextElementClass> defaults = defaultClassifications();
         setupData(defaults);
     }
 
-    protected MarkedTextOracle(List<StringClass> classifiedList){
+    protected MarkedTextOracle(List<TextElementClass> classifiedList){
         setupData(classifiedList);
     }
 
@@ -57,7 +41,7 @@ class MarkedTextOracle {
     }
 
 
-    private void constructIntermediateData(List<StringClass> params){
+    private void constructIntermediateData(List<TextElementClass> params){
         List<String> textInput = new ArrayList<>();
 
         List<Integer> nomineeIndex = new ArrayList<>();
@@ -66,30 +50,30 @@ class MarkedTextOracle {
         List<Integer> targetTextIndex = new ArrayList<>();
 
 
-        ListIterator<StringClass> it
+        ListIterator<TextElementClass> it
                 = params.listIterator();
 
         boolean onSelectedContent = false;
 
         while(it.hasNext()){
             int index = it.nextIndex();
-            StringClass elementType = it.next();
+            TextElementClass elementType = it.next();
             String stringToAdd = index + ": " + elementType.archetype();
             textInput.add(stringToAdd);
 
-            if(elementType.equals(StringClass.ELECTED_HEADING)) {
+            if(elementType.equals(TextElementClass.ELECTED_HEADING)) {
                 electeeIndex.add(index);
 
                 targetTextIndex.add(index);
 
                 onSelectedContent = true;
             }
-            else if(elementType.equals(StringClass.NOMINATED_HEADING)) {
+            else if(elementType.equals(TextElementClass.NOMINATED_HEADING)) {
                 nomineeIndex.add(index);
 
                 onSelectedContent = false;
             }
-            else if(elementType.equals(StringClass.NON_HEADING_CONTENT)) {
+            else if(elementType.equals(TextElementClass.NON_HEADING_CONTENT)) {
 
                 if(onSelectedContent) {
                     targetTextIndex.add(index);
@@ -103,7 +87,7 @@ class MarkedTextOracle {
         this.textInput = textInput;
     }
 
-    private void setupData(List<StringClass> params){
+    private void setupData(List<TextElementClass> params){
         constructIntermediateData(params);
         constructTestInput();
         constructExpectedOutput();
@@ -127,29 +111,29 @@ class MarkedTextOracle {
         this.testExpectedOutput = testExpectedOutput;
     }
 
-    private List<StringClass> defaultClassifications(){
-        List<StringClass> list = new ArrayList<>();
-        list.add(StringClass.NON_HEADING_CONTENT);
-        list.add(StringClass.NON_HEADING_CONTENT);
-        list.add(StringClass.NON_HEADING_CONTENT);
-        list.add(StringClass.NOMINATED_HEADING);
-        list.add(StringClass.NOMINATED_HEADING);
-        list.add(StringClass.NON_HEADING_CONTENT);
-        list.add(StringClass.ELECTED_HEADING);
-        list.add(StringClass.NON_HEADING_CONTENT);
-        list.add(StringClass.NON_HEADING_CONTENT);
-        list.add(StringClass.NOMINATED_HEADING);
-        list.add(StringClass.NOMINATED_HEADING);
-        list.add(StringClass.NON_HEADING_CONTENT);
-        list.add(StringClass.ELECTED_HEADING);
-        list.add(StringClass.NON_HEADING_CONTENT);
-        list.add(StringClass.NON_HEADING_CONTENT);
-        list.add(StringClass.NOMINATED_HEADING);
-        list.add(StringClass.NOMINATED_HEADING);
-        list.add(StringClass.NON_HEADING_CONTENT);
-        list.add(StringClass.ELECTED_HEADING);
-        list.add(StringClass.NON_HEADING_CONTENT);
-        list.add(StringClass.NON_HEADING_CONTENT);
+    private List<TextElementClass> defaultClassifications(){
+        List<TextElementClass> list = new ArrayList<>();
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.ELECTED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.ELECTED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.ELECTED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
 
         return list;
     }
