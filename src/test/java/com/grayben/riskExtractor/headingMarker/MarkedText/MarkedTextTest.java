@@ -12,6 +12,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.text.StringCharacterIterator;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,9 +34,12 @@ public class MarkedTextTest
 
     MarkedText markedTextSUT;
 
+    MarkedTextOracle oracle;
+
     @Before
     public void setUp() throws Exception {
-        markedTextSUT = new MarkedText(electedTextListMock);
+        this.markedTextSUT = new MarkedText(electedTextListMock);
+        this.oracle = new MarkedTextOracle();
     }
 
     @After
@@ -43,11 +48,10 @@ public class MarkedTextTest
     }
 
     @Test
-    public void test_Init_ThrowsNullPointerException_WhenTextArgumentIsNull
+    public void test_Init_ThrowsNullPointerException_WhenElectedTextArgumentIsNull
             () throws Exception {
         thrown.expect(NullPointerException.class);
-        ElectedText electedTextListArgument = null;
-        markedTextSUT = new MarkedText(electedTextListArgument);
+        markedTextSUT = new MarkedText(null);
     }
 
     @Test
@@ -64,13 +68,26 @@ public class MarkedTextTest
 
     }
 
+    @Test
+    public void
+    test_SubselectionReturnsNonNull_Normally
+            () throws Exception {
+        markedTextSUT = new MarkedText(oracle.getTestInput());
+        assertNotNull(markedTextSUT.subSelections());
+    }
 
+    @Test
+    public void
+    test_SubselectionsReturnsNonNull_WhenTextInputIsEmpty
+            () throws Exception {
+        List<TextElementClass> textElementClasses = new ArrayList();
+        //oracle = new MarkedTextOracle()
+    }
     @Test
     public void
     test_SubSelectionsReturnsExpectedOutput_Simple
             () throws Exception {
 
-        MarkedTextOracle oracle = new MarkedTextOracle();
         ElectedText input = oracle.getTestInput();
         markedTextSUT = new MarkedText(input);
         List<String> output = markedTextSUT.subSelections();
