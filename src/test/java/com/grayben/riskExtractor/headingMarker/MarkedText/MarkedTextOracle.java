@@ -29,6 +29,8 @@ class MarkedTextOracle extends ElectedTextOracle {
 
     protected MarkedTextOracle(){
         //TODO: work out pattern for constructor inheritence
+        //TODO: fix inheritence of data setup methods
+        //TODO: decide upon inheritence structure for MarkedText. Is it OK?
         super();
         List<TextElementClass> defaults = defaultClassifications();
         setupData(defaults);
