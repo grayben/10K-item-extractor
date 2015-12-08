@@ -1,5 +1,6 @@
-package com.grayben.riskExtractor.headingMarker;
+package com.grayben.riskExtractor.headingMarker.markedText;
 
+import com.grayben.riskExtractor.headingMarker.MarkedText;
 import com.grayben.riskExtractor.headingMarker.elector.ElectedText;
 import com.grayben.riskExtractor.headingMarker.elector.ElectedTextTest;
 import org.junit.After;
@@ -11,10 +12,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ListIterator;
 
 import static org.junit.Assert.*;
 
@@ -30,9 +29,6 @@ public class MarkedTextTest
 
     @Mock
     ElectedText electedTextListMock;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     MarkedText markedTextSUT;
 
@@ -71,29 +67,26 @@ public class MarkedTextTest
 
     @Test
     public void
-    test_SubSelectionsReturnsExpectedOutput_WhenIndexListsAreUnordered
+    test_SubSelectionsReturnsExpectedOutput_Simple
             () throws Exception {
-        //TODO: decide when and where to make/check ordered lists
 
+        MarkedTextOracle oracle = new MarkedTextOracle();
+        ElectedText input = oracle.getTestInput();
+        markedTextSUT = new MarkedText(input);
+        List<String> output = markedTextSUT.subSelections();
 
+        System.out.println("//////////////////////////");
+        System.out.println("## OUTPUT ################");
+        System.out.println(output.toString());
+        System.out.println();
+        System.out.println("## EXPECTED OUTPUT #######");
+        System.out.println(oracle.getTestExpectedOutput());
+        System.out.println();
+        System.out.println("## ORACLE STATE #########");
+        oracle.printData();
+        System.out.println("//////////////////////////");
 
-
-
-        ListIterator<String> lit = testInput.listIterator();
-        while(lit.hasNext()){
-            int index = lit.nextIndex();
-            String element = lit.next();
-            if(element.contains(nominatedHeading)){
-                nominees.add(index);
-            }
-            if(element.contains(electedHeading)){
-                electes.add(index);
-            }
-            if()
-        }
-
-
-
-        fail("This test has not been implemented");
+        assertTrue("The oracle determined that the expected " +
+                "output was not valid", oracle.validateResult(output));
     }
 }
