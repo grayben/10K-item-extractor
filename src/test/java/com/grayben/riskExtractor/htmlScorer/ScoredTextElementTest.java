@@ -1,9 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 
 import java.util.Map;
@@ -23,6 +21,9 @@ public class ScoredTextElementTest {
     @Mock
     String textElementMock;
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Before
     public void setUp() throws Exception {
         scoredTextElementSUT = new ScoredTextElement(textElementMock, scoresMock);
@@ -31,6 +32,24 @@ public class ScoredTextElementTest {
     @After
     public void tearDown() throws Exception {
 
+    }
+
+    @Test
+    public void
+    test_InitThrowsNullPointerException_WhenTextElementArgumentIsNull
+            () throws Exception {
+        thrown.expect(NullPointerException.class);
+
+        new ScoredTextElement(null, scoresMock);
+    }
+
+    @Test
+    public void
+    test_InitThrowsNullPointerException_WhenScoresMapIsNull
+            () throws Exception {
+        thrown.expect(NullPointerException.class);
+
+        new ScoredTextElement(textElementMock, null);
     }
 
     @Test
