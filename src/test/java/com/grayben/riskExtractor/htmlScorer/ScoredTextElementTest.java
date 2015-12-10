@@ -2,7 +2,9 @@ package com.grayben.riskExtractor.htmlScorer;
 
 import org.junit.*;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import static org.junit.Assert.*;
 /**
  * Created by beng on 28/11/2015.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ScoredTextElementTest {
 
     ScoredTextElement scoredTextElementSUT;
