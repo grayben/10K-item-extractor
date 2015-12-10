@@ -21,15 +21,20 @@ public class ElectedText
         if (electees == null) {
             throw new NullPointerException("Attempted to pass illegal null argument");
         }
+        if ( ! nominees.containsAll(electees))
+            throw new IllegalArgumentException(
+                    "The electees argument was not a subset " +
+                            "of the nominees argument"
+            );
         this.electees = electees;
     }
 
     public ElectedText(NominatedText nominatedText, List<Integer> electees){
-        super(nominatedText);
-        if (electees == null) {
-            throw new NullPointerException("Attempted to pass illegal null argument");
-        }
-        this.electees = electees;
+        this(
+                nominatedText.getStringList(),
+                nominatedText.getNominees(),
+                electees
+        );
     }
 
     public ElectedText(ElectedText electedText){
