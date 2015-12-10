@@ -12,7 +12,7 @@ public interface ElementScorer<T> {
 	
 	/**
 	 * 
-	 * @param element the Element to score
+	 * @param input the Element to score
 	 * @return the score of element
 	 */
 	public int score(T input);
