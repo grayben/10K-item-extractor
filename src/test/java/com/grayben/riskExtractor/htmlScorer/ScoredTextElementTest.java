@@ -21,15 +21,15 @@ public class ScoredTextElementTest {
     @Mock
     Map<String, Integer> scoresMock;
 
-    @Mock
-    String textElementMock;
+    String textElementArgument;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
-        scoredTextElementSUT = new ScoredTextElement(textElementMock, scoresMock);
+        textElementArgument = "foo";
+        scoredTextElementSUT = new ScoredTextElement(textElementArgument, scoresMock);
     }
 
     @After
@@ -52,7 +52,7 @@ public class ScoredTextElementTest {
             () throws Exception {
         thrown.expect(NullPointerException.class);
 
-        new ScoredTextElement(textElementMock, null);
+        new ScoredTextElement(textElementArgument, null);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class ScoredTextElementTest {
         String textElementReturned;
         textElementReturned = scoredTextElementSUT.getTextElement();
 
-        assertEquals(textElementMock, textElementReturned);
+        assertEquals(textElementArgument, textElementReturned);
 
     }
 
