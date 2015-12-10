@@ -10,6 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -123,12 +124,11 @@ public class NominatedTextTest
 
     @Test
     public void
-    test_ModifyingReturnedNomineesThrowsUnsupportedOperationException
+    test_ModifyingReturnedNomineesDoesNotAffectCopyHeldBySUT
             () throws Exception {
-        SetUniqueList<Integer> returnedIntegerList = nominatedTextSUT.getNominees();
-
-        thrown.expect(UnsupportedOperationException.class);
-
-        returnedIntegerList.add(1);
+        SetUniqueList<Integer> returnedFirst = nominatedTextSUT.getNominees();
+        returnedFirst.add(Integer.MAX_VALUE);
+        SetUniqueList<Integer> returnedSecond = nominatedTextSUT.getNominees();
+        assertNotEquals(returnedFirst, returnedSecond);
     }
 }

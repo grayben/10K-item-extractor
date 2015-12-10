@@ -11,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -174,6 +175,16 @@ public class ElectedTextTest
         thrown.expect(NullPointerException.class);
 
         new ElectedText(electedTextSUT);
+    }
+
+    @Test
+    public void
+    test_ModifyingReturnedElecteesDoesNotAffectCopyHeldBySUT
+            () throws Exception {
+        SetUniqueList<Integer> returnedFirst = electedTextSUT.getElectees();
+        returnedFirst.add(Integer.MAX_VALUE);
+        SetUniqueList<Integer> returnedSecond = electedTextSUT.getElectees();
+        assertNotEquals(returnedFirst, returnedSecond);
     }
 
 
