@@ -5,19 +5,17 @@ import com.grayben.riskExtractor.headingMarker.elector.ElectedText;
 import com.grayben.riskExtractor.headingMarker.elector.ElectedTextTest;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by beng on 28/11/2015.
@@ -39,7 +37,34 @@ public class MarkedTextTest
     @Before
     public void setUp() throws Exception {
         this.markedTextSUT = new MarkedText(electedTextListMock);
-        this.oracle = new MarkedTextOracle();
+        this.oracle = new MarkedTextOracle(defaultClassifications());
+    }
+
+    private List<TextElementClass> defaultClassifications(){
+        List<TextElementClass> list = new ArrayList<>();
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.ELECTED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.ELECTED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NOMINATED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.ELECTED_HEADING);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+        list.add(TextElementClass.NON_HEADING_CONTENT);
+
+        return list;
     }
 
     @After
@@ -60,14 +85,6 @@ public class MarkedTextTest
         assertNotNull(subSelectionsReturned);
     }
 
-    private void
-    setupElectedTextList(){
-        //define test data output
-
-
-
-    }
-
     @Test
     public void
     test_SubselectionReturnsNonNull_Normally
@@ -81,11 +98,14 @@ public class MarkedTextTest
     test_SubselectionsReturnsNonNull_WhenTextInputIsEmpty
             () throws Exception {
         List<TextElementClass> textElementClasses = new ArrayList();
-        //oracle = new MarkedTextOracle()
+        oracle = new MarkedTextOracle(textElementClasses);
+        markedTextSUT = new MarkedText(oracle.getTestInput());
+        assertNotNull(markedTextSUT.subSelections());
     }
+
     @Test
     public void
-    test_SubSelectionsReturnsExpectedOutput_Simple
+    test_SubSelectionsReturnsExpectedOutput_WhenSimpleInput
             () throws Exception {
 
         ElectedText input = oracle.getTestInput();
@@ -98,10 +118,6 @@ public class MarkedTextTest
         System.out.println();
         System.out.println("## EXPECTED OUTPUT #######");
         System.out.println(oracle.getTestExpectedOutput());
-        System.out.println();
-        System.out.println("## ORACLE STATE #########");
-        oracle.printData();
-        System.out.println("//////////////////////////");
 
         assertTrue("The oracle determined that the expected " +
                 "output was not valid", oracle.validateResult(output));

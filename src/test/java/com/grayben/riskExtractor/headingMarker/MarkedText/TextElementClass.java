@@ -14,7 +14,7 @@ public enum TextElementClass {
         this.archetype = archetype;
     }
 
-    String archetype(){
+    public String archetype(){
         return this.archetype;
     }
 }

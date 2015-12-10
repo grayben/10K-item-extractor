@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.internal.matchers.Null;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -51,6 +52,14 @@ public class ElectedTextTest
 
     @After
     final public void tearDownElectedText() throws Exception {
+    }
+
+    @Test
+    public void
+    test_InitThrowsIllegalArgumentException_WhenElecteesInNotSubsetOfNominees
+            () throws Exception {
+        thrown.expect(IllegalArgumentException.class);
+
     }
 
     @Test
