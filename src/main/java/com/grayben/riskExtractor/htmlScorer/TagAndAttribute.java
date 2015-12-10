@@ -17,7 +17,18 @@ public class TagAndAttribute {
 
     public TagAndAttribute(Tag tag, Attribute attribute) {
 		super();
-		this.tag = tag;
+        if (tag == null) {
+            throw new NullPointerException(
+                    "Attempted to pass in null tag:Tag"
+            );
+        }
+        if (attribute == null) {
+            throw new NullPointerException(
+                    "Attempted to pass in null attribute:Attribute"
+            );
+        }
+
+        this.tag = tag;
 		this.attribute = attribute;
 	}
 }
