@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedText;
@@ -37,8 +38,7 @@ public class ElectedText
 
     @Override
     public List<Integer> getElectees() {
-        // TODO Auto-generated method stub
-        return this.electees;
+        return Collections.unmodifiableList(this.electees);
     }
 
 }
