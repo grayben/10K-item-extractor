@@ -10,6 +10,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -34,7 +36,7 @@ public class ElectedTextTest
         this.setNominatedTextSUT(this.electedTextSUT);
     }
 
-    private List<Integer> electeesArgument;
+    private SortedSet<Integer> electeesArgument;
 
     @Before
     @Override
@@ -44,12 +46,12 @@ public class ElectedTextTest
         stringListArgument.add("two");
         stringListArgument.add("cow");
 
-        this.nomineesArgument = new ArrayList<>();
+        this.nomineesArgument = new TreeSet<>();
         nomineesArgument.add(0);
         nomineesArgument.add(2);
 
 
-        this.electeesArgument = new ArrayList<>();
+        this.electeesArgument = new TreeSet<>();
         electeesArgument.add(0);
 
         this.setElectedTextSUT(
@@ -75,11 +77,11 @@ public class ElectedTextTest
         stringList.add("two");
         stringList.add("three");
 
-        List<Integer> nominees = new ArrayList<>();
+        SortedSet<Integer> nominees = new TreeSet<>();
         nominees.add(1);
         nominees.add(2);
 
-        List<Integer> electees = new ArrayList<>();
+        SortedSet<Integer> electees = new TreeSet<>();
         electees.add(3);
 
         thrown.expect(IllegalArgumentException.class);
@@ -98,7 +100,7 @@ public class ElectedTextTest
         //setup expectations
 
         //exercise
-        List<Integer> electeesReturned = electedTextSUT.getElectees();
+        SortedSet<Integer> electeesReturned = electedTextSUT.getElectees();
         //verify
         assertNotNull(electeesReturned);
     }

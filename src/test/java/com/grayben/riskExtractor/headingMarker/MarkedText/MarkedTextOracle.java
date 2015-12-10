@@ -60,8 +60,8 @@ class MarkedTextOracle {
     protected ElectedText generateTestInput(List<TextElementClass> param){
 
         List<String> textInput = new ArrayList<>();
-        List<Integer> nomineeIndex = new ArrayList<>();
-        List<Integer> electeeIndex = new ArrayList<>();
+        SortedSet<Integer> nomineeIndex = new TreeSet<>();
+        SortedSet<Integer> electeeIndex = new TreeSet<>();
 
         ListIterator<TextElementClass> it
                 = param.listIterator();

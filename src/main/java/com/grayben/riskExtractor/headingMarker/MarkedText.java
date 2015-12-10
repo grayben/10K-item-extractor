@@ -25,31 +25,15 @@ final public class MarkedText
             //I want to use
 
             //Id the elected indexes
-            List<Integer> electees = this.getElectees();
+            SortedSet<Integer> electees = this.getElectees();
 
-            List<Integer> nominees = this.getNominees();
+            SortedSet<Integer> nominees = this.getNominees();
 
-            Map<Integer, Integer> stringIndexPairs = new HashMap<>();
-            ListIterator<Integer> electedIterator = electees.listIterator();
-            int i = 0;
-            while(electedIterator.hasNext()){
-                //get the start index
-                Integer electedStringIndex = electedIterator.next();
 
-                //should be the index into the String list representing the next candidate
-                int followingCandidateStringIndex
-                        = nominees.get(nominees.indexOf(electedStringIndex));
 
-                stringIndexPairs.put(
-                        electedStringIndex,
-                        followingCandidateStringIndex
-                );
-            }
 
-            this.stringIndexPairs = stringIndexPairs;
 
-            //the iterator should have returned elected.size() entries
-            assert( i == electees.size() );
+            this.stringIndexPairs = null;
         }
 
         return this.stringIndexPairs;

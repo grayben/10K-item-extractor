@@ -8,7 +8,8 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -32,7 +33,7 @@ public class NominatedTextTest
         this.setUnmodifiableTextSUT(this.nominatedTextSUT);
     }
 
-    protected List<Integer> nomineesArgument = null;
+    protected SortedSet<Integer> nomineesArgument = null;
 
     @Before
     @Override
@@ -42,7 +43,7 @@ public class NominatedTextTest
         this.stringListArgument.add("two");
         this.stringListArgument.add("cow");
 
-        this.nomineesArgument = new ArrayList<>();
+        this.nomineesArgument = new TreeSet<>();
         this.nomineesArgument.add(0);
         this.nomineesArgument.add(2);
 
@@ -116,7 +117,7 @@ public class NominatedTextTest
     test_GetNominees_ReturnsNonNull_Always
             () throws Exception {
 
-        List<Integer> nomineesReturned = nominatedTextSUT.getNominees();
+        SortedSet<Integer> nomineesReturned = nominatedTextSUT.getNominees();
 
         assertNotNull(nomineesReturned);
     }
@@ -125,7 +126,7 @@ public class NominatedTextTest
     public void
     test_ModifyingReturnedNomineesThrowsUnsupportedOperationException
             () throws Exception {
-        List<Integer> returnedIntegerList = nominatedTextSUT.getNominees();
+        SortedSet<Integer> returnedIntegerList = nominatedTextSUT.getNominees();
 
         thrown.expect(UnsupportedOperationException.class);
 

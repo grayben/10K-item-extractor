@@ -1,7 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
-import java.util.List;
+import java.util.SortedSet;
 
 public interface NomineesRetrievable {
-	public List<Integer> getNominees();
+	public SortedSet<Integer> getNominees();
 }

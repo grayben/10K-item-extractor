@@ -1,9 +1,10 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
+import com.grayben.riskExtractor.headingMarker.nominator.NominatedText;
+
 import java.util.Collections;
 import java.util.List;
-
-import com.grayben.riskExtractor.headingMarker.nominator.NominatedText;
+import java.util.SortedSet;
 
 public class ElectedText
 
@@ -14,9 +15,9 @@ public class ElectedText
 	    ElecteesRetrievable {
 
     //TODO: make this a set: should not have repetitions
-    List<Integer> electees;
+    SortedSet<Integer> electees;
 
-    public ElectedText(List<String> textList, List<Integer> nominees, List<Integer> electees){
+    public ElectedText(List<String> textList, SortedSet<Integer> nominees, SortedSet<Integer> electees){
         super(textList, nominees);
         if (electees == null) {
             throw new NullPointerException("Attempted to pass illegal null argument");
@@ -29,7 +30,7 @@ public class ElectedText
         this.electees = electees;
     }
 
-    public ElectedText(NominatedText nominatedText, List<Integer> electees){
+    public ElectedText(NominatedText nominatedText, SortedSet<Integer> electees){
         this(
                 nominatedText.getStringList(),
                 nominatedText.getNominees(),
@@ -42,8 +43,8 @@ public class ElectedText
     }
 
     @Override
-    public List<Integer> getElectees() {
-        return Collections.unmodifiableList(this.electees);
+    public SortedSet<Integer> getElectees() {
+        return Collections.unmodifiableSortedSet(this.electees);
     }
 
 }
