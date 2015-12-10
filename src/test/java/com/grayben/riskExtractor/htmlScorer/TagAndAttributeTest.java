@@ -38,16 +38,16 @@ public class TagAndAttributeTest {
     }
 
     @Test
-    public void test_Initialise_ThrowsIllegalArgumentException_WhenTagArgumentIsNull
+    public void test_Initialise_ThrowsNullPointerException_WhenTagArgumentIsNull
             () throws Exception {
-        thrown.expect(IllegalArgumentException.class);
+        thrown.expect(NullPointerException.class);
         tagAndAttributeSUT = new TagAndAttribute(null, attributeMock);
     }
 
     @Test
-    public void test_Initialise_ThrowsIllegalArgumentException_WhenAttributeArgumentIsNull
+    public void test_Initialise_ThrowsNullPointerException_WhenAttributeArgumentIsNull
             () throws Exception {
-        thrown.expect(IllegalArgumentException.class);
+        thrown.expect(NullPointerException.class);
         tagAndAttributeSUT = new TagAndAttribute(tagMock, null);
     }
 
