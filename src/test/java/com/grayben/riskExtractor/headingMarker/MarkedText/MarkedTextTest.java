@@ -35,6 +35,7 @@ public class MarkedTextTest
     MarkedTextOracle oracle;
 
     @Before
+    @Override
     public void setUp() throws Exception {
         this.markedTextSUT = new MarkedText(electedTextListMock);
         this.oracle = new MarkedTextOracle(defaultClassifications());
