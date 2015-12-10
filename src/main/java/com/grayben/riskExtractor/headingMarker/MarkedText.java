@@ -42,12 +42,17 @@ final public class MarkedText
         SetUniqueList<Integer> nominees = this.getNominees();
 
         for (Integer electee : electees) {
-            int startIndex;
-            int endIndex;
+            Integer startIndex;
+            Integer endIndex;
             startIndex = electee;
             int indexOfStartIndexInNominees
                     = nominees.indexOf(startIndex);
-            endIndex = nominees.get(indexOfStartIndexInNominees + 1);
+            //if the elected heading is the final nominee
+            if(indexOfStartIndexInNominees == nominees.size() - 1){
+                endIndex = null;
+            } else {
+                endIndex = nominees.get(indexOfStartIndexInNominees + 1);
+            }
             map.put(startIndex, endIndex);
         }
 
@@ -77,8 +82,15 @@ final public class MarkedText
             while(pairIterator.hasNext()){
                 Map.Entry<Integer, Integer> entry = pairIterator.next();
                 int startIndex = entry.getKey();
+                int endIndex;
                 //TODO: test that this is the correct range
-                int endIndex = entry.getValue() - 1;
+
+                //if null: there is no terminating nominee; extract to end!
+                if(entry.getValue() == null){
+                    endIndex = getStringList().size() - 1;
+                } else {
+                    endIndex = entry.getValue() - 1;
+                }
                 StringBuilder sb = new StringBuilder();
                 List<String> textSectionElements
                         = getStringList().subList(startIndex, endIndex);
