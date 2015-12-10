@@ -7,7 +7,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -98,9 +97,15 @@ public class MarkedTextTest
     test_SubselectionsReturnsNonNull_WhenTextInputIsEmpty
             () throws Exception {
         List<TextElementClass> textElementClasses = new ArrayList();
+        this.markedTextSUT = new MarkedText(
+                new ElectedText(
+                        new ArrayList<>(), nomineesArgument, electeesArgument),
+                new HashMap<>()
+        );
         oracle = new MarkedTextOracle(textElementClasses);
         markedTextSUT = new MarkedText(oracle.getTestInput(), new HashMap<>());
-        assertNotNull(markedTextSUT.subSelections());
+        assertNotNull("The returned object was null",
+                markedTextSUT.subSelections());
     }
 
     @Test
@@ -119,7 +124,7 @@ public class MarkedTextTest
         System.out.println("## EXPECTED OUTPUT #######");
         System.out.println(oracle.getTestExpectedOutput());
 
-        assertTrue("The oracle determined that the expected " +
+            assertTrue("The oracle determined that the expected " +
                 "output was not valid", oracle.validateResult(output));
     }
 }

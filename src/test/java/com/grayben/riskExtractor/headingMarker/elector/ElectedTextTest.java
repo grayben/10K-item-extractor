@@ -35,7 +35,7 @@ public class ElectedTextTest
         this.setNominatedTextSUT(this.electedTextSUT);
     }
 
-    private SetUniqueList<Integer> electeesArgument;
+    protected SetUniqueList<Integer> electeesArgument;
 
     @Before
     @Override
