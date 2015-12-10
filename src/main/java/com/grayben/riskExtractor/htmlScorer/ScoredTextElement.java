@@ -9,6 +9,16 @@ public class ScoredTextElement {
 	
 	public ScoredTextElement(String text, Map<String, Integer> scores) {
 		super();
+		if(text == null){
+			throw new NullPointerException(
+					"Tried to pass in null text:String"
+			);
+		}
+		if(scores == null){
+			throw new NullPointerException(
+					"Tried to pass in null scores:Map<Integer, Integer>"
+			);
+		}
 		this.textElement = text;
 		this.scores = scores;
 	}
