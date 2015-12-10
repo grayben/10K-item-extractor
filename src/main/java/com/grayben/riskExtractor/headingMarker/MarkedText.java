@@ -12,31 +12,56 @@ final public class MarkedText
 
     List<String> selectedSections = null;
 
-    public MarkedText(ElectedText text) {
+    public MarkedText(ElectedText text, Map<Integer, Integer> mapToUse) {
         super(text);
+        if( ! mapToUse.isEmpty()){
+            throw new IllegalArgumentException(
+                    "The map to use must be empty"
+            );
+        } else {
+            this.stringIndexPairs = mapToUse;
+        }
+        generateStringIndexPairs();
     }
 
+    private void generateStringIndexPairs(){
 
-    private Map<Integer, Integer> getStringIndexPairs(){
+        //assume that the map is already instantiated
+        assert this.stringIndexPairs != null;
+
+        //assumes this is only called once to fill in the map
+        assert this.stringIndexPairs.isEmpty();
 
         //assumes nominees contains all electees
         assert(getNominees().containsAll(getElectees()));
 
-        if (this.stringIndexPairs == null){
+        Map<Integer, Integer> map = this.stringIndexPairs;
 
-            //I want to use
+        SetUniqueList<Integer> electees = this.getElectees();
 
-            //Id the elected indexes
-            SetUniqueList<Integer> electees = this.getElectees();
+        SetUniqueList<Integer> nominees = this.getNominees();
 
-            SetUniqueList<Integer> nominees = this.getNominees();
-
-            Iterator<Integer> electeeIterator = electees.iterator();
-
-
-
-            this.stringIndexPairs = null;
+        for (Integer electee : electees) {
+            int startIndex;
+            int endIndex;
+            startIndex = electee;
+            int indexOfStartIndexInNominees
+                    = nominees.indexOf(startIndex);
+            endIndex = nominees.get(indexOfStartIndexInNominees + 1);
+            map.put(startIndex, endIndex);
         }
+
+        this.stringIndexPairs = map;
+
+    }
+
+
+
+    private Map<Integer, Integer> getStringIndexPairs(){
+
+        //stringIndexPairs must be setup before this method is called
+        assert this.stringIndexPairs != null;
+        assert ! this.stringIndexPairs.isEmpty();
 
         return this.stringIndexPairs;
     }
@@ -57,11 +82,7 @@ final public class MarkedText
                 StringBuilder sb = new StringBuilder();
                 List<String> textSectionElements
                         = getStringList().subList(startIndex, endIndex);
-                ListIterator<String> sectionElementIterator
-                        = textSectionElements.listIterator();
-                while(sectionElementIterator.hasNext()){
-                    sb.append(sectionElementIterator.next());
-                }
+                textSectionElements.forEach(sb::append);
                 String section = sb.toString();
                 selectedSections.add(section);
             }
@@ -74,10 +95,6 @@ final public class MarkedText
     }
 
 
-    /**
-     * Assumes that all the lists and indexes are equivalent!
-     * @return
-     */
     public List<String> subSelections() {
 
         //TODO: variable and method naming semantics

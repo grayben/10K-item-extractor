@@ -12,6 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -27,9 +28,6 @@ public class MarkedTextTest
 
     //TODO: check setup methods
 
-    @Mock
-    ElectedText electedTextListMock;
-
     MarkedText markedTextSUT;
 
     MarkedTextOracle oracle;
@@ -37,7 +35,8 @@ public class MarkedTextTest
     @Before
     @Override
     public void setUp() throws Exception {
-        this.markedTextSUT = new MarkedText(electedTextListMock);
+        super.setUp();
+        this.markedTextSUT = new MarkedText(getElectedTextSUT(), new HashMap<>());
         this.oracle = new MarkedTextOracle(defaultClassifications());
     }
 
@@ -77,7 +76,7 @@ public class MarkedTextTest
     public void test_Init_ThrowsNullPointerException_WhenElectedTextArgumentIsNull
             () throws Exception {
         thrown.expect(NullPointerException.class);
-        markedTextSUT = new MarkedText(null);
+        markedTextSUT = new MarkedText(null, new HashMap<>());
     }
 
     @Test
@@ -90,7 +89,7 @@ public class MarkedTextTest
     public void
     test_SubselectionReturnsNonNull_Normally
             () throws Exception {
-        markedTextSUT = new MarkedText(oracle.getTestInput());
+        markedTextSUT = new MarkedText(oracle.getTestInput(), new HashMap<>());
         assertNotNull(markedTextSUT.subSelections());
     }
 
@@ -100,7 +99,7 @@ public class MarkedTextTest
             () throws Exception {
         List<TextElementClass> textElementClasses = new ArrayList();
         oracle = new MarkedTextOracle(textElementClasses);
-        markedTextSUT = new MarkedText(oracle.getTestInput());
+        markedTextSUT = new MarkedText(oracle.getTestInput(), new HashMap<>());
         assertNotNull(markedTextSUT.subSelections());
     }
 
@@ -110,7 +109,7 @@ public class MarkedTextTest
             () throws Exception {
 
         ElectedText input = oracle.getTestInput();
-        markedTextSUT = new MarkedText(input);
+        markedTextSUT = new MarkedText(input, new HashMap<>());
         List<String> output = markedTextSUT.subSelections();
 
         System.out.println("//////////////////////////");
