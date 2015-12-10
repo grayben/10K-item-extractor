@@ -12,7 +12,7 @@ public class ElectedText
         implements
 	    ElecteesRetrievable {
 
-
+    //TODO: make this a set: should not have repetitions
     List<Integer> electees;
 
     public ElectedText(List<String> textList, List<Integer> nominees, List<Integer> electees){

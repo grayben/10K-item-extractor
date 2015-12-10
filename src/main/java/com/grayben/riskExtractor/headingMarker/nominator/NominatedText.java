@@ -9,6 +9,7 @@ public class NominatedText
 		extends UnmodifiableText
 		implements NomineesRetrievable {
 
+    //TODO: make this a set: should not have repetitions
     private List<Integer> nominees;
 
     public NominatedText(List<String> stringList, List<Integer> nominees) {
