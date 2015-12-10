@@ -1,22 +1,16 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
-import com.grayben.riskExtractor.headingMarker.UnmodifiableText;
 import com.grayben.riskExtractor.headingMarker.UnmodifiableTextTest;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
 
 /**
  * Created by beng on 28/11/2015.
@@ -38,13 +32,22 @@ public class NominatedTextTest
         this.setUnmodifiableTextSUT(this.nominatedTextSUT);
     }
 
-    @Mock
-    protected List<Integer> nomineesMock = null;
+    protected List<Integer> nomineesArgument = null;
 
     @Before
-    final public void setUpNominatedText() throws Exception {
+    @Override
+    public void setUp() throws Exception {
+        this.stringListArgument = new ArrayList<>();
+        this.stringListArgument.add("one");
+        this.stringListArgument.add("two");
+        this.stringListArgument.add("cow");
+
+        this.nomineesArgument = new ArrayList<>();
+        this.nomineesArgument.add(0);
+        this.nomineesArgument.add(2);
+
         this.setNominatedTextSUT(
-                new NominatedText(stringListArgument, nomineesMock)
+                new NominatedText(stringListArgument, nomineesArgument)
         );
     }
 
@@ -61,18 +64,18 @@ public class NominatedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new NominatedText(stringListArgument, nomineesMock);
+        new NominatedText(stringListArgument, nomineesArgument);
     }
 
     @Test
     public void
     test_BasicConstructorThrowsNullPointerException_WhenNomineesIsNull
             () throws Exception {
-        nomineesMock = null;
+        nomineesArgument = null;
 
         thrown.expect(NullPointerException.class);
 
-        new NominatedText(stringListArgument, nomineesMock);
+        new NominatedText(stringListArgument, nomineesArgument);
     }
 
     @Test
@@ -83,18 +86,18 @@ public class NominatedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new NominatedText(this.getUnmodifiableTextSUT(), nomineesMock);
+        new NominatedText(this.getUnmodifiableTextSUT(), nomineesArgument);
     }
 
     @Test
     public void
     test_IncrementalConstructorThrowsNullPointerException_WhenNomineesIsNull
             () throws Exception {
-        nomineesMock = null;
+        nomineesArgument = null;
 
         thrown.expect(NullPointerException.class);
 
-        new NominatedText(this.getUnmodifiableTextSUT(), nomineesMock);
+        new NominatedText(this.getUnmodifiableTextSUT(), nomineesArgument);
     }
 
     @Test

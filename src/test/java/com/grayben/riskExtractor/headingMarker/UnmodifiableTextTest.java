@@ -31,7 +31,7 @@ public class UnmodifiableTextTest {
     }
 
     @Before
-    final public void setUpUnmodifiableText() throws Exception {
+    public void setUp() throws Exception {
         stringListArgument = new ArrayList<>();
         stringListArgument.add("one");
         stringListArgument.add("two");

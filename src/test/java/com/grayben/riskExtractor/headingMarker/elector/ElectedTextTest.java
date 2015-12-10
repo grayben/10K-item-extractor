@@ -6,14 +6,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.internal.matchers.Null;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by beng on 28/11/2015.
@@ -36,16 +34,29 @@ public class ElectedTextTest
         this.setNominatedTextSUT(this.electedTextSUT);
     }
 
-    @Mock
-    private List<Integer> electeesMock;
+    private List<Integer> electeesArgument;
 
     @Before
-    final public void setUpElectedText() throws Exception {
+    @Override
+    public void setUp() throws Exception {
+        this.stringListArgument = new ArrayList<>();
+        stringListArgument.add("one");
+        stringListArgument.add("two");
+        stringListArgument.add("cow");
+
+        this.nomineesArgument = new ArrayList<>();
+        nomineesArgument.add(0);
+        nomineesArgument.add(2);
+
+
+        this.electeesArgument = new ArrayList<>();
+        electeesArgument.add(0);
+
         this.setElectedTextSUT(
                 new ElectedText(
                         stringListArgument,
-                        nomineesMock,
-                        electeesMock
+                        nomineesArgument,
+                        electeesArgument
                 )
         );
     }
@@ -58,8 +69,26 @@ public class ElectedTextTest
     public void
     test_InitThrowsIllegalArgumentException_WhenElecteesInNotSubsetOfNominees
             () throws Exception {
+
+        List<String> stringList = new ArrayList<>();
+        stringList.add("one");
+        stringList.add("two");
+        stringList.add("three");
+
+        List<Integer> nominees = new ArrayList<>();
+        nominees.add(1);
+        nominees.add(2);
+
+        List<Integer> electees = new ArrayList<>();
+        electees.add(3);
+
         thrown.expect(IllegalArgumentException.class);
 
+        new ElectedText(
+                stringList,
+                nominees,
+                electees
+        );
     }
 
     @Test
@@ -83,7 +112,7 @@ public class ElectedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new ElectedText(stringListArgument, nomineesMock, electeesMock);
+        new ElectedText(stringListArgument, nomineesArgument, electeesArgument);
     }
 
     @Test
@@ -91,22 +120,22 @@ public class ElectedTextTest
     public void
     test_BasicConstructorThrowsNullPointerException_WhenNomineesIsNull
             () throws Exception {
-        nomineesMock = null;
+        nomineesArgument = null;
 
         thrown.expect(NullPointerException.class);
 
-        new ElectedText(stringListArgument, nomineesMock, electeesMock);
+        new ElectedText(stringListArgument, nomineesArgument, electeesArgument);
     }
 
     @Test
     public void
     test_BasicConstructorThrowsNullPointerException_WhenElecteesIsNull
             () throws Exception {
-        electeesMock = null;
+        electeesArgument = null;
 
         thrown.expect(NullPointerException.class);
 
-        new ElectedText(stringListArgument, nomineesMock, electeesMock);
+        new ElectedText(stringListArgument, nomineesArgument, electeesArgument);
     }
 
     @Test
@@ -117,18 +146,18 @@ public class ElectedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new ElectedText(getNominatedTextSUT(), electeesMock);
+        new ElectedText(getNominatedTextSUT(), electeesArgument);
     }
 
     @Test
     public void
     test_IncrementalConstructorThrowsNullPointerException_WhenElecteesIsNull
             () throws Exception {
-        this.electeesMock = null;
+        this.electeesArgument = null;
 
         thrown.expect(NullPointerException.class);
 
-        new ElectedText(getNominatedTextSUT(), electeesMock);
+        new ElectedText(getNominatedTextSUT(), electeesArgument);
     }
 
     @Test
