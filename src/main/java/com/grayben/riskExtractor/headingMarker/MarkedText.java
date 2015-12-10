@@ -66,7 +66,6 @@ final public class MarkedText
 
         //stringIndexPairs must be setup before this method is called
         assert this.stringIndexPairs != null;
-        assert ! this.stringIndexPairs.isEmpty();
 
         return this.stringIndexPairs;
     }
