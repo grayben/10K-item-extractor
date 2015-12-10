@@ -73,6 +73,7 @@ class MarkedTextOracle {
             textInput.add(stringToAdd);
 
             if(elementType.equals(TextElementClass.ELECTED_HEADING)) {
+                nomineeIndex.add(index);
                 electeeIndex.add(index);
             }
             else if(elementType.equals(TextElementClass.NOMINATED_HEADING)) {
