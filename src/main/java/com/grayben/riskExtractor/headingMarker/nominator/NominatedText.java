@@ -1,19 +1,19 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
 import com.grayben.riskExtractor.headingMarker.UnmodifiableText;
+import org.apache.commons.collections4.list.SetUniqueList;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
 
 public class NominatedText
 		extends UnmodifiableText
 		implements NomineesRetrievable {
 
     //TODO: make this a set: should not have repetitions
-    private SortedSet<Integer> nominees;
+    private SetUniqueList<Integer> nominees;
 
-    public NominatedText(List<String> stringList, SortedSet<Integer> nominees) {
+    public NominatedText(List<String> stringList, SetUniqueList<Integer> nominees) {
         super(stringList);
         if (nominees == null) {
             throw new NullPointerException("Attempted to pass null argument");
@@ -23,7 +23,7 @@ public class NominatedText
 
     public NominatedText(
             UnmodifiableText unmodifiableText,
-            SortedSet<Integer> nominees){
+            SetUniqueList<Integer> nominees){
         super(unmodifiableText);
         if (nominees == null) {
             throw new NullPointerException("Attempted to pass null argument");
@@ -36,7 +36,11 @@ public class NominatedText
     }
 
     @Override
-    public SortedSet<Integer> getNominees() {
-        return Collections.unmodifiableSortedSet(this.nominees);
+    public SetUniqueList<Integer> getNominees() {
+        SetUniqueList newList = SetUniqueList.setUniqueList(
+                new ArrayList<>()
+        );
+        newList.addAll(this.nominees);
+        return newList;
     }
 }

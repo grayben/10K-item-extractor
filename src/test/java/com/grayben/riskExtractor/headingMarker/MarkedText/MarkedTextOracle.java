@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.markedText;
 
 import com.grayben.riskExtractor.headingMarker.elector.ElectedText;
+import org.apache.commons.collections4.list.SetUniqueList;
 
 import java.util.*;
 
@@ -29,7 +30,8 @@ class MarkedTextOracle {
 
     protected void generateTestExpectedOutput(List<TextElementClass> param, ElectedText testInput) {
 
-        List<Integer> targetTextIndex = new ArrayList<>();
+        SetUniqueList<Integer> targetTextIndex
+                = SetUniqueList.setUniqueList(new ArrayList<>());
 
         ListIterator<TextElementClass> it
                 = param.listIterator();
@@ -60,16 +62,20 @@ class MarkedTextOracle {
     protected ElectedText generateTestInput(List<TextElementClass> param){
 
         List<String> textInput = new ArrayList<>();
-        SortedSet<Integer> nomineeIndex = new TreeSet<>();
-        SortedSet<Integer> electeeIndex = new TreeSet<>();
+        SetUniqueList<Integer> nomineeIndex
+                = SetUniqueList.setUniqueList(new ArrayList<>());
+        SetUniqueList<Integer> electeeIndex
+                = SetUniqueList.setUniqueList(new ArrayList<>());
 
         ListIterator<TextElementClass> it
                 = param.listIterator();
 
         while(it.hasNext()){
-            int index = it.nextIndex();
+            int index;
+            index = it.nextIndex();
             TextElementClass elementType = it.next();
-            String stringToAdd = index + ": " + elementType.archetype();
+            String stringToAdd;
+            stringToAdd = index + ": " + elementType.archetype();
             textInput.add(stringToAdd);
 
             if(elementType.equals(TextElementClass.ELECTED_HEADING)) {
@@ -87,7 +93,7 @@ class MarkedTextOracle {
     }
 
     private List<String>
-    constructExpectedOutput(List<Integer> targetIndex, ElectedText testInput){
+    constructExpectedOutput(SetUniqueList<Integer> targetIndex, ElectedText testInput){
         ListIterator<Integer> it = targetIndex.listIterator();
         List<String> testExpectedOutput = new ArrayList<>();
         while(it.hasNext()){

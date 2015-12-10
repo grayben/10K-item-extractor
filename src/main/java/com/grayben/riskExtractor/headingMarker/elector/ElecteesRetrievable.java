@@ -1,7 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
-import java.util.SortedSet;
+import org.apache.commons.collections4.list.SetUniqueList;
 
 public interface ElecteesRetrievable {
-	public SortedSet<Integer> getElectees();
+	SetUniqueList<Integer> getElectees();
 }

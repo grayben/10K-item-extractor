@@ -2,6 +2,7 @@ package com.grayben.riskExtractor.headingMarker.elector;
 
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedText;
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextTest;
+import org.apache.commons.collections4.list.SetUniqueList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,8 +11,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -36,7 +35,7 @@ public class ElectedTextTest
         this.setNominatedTextSUT(this.electedTextSUT);
     }
 
-    private SortedSet<Integer> electeesArgument;
+    private SetUniqueList<Integer> electeesArgument;
 
     @Before
     @Override
@@ -46,12 +45,14 @@ public class ElectedTextTest
         stringListArgument.add("two");
         stringListArgument.add("cow");
 
-        this.nomineesArgument = new TreeSet<>();
+        this.nomineesArgument
+                = SetUniqueList.setUniqueList(new ArrayList<>());
         nomineesArgument.add(0);
         nomineesArgument.add(2);
 
 
-        this.electeesArgument = new TreeSet<>();
+        this.electeesArgument
+                = SetUniqueList.setUniqueList(new ArrayList<>());
         electeesArgument.add(0);
 
         this.setElectedTextSUT(
@@ -77,11 +78,13 @@ public class ElectedTextTest
         stringList.add("two");
         stringList.add("three");
 
-        SortedSet<Integer> nominees = new TreeSet<>();
+        SetUniqueList<Integer> nominees
+                = SetUniqueList.setUniqueList(new ArrayList<>());
         nominees.add(1);
         nominees.add(2);
 
-        SortedSet<Integer> electees = new TreeSet<>();
+        SetUniqueList<Integer> electees
+                = SetUniqueList.setUniqueList(new ArrayList<>());
         electees.add(3);
 
         thrown.expect(IllegalArgumentException.class);
@@ -100,7 +103,7 @@ public class ElectedTextTest
         //setup expectations
 
         //exercise
-        SortedSet<Integer> electeesReturned = electedTextSUT.getElectees();
+        SetUniqueList<Integer> electeesReturned = electedTextSUT.getElectees();
         //verify
         assertNotNull(electeesReturned);
     }

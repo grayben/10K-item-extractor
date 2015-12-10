@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.headingMarker;
 
 import com.grayben.riskExtractor.headingMarker.elector.ElectedText;
+import org.apache.commons.collections4.list.SetUniqueList;
 
 import java.util.*;
 
@@ -15,21 +16,22 @@ final public class MarkedText
         super(text);
     }
 
+
     private Map<Integer, Integer> getStringIndexPairs(){
 
-        if (this.stringIndexPairs == null){
-            //TODO: assumes that lists are sorted!
+        //assumes nominees contains all electees
+        assert(getNominees().containsAll(getElectees()));
 
-            //TODO: doesn't handle when elected is last nominee!
+        if (this.stringIndexPairs == null){
 
             //I want to use
 
             //Id the elected indexes
-            SortedSet<Integer> electees = this.getElectees();
+            SetUniqueList<Integer> electees = this.getElectees();
 
-            SortedSet<Integer> nominees = this.getNominees();
+            SetUniqueList<Integer> nominees = this.getNominees();
 
-
+            Iterator<Integer> electeeIterator = electees.iterator();
 
 
 

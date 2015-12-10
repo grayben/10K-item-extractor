@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
 import com.grayben.riskExtractor.headingMarker.UnmodifiableTextTest;
+import org.apache.commons.collections4.list.SetUniqueList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,8 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -33,7 +32,7 @@ public class NominatedTextTest
         this.setUnmodifiableTextSUT(this.nominatedTextSUT);
     }
 
-    protected SortedSet<Integer> nomineesArgument = null;
+    protected SetUniqueList<Integer> nomineesArgument = null;
 
     @Before
     @Override
@@ -43,7 +42,7 @@ public class NominatedTextTest
         this.stringListArgument.add("two");
         this.stringListArgument.add("cow");
 
-        this.nomineesArgument = new TreeSet<>();
+        this.nomineesArgument = SetUniqueList.setUniqueList(new ArrayList<>());
         this.nomineesArgument.add(0);
         this.nomineesArgument.add(2);
 
@@ -117,7 +116,7 @@ public class NominatedTextTest
     test_GetNominees_ReturnsNonNull_Always
             () throws Exception {
 
-        SortedSet<Integer> nomineesReturned = nominatedTextSUT.getNominees();
+        SetUniqueList<Integer> nomineesReturned = nominatedTextSUT.getNominees();
 
         assertNotNull(nomineesReturned);
     }
@@ -126,7 +125,7 @@ public class NominatedTextTest
     public void
     test_ModifyingReturnedNomineesThrowsUnsupportedOperationException
             () throws Exception {
-        SortedSet<Integer> returnedIntegerList = nominatedTextSUT.getNominees();
+        SetUniqueList<Integer> returnedIntegerList = nominatedTextSUT.getNominees();
 
         thrown.expect(UnsupportedOperationException.class);
 
