@@ -10,7 +10,7 @@ final public class MarkedText
 
     Map<Integer, Integer> stringIndexPairs = null;
 
-    List<String> selectedSections = null;
+    Set<String> selectedSections = null;
 
     public MarkedText(ElectedText text, Map<Integer, Integer> mapToUse) {
         super(text);
@@ -73,13 +73,13 @@ final public class MarkedText
         return this.stringIndexPairs;
     }
 
-    private List<String> getSelectedSections(){
+    private Set<String> getSelectedSections(){
 
         if(this.selectedSections == null){
             Iterator<Map.Entry<Integer, Integer>> pairIterator
                     = getStringIndexPairs().entrySet().iterator();
 
-            List<String> selectedSections = new ArrayList<>();
+            Set<String> selectedSections = new HashSet<>();
 
             while(pairIterator.hasNext()){
                 Map.Entry<Integer, Integer> entry = pairIterator.next();
@@ -96,18 +96,29 @@ final public class MarkedText
                 List<String> textSectionElements
                         // endIndex + 1 because subList is exclusive of endIndex
                         = getStringList().subList(startIndex, endIndex + 1);
-                selectedSections.addAll(textSectionElements);
+                StringBuilder sb = new StringBuilder();
+                for (String string : textSectionElements
+                     ) {
+                    sb.append(string + " ");
+                }
+                selectedSections.add(
+                        //convert the sequence of strings to one string
+                        sb.toString()
+                                //replace whitespace runs with single space
+                                .replaceAll("\\s+", " ")
+                                //discard whitespace at each end
+                                .trim());
             }
             this.selectedSections = selectedSections;
         }
 
-        return Collections.unmodifiableList(this.selectedSections);
+        return Collections.unmodifiableSet(this.selectedSections);
 
 
     }
 
 
-    public List<String> subSelections() {
+    public Set<String> subSelections() {
 
         //TODO: variable and method naming semantics
 
