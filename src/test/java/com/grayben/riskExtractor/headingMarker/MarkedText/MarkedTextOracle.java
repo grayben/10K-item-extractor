@@ -8,14 +8,14 @@ import java.util.*;
 class MarkedTextOracle {
 
     private ElectedText testInput;
-    private List<String> testExpectedOutput;
+    private Set<String> testExpectedOutput;
 
     protected ElectedText getTestInput(){
         return this.testInput;
     }
 
-    protected List<String> getTestExpectedOutput(){
-        return Collections.unmodifiableList(this.testExpectedOutput);
+    protected Set<String> getTestExpectedOutput(){
+        return Collections.unmodifiableSet(this.testExpectedOutput);
     }
 
     protected MarkedTextOracle(List<TextElementClass> classifiedList){
@@ -24,7 +24,7 @@ class MarkedTextOracle {
     }
 
     protected boolean validateResult(List<String> result){
-        List<String> expectedResult = getTestExpectedOutput();
+        Collection<String> expectedResult = getTestExpectedOutput();
         return result.equals(expectedResult);
     }
 
@@ -126,8 +126,6 @@ class MarkedTextOracle {
 
         Map<Integer, Integer> targetIndexRanges = indexHelper.process();
 
-        /*TODO: must include target section not terminated by a nominated heading
-         */
         this.testExpectedOutput = constructExpectedOutput(targetIndexRanges, testInput);
     }
 
@@ -164,10 +162,10 @@ class MarkedTextOracle {
         );
     }
 
-    private List<String>
+    private Set<String>
     constructExpectedOutput(Map<Integer, Integer> targetIndexRanges, ElectedText testInput){
         Iterator<Map.Entry<Integer, Integer>> it = targetIndexRanges.entrySet().iterator();
-        List<String> testExpectedOutput = new ArrayList<>();
+        Set<String> testExpectedOutput = new HashSet<>();
         while(it.hasNext()){
             Map.Entry<Integer, Integer> entry = it.next();
             int startIndex = entry.getKey();

@@ -116,7 +116,7 @@ public class MarkedTextTest
         ElectedText input = oracle.getTestInput();
         markedTextSUT = new MarkedText(input, new HashMap<>());
         List<String> output = markedTextSUT.subSelections();
-        List<String> expectedOutput = oracle.getTestExpectedOutput();
+        Collection<String> expectedOutput = oracle.getTestExpectedOutput();
 
         System.out.println("//////////////////////////");
         System.out.println("## OUTPUT ################");
