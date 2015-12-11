@@ -35,7 +35,7 @@ class MarkedTextOracle {
             Integer endIndex;
             Integer currentIndex;
             Boolean onSelectedContent;
-            Map<Integer, Integer> targetRanges;
+            Map<Integer, Integer> targetIndexRanges;
             List<TextElementClass> elementList;
 
             IndexHelper(List<TextElementClass> elementList){
@@ -43,7 +43,7 @@ class MarkedTextOracle {
                 endIndex = null;
                 currentIndex = null;
                 onSelectedContent = false;
-                targetRanges = new HashMap<>();
+                targetIndexRanges = new HashMap<>();
                 this.elementList = elementList;
             }
 
@@ -64,6 +64,8 @@ class MarkedTextOracle {
                     }
                 }
 
+                return targetIndexRanges;
+
             }
 
             void encounterElectedHeading(){
@@ -76,8 +78,6 @@ class MarkedTextOracle {
             }
 
             void encounterNominatedHeading(){
-                //this must not be called if the heading is also elected
-                assert false;
 
 
                 if (onSelectedContent) {
@@ -105,7 +105,7 @@ class MarkedTextOracle {
                 // index - 1 because we don't want to include the heading
                 endIndex = currentIndex - 1;
 
-                targetRanges.put(startIndex, endIndex);
+                targetIndexRanges.put(startIndex, endIndex);
                 startIndex = null;
                 endIndex = null;
             }
@@ -114,9 +114,11 @@ class MarkedTextOracle {
 
         IndexHelper indexHelper = new IndexHelper(param);
 
-        Map<Integer, Integer> targetRanges = indexHelper.process();
+        Map<Integer, Integer> targetIndexRanges = indexHelper.process();
 
-        this.testExpectedOutput = constructExpectedOutput(targetRanges, testInput);
+        /*TODO: must include target section not terminated by a nominated heading
+         */
+        this.testExpectedOutput = constructExpectedOutput(targetIndexRanges, testInput);
     }
 
     protected ElectedText generateTestInput(List<TextElementClass> param){
@@ -153,11 +155,23 @@ class MarkedTextOracle {
     }
 
     private List<String>
-    constructExpectedOutput(SetUniqueList<Integer> targetIndex, ElectedText testInput){
-        ListIterator<Integer> it = targetIndex.listIterator();
+    constructExpectedOutput(Map<Integer, Integer> targetIndexRanges, ElectedText testInput){
+        Iterator<Map.Entry<Integer, Integer>> it = targetIndexRanges.entrySet().iterator();
         List<String> testExpectedOutput = new ArrayList<>();
         while(it.hasNext()){
-            testExpectedOutput.add(testInput.getStringList().get(it.next()));
+            Map.Entry<Integer, Integer> entry = it.next();
+            int startIndex = entry.getKey();
+            int endIndex = entry.getValue();
+
+            //endIndex + 1 because subList is exclusive of endIndex index argument
+            List<String> subList = testInput.getStringList().subList(startIndex, endIndex + 1);
+
+            StringBuilder sb = new StringBuilder();
+            for (String string : subList
+                 ) {
+                sb.append(string + " ");
+            }
+            testExpectedOutput.add(sb.toString().replaceAll("\\s+", " ").trim());
         }
         return testExpectedOutput;
     }
