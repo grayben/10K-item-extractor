@@ -51,7 +51,10 @@ final public class MarkedText
             if(indexOfStartIndexInNominees == nominees.size() - 1){
                 endIndex = null;
             } else {
+                //the index of the next nominee
                 endIndex = nominees.get(indexOfStartIndexInNominees + 1);
+                //minus 1: exclude the nominee
+                endIndex = endIndex - 1;
             }
             map.put(startIndex, endIndex);
         }
@@ -88,14 +91,12 @@ final public class MarkedText
                 if(entry.getValue() == null){
                     endIndex = getStringList().size() - 1;
                 } else {
-                    endIndex = entry.getValue() - 1;
+                    endIndex = entry.getValue();
                 }
-                StringBuilder sb = new StringBuilder();
                 List<String> textSectionElements
-                        = getStringList().subList(startIndex, endIndex);
-                textSectionElements.forEach(sb::append);
-                String section = sb.toString();
-                selectedSections.add(section);
+                        // endIndex + 1 because subList is exclusive of endIndex
+                        = getStringList().subList(startIndex, endIndex + 1);
+                selectedSections.addAll(textSectionElements);
             }
             this.selectedSections = selectedSections;
         }
