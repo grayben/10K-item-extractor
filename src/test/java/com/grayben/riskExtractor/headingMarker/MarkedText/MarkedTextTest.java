@@ -125,4 +125,16 @@ public class MarkedTextTest
             assertTrue("The oracle determined that the expected " +
                 "output was not valid", oracle.validateResult(output));
     }
+
+    @Test
+    public void test_SubselectionsReturnsExpectedOutput_WhenEmptyInput
+            () throws Exception {
+        List<TextElementClass> param = new ArrayList<>();
+        oracle = new MarkedTextOracle(param);
+        ElectedText input = oracle.getTestInput();
+        markedTextSUT = new MarkedText(input, new HashMap<>());
+        Set<String> output = markedTextSUT.subSelections();
+
+        assertTrue(oracle.validateResult(output));
+    }
 }

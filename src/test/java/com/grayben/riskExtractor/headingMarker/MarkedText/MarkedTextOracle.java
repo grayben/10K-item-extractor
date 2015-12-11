@@ -28,7 +28,7 @@ class MarkedTextOracle {
         return result.equals(expectedResult);
     }
 
-    protected void generateTestExpectedOutput(List<TextElementClass> param, ElectedText testInput) {
+    private void generateTestExpectedOutput(List<TextElementClass> param, ElectedText testInput) {
 
         class IndexHelper {
             Integer startIndex;
