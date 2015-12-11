@@ -116,13 +116,14 @@ public class MarkedTextTest
         ElectedText input = oracle.getTestInput();
         markedTextSUT = new MarkedText(input, new HashMap<>());
         List<String> output = markedTextSUT.subSelections();
+        List<String> expectedOutput = oracle.getTestExpectedOutput();
 
         System.out.println("//////////////////////////");
         System.out.println("## OUTPUT ################");
-        System.out.println(output.toString());
+        System.out.println(output);
         System.out.println();
         System.out.println("## EXPECTED OUTPUT #######");
-        System.out.println(oracle.getTestExpectedOutput());
+        System.out.println(expectedOutput);
 
             assertTrue("The oracle determined that the expected " +
                 "output was not valid", oracle.validateResult(output));
