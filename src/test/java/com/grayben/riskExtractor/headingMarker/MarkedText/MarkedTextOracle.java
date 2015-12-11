@@ -30,33 +30,93 @@ class MarkedTextOracle {
 
     protected void generateTestExpectedOutput(List<TextElementClass> param, ElectedText testInput) {
 
-        SetUniqueList<Integer> targetTextIndex
-                = SetUniqueList.setUniqueList(new ArrayList<>());
+        class IndexHelper {
+            Integer startIndex;
+            Integer endIndex;
+            Integer currentIndex;
+            Boolean onSelectedContent;
+            Map<Integer, Integer> targetRanges;
+            List<TextElementClass> elementList;
 
-        ListIterator<TextElementClass> it
-                = param.listIterator();
-
-        boolean onSelectedContent = false;
-
-        while (it.hasNext()) {
-            int index = it.nextIndex();
-            TextElementClass elementType = it.next();
-
-            if (elementType.equals(TextElementClass.ELECTED_HEADING)) {
-                targetTextIndex.add(index);
-                onSelectedContent = true;
-
-            } else if (elementType.equals(TextElementClass.NOMINATED_HEADING))
+            IndexHelper(List<TextElementClass> elementList){
+                startIndex = null;
+                endIndex = null;
+                currentIndex = null;
                 onSelectedContent = false;
-
-            else if (elementType.equals(TextElementClass.NON_HEADING_CONTENT)) {
-                if (onSelectedContent) {
-                    targetTextIndex.add(index);
-                }
+                targetRanges = new HashMap<>();
+                this.elementList = elementList;
             }
+
+            Map<Integer, Integer> process(){
+                ListIterator<TextElementClass> iterator
+                        = elementList.listIterator();
+
+                while (iterator.hasNext()) {
+                    currentIndex = iterator.nextIndex();
+
+                    TextElementClass elementType = iterator.next();
+
+                    if (elementType.equals(TextElementClass.ELECTED_HEADING)) {
+                        encounterElectedHeading();
+
+                    } else if (elementType.equals(TextElementClass.NOMINATED_HEADING)) {
+                        encounterNominatedHeading();
+                    }
+                }
+
+            }
+
+            void encounterElectedHeading(){
+                /* if we were already in a section,
+                we need to break off and start a new section */
+                if(onSelectedContent){
+                    completeMapEntry();
+                }
+                beginMapEntry();
+            }
+
+            void encounterNominatedHeading(){
+                //this must not be called if the heading is also elected
+                assert false;
+
+
+                if (onSelectedContent) {
+                    completeMapEntry();
+                }
+                /* assign onSelectedContent := false
+                    -> (startIndex == null & endIndex == null) */
+                assert startIndex == null && endIndex == null;
+                onSelectedContent = false;
+            }
+
+            void beginMapEntry(){
+                //assign(startIndex) -> startIndex was null
+                assert startIndex == null;
+                startIndex = currentIndex;
+                onSelectedContent = true;
+            }
+
+            void completeMapEntry(){
+                //if(onSelectedContent) -> startIndex is assigned
+                assert startIndex != null;
+
+                //assign(endIndex) -> endIndex was null
+                assert endIndex == null;
+                // index - 1 because we don't want to include the heading
+                endIndex = currentIndex - 1;
+
+                targetRanges.put(startIndex, endIndex);
+                startIndex = null;
+                endIndex = null;
+            }
+
         }
 
-        this.testExpectedOutput = constructExpectedOutput(targetTextIndex, testInput);
+        IndexHelper indexHelper = new IndexHelper(param);
+
+        Map<Integer, Integer> targetRanges = indexHelper.process();
+
+        this.testExpectedOutput = constructExpectedOutput(targetRanges, testInput);
     }
 
     protected ElectedText generateTestInput(List<TextElementClass> param){
