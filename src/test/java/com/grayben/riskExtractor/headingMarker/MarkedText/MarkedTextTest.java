@@ -9,10 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -80,7 +77,7 @@ public class MarkedTextTest
 
     @Test
     public void test_SubSelections_ReturnNonNull_Always() throws Exception {
-        Collection<String> subSelectionsReturned = markedTextSUT.subSelections();
+        Set<String> subSelectionsReturned = markedTextSUT.subSelections();
         assertNotNull(subSelectionsReturned);
     }
 
@@ -115,8 +112,8 @@ public class MarkedTextTest
 
         ElectedText input = oracle.getTestInput();
         markedTextSUT = new MarkedText(input, new HashMap<>());
-        List<String> output = markedTextSUT.subSelections();
-        Collection<String> expectedOutput = oracle.getTestExpectedOutput();
+        Set<String> output = markedTextSUT.subSelections();
+        Set<String> expectedOutput = oracle.getTestExpectedOutput();
 
         System.out.println("//////////////////////////");
         System.out.println("## OUTPUT ################");

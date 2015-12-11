@@ -23,8 +23,8 @@ class MarkedTextOracle {
         generateTestExpectedOutput(classifiedList, this.testInput);
     }
 
-    protected boolean validateResult(List<String> result){
-        Collection<String> expectedResult = getTestExpectedOutput();
+    protected boolean validateResult(Set<String> result){
+        Set<String> expectedResult = getTestExpectedOutput();
         return result.equals(expectedResult);
     }
 
