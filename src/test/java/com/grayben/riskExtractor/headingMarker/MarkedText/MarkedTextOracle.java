@@ -64,6 +64,16 @@ class MarkedTextOracle {
                     }
                 }
 
+                //now, check to see if there was a non-terminated target section
+                if(startIndex != null){
+                    //the endIndex must be null, else the section should have been closed
+                    assert endIndex == null;
+
+                    currentIndex = elementList.size();
+
+                    completeMapEntry();
+                }
+
                 return targetIndexRanges;
 
             }
