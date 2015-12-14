@@ -7,12 +7,14 @@ import org.jsoup.parser.Tag;
 /**
  * Score the segmentation of an {@link org.jsoup.nodes.Element} based upon the {@link org.jsoup.parser.Tag} it contains.
  */
-public class SegmentationElementScorer implements Scorer<Element> {
+public class SegmentationElementScorer extends Scorer<Element> {
+
+	public final static String SCORE_LABEL = "element-segmentation";
 
 	Scorer<Tag> tagScorer;
 
 	public SegmentationElementScorer(Scorer<Tag> tagScorer){
-		super();
+		super(SCORE_LABEL);
 		this.tagScorer = tagScorer;
 	}
 

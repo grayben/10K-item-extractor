@@ -1,12 +1,9 @@
 package com.grayben.riskExtractor.htmlScorer.scorers.tagScorers;
 
 import com.grayben.riskExtractor.htmlScorer.scorers.Scorer;
-import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TagEmphasisScorer
@@ -21,32 +18,27 @@ public class TagEmphasisScorer
         this.tagScores = tagScores;
 	}
 
-	public int score(Element element) {
-		
-		return 0;
-	}
-
 	public static final Map<Tag, Integer> defaultMap() {
 		
 		//Map<Tag, Integer> tagScores = this.getTagScores();
-		Map<Tag, Integer> tags = new HashMap<>();
-		tags.put(Tag.valueOf("b"), 1);
-		tags.put(Tag.valueOf("strong"), 1);
-		tags.put(Tag.valueOf("h1"), 1);
-		tags.put(Tag.valueOf("h2"), 1);
-		tags.put(Tag.valueOf("h3"), 1);
-		tags.put(Tag.valueOf("h4"), 1);
-		tags.put(Tag.valueOf("h5"), 1);
-		tags.put(Tag.valueOf("u"), 1);
+		Map<Tag, Integer> tagScoreMap = new HashMap<>();
+		tagScoreMap.put(Tag.valueOf("b"), 1);
+		tagScoreMap.put(Tag.valueOf("strong"), 1);
+		tagScoreMap.put(Tag.valueOf("h1"), 1);
+		tagScoreMap.put(Tag.valueOf("h2"), 1);
+		tagScoreMap.put(Tag.valueOf("h3"), 1);
+		tagScoreMap.put(Tag.valueOf("h4"), 1);
+		tagScoreMap.put(Tag.valueOf("h5"), 1);
+		tagScoreMap.put(Tag.valueOf("u"), 1);
 		
-		//this.setTagScores(tagScores);
+		return tagScoreMap;
 		
 	}
 
 	@Override
 	public int score(Tag input) {
-		// TODO Auto-generated method stub
-		return 0;
+		throw new UnsupportedOperationException
+                ("This method is not implemented");
 	}
 
 	@Override
