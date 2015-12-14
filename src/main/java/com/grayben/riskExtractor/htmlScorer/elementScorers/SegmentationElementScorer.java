@@ -7,14 +7,13 @@ import org.jsoup.parser.Tag;
  * Score the segmentation of an {@link org.jsoup.nodes.Element} based upon the {@link org.jsoup.parser.Tag} it contains.
  */
 public class SegmentationElementScorer implements Scorer<Element> {
-	
-	
+
 	Scorer<Tag> tagScorer;
 
 	@Override
 	public int score(Element input) {
-		// TODO Auto-generated method stub
-		return 0;
+		Integer integer = null;
+		return integer;
 	}
 
 }
