@@ -1,6 +1,8 @@
 package com.grayben.riskExtractor.htmlScorer.elementScorers;
 
 
+import org.jsoup.nodes.Element;
+
 /**
  * Element scorer interface. Provide an implementing class to {@link ScoringAndFlatteningVisitor}.
  * <p/>
@@ -8,12 +10,12 @@ package com.grayben.riskExtractor.htmlScorer.elementScorers;
  * @author beng
  *
  */
-public interface ElementScorer<T> {
+public interface ElementScorer {
 	
 	/**
 	 * 
 	 * @param input the Element to score
 	 * @return the score of element
 	 */
-	public int score(T input);
+	public int score(Element input);
 }
