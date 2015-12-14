@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.scorers.tagScorers;
 
 import com.grayben.riskExtractor.htmlScorer.scorers.ScorerTest;
+import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -11,7 +12,7 @@ import org.junit.Test;
  */
 @Ignore
 public class TagEmphasisScorerTest
-        extends ScorerTest {
+        extends ScorerTest<Tag> {
 
     public TagEmphasisScorer tagEmphasisScorerSUT;
 
@@ -19,18 +20,13 @@ public class TagEmphasisScorerTest
     public void setUp() throws Exception {
         this.tagEmphasisScorerSUT = new TagEmphasisScorer
                 (TagEmphasisScorer.defaultMap());
-        super.setUp(tagEmphasisScorerSUT);
+        super.setScorerSUT(tagEmphasisScorerSUT);
+        super.setUp();
     }
 
     @After
     public void tearDown() throws Exception {
-
-    }
-
-    @Override
-    @Test
-    public void test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
-
+        super.tearDown();
     }
 
     @Test
