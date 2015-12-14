@@ -13,7 +13,7 @@ public class ElectedText
 
         implements
 	    ElecteesRetrievable {
-
+    
     SetUniqueList<Integer> electees;
 
     public ElectedText(List<String> textList, SetUniqueList<Integer> nominees, SetUniqueList<Integer> electees){
