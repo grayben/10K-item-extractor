@@ -9,7 +9,6 @@ import org.junit.Test;
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 public class EmphasisElementScorerTest extends ScorerTest {
 
     @Before

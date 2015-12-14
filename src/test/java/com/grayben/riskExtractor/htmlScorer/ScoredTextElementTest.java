@@ -88,7 +88,6 @@ public class ScoredTextElementTest {
 
     }
 
-    @Ignore
     @Test
     public void testGetScores() throws Exception {
 
