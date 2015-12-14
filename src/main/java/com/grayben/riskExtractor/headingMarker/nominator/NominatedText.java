@@ -10,7 +10,6 @@ public class NominatedText
 		extends UnmodifiableText
 		implements NomineesRetrievable {
 
-    //TODO: make this a set: should not have repetitions
     private SetUniqueList<Integer> nominees;
 
     public NominatedText(List<String> stringList, SetUniqueList<Integer> nominees) {

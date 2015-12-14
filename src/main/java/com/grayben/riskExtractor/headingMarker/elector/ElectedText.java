@@ -14,7 +14,6 @@ public class ElectedText
         implements
 	    ElecteesRetrievable {
 
-    //TODO: make this a set: should not have repetitions
     SetUniqueList<Integer> electees;
 
     public ElectedText(List<String> textList, SetUniqueList<Integer> nominees, SetUniqueList<Integer> electees){
