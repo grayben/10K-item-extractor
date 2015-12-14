@@ -64,4 +64,9 @@ public abstract class ScorerTest<T> {
             () throws Exception {
         assertNotEquals("", scorerSUT.getScoreLabel());
     }
+
+    @Test
+    public abstract void test_ScoreGivesExpectedResult_WhenSimpleInput
+            () throws Exception;
+
 }
