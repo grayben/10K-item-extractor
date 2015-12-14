@@ -43,7 +43,7 @@ public class UnmodifiableTextTest {
     }
 
     @After
-    final public void tearDownUnmodifiableText() throws Exception {
+    public void tearDown() throws Exception {
         unmodifiableTextSUT = null;
         stringListArgument = null;
     }

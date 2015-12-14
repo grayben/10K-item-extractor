@@ -64,8 +64,9 @@ public class MarkedTextTest
     }
 
     @After
+    @Override
     public void tearDown() throws Exception {
-
+        super.tearDown();
     }
 
     @Test

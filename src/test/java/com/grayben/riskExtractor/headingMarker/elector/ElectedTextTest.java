@@ -40,6 +40,7 @@ public class ElectedTextTest
     @Before
     @Override
     public void setUp() throws Exception {
+        super.setUp();
         this.stringListArgument = new ArrayList<>();
         stringListArgument.add("one");
         stringListArgument.add("two");
@@ -65,7 +66,9 @@ public class ElectedTextTest
     }
 
     @After
-    final public void tearDownElectedText() throws Exception {
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @Test

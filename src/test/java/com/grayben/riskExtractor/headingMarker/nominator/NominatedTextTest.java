@@ -38,6 +38,7 @@ public class NominatedTextTest
     @Before
     @Override
     public void setUp() throws Exception {
+        super.setUp();
         this.stringListArgument = new ArrayList<>();
         this.stringListArgument.add("one");
         this.stringListArgument.add("two");
@@ -53,7 +54,9 @@ public class NominatedTextTest
     }
 
     @After
-    final public void tearDownNominatedText() throws Exception {
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
         nominatedTextSUT = null;
     }
 
