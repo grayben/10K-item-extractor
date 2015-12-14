@@ -7,7 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.NodeVisitor;
 
-import com.grayben.riskExtractor.htmlScorer.elementScorers.ElementScorer;
+import com.grayben.riskExtractor.htmlScorer.elementScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.elementScorers.SegmentationElementScorer;
 
@@ -17,8 +17,8 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	
 	int emphasisScore = 0;
 	int separationScore = 0;
-	ElementScorer<Element> emphScorer;
-	ElementScorer<Element> segmScorer;
+	Scorer<Element> emphScorer;
+	Scorer<Element> segmScorer;
 	
 
 	public ScoringAndFlatteningNodeVisitor() {

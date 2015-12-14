@@ -5,13 +5,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by beng on 28/11/2015.
  */
 @Ignore
-public class EmphasisElementScorerTest extends ElementScorerTest {
+public class EmphasisElementScorerTest extends ScorerTest {
 
     @Before
     public void setUp() throws Exception {

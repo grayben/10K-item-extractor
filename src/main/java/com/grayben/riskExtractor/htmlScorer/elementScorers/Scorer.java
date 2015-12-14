@@ -10,12 +10,12 @@ import org.jsoup.nodes.Element;
  * @author beng
  *
  */
-public interface ElementScorer {
+public interface Scorer<T> {
 	
 	/**
 	 * 
 	 * @param input the Element to score
 	 * @return the score of element
 	 */
-	public int score(Element input);
+	public int score(T input);
 }

@@ -9,7 +9,7 @@ import org.mockito.runners.MockitoJUnitRunner;
  * Created by beng on 28/11/2015.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ElementScorerTest {
+public class ScorerTest {
 
     @Before
     public void setUp() throws Exception {
