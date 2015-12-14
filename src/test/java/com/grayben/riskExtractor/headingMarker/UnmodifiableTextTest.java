@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
 /**
  * Created by beng on 2/12/2015.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class UnmodifiableTextTest {
 
     private UnmodifiableText unmodifiableTextSUT = null;
