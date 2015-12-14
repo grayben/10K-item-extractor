@@ -6,9 +6,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static junit.framework.TestCase.fail;
 
 /**
  * Created by beng on 28/11/2015.
@@ -34,6 +37,12 @@ public class SegmentationElementScorerTest
     public void tearDown() throws Exception {
         elementScorerSUT = null;
         super.tearDown();
+    }
+
+    @Override
+    @Test
+    public void test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
+        fail("This test has not been implemented");
     }
 
 }
