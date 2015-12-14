@@ -25,7 +25,7 @@ public class ScorerTest<T> {
     }
 
     @Mock
-    public T scoredArgumentMock;
+    public T argumentToBeScoredMock;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -42,7 +42,7 @@ public class ScorerTest<T> {
     @Test
     public void test_ScoreReturnsInteger_WhenArgumentIsNonNull
             () throws Exception {
-        scorerSUT.score(scoredArgumentMock);
+        scorerSUT.score(argumentToBeScoredMock);
     }
 
     @Test
