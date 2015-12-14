@@ -21,4 +21,10 @@ public class SegmentationElementScorer implements Scorer<Element> {
 		return integer;
 	}
 
+	@Override
+	public String getScoreLabel() {
+		return null;
+	}
+
+
 }

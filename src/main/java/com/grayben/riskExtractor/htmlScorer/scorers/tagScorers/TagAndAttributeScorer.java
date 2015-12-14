@@ -1,6 +1,7 @@
-package com.grayben.riskExtractor.htmlScorer.elementScorers;
+package com.grayben.riskExtractor.htmlScorer.scorers.tagScorers;
 
 import com.grayben.riskExtractor.htmlScorer.TagAndAttribute;
+import com.grayben.riskExtractor.htmlScorer.elementScorers.Scorer;
 
 public class TagAndAttributeScorer implements Scorer<TagAndAttribute> {
 
@@ -9,5 +10,11 @@ public class TagAndAttributeScorer implements Scorer<TagAndAttribute> {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public String getScoreLabel() {
+		return null;
+	}
+
 
 }

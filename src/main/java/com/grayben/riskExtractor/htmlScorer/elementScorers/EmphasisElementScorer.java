@@ -1,5 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.elementScorers;
 
+import com.grayben.riskExtractor.htmlScorer.scorers.tagScorers.TagAndAttributeScorer;
+import com.grayben.riskExtractor.htmlScorer.scorers.tagScorers.TagScorer;
 import org.jsoup.nodes.Element;
 
 /**
@@ -14,6 +16,11 @@ public class EmphasisElementScorer implements Scorer<Element> {
 	public int score(Element input) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public String getScoreLabel() {
+		return null;
 	}
 
 }

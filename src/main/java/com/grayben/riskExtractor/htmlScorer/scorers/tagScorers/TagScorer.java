@@ -1,5 +1,6 @@
-package com.grayben.riskExtractor.htmlScorer.elementScorers;
+package com.grayben.riskExtractor.htmlScorer.scorers.tagScorers;
 
+import com.grayben.riskExtractor.htmlScorer.elementScorers.Scorer;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 
@@ -37,5 +38,11 @@ public class TagScorer implements Scorer<Tag> {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public String getScoreLabel() {
+		return null;
+	}
+
 
 }
