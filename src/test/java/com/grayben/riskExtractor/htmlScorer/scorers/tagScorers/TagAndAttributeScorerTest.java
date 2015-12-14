@@ -17,14 +17,18 @@ import static junit.framework.TestCase.fail;
 public class TagAndAttributeScorerTest
         extends ScorerTest <TagAndAttribute> {
 
+    TagAndAttributeScorer tagAndAttributeSUT;
+
     @Before
     public void setUp() throws Exception {
-
+        tagAndAttributeSUT = new TagAndAttributeScorer();
+        super.setScorerSUT(tagAndAttributeSUT);
+        super.setUp();
     }
 
     @After
     public void tearDown() throws Exception {
-
+        super.tearDown();   
     }
 
     @Override

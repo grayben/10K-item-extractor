@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.scorers.elementScorers;
 
 import com.grayben.riskExtractor.htmlScorer.scorers.ScorerTest;
+import org.jsoup.nodes.Element;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,16 +14,21 @@ import static junit.framework.TestCase.fail;
  * Created by beng on 28/11/2015.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class EmphasisElementScorerTest extends ScorerTest {
+public class EmphasisElementScorerTest extends ScorerTest<Element> {
+
+    EmphasisElementScorer emphasisElementScorerSUT;
 
     @Before
     public void setUp() throws Exception {
+        this.emphasisElementScorerSUT = new EmphasisElementScorer();
+        super.setScorerSUT(this.emphasisElementScorerSUT);
+        super.setUp();
 
     }
 
     @After
     public void tearDown() throws Exception {
-
+        super.tearDown();
     }
 
     @Override
