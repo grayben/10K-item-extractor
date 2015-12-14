@@ -1,7 +1,7 @@
-package com.grayben.riskExtractor.htmlScorer.elementScorers;
+package com.grayben.riskExtractor.htmlScorer.scorers.elementScorers;
 
 import com.grayben.riskExtractor.htmlScorer.scorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.scorers.elementScorers.SegmentationElementScorer;
+import com.grayben.riskExtractor.htmlScorer.scorers.ScorerTest;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.junit.After;

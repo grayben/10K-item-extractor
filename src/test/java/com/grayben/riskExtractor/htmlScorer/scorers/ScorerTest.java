@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.htmlScorer.elementScorers;
+package com.grayben.riskExtractor.htmlScorer.scorers;
 
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;

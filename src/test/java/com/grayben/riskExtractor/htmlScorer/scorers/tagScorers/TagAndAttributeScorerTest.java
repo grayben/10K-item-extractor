@@ -1,11 +1,9 @@
-package com.grayben.riskExtractor.htmlScorer.elementScorers;
+package com.grayben.riskExtractor.htmlScorer.scorers.tagScorers;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by beng on 28/11/2015.
