@@ -17,5 +17,7 @@ public interface Scorer<T> {
 	 * @param input the Element to score
 	 * @return the score of element
 	 */
-	public int score(T input);
+	int score(T input);
+
+    String getScoreLabel();
 }
