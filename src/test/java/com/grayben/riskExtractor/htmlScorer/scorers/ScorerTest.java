@@ -6,7 +6,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertNotEquals;
@@ -24,8 +23,11 @@ public abstract class ScorerTest<T> {
         this.scorerSUT = scorerSUT;
     }
 
-    @Mock
-    public T argumentToBeScoredMock;
+    private T argumentToBeScoredMock;
+
+    public void setArgumentToBeScoredMock(T argumentToBeScoredMock){
+        this.argumentToBeScoredMock = argumentToBeScoredMock;
+    }
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
