@@ -26,12 +26,14 @@ public class SegmentationElementScorerTest
     @Before
     public void setUp() throws Exception {
         elementScorerSUT = new SegmentationElementScorer(tagScorerMock);
-        super.setUp(elementScorerSUT);
+        super.setScorerSUT(elementScorerSUT);
+        super.setUp();
     }
 
     @After
     public void tearDown() throws Exception {
         elementScorerSUT = null;
+        super.tearDown();
     }
 
 }
