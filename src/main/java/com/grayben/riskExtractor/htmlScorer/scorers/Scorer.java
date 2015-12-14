@@ -14,7 +14,7 @@ public abstract class Scorer<T> {
 
     private String scoreLabel;
 
-    Scorer(String scoreLabel){
+    protected Scorer(String scoreLabel){
         this.scoreLabel = scoreLabel;
     }
 	
