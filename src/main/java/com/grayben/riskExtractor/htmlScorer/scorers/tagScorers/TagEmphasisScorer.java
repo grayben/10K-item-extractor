@@ -7,10 +7,14 @@ import org.jsoup.parser.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TagScorer
-		implements Scorer<Tag> {
+public class TagEmphasisScorer
+		extends Scorer<Tag> {
 	
 	List<Tag> tagScores = null;
+
+	TagEmphasisScorer(String scoreLabel) {
+		super(scoreLabel);
+	}
 
 	public int score(Element element) {
 		
