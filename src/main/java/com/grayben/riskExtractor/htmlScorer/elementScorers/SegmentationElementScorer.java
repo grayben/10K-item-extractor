@@ -10,6 +10,11 @@ public class SegmentationElementScorer implements Scorer<Element> {
 
 	Scorer<Tag> tagScorer;
 
+	public SegmentationElementScorer(Scorer<Tag> tagScorer){
+		super();
+		this.tagScorer = tagScorer;
+	}
+
 	@Override
 	public int score(Element input) {
 		Integer integer = null;
