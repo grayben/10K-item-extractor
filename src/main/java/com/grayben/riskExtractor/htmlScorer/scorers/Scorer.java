@@ -10,14 +10,22 @@ import org.jsoup.nodes.Element;
  * @author beng
  *
  */
-public interface Scorer<T> {
+public abstract class Scorer<T> {
+
+    private String scoreLabel;
+
+    Scorer(String scoreLabel){
+        this.scoreLabel = scoreLabel;
+    }
 	
 	/**
 	 * 
 	 * @param input the Element to score
 	 * @return the score of element
 	 */
-	int score(T input);
+	public abstract int score(T input);
 
-    String getScoreLabel();
+    public String getScoreLabel(){
+        return this.scoreLabel;
+    }
 }

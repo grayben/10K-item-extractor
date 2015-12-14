@@ -38,8 +38,4 @@ public class SegmentationElementScorerTest
         elementScorerSUT = null;
     }
 
-    @Override
-    public void test_scoreReturnsInteger() throws Exception {
-        elementScorerSUT.score(elementMock);
-    }
 }

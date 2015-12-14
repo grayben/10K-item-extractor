@@ -7,10 +7,11 @@ import org.jsoup.parser.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TagScorer implements Scorer<Tag> {
+public class TagScorer
+		implements Scorer<Tag> {
 	
 	List<Tag> tagScores = null;
-	
+
 	public int score(Element element) {
 		
 		return 0;
