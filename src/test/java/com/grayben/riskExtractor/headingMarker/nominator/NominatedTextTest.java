@@ -18,9 +18,7 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class NominatedTextTest
-            extends UnmodifiableTextTest
-        implements
-        INomineesRetrievableTest {
+            extends UnmodifiableTextTest {
 
     private NominatedText nominatedTextSUT = null;
 

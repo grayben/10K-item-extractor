@@ -20,9 +20,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(MockitoJUnitRunner.class)
 public class ElectedTextTest
         extends
-        NominatedTextTest
-        implements
-        IElecteesRetrievableTest {
+        NominatedTextTest {
 
     private ElectedText electedTextSUT;
 
