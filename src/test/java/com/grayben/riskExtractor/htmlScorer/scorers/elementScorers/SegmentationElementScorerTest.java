@@ -6,8 +6,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -17,7 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class SegmentationElementScorerTest
-        implements ScorerTest {
+        extends ScorerTest<Element> {
 
     SegmentationElementScorer elementScorerSUT;
     @Mock
@@ -25,12 +23,10 @@ public class SegmentationElementScorerTest
     @Mock
     Element elementMock;
 
-    @Rule
-    ExpectedException thrown = ExpectedException.none();
-
     @Before
     public void setUp() throws Exception {
         elementScorerSUT = new SegmentationElementScorer(tagScorerMock);
+        super.setUp(elementScorerSUT);
     }
 
     @After
