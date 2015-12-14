@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNotNull;
  * Created by beng on 28/11/2015.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ScorerTest<T> {
+public abstract class ScorerTest<T> {
 
     private Scorer<T> scorerSUT;
 
