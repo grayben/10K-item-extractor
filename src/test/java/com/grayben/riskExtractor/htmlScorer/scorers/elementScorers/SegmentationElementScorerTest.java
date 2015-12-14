@@ -21,15 +21,17 @@ public class SegmentationElementScorerTest
         extends ScorerTest<Element> {
 
     SegmentationElementScorer elementScorerSUT;
+
     @Mock
-    Scorer<Tag> tagScorerMock;
+    public Scorer<Tag> tagScorerMock;
     @Mock
-    Element elementMock;
+    public Element elementToBeScoredMock;
 
     @Before
     public void setUp() throws Exception {
         elementScorerSUT = new SegmentationElementScorer(tagScorerMock);
         super.setScorerSUT(elementScorerSUT);
+        super.setArgumentToBeScoredMock(elementToBeScoredMock);
         super.setUp();
     }
 

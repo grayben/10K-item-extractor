@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static junit.framework.TestCase.fail;
@@ -19,16 +20,20 @@ public class TagAndAttributeScorerTest
 
     TagAndAttributeScorer tagAndAttributeSUT;
 
+    @Mock
+    public TagAndAttribute tagAndAttributeToBeScoredMock;
+
     @Before
     public void setUp() throws Exception {
         tagAndAttributeSUT = new TagAndAttributeScorer();
+        super.setArgumentToBeScoredMock(tagAndAttributeToBeScoredMock);
         super.setScorerSUT(tagAndAttributeSUT);
         super.setUp();
     }
 
     @After
     public void tearDown() throws Exception {
-        super.tearDown();   
+        super.tearDown();
     }
 
     @Override

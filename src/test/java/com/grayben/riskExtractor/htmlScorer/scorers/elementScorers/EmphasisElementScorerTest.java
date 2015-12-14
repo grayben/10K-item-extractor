@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static junit.framework.TestCase.fail;
@@ -18,12 +19,15 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
 
     EmphasisElementScorer emphasisElementScorerSUT;
 
+    @Mock
+    public Element elementToBeScoredMock;
+
     @Before
     public void setUp() throws Exception {
         this.emphasisElementScorerSUT = new EmphasisElementScorer();
         super.setScorerSUT(this.emphasisElementScorerSUT);
+        super.setArgumentToBeScoredMock(elementToBeScoredMock);
         super.setUp();
-
     }
 
     @After
