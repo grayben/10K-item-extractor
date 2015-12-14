@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.htmlScorer.elementScorers;
+package com.grayben.riskExtractor.htmlScorer.scorers;
 
 
 import org.jsoup.nodes.Element;
