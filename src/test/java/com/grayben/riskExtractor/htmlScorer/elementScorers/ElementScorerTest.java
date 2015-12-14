@@ -2,15 +2,13 @@ package com.grayben.riskExtractor.htmlScorer.elementScorers;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
+@RunWith(MockitoJUnitRunner.class)
 public class ElementScorerTest {
 
     @Before
@@ -20,11 +18,6 @@ public class ElementScorerTest {
 
     @After
     public void tearDown() throws Exception {
-
-    }
-
-    @Test
-    public void testScore() throws Exception {
 
     }
 }
