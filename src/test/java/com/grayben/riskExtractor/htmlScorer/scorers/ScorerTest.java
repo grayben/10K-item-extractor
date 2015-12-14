@@ -9,7 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by beng on 28/11/2015.
@@ -17,17 +18,20 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ScorerTest<T> {
 
-    public Scorer scorerSUT;
+    private Scorer<T> scorerSUT;
+
+    protected void setScorerSUT(Scorer<T> scorerSUT){
+        this.scorerSUT = scorerSUT;
+    }
 
     @Mock
     public T scoredArgumentMock;
 
     @Rule
-    ExpectedException thrown = ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none();
 
     @Before
-    public void setUp(Scorer scorer) throws Exception {
-        scorerSUT = scorer;
+    public void setUp() throws Exception {
     }
 
     @After
