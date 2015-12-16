@@ -9,9 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static junit.framework.TestCase.fail;
 
 /**
  * Created by beng on 28/11/2015.
@@ -43,8 +42,18 @@ public class SegmentationElementScorerTest
 
     @Override
     @Test
+    public void test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
+        Mockito.when(tagScorerMock.score(Mockito.any())).thenReturn(1);
+
+        Integer returned = elementScorerSUT.score(elementToBeScoredMock);
+
+        assert returned.getClass() == Integer.class;
+    }
+
+    @Override
+    @Test
     public void test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-        fail("This test has not been implemented");
+
     }
 
 }
