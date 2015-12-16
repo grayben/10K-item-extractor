@@ -42,10 +42,8 @@ public abstract class ScorerTest<T> {
     }
 
     @Test
-    public void test_ScoreReturnsInteger_WhenArgumentIsNonNull
-            () throws Exception {
-        scorerSUT.score(argumentToBeScoredMock);
-    }
+    abstract public void test_ScoreReturnsInteger_WhenArgumentIsNonNull
+            () throws Exception ;
 
     @Test
     public void test_ScoreThrowsNullPointerException_WhenArgumentIsNull
