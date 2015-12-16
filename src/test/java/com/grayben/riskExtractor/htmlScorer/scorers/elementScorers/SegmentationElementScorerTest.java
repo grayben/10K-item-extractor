@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static junit.framework.TestCase.fail;
+
 /**
  * Created by beng on 28/11/2015.
  */
@@ -55,7 +57,7 @@ public class SegmentationElementScorerTest
     @Override
     @Test
     public void test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-
+        fail("Test not implemented");
     }
 
 }
