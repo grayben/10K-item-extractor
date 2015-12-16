@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.htmlScorer;
+package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,7 +12,8 @@ import org.mockito.runners.MockitoJUnitRunner;
  */
 @RunWith(MockitoJUnitRunner.class)
 @Ignore
-public class ScoringAndFlatteningNodeVisitorTest {
+public class ScoringAndFlatteningNodeVisitorTest
+        extends NodeVisitorTest {
 
     @Before
     public void setUp() throws Exception {
