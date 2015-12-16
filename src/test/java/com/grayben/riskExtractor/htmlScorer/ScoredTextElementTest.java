@@ -77,7 +77,6 @@ public class ScoredTextElementTest {
         Map scoresReturned = scoredTextElementSUT.getScores();
 
         assertEquals(scoresMock, scoresReturned);
-
     }
 
     @Test
@@ -86,6 +85,5 @@ public class ScoredTextElementTest {
         textElementReturned = scoredTextElementSUT.getTextElement();
 
         assertEquals(textElementArgument, textElementReturned);
-
     }
 }
