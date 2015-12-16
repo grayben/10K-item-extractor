@@ -1,0 +1,7 @@
+
+
+Fix mocking in ScoredTextElementTest.java
+Implement tests
+Implement SUT to pass tests
+
+
