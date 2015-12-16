@@ -8,6 +8,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Map;
 
+import static org.jsoup.helper.Validate.fail;
 import static org.junit.Assert.*;
 
 /**
@@ -54,6 +55,27 @@ public class ScoredTextElementTest {
         thrown.expect(NullPointerException.class);
 
         new ScoredTextElement(textElementArgument, null);
+    }
+
+    @Test
+    public void
+    test_InitThrowsIllegalArgumentException_WhenTextArgumentIsEmpty
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Test
+    public void
+    test_InitThrowsIllegalArgumentException_WhenTextArgumentIsWhitespaceOnly
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Test
+    public void
+    test_InitThrowsIllegalArgumentException_WhenScoresIsEmpty
+            () throws Exception {
+        fail("Test not implemented");
     }
 
     @Test
