@@ -41,4 +41,10 @@ public class TagAndAttributeScorerTest
     public void test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
         fail("This test has not been implemented");
     }
+
+    @Override
+    @Test
+    public void test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
+        fail("Test not implemented");
+    }
 }

@@ -52,4 +52,10 @@ public class TagEmphasisScorerTest
     public void testUseDefaultMap() throws Exception {
 
     }
+
+    @Override
+    @Test
+    public void test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
+        fail("Test not implemented");
+    }
 }
