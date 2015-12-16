@@ -23,10 +23,6 @@ public class ScoredTextElement {
 		this.scores = scores;
 	}
 	
-	public ScoredTextElement() {
-		super();
-	}
-	
 	public String getTextElement() {
 		return textElement;
 	}
