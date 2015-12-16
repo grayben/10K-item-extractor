@@ -28,6 +28,8 @@ public class ScoredTextElementTest {
     @Before
     public void setUp() throws Exception {
         scoresMapArgument = new HashMap<>();
+        scoresMapArgument.put("awesomeness", 9001);
+
         textElementArgument = "foo";
         scoredTextElementSUT = new ScoredTextElement(textElementArgument, scoresMapArgument);
     }
@@ -59,21 +61,27 @@ public class ScoredTextElementTest {
     public void
     test_InitThrowsIllegalArgumentException_WhenTextArgumentIsEmpty
             () throws Exception {
-        fail("Test not implemented");
+        thrown.expect(IllegalArgumentException.class);
+
+        new ScoredTextElement("", scoresMapArgument);
     }
 
     @Test
     public void
     test_InitThrowsIllegalArgumentException_WhenTextArgumentIsWhitespaceOnly
             () throws Exception {
-        fail("Test not implemented");
+        thrown.expect(IllegalArgumentException.class);
+
+        new ScoredTextElement("   \n\t", scoresMapArgument);
     }
 
     @Test
     public void
     test_InitThrowsIllegalArgumentException_WhenScoresIsEmpty
             () throws Exception {
-        fail("Test not implemented");
+        thrown.expect(IllegalArgumentException.class);
+
+        new ScoredTextElement(textElementArgument, new HashMap<>());
     }
 
     @Test
