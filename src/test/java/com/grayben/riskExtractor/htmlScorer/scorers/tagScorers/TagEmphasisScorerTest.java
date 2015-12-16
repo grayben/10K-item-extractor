@@ -45,16 +45,6 @@ public class TagEmphasisScorerTest
         fail("This test has not been implemented");
     }
 
-    @Test
-    public void testScore() throws Exception {
-
-    }
-
-    @Test
-    public void testUseDefaultMap() throws Exception {
-
-    }
-
     @Override
     @Test
     public void test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
