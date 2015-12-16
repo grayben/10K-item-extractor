@@ -1,23 +1,23 @@
 package com.grayben.riskExtractor.htmlScorer;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.jsoup.helper.Validate.fail;
+import static junit.framework.TestCase.*;
 
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class ScoredTextTest {
 
     private ScoredText scoredTextSUT;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Mock
     public ScoredTextElement scoredTextElementMock;
@@ -36,14 +36,20 @@ public class ScoredTextTest {
     public void
     test_ToStringReturnsNonNull_WhenNothingWasAdded
             () throws Exception {
-        fail("Test not implemented");
+        scoredTextSUT = new ScoredText();
+
+        assertNotNull(scoredTextSUT.toString());
     }
 
     @Test
     public void
     test_AddChangesWhatToStringReturns
             () throws Exception {
-        fail("Test not implemented");
+        String beforeAdd = scoredTextSUT.toString();
+        scoredTextSUT.add(scoredTextElementMock);
+        String afterAdd = scoredTextSUT.toString();
+
+        assertNotSame(beforeAdd, afterAdd);
     }
 
     @Test
