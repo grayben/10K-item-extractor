@@ -124,7 +124,8 @@ public class MarkedTextTest
     }
 
     @Test
-    public void test_Init_ThrowsNullPointerException_WhenElectedTextArgumentIsNull
+    public void
+    test_Init_ThrowsNullPointerException_WhenElectedTextArgumentIsNull
             () throws Exception {
         thrown.expect(NullPointerException.class);
 
@@ -132,7 +133,8 @@ public class MarkedTextTest
     }
 
     @Test
-    public void test_InitThrowsNullPointerException_WhenMapIsNull
+    public void
+    test_InitThrowsNullPointerException_WhenMapIsNull
             () throws Exception {
         thrown.expect(NullPointerException.class);
         Map<Integer, Integer> map = null;
@@ -141,7 +143,8 @@ public class MarkedTextTest
     }
 
     @Test
-    public void test_InitThrowsIllegalArgumentException_WhenMapIsNotEmpty
+    public void
+    test_InitThrowsIllegalArgumentException_WhenMapIsNotEmpty
             () throws Exception {
         thrown.expect(IllegalArgumentException.class);
         Map<Integer, Integer> map = new HashMap<>();
@@ -151,7 +154,8 @@ public class MarkedTextTest
     }
 
     @Test
-    public void test_SubSelections_ReturnNonNull_Always
+    public void
+    test_SubSelections_ReturnNonNull_Always
              () throws Exception {
         Set<String> subSelectionsReturned = markedTextSUT.subSelections();
 
@@ -201,7 +205,8 @@ public class MarkedTextTest
     }
 
     @Test
-    public void test_SubselectionsReturnsExpectedOutput_WhenEmptyInput
+    public void
+    test_SubselectionsReturnsExpectedOutput_WhenEmptyInput
             () throws Exception {
         List<TextElementClass> param = emptyList();
         oracle = new MarkedTextOracle(param);
@@ -214,7 +219,8 @@ public class MarkedTextTest
     }
 
     @Test
-    public void test_SubselectionsReturnsExpectedOutput_WhenNoHeadings
+    public void
+    test_SubselectionsReturnsExpectedOutput_WhenNoHeadings
             () throws Exception {
         List<TextElementClass> param = noHeadingList();
         oracle = new MarkedTextOracle(param);
@@ -226,4 +232,51 @@ public class MarkedTextTest
         assertTrue(oracle.validateResult(output));
 
     }
+
+    @Test
+    public void
+    test_SubselectionsReturnsExpectedOutput_WhenNoElectedHeadingList
+            () throws Exception {
+        List<TextElementClass> param = noElectedHeadingList();
+        oracle = new MarkedTextOracle(param);
+        ElectedText input = oracle.getTestInput();
+        markedTextSUT = new MarkedText(input, emptyMap);
+
+        Set<String> output = markedTextSUT.subSelections();
+
+        assertTrue(oracle.validateResult(output));
+
+    }
+
+    @Test
+    public void
+    test_SubselectionsReturnsExpectedOutput_WhenSolelyTargetTextList
+            () throws Exception {
+        List<TextElementClass> param = solelyTargetTextList();
+        oracle = new MarkedTextOracle(param);
+        ElectedText input = oracle.getTestInput();
+        markedTextSUT = new MarkedText(input, emptyMap);
+
+        Set<String> output = markedTextSUT.subSelections();
+
+        assertTrue(oracle.validateResult(output));
+
+    }
+
+    @Test
+    public void
+    test_SubselectionsReturnsExpectedOutput_WhenElectedHeadingOnlyAtEndList
+            () throws Exception {
+        List<TextElementClass> param = electedHeadingOnlyAtEndList();
+        oracle = new MarkedTextOracle(param);
+        ElectedText input = oracle.getTestInput();
+        markedTextSUT = new MarkedText(input, emptyMap);
+
+        Set<String> output = markedTextSUT.subSelections();
+
+        assertTrue(oracle.validateResult(output));
+
+    }
+
+
 }
