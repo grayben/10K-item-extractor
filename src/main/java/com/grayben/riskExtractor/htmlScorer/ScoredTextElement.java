@@ -14,10 +14,25 @@ public class ScoredTextElement {
 					"Tried to pass in null text:String"
 			);
 		}
-		if(scores == null){
-			throw new NullPointerException(
-					"Tried to pass in null scores:Map<Integer, Integer>"
-			);
+        if(text.equals("")){
+            throw new IllegalArgumentException(
+                    "Tried to pass in empty String"
+            );
+        }
+        if(text.matches("^\\s*$")){
+            throw new IllegalArgumentException(
+                    "Tried to pass in string with no non-whitespace characters"
+            );
+        }
+		if(scores == null) {
+            throw new NullPointerException(
+                    "Tried to pass in null scores:Map<Integer, Integer>"
+            );
+        }
+		if(scores.isEmpty()){
+			throw new IllegalArgumentException(
+                    "Tried to pass in empty scores:Map<Integer, Integer>"
+            );
 		}
 		this.textElement = text;
 		this.scores = scores;
