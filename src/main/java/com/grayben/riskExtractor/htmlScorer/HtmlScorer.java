@@ -10,6 +10,6 @@ import java.io.File;
  *
  */
 public interface HtmlScorer {
-	public ScoredText scoreHtml(File htmlFile, String charsetName);
-	public ScoredText scoreHtml(String url);
+	ScoredText scoreHtml(File htmlFile, String charsetName);
+	ScoredText scoreHtml(String url);
 }
