@@ -3,25 +3,22 @@ package com.grayben.riskExtractor.htmlScorer;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import static org.jsoup.helper.Validate.fail;
 import static org.junit.Assert.*;
 
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class ScoredTextElementTest {
 
     ScoredTextElement scoredTextElementSUT;
 
-    @Mock
-    Map<String, Integer> scoresMock;
+    Map<String, Integer> scoresMapArgument;
 
     String textElementArgument;
 
@@ -30,8 +27,9 @@ public class ScoredTextElementTest {
 
     @Before
     public void setUp() throws Exception {
+        scoresMapArgument = new HashMap<>();
         textElementArgument = "foo";
-        scoredTextElementSUT = new ScoredTextElement(textElementArgument, scoresMock);
+        scoredTextElementSUT = new ScoredTextElement(textElementArgument, scoresMapArgument);
     }
 
     @After
@@ -45,7 +43,7 @@ public class ScoredTextElementTest {
             () throws Exception {
         thrown.expect(NullPointerException.class);
 
-        new ScoredTextElement(null, scoresMock);
+        new ScoredTextElement(null, scoresMapArgument);
     }
 
     @Test
@@ -98,7 +96,7 @@ public class ScoredTextElementTest {
     public void testGetTextElement_ReturnsMockedScores_Always() throws Exception {
         Map scoresReturned = scoredTextElementSUT.getScores();
 
-        assertEquals(scoresMock, scoresReturned);
+        assertEquals(scoresMapArgument, scoresReturned);
     }
 
     @Test
