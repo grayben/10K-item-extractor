@@ -16,6 +16,14 @@ public abstract class NodeVisitorTest {
 
     private NodeVisitor nodeVisitorSUT;
 
+    protected NodeVisitor getNodeVisitorSUT() {
+        return nodeVisitorSUT;
+    }
+
+    protected void setNodeVisitorSUT(NodeVisitor nodeVisitorSUT) {
+        this.nodeVisitorSUT = nodeVisitorSUT;
+    }
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -56,6 +64,4 @@ public abstract class NodeVisitorTest {
             () throws Exception {
         fail("Test not implemented");
     }
-
-
 }
