@@ -4,6 +4,7 @@ import com.grayben.riskExtractor.htmlScorer.scorers.ScorerTest;
 import org.jsoup.nodes.Element;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -14,6 +15,7 @@ import static junit.framework.TestCase.fail;
 /**
  * Created by beng on 28/11/2015.
  */
+@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class EmphasisElementScorerTest extends ScorerTest<Element> {
 

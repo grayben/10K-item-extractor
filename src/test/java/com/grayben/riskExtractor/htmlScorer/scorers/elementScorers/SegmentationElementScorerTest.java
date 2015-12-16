@@ -6,6 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -15,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 /**
  * Created by beng on 28/11/2015.
  */
+@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class SegmentationElementScorerTest
         extends ScorerTest<Element> {
