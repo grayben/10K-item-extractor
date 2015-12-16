@@ -1,7 +1,7 @@
-package com.grayben.riskExtractor.htmlScorer.scorers.tagScorers;
+package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
-import com.grayben.riskExtractor.htmlScorer.scorers.ScorerTest;
-import org.jsoup.parser.Tag;
+import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
+import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -17,20 +17,19 @@ import static junit.framework.TestCase.fail;
  */
 @Ignore
 @RunWith(MockitoJUnitRunner.class)
-public class TagEmphasisScorerTest
-        extends ScorerTest<Tag> {
+public class TagAndAttributeScorerTest
+        extends ScorerTest <TagAndAttribute> {
 
-    public TagEmphasisScorer tagEmphasisScorerSUT;
+    TagAndAttributeScorer tagAndAttributeSUT;
 
     @Mock
-    public Tag tagToBeScoredMock;
+    public TagAndAttribute tagAndAttributeToBeScoredMock;
 
     @Before
     public void setUp() throws Exception {
-        this.tagEmphasisScorerSUT = new TagEmphasisScorer
-                (TagEmphasisScorer.defaultMap());
-        super.setScorerSUT(tagEmphasisScorerSUT);
-        super.setArgumentToBeScoredMock(tagToBeScoredMock);
+        tagAndAttributeSUT = new TagAndAttributeScorer();
+        super.setArgumentToBeScoredMock(tagAndAttributeToBeScoredMock);
+        super.setScorerSUT(tagAndAttributeSUT);
         super.setUp();
     }
 

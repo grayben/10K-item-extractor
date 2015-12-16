@@ -1,7 +1,7 @@
-package com.grayben.riskExtractor.htmlScorer.scorers.elementScorers;
+package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
-import com.grayben.riskExtractor.htmlScorer.scorers.ScorerTest;
-import org.jsoup.nodes.Element;
+import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
+import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -17,18 +17,20 @@ import static junit.framework.TestCase.fail;
  */
 @Ignore
 @RunWith(MockitoJUnitRunner.class)
-public class EmphasisElementScorerTest extends ScorerTest<Element> {
+public class TagEmphasisScorerTest
+        extends ScorerTest<Tag> {
 
-    EmphasisElementScorer emphasisElementScorerSUT;
+    public TagEmphasisScorer tagEmphasisScorerSUT;
 
     @Mock
-    public Element elementToBeScoredMock;
+    public Tag tagToBeScoredMock;
 
     @Before
     public void setUp() throws Exception {
-        this.emphasisElementScorerSUT = new EmphasisElementScorer();
-        super.setScorerSUT(this.emphasisElementScorerSUT);
-        super.setArgumentToBeScoredMock(elementToBeScoredMock);
+        this.tagEmphasisScorerSUT = new TagEmphasisScorer
+                (TagEmphasisScorer.defaultMap());
+        super.setScorerSUT(tagEmphasisScorerSUT);
+        super.setArgumentToBeScoredMock(tagToBeScoredMock);
         super.setUp();
     }
 
@@ -40,15 +42,15 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
     @Override
     @Test
     public void
-    test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
-        fail("Test not implemented");
+    test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
+        fail("This test has not been implemented");
     }
 
     @Override
     @Test
     public void
-    test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-        fail("This test has not been implemented");
+    test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
+        fail("Test not implemented");
     }
 
     @Override

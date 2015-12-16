@@ -1,7 +1,5 @@
-package com.grayben.riskExtractor.htmlScorer.scorers;
+package com.grayben.riskExtractor.htmlScorer.partScorers;
 
-
-import org.jsoup.nodes.Element;
 
 /**
  * Element scorer interface. Provide an implementing class to {@link ScoringAndFlatteningVisitor}.

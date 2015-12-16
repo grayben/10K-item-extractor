@@ -1,8 +1,8 @@
-package com.grayben.riskExtractor.htmlScorer.scorers.elementScorers;
+package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
-import com.grayben.riskExtractor.htmlScorer.scorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.scorers.tagScorers.TagAndAttributeScorer;
-import com.grayben.riskExtractor.htmlScorer.scorers.tagScorers.TagEmphasisScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import org.jsoup.nodes.Element;
 
 /**

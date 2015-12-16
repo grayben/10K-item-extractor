@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.htmlScorer;
+package com.grayben.riskExtractor.htmlScorer.partScorers;
 
 import org.jsoup.nodes.Attribute;
 import org.jsoup.parser.Tag;
@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by beng on 28/11/2015.

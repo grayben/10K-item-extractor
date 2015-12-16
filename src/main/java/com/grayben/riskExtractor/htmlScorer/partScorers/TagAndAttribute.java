@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.htmlScorer;
+package com.grayben.riskExtractor.htmlScorer.partScorers;
 
 import org.jsoup.nodes.Attribute;
 import org.jsoup.parser.Tag;

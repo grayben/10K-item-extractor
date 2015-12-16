@@ -1,16 +1,13 @@
-package com.grayben.riskExtractor.htmlScorer.scorers.elementScorers;
+package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
-import com.grayben.riskExtractor.htmlScorer.scorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.scorers.ScorerTest;
+import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static junit.framework.TestCase.fail;
@@ -20,27 +17,23 @@ import static junit.framework.TestCase.fail;
  */
 @Ignore
 @RunWith(MockitoJUnitRunner.class)
-public class SegmentationElementScorerTest
-        extends ScorerTest<Element> {
+public class EmphasisElementScorerTest extends ScorerTest<Element> {
 
-    SegmentationElementScorer elementScorerSUT;
+    EmphasisElementScorer emphasisElementScorerSUT;
 
-    @Mock
-    public Scorer<Tag> tagScorerMock;
     @Mock
     public Element elementToBeScoredMock;
 
     @Before
     public void setUp() throws Exception {
-        elementScorerSUT = new SegmentationElementScorer(tagScorerMock);
-        super.setScorerSUT(elementScorerSUT);
+        this.emphasisElementScorerSUT = new EmphasisElementScorer();
+        super.setScorerSUT(this.emphasisElementScorerSUT);
         super.setArgumentToBeScoredMock(elementToBeScoredMock);
         super.setUp();
     }
 
     @After
     public void tearDown() throws Exception {
-        elementScorerSUT = null;
         super.tearDown();
     }
 
@@ -48,18 +41,14 @@ public class SegmentationElementScorerTest
     @Test
     public void
     test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
-        Mockito.when(tagScorerMock.score(Mockito.any())).thenReturn(1);
-
-        Integer returned = elementScorerSUT.score(elementToBeScoredMock);
-
-        assert returned.getClass() == Integer.class;
+        fail("Test not implemented");
     }
 
     @Override
     @Test
     public void
     test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-        fail("Test not implemented");
+        fail("This test has not been implemented");
     }
 
     @Override
@@ -68,5 +57,4 @@ public class SegmentationElementScorerTest
     test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
         fail("Test not implemented");
     }
-
 }
