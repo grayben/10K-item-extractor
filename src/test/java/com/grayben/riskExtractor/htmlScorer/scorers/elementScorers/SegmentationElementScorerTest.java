@@ -46,7 +46,8 @@ public class SegmentationElementScorerTest
 
     @Override
     @Test
-    public void test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
+    public void
+    test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
         Mockito.when(tagScorerMock.score(Mockito.any())).thenReturn(1);
 
         Integer returned = elementScorerSUT.score(elementToBeScoredMock);
@@ -56,7 +57,15 @@ public class SegmentationElementScorerTest
 
     @Override
     @Test
-    public void test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
+    public void
+    test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Override
+    @Test
+    public void
+    test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
         fail("Test not implemented");
     }
 

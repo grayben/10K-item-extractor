@@ -66,7 +66,13 @@ public abstract class ScorerTest<T> {
     }
 
     @Test
-    public abstract void test_ScoreGivesExpectedResult_WhenSimpleInput
+    public abstract void
+    test_ScoreGivesExpectedResult_WhenSimpleInput
+            () throws Exception;
+
+    @Test
+    public abstract void
+    test_ScoreThrowsIllegalArgumentException_WhenEmptyInput
             () throws Exception;
 
 }
