@@ -88,9 +88,4 @@ public class ScoredTextElementTest {
         assertEquals(textElementArgument, textElementReturned);
 
     }
-
-    @Test
-    public void testGetScores() throws Exception {
-
-    }
 }
