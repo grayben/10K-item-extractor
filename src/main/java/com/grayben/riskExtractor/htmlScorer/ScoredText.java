@@ -8,20 +8,40 @@ public class ScoredText {
 
 	public ScoredText() {
 		super();
-		text = new ArrayList<ScoredTextElement>();
+		text = new ArrayList<>();
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for(ScoredTextElement element : text){
+		for (ScoredTextElement element : text) {
 			sb.append(element.getTextElement());
-			sb.append("\n");
+			sb.append(" ");
 		}
-		return sb.toString();
+		return sb.toString().trim();
 	}
 
 	public void add(ScoredTextElement st) {
+        if(st.getScores() == null){
+            throw new NullPointerException(
+                    "param.getScores() must not be null"
+            );
+        }
+        if(st.getScores().isEmpty()){
+            throw new IllegalArgumentException(
+                    "param.getScores() must not be empty"
+            );
+        }
+        if(st.getTextElement() == null){
+            throw new NullPointerException(
+                    "param.getTextElement() must not be null"
+            );
+        }
+        if(st.getTextElement().isEmpty()){
+            throw new IllegalArgumentException(
+                    "param.getTextElement() must not be empty"
+            );
+        }
 		text.add(st);
 	}
 }
