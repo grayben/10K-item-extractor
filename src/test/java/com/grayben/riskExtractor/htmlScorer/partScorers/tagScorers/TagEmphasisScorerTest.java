@@ -1,6 +1,5 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
-import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +19,7 @@ import static junit.framework.Assert.assertEquals;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class TagEmphasisScorerTest
-        extends ScorerTest<Tag> {
+        extends MapScorerTest<Tag> {
 
     public TagEmphasisScorer tagEmphasisScorerSUT;
 
@@ -28,11 +27,15 @@ public class TagEmphasisScorerTest
     public Tag tagToBeScoredMock;
 
     @Before
+    @Override
     public void setUp() throws Exception {
         this.tagEmphasisScorerSUT = new TagEmphasisScorer
                 (TagEmphasisScorer.defaultMap());
-        super.setScorerSUT(tagEmphasisScorerSUT);
+        super.setMapScorerSUT(tagEmphasisScorerSUT);
+
+        assert this.tagToBeScoredMock != null;
         super.setArgumentToBeScoredMock(tagToBeScoredMock);
+
         super.setUp();
     }
 
@@ -42,29 +45,12 @@ public class TagEmphasisScorerTest
     }
 
     @Override
-    @Test
-    public void
-    test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-        Map<Tag, Integer> tagScoresMap = new HashMap<>();
-        tagScoresMap.put(Tag.valueOf("b"), 1);
-        tagScoresMap.put(Tag.valueOf("strong"), 1);
-        tagScoresMap.put(Tag.valueOf("h1"), 2);
-        tagScoresMap.put(Tag.valueOf("h2"), 1);
+    public void test_InitThrowsNullPointerException_WhenMapParamIsNull() throws Exception {
+        Map<Tag, Integer> tagScoresMap = null;
+
+        thrown.expect(NullPointerException.class);
+
         tagEmphasisScorerSUT = new TagEmphasisScorer(tagScoresMap);
-
-        Map<Tag, Integer> expectedResults = new HashMap<>(tagScoresMap);
-        assert expectedResults.put(Tag.valueOf("foo"), 0) == null;
-        assert expectedResults.put(Tag.valueOf("bar"), 0) == null;
-        assert expectedResults.put(Tag.valueOf("baz"), 0) == null;
-
-        for (Tag input: expectedResults.keySet()) {
-            assertEquals(
-                    (int) expectedResults.get(input),
-                    tagEmphasisScorerSUT.score(input)
-            );
-        }
-
-
     }
 
     @Override
@@ -81,6 +67,25 @@ public class TagEmphasisScorerTest
     }
 
     @Override
+    public void test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
+        Map<Tag, Integer> tagScoresMap = new HashMap<>();
+        tagScoresMap.put(Tag.valueOf("b"), 1);
+        tagScoresMap.put(Tag.valueOf("strong"), 1);
+        tagScoresMap.put(Tag.valueOf("h1"), 2);
+        tagScoresMap.put(Tag.valueOf("h2"), 1);
+
+        tagEmphasisScorerSUT = new TagEmphasisScorer(tagScoresMap);
+
+        Map<Tag, Integer> expectedResults = new HashMap<>(tagScoresMap);
+        assert expectedResults.put(Tag.valueOf("foo"), 0) == null;
+        assert expectedResults.put(Tag.valueOf("bar"), 0) == null;
+        assert expectedResults.put(Tag.valueOf("baz"), 0) == null;
+
+        super.testHelper_ScoreGivesExpectedResult_WhenSimpleInput(
+                tagEmphasisScorerSUT,
+                expectedResults);
+    }
+
     @Test
     public void
     test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {

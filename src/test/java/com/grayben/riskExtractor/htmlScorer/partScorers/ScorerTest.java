@@ -25,7 +25,7 @@ public abstract class ScorerTest<T> {
 
     private T argumentToBeScoredMock;
 
-    public void setArgumentToBeScoredMock(T argumentToBeScoredMock){
+    protected void setArgumentToBeScoredMock(T argumentToBeScoredMock){
         this.argumentToBeScoredMock = argumentToBeScoredMock;
     }
 
@@ -68,11 +68,6 @@ public abstract class ScorerTest<T> {
     @Test
     public abstract void
     test_ScoreGivesExpectedResult_WhenSimpleInput
-            () throws Exception;
-
-    @Test
-    public abstract void
-    test_ScoreThrowsIllegalArgumentException_WhenEmptyInput
             () throws Exception;
 
 }

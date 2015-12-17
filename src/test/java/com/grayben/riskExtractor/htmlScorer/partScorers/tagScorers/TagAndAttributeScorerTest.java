@@ -1,7 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
-import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -18,7 +17,7 @@ import static junit.framework.TestCase.fail;
 @Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class TagAndAttributeScorerTest
-        extends ScorerTest <TagAndAttribute> {
+        extends MapScorerTest<TagAndAttribute> {
 
     TagAndAttributeScorer tagAndAttributeSUT;
 
@@ -27,7 +26,9 @@ public class TagAndAttributeScorerTest
 
     @Before
     public void setUp() throws Exception {
-        tagAndAttributeSUT = new TagAndAttributeScorer();
+        tagAndAttributeSUT = new TagAndAttributeScorer(
+                TagAndAttributeScorer.defaultMap()
+        );
         super.setArgumentToBeScoredMock(tagAndAttributeToBeScoredMock);
         super.setScorerSUT(tagAndAttributeSUT);
         super.setUp();
@@ -39,8 +40,13 @@ public class TagAndAttributeScorerTest
     }
 
     @Override
-    public void test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
+    public void test_InitThrowsNullPointerException_WhenMapParamIsNull() throws Exception {
+        fail("Test not implemented");
+    }
 
+    @Override
+    public void test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
+        fail("Test not implemented");
     }
 
     @Override
@@ -50,10 +56,9 @@ public class TagAndAttributeScorerTest
         fail("This test has not been implemented");
     }
 
-    @Override
     @Test
     public void
     test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        fail("Test not implemented");
+        fail("Test not implemented: decide whether appropriate");
     }
 }
