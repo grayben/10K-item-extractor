@@ -50,10 +50,9 @@ public class TagAndAttributeScorerTest
         fail("This test has not been implemented");
     }
 
-    @Override
     @Test
     public void
     test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        fail("Test not implemented");
+        fail("Test not implemented: decide whether appropriate");
     }
 }

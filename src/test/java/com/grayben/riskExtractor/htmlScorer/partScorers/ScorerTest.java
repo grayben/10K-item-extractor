@@ -70,9 +70,4 @@ public abstract class ScorerTest<T> {
     test_ScoreGivesExpectedResult_WhenSimpleInput
             () throws Exception;
 
-    @Test
-    public abstract void
-    test_ScoreThrowsIllegalArgumentException_WhenEmptyInput
-            () throws Exception;
-
 }
