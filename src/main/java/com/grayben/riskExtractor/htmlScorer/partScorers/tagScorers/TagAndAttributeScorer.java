@@ -3,20 +3,21 @@ package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 import com.grayben.riskExtractor.htmlScorer.partScorers.MapScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 
+import java.util.Map;
+
 public class TagAndAttributeScorer
 		extends MapScorer<TagAndAttribute> {
 
     public final static String SCORE_LABEL
             = "tag-and-attribute-emphasis";
 
-    protected TagAndAttributeScorer() {
-        super(SCORE_LABEL);
+    protected TagAndAttributeScorer(Map<TagAndAttribute, Integer> tagScores) {
+        super(SCORE_LABEL, tagScores);
     }
 
     @Override
 	public int score(TagAndAttribute input) {
-		// TODO Auto-generated method stub
-		return 0;
+		return super.score(input);
 	}
 
 	@Override

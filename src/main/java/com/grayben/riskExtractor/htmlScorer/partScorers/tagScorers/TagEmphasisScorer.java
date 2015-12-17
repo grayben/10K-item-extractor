@@ -10,12 +10,9 @@ public class TagEmphasisScorer
 		extends MapScorer<Tag> {
 
     public static final String SCORE_LABEL = "tag-emphasis";
-	
-	Map<Tag, Integer> tagScores = null;
 
 	TagEmphasisScorer(Map<Tag, Integer> tagScores) {
-		super(SCORE_LABEL);
-        this.tagScores = tagScores;
+		super(SCORE_LABEL, tagScores);
 	}
 
 	public static final Map<Tag, Integer> defaultMap() {
@@ -38,19 +35,10 @@ public class TagEmphasisScorer
 	@Override
 	public int score(Tag input) {
 		validateTagInput(input);
-        boolean containsKey = tagScores.containsKey(input);
-        if (containsKey)
-            return tagScores.get(input);
-        else
-            return 0;
+        return super.score(input);
 	}
 
     public static void validateTagInput(Tag input){
-        if(input == null){
-            throw new NullPointerException(
-                    "Input cannot be null"
-            );
-        }
         if(input.isEmpty()){
             throw new IllegalArgumentException(
                     "Input cannot be empty"

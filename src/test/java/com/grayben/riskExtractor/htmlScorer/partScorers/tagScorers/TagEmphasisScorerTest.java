@@ -77,7 +77,7 @@ public class TagEmphasisScorerTest
                 tagEmphasisScorerSUT,
                 expectedResults);
     }
-    
+
     @Test
     public void
     test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
