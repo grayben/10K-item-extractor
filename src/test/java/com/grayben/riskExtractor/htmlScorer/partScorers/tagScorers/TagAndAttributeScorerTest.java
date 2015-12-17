@@ -41,6 +41,11 @@ public class TagAndAttributeScorerTest
     }
 
     @Override
+    public void test_InitThrowsNullPointerException_WhenMapParamIsNull() throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Override
     public void test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
 
     }

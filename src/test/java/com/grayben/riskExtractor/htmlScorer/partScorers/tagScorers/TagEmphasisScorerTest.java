@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.TestCase.fail;
 
 /**
  * Created by beng on 28/11/2015.
@@ -43,6 +44,11 @@ public class TagEmphasisScorerTest
     @After
     public void tearDown() throws Exception {
         super.tearDown();
+    }
+
+    @Override
+    public void test_InitThrowsNullPointerException_WhenMapParamIsNull() throws Exception {
+        fail("Test not implemented");
     }
 
     @Override
