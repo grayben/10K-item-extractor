@@ -63,10 +63,5 @@ public class TagEmphasisScorer
         }
     }
 
-	@Override
-	public String getScoreLabel() {
-		return null;
-	}
-
 
 }
