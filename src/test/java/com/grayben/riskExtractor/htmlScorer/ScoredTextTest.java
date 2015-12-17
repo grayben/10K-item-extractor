@@ -8,11 +8,13 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.internal.matchers.Null;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static junit.framework.TestCase.*;
 
@@ -30,9 +32,20 @@ public class ScoredTextTest {
     @Mock
     public ScoredTextElement scoredTextElementMock;
 
+    public Map<String, Integer> scoresPrototype;
+
+    public String stringPrototype;
+
     @Before
     public void setUp() throws Exception {
         scoredTextSUT = new ScoredText();
+        scoresPrototype = new HashMap<>();
+        scoresPrototype.put("swag", 9001);
+        stringPrototype = "foo";
+        Mockito.when(scoredTextElementMock.getScores())
+                .thenReturn(new HashMap<>(scoresPrototype));
+        Mockito.when(scoredTextElementMock.getTextElement())
+                .thenReturn(new String(stringPrototype));
     }
 
     @After
@@ -73,23 +86,23 @@ public class ScoredTextTest {
 
     @Test
     public void
-    test_AddThrowsIllegalArgumentException_WhenParamScoresInNull
+    test_AddThrowsNullPointerException_WhenParamScoresInNull
             () throws Exception {
         Mockito.when(scoredTextElementMock.getScores())
                 .thenReturn(null);
 
-        thrown.expect(IllegalArgumentException.class);
+        thrown.expect(NullPointerException.class);
 
         scoredTextSUT.add(scoredTextElementMock);
     }
 
     @Test
     public void
-    test_AddThrowsIllegalArgumentException_WhenParamTextIsNull
+    test_AddThrowsNullPointerException_WhenParamTextIsNull
             () throws Exception {
         Mockito.when(scoredTextElementMock.getTextElement()).thenReturn(null);
 
-        thrown.expect(IllegalArgumentException.class);
+        thrown.expect(NullPointerException.class);
 
         scoredTextSUT.add(scoredTextElementMock);
     }
@@ -126,7 +139,10 @@ public class ScoredTextTest {
         for (int i = 0; i < 5; i++) {
             ScoredTextElement elementMock
                     = Mockito.mock(ScoredTextElement.class);
-            Mockito.when(elementMock.getTextElement()).thenReturn("foo");
+            Mockito.when(elementMock.getTextElement())
+                    .thenReturn(new String(stringPrototype));
+            Mockito.when(elementMock.getScores())
+                    .thenReturn(new HashMap<>(scoresPrototype));
             elementMocks.add(elementMock);
         }
 
