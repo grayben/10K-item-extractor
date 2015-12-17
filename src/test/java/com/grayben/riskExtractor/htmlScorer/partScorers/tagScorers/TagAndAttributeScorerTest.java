@@ -1,7 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
+import com.grayben.riskExtractor.htmlScorer.partScorers.MapScorerTest;
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
-import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -18,7 +18,7 @@ import static junit.framework.TestCase.fail;
 @Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class TagAndAttributeScorerTest
-        extends ScorerTest <TagAndAttribute> {
+        extends MapScorerTest<TagAndAttribute> {
 
     TagAndAttributeScorer tagAndAttributeSUT;
 

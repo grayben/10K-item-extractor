@@ -1,6 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
-import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
+import com.grayben.riskExtractor.htmlScorer.partScorers.MapScorerTest;
 import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +20,7 @@ import static junit.framework.Assert.assertEquals;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class TagEmphasisScorerTest
-        extends ScorerTest<Tag> {
+        extends MapScorerTest<Tag> {
 
     public TagEmphasisScorer tagEmphasisScorerSUT;
 

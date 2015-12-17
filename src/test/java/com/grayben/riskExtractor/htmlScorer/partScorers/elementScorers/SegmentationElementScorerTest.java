@@ -1,7 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
+import com.grayben.riskExtractor.htmlScorer.partScorers.MapScorerTest;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.junit.After;
@@ -21,7 +21,7 @@ import static junit.framework.TestCase.fail;
 @Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class SegmentationElementScorerTest
-        extends ScorerTest<Element> {
+        extends MapScorerTest<Element> {
 
     SegmentationElementScorer elementScorerSUT;
 
