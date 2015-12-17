@@ -13,7 +13,6 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class TagAndAttributeTest {
 
