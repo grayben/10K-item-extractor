@@ -94,6 +94,11 @@ public class TagAndAttributeScorerTest
     test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
         thrown.expect(IllegalArgumentException.class);
 
+        stubTagAndAttributeMock();
+
+        Mockito.when(tagAndAttributeToBeScoredMock.getAttribute().getValue())
+                .thenReturn("");
+
         tagAndAttributeScorerSUT.score(tagAndAttributeToBeScoredMock);
     }
 }
