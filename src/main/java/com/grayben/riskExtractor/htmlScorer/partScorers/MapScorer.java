@@ -11,6 +11,16 @@ public abstract class MapScorer<T> extends Scorer<T> {
 
     protected MapScorer(String scoreLabel, Map<T, Integer> scoresMap) {
         super(scoreLabel);
+        if(scoresMap == null){
+            throw new NullPointerException(
+                    "The scores map can not be null"
+            );
+        }
+        if(scoresMap.isEmpty()){
+            throw new IllegalArgumentException(
+                    "The scores map cannot be empty"
+            );
+        }
         this.scoresMap = scoresMap;
     }
 

@@ -3,6 +3,7 @@ package com.grayben.riskExtractor.htmlScorer.partScorers;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Map;
 
@@ -39,6 +40,11 @@ public abstract class MapScorerTest<T> extends ScorerTest<T> {
     public void tearDown() throws Exception {
 
     }
+
+    @Test
+    abstract public void
+    test_InitThrowsNullPointerException_WhenMapParamIsNull
+            () throws Exception;
 
     protected void
     testHelper_ScoreGivesExpectedResult_WhenSimpleInput(
