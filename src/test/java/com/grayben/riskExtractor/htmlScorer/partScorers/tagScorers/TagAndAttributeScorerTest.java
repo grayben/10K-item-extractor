@@ -28,7 +28,7 @@ public class TagAndAttributeScorerTest
                 TagAndAttributeScorer.defaultMap()
         );
         super.setArgumentToBeScoredMock(tagAndAttributeToBeScoredMock);
-        super.setScorerSUT(tagAndAttributeSUT);
+        super.setMapScorerSUT(tagAndAttributeSUT);
         super.setUp();
     }
 
