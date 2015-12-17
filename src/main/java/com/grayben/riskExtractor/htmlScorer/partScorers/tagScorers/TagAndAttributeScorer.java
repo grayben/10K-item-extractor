@@ -1,10 +1,10 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
+import com.grayben.riskExtractor.htmlScorer.partScorers.MapScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
-import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 
 public class TagAndAttributeScorer
-		extends Scorer<TagAndAttribute> {
+		extends MapScorer<TagAndAttribute> {
 
     public final static String SCORE_LABEL
             = "tag-and-attribute-emphasis";

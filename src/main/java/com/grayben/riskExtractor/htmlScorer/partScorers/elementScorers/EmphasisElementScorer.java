@@ -1,6 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
-import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.MapScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import org.jsoup.nodes.Element;
@@ -8,7 +8,7 @@ import org.jsoup.nodes.Element;
 /**
  * Score the emphasis of an {@link org.jsoup.nodes.Element} based upon the Tag and Attributes it contains.
  */
-public class EmphasisElementScorer extends Scorer<Element> {
+public class EmphasisElementScorer extends MapScorer<Element> {
 
 	public final static String SCORE_LABEL = "element-emphasis";
 	

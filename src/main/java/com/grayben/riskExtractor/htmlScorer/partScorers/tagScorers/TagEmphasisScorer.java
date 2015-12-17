@@ -1,13 +1,13 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
-import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.MapScorer;
 import org.jsoup.parser.Tag;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class TagEmphasisScorer
-		extends Scorer<Tag> {
+		extends MapScorer<Tag> {
 
     public static final String SCORE_LABEL = "tag-emphasis";
 	
