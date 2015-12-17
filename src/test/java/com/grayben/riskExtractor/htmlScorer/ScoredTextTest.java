@@ -1,10 +1,18 @@
 package com.grayben.riskExtractor.htmlScorer;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static junit.framework.TestCase.*;
 
@@ -56,41 +64,80 @@ public class ScoredTextTest {
     public void
     test_AddThrowsNullPointerException_WhenParamIsNull
             () throws Exception {
-        fail("Test not implemented");
+        ScoredTextElement element = null;
+
+        thrown.expect(NullPointerException.class);
+
+        scoredTextSUT.add(element);
     }
 
     @Test
     public void
-    test_AddThrowsIllegalArgumentException_WhenParamDoesNotHaveScores
+    test_AddThrowsIllegalArgumentException_WhenParamScoresInNull
             () throws Exception {
-        fail("Test not implemented");
+        Mockito.when(scoredTextElementMock.getScores())
+                .thenReturn(null);
+
+        thrown.expect(IllegalArgumentException.class);
+
+        scoredTextSUT.add(scoredTextElementMock);
     }
 
     @Test
     public void
-    test_AddThrowsIllegalArgumentException_WhenParamDoesNotHaveText
+    test_AddThrowsIllegalArgumentException_WhenParamTextIsNull
             () throws Exception {
-        fail("Test not implemented");
+        Mockito.when(scoredTextElementMock.getTextElement()).thenReturn(null);
+
+        thrown.expect(IllegalArgumentException.class);
+
+        scoredTextSUT.add(scoredTextElementMock);
     }
 
     @Test
     public void
     test_AddThrowsIllegalArgumentException_WhenParamHasEmptyText
             () throws Exception {
-        fail("Test not implemented");
+        Mockito.when(scoredTextElementMock.getTextElement()).thenReturn("");
+
+        thrown.expect(IllegalArgumentException.class);
+
+        scoredTextSUT.add(scoredTextElementMock);
     }
 
     @Test
     public void
     test_AddThrowsIllegalArgumentException_WhenParamHasEmptyScores
             () throws Exception {
-        fail("Test not implemented");
+        Mockito.when(scoredTextElementMock.getScores())
+                .thenReturn(new HashMap());
+
+        thrown.expect(IllegalArgumentException.class);
+
+        scoredTextSUT.add(scoredTextElementMock);
     }
 
     @Test
     public void
     test_GetTextElementReturnsExpectedOutput_OnSimpleInputCase
             () throws Exception {
-        fail("Test not implemented");
+        List<ScoredTextElement> elementMocks = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
+            ScoredTextElement elementMock
+                    = Mockito.mock(ScoredTextElement.class);
+            Mockito.when(elementMock.getTextElement()).thenReturn("foo");
+            elementMocks.add(elementMock);
+        }
+
+        String expectedOutput = "foo foo foo foo foo";
+
+        for (ScoredTextElement elementMock : elementMocks) {
+            scoredTextSUT.add(elementMock);
+        }
+
+        String output = scoredTextSUT.toString();
+
+        assertEquals(expectedOutput, output);
     }
 }
