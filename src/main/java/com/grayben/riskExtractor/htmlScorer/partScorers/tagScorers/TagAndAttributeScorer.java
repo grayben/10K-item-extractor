@@ -21,8 +21,32 @@ public class TagAndAttributeScorer
 
     @Override
 	public int score(TagAndAttribute input) {
+        validateScoreInput(input);
 		return super.score(input);
 	}
+
+    private void validateScoreInput(TagAndAttribute input){
+        if (input.getAttribute() == null){
+            throw new NullPointerException(
+                    "The input cannot have null Attribute"
+            );
+        }
+        if (input.getTag() == null){
+            throw new NullPointerException(
+                    "The input cannot have null Tag"
+            );
+        }
+        if(input.getAttribute().getValue().isEmpty()){
+            throw new IllegalArgumentException(
+                    "The input cannot have an empty Attribute"
+            );
+        }
+        if(input.getTag().getName().isEmpty()){
+            throw new IllegalArgumentException(
+                    "The input cannot have an empty Tag"
+            );
+        }
+    }
 
 	public static final Map<TagAndAttribute, Integer> defaultMap() {
 
