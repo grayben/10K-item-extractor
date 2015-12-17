@@ -24,11 +24,6 @@ public class TagAndAttributeScorer
 		return super.score(input);
 	}
 
-	@Override
-	public String getScoreLabel() {
-		return null;
-	}
-
 	public static final Map<TagAndAttribute, Integer> defaultMap() {
 
         String[] tagNames = {"font", "div", "p"};
