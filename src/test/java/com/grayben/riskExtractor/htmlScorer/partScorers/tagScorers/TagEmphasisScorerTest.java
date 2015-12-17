@@ -4,18 +4,20 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static junit.framework.TestCase.fail;
+import java.util.HashMap;
+import java.util.Map;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class TagEmphasisScorerTest
         extends ScorerTest<Tag> {
@@ -43,20 +45,64 @@ public class TagEmphasisScorerTest
     @Test
     public void
     test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-        fail("This test has not been implemented");
+        Map<Tag, Integer> tagScoresMap = new HashMap<>();
+        tagScoresMap.put(Tag.valueOf("b"), 1);
+        tagScoresMap.put(Tag.valueOf("strong"), 1);
+        tagScoresMap.put(Tag.valueOf("h1"), 2);
+        tagScoresMap.put(Tag.valueOf("h2"), 1);
+        tagEmphasisScorerSUT = new TagEmphasisScorer(tagScoresMap);
+
+        Map<Tag, Integer> expectedResults = new HashMap<>(tagScoresMap);
+        assert expectedResults.put(Tag.valueOf("foo"), 0) == null;
+        assert expectedResults.put(Tag.valueOf("bar"), 0) == null;
+        assert expectedResults.put(Tag.valueOf("baz"), 0) == null;
+
+        for (Tag input: expectedResults.keySet()) {
+            assertEquals(
+                    (int) expectedResults.get(input),
+                    tagEmphasisScorerSUT.score(input)
+            );
+        }
+
+
     }
 
     @Override
     @Test
     public void
-    test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
-        fail("Test not implemented");
+    test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
+        Mockito.when(tagToBeScoredMock.isEmpty())
+                .thenReturn(false);
+        Mockito.when(tagToBeScoredMock.getName())
+                .thenReturn("b");
+
+        Object returned = tagEmphasisScorerSUT.score(tagToBeScoredMock);
+        assertEquals(Integer.class, returned.getClass());
     }
 
     @Override
     @Test
     public void
     test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        fail("Test not implemented");
+        Mockito.when(tagToBeScoredMock.isEmpty())
+                .thenReturn(true);
+
+        thrown.expect(IllegalArgumentException.class);
+
+        tagEmphasisScorerSUT.score(tagToBeScoredMock);
+    }
+
+    @Test
+    public void
+    test_ScoreThrowsIllegalArgumentException_WhenTagHasNoName() throws Exception {
+        Mockito.when(tagToBeScoredMock.isEmpty())
+                .thenReturn(false);
+
+        Mockito.when(tagToBeScoredMock.getName())
+                .thenReturn("");
+
+        thrown.expect(IllegalArgumentException.class);
+
+        tagEmphasisScorerSUT.score(tagToBeScoredMock);
     }
 }

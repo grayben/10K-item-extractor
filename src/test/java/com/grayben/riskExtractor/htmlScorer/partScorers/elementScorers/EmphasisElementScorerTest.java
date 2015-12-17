@@ -40,7 +40,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
     @Override
     @Test
     public void
-    test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
+    test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
         fail("Test not implemented");
     }
 

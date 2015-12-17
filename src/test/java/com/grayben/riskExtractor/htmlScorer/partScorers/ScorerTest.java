@@ -42,7 +42,7 @@ public abstract class ScorerTest<T> {
     }
 
     @Test
-    abstract public void test_ScoreReturnsInteger_WhenArgumentIsNonNull
+    abstract public void test_ScoreReturnsInteger_WhenArgumentIsNotEmpty
             () throws Exception ;
 
     @Test

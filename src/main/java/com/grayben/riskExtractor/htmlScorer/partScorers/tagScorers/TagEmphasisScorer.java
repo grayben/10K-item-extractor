@@ -37,14 +37,31 @@ public class TagEmphasisScorer
 
 	@Override
 	public int score(Tag input) {
-		throw new UnsupportedOperationException
-                ("This method is not implemented");
+		validateTagInput(input);
+        boolean containsKey = tagScores.containsKey(input);
+        if (containsKey)
+            return tagScores.get(input);
+        else
+            return 0;
 	}
 
-	@Override
-	public String getScoreLabel() {
-		return null;
-	}
+    public static void validateTagInput(Tag input){
+        if(input == null){
+            throw new NullPointerException(
+                    "Input cannot be null"
+            );
+        }
+        if(input.isEmpty()){
+            throw new IllegalArgumentException(
+                    "Input cannot be empty"
+            );
+        }
+        if(input.getName().isEmpty()){
+            throw new IllegalArgumentException(
+                    "Input Tag must have a non-empty name"
+            );
+        }
+    }
 
 
 }
