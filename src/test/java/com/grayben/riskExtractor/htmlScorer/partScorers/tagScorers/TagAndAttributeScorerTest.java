@@ -27,7 +27,9 @@ public class TagAndAttributeScorerTest
 
     @Before
     public void setUp() throws Exception {
-        tagAndAttributeSUT = new TagAndAttributeScorer();
+        tagAndAttributeSUT = new TagAndAttributeScorer(
+                TagAndAttributeScorer.defaultMap()
+        );
         super.setArgumentToBeScoredMock(tagAndAttributeToBeScoredMock);
         super.setScorerSUT(tagAndAttributeSUT);
         super.setUp();
