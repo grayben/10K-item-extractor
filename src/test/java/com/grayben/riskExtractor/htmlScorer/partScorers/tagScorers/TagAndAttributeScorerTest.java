@@ -3,7 +3,6 @@ package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -14,7 +13,6 @@ import static junit.framework.TestCase.fail;
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class TagAndAttributeScorerTest
         extends MapScorerTest<TagAndAttribute> {
