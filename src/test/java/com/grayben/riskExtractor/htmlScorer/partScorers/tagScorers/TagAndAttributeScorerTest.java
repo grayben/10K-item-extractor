@@ -11,10 +11,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.TestCase.fail;
 
 /**
  * Created by beng on 28/11/2015.
@@ -52,8 +52,7 @@ public class TagAndAttributeScorerTest
         tagAndAttributeScorerSUT = new TagAndAttributeScorer(nullMap);
     }
 
-    @Override
-    public void test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
+    private void stubTagAndAttributeMock(){
         Tag tagMock = Mockito.mock(Tag.class);
         Mockito.when(tagMock.getName()).thenReturn("font");
         Mockito.when(tagMock.isEmpty()).thenReturn(false);
@@ -67,6 +66,11 @@ public class TagAndAttributeScorerTest
                 .thenReturn(attributeMock);
         Mockito.when(tagAndAttributeToBeScoredMock.getTag())
                 .thenReturn(tagMock);
+    }
+
+    @Override
+    public void test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
+        stubTagAndAttributeMock();
 
         Integer returned
                 = tagAndAttributeScorerSUT.score(tagAndAttributeToBeScoredMock);
@@ -78,12 +82,18 @@ public class TagAndAttributeScorerTest
     @Test
     public void
     test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-        fail("This test has not been implemented");
+        Map expectedOutput = new HashMap<>(TagAndAttributeScorer.defaultMap());
+        assert expectedOutput.put(tagAndAttributeToBeScoredMock, 0) == null;
+
+        testHelper_ScoreGivesExpectedResult_WhenSimpleInput
+                (tagAndAttributeScorerSUT, expectedOutput);
     }
 
     @Test
     public void
     test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        fail("Test not implemented: decide whether appropriate");
+        thrown.expect(IllegalArgumentException.class);
+
+        tagAndAttributeScorerSUT.score(tagAndAttributeToBeScoredMock);
     }
 }
