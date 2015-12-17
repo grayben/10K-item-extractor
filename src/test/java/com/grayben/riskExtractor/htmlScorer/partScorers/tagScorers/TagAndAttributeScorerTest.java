@@ -1,36 +1,40 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static junit.framework.TestCase.fail;
+import java.util.HashMap;
+import java.util.Map;
+
+import static junit.framework.Assert.assertNotNull;
 
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class TagAndAttributeScorerTest
         extends MapScorerTest<TagAndAttribute> {
 
-    TagAndAttributeScorer tagAndAttributeSUT;
+    TagAndAttributeScorer tagAndAttributeScorerSUT;
 
     @Mock
     public TagAndAttribute tagAndAttributeToBeScoredMock;
 
     @Before
     public void setUp() throws Exception {
-        tagAndAttributeSUT = new TagAndAttributeScorer(
+        tagAndAttributeScorerSUT = new TagAndAttributeScorer(
                 TagAndAttributeScorer.defaultMap()
         );
         super.setArgumentToBeScoredMock(tagAndAttributeToBeScoredMock);
-        super.setScorerSUT(tagAndAttributeSUT);
+        super.setMapScorerSUT(tagAndAttributeScorerSUT);
         super.setUp();
     }
 
@@ -41,24 +45,60 @@ public class TagAndAttributeScorerTest
 
     @Override
     public void test_InitThrowsNullPointerException_WhenMapParamIsNull() throws Exception {
-        fail("Test not implemented");
+        Map<TagAndAttribute, Integer> nullMap = null;
+
+        thrown.expect(NullPointerException.class);
+
+        tagAndAttributeScorerSUT = new TagAndAttributeScorer(nullMap);
+    }
+
+    private void stubTagAndAttributeMock(){
+        Tag tagMock = Mockito.mock(Tag.class);
+        Mockito.when(tagMock.getName()).thenReturn("font");
+        Mockito.when(tagMock.isEmpty()).thenReturn(false);
+
+        Attribute attributeMock = Mockito.mock(Attribute.class);
+        Mockito.when(attributeMock.getKey()).thenReturn("foo");
+        Mockito.when(attributeMock.getValue()).thenReturn("bar");
+        Mockito.when(attributeMock.html()).thenReturn("<foo>bar</foo>");
+
+        Mockito.when(tagAndAttributeToBeScoredMock.getAttribute())
+                .thenReturn(attributeMock);
+        Mockito.when(tagAndAttributeToBeScoredMock.getTag())
+                .thenReturn(tagMock);
     }
 
     @Override
     public void test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
-        fail("Test not implemented");
+        stubTagAndAttributeMock();
+
+        Integer returned
+                = tagAndAttributeScorerSUT.score(tagAndAttributeToBeScoredMock);
+
+        assertNotNull(returned);
     }
 
     @Override
     @Test
     public void
     test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-        fail("This test has not been implemented");
+        Map expectedOutput = new HashMap<>(TagAndAttributeScorer.defaultMap());
+        assert expectedOutput.put(tagAndAttributeToBeScoredMock, 0) == null;
+
+        testHelper_ScoreGivesExpectedResult_WhenSimpleInput
+                (tagAndAttributeScorerSUT, expectedOutput);
     }
 
     @Test
     public void
     test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        fail("Test not implemented: decide whether appropriate");
+        thrown.expect(IllegalArgumentException.class);
+
+        stubTagAndAttributeMock();
+
+        Mockito.when(tagAndAttributeToBeScoredMock.getAttribute().getValue())
+                .thenReturn("");
+
+        tagAndAttributeScorerSUT.score(tagAndAttributeToBeScoredMock);
     }
 }

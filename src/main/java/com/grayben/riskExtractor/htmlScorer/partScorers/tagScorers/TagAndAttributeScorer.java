@@ -1,9 +1,13 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.parser.Tag;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class TagAndAttributeScorer
 		extends MapScorer<TagAndAttribute> {
@@ -17,27 +21,61 @@ public class TagAndAttributeScorer
 
     @Override
 	public int score(TagAndAttribute input) {
+        validateScoreInput(input);
 		return super.score(input);
 	}
 
-	@Override
-	public String getScoreLabel() {
-		return null;
-	}
+    private void validateScoreInput(TagAndAttribute input){
+        if (input.getAttribute() == null){
+            throw new NullPointerException(
+                    "The input cannot have null Attribute"
+            );
+        }
+        if (input.getTag() == null){
+            throw new NullPointerException(
+                    "The input cannot have null Tag"
+            );
+        }
+        if(input.getAttribute().getValue().isEmpty()){
+            throw new IllegalArgumentException(
+                    "The input cannot have an empty Attribute"
+            );
+        }
+        if(input.getTag().getName().isEmpty()){
+            throw new IllegalArgumentException(
+                    "The input cannot have an empty Tag"
+            );
+        }
+    }
 
 	public static final Map<TagAndAttribute, Integer> defaultMap() {
 
-		Map<TagAndAttribute, Integer> scoreMap = new HashMap<>();
-//		scoreMap.put(Tag.valueOf("b"), 1);
-//		scoreMap.put(Tag.valueOf("strong"), 1);
-//		scoreMap.put(Tag.valueOf("h1"), 1);
-//		scoreMap.put(Tag.valueOf("h2"), 1);
-//		scoreMap.put(Tag.valueOf("h3"), 1);
-//		scoreMap.put(Tag.valueOf("h4"), 1);
-//		scoreMap.put(Tag.valueOf("h5"), 1);
-//		scoreMap.put(Tag.valueOf("u"), 1);
+        String[] tagNames = {"font", "div", "p"};
+        Set<Tag> tags = new HashSet<>();
+        for (String tagName: tagNames) {
+            tags.add(Tag.valueOf(tagName));
+        }
 
-		return scoreMap;
+        Set<Attribute> attributes = new HashSet<>();
+        attributes.add(new Attribute("style", "bold"));
+        attributes.add(new Attribute("style", "underline"));
+
+        Set<TagAndAttribute> tagAndAttributes = new HashSet<>();
+        for (Tag tag: tags)
+            for (Attribute attribute : attributes)
+                tagAndAttributes.add(
+                        new TagAndAttribute(
+                                tag,
+                                attribute
+                        )
+                );
+
+        Map<TagAndAttribute, Integer> scoresMap = new HashMap<>();
+        for (TagAndAttribute tagAndAttribute : tagAndAttributes) {
+            scoresMap.put(tagAndAttribute, 1);
+        }
+
+        return scoresMap;
 
 	}
 
