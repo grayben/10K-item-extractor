@@ -47,7 +47,7 @@ public class SegmentationElementScorerTest
     @Override
     @Test
     public void
-    test_ScoreReturnsInteger_WhenArgumentIsNonNull() throws Exception {
+    test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
         Mockito.when(tagScorerMock.score(Mockito.any())).thenReturn(1);
 
         Integer returned = elementScorerSUT.score(elementToBeScoredMock);
