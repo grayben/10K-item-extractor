@@ -1,6 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
-import com.grayben.riskExtractor.htmlScorer.partScorers.MapScorerTest;
+import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import org.jsoup.nodes.Element;
 import org.junit.After;
 import org.junit.Before;
@@ -17,7 +17,7 @@ import static junit.framework.TestCase.fail;
  */
 @Ignore
 @RunWith(MockitoJUnitRunner.class)
-public class EmphasisElementScorerTest extends MapScorerTest<Element> {
+public class EmphasisElementScorerTest extends ScorerTest<Element> {
 
     EmphasisElementScorer emphasisElementScorerSUT;
 
