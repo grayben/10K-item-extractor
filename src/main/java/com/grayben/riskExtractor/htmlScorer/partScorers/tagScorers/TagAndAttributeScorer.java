@@ -1,6 +1,5 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
-import com.grayben.riskExtractor.htmlScorer.partScorers.MapScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 
 import java.util.HashMap;

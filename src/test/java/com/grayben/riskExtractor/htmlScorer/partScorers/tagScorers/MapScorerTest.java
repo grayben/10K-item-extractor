@@ -1,5 +1,6 @@
-package com.grayben.riskExtractor.htmlScorer.partScorers;
+package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
+import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;

@@ -1,6 +1,5 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
-import com.grayben.riskExtractor.htmlScorer.partScorers.MapScorerTest;
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import org.junit.After;
 import org.junit.Before;
