@@ -38,9 +38,9 @@ public class TagEmphasisScorer
 	@Override
 	public int score(Tag input) {
 		validateTagInput(input);
-        String inputName = input.getName();
-        if (tagScores.containsKey(inputName))
-            return tagScores.get(inputName);
+        boolean containsKey = tagScores.containsKey(input);
+        if (containsKey)
+            return tagScores.get(input);
         else
             return 0;
 	}
