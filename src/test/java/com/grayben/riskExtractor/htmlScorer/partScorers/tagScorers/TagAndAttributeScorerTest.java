@@ -46,7 +46,7 @@ public class TagAndAttributeScorerTest
 
     @Override
     public void test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Override
