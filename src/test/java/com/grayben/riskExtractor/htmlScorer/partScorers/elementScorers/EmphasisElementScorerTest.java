@@ -105,7 +105,14 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
     @Test
     public void
     test_ScoreThrowsIllegalArgumentException_WhenTagIsEmpty() throws Exception {
-        fail("Test not implemented: decide whether appropriate");
+        Tag tagStub = stubTag();
+        Mockito.when(tagStub.isEmpty()).thenReturn(true);
+
+        stubElementToBeScoredMock(tagStub, stubAttributes());
+
+        thrown.expect(IllegalArgumentException.class);
+
+        emphasisElementScorerSUT.score(elementToBeScoredMock);
     }
 
     @Override
