@@ -83,6 +83,7 @@ public class TagAndAttributeScorerTest
     public void
     test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
         Map expectedOutput = new HashMap<>(TagAndAttributeScorer.defaultMap());
+        stubTagAndAttributeMock();
         assert expectedOutput.put(tagAndAttributeToBeScoredMock, 0) == null;
 
         testHelper_ScoreGivesExpectedResult_WhenSimpleInput
