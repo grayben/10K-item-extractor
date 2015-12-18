@@ -97,7 +97,9 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
     @Test
     public void
     test_ScoreThrowsNullPointerException_WhenAttributesIsNull() throws Exception {
-        fail("Test not implemented: decide whether appropriate");
+        thrown.expect(NullPointerException.class);
+
+        stubElementToBeScoredMock(stubTag(), null);
     }
 
     @Test
