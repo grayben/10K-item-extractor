@@ -86,6 +86,26 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         assertNotNull(returned);
     }
 
+    @Test
+    public void
+    test_ScoreThrowsNullPointerException_WhenTagIsNull() throws Exception {
+        thrown.expect(NullPointerException.class);
+
+        stubElementToBeScoredMock(null, stubAttributes());
+    }
+
+    @Test
+    public void
+    test_ScoreThrowsNullPointerException_WhenAttributesIsNull() throws Exception {
+        fail("Test not implemented: decide whether appropriate");
+    }
+
+    @Test
+    public void
+    test_ScoreThrowsIllegalArgumentException_WhenTagIsEmpty() throws Exception {
+        fail("Test not implemented: decide whether appropriate");
+    }
+
     @Override
     @Test
     public void
@@ -93,9 +113,5 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         fail("This test has not been implemented");
     }
 
-    @Test
-    public void
-    test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        fail("Test not implemented: decide whether appropriate");
-    }
+
 }
