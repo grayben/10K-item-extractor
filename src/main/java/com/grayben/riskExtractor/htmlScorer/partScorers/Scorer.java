@@ -12,6 +12,8 @@ public abstract class Scorer<T> {
 
     private String scoreLabel;
 
+    public final static int DEFAULT_SCORE = 0;
+
     protected Scorer(String scoreLabel){
         this.scoreLabel = scoreLabel;
     }
