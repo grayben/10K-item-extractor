@@ -37,6 +37,14 @@ public final class TestHelper {
         return Mockito.mock(Element.class);
     }
 
+    public static boolean stubsAreEqual(Tag tag1, Tag tag2){
+        return true;
+    }
+
+    public static boolean stubsAreEqual(Attribute atr1, Attribute atr2){
+        return true;
+    }
+
     public static Tag stubTag(String tagName){
         Tag tag = Mockito.mock(Tag.class);
         Mockito.when(tag.isEmpty()).thenReturn(false);
@@ -125,15 +133,6 @@ public final class TestHelper {
         assert map.size() == number;
 
         return map;
-    }
-
-    public static List<Element> mockRandomElementsUNFINISHED(int amountToMock, Set<Element> notEqualToAnyOf){
-        List<Element> mocks = new ArrayList<>();
-        for (int i = 0; i < amountToMock; i++){
-            //
-        }
-        //TODO: MAKE THIS WORK
-        return null;
     }
 
     public static Element
