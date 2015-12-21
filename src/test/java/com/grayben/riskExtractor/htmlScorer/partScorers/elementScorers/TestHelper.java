@@ -32,6 +32,11 @@ public final class TestHelper {
         return element;
     }
 
+    public static Element stubRandomElementUNFINISHED(Set<Element> notEqualtoMocks){
+        //TODO: make this a real method
+        return Mockito.mock(Element.class);
+    }
+
     public static Tag stubTag(String tagName){
         Tag tag = Mockito.mock(Tag.class);
         Mockito.when(tag.isEmpty()).thenReturn(false);
@@ -86,7 +91,7 @@ public final class TestHelper {
             (int amountToStub, Set<Attribute> notEqualToAnyOfTheseMocks){
         List<Attribute> attributes = new ArrayList<>();
         for (int i = 0; i < amountToStub; i++){
-            attributes.add(stubRandomAttribute(notEqualToAnyOfTheseMocks))
+            attributes.add(stubRandomAttribute(notEqualToAnyOfTheseMocks));
         }
         return attributes;
     }
@@ -114,12 +119,13 @@ public final class TestHelper {
         return map;
     }
 
-    public static List<Element> mockRandomElements(int amountToMock, Set<Element> notEqualToAnyOf){
+    public static List<Element> mockRandomElementsUNFINISHED(int amountToMock, Set<Element> notEqualToAnyOf){
         List<Element> mocks = new ArrayList<>();
         for (int i = 0; i < amountToMock; i++){
             //
         }
-
+        //TODO: MAKE THIS WORK
+        return null;
     }
 
     public static Element
