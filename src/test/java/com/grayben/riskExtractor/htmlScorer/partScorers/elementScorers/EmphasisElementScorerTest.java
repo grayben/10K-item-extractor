@@ -163,10 +163,4 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         //// COMPARE INPUT AND OUTPUT ////////////////////////////////////////////////
         assertEquals(expectedOutput, actualOutputs);
     }
-
-
-
-
-
-
 }
