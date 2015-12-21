@@ -6,6 +6,9 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttribu
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import org.jsoup.nodes.Element;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Score the emphasis of an {@link org.jsoup.nodes.Element} based upon the Tag and Attributes it contains.
  */
@@ -27,10 +30,16 @@ public class EmphasisElementScorer extends Scorer<Element> {
 
 	@Override
 	public int score(Element input) {
+        List<Integer> subScores = new ArrayList<>();
         validateScoreInput(input);
-        int tagScore = tagEmphasisScorer.score(input.tag());
-        TagAndAttribute tagAndAttribute = null;
-        int tagAndAttributeScore = comboScorer.score(tagAndAttribute);
+        subScores.add(tagEmphasisScorer.score(input.tag()));
+
+        List<TagAndAttribute> tagAndAttributes
+                = TagAndAttribute.fromElement(input);
+        for (TagAndAttribute item :
+                tagAndAttributes) {
+            subScores.add(comboScorer.score(item));
+        }
 
         return 0;
 	}
