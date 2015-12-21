@@ -7,6 +7,7 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisSc
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,8 +42,9 @@ public class EmphasisElementScorer extends Scorer<Element> {
             subScores.add(comboScorer.score(item));
         }
 
-        return 0;
-	}
+        Collections.sort(subScores);
+        return subScores.get(subScores.size() - 1);
+    }
 
     private void validateScoreInput(Element input){
         if (input == null){
