@@ -51,10 +51,4 @@ public class EmphasisElementScorer extends Scorer<Element> {
             );
         }
     }
-
-	@Override
-	public String getScoreLabel() {
-		return null;
-	}
-
 }
