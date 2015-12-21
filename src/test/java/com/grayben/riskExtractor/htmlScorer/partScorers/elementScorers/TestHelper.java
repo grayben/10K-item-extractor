@@ -58,8 +58,8 @@ public final class TestHelper {
 
     public static Tag stubTag(String tagName){
         Tag tag = Mockito.mock(Tag.class);
-        Mockito.when(tag.isEmpty()).thenReturn(false);
         Mockito.when(tag.getName()).thenReturn(tagName);
+        Mockito.when(tag.isEmpty()).thenReturn(false);
 
         return tag;
     }
