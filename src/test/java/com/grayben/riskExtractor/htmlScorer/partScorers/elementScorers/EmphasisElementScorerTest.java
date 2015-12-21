@@ -80,7 +80,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
 
         elementToBeScoredMock = stubElement(null, attributes);
 
-        //TODO: make this test run
+        emphasisElementScorerSUT.score(elementToBeScoredMock);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
 
         elementToBeScoredMock = stubElement(stubTag("font"), null);
 
-        //TODO: make this test run
+        emphasisElementScorerSUT.score(elementToBeScoredMock);
     }
 
     @Test
