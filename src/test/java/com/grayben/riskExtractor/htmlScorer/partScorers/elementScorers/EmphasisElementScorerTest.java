@@ -56,7 +56,27 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         super.tearDown();
     }
 
+    @Test
+    public void
+    test_InitThrowsNullPointerException_WhenTagScorerIsNull
+            () throws Exception {
+        TagEmphasisScorer scorer1 = null;
+        TagAndAttributeScorer scorer2 = new TagAndAttributeScorer(
+                TagAndAttributeScorer.defaultMap()
+        );
+        emphasisElementScorerSUT = new EmphasisElementScorer(scorer1, scorer2);
+    }
 
+    @Test
+    public void
+    test_InitThrowsNullPointerException_WhenTagAndAttributeScorerIsNull
+            () throws Exception {
+        TagEmphasisScorer scorer1 = new TagEmphasisScorer(
+                TagEmphasisScorer.defaultMap()
+        );
+        TagAndAttributeScorer scorer2 = null;
+        emphasisElementScorerSUT = new EmphasisElementScorer(scorer1, scorer2);
+    }
 
     @Override
     @Test
