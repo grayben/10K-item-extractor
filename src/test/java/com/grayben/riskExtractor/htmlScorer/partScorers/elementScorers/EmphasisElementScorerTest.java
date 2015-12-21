@@ -148,7 +148,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
 
         Map<Element, Integer> expectedOutput = new HashMap<>();
         expectedOutput.putAll(targetOutput);
-        expectedOutput.putAll(nonTargetOutput);
+        expectedOutput.putAll(nonTargetOutput); 
 
         //////////////////////////////////////////////////////////////////////////////
         //// RUN THE OUTPUT GENERATION ///////////////////////////////////////////////
