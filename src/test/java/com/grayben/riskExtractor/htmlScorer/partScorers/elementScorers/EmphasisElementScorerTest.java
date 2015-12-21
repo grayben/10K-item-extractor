@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
+import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.TestHelper.*;
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 /**
@@ -52,10 +54,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
     public void
     test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
         Tag tag = stubTag("font");
-        Attributes attributes
-                = convertListToAttributes(
-                dummyAttributes()
-        );
+        Attributes attributes = dummyAttributes();
 
         elementToBeScoredMock = stubElement(tag, attributes);
 
@@ -69,10 +68,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
     test_ScoreThrowsNullPointerException_WhenTagIsNull() throws Exception {
         thrown.expect(NullPointerException.class);
 
-        Attributes attributes
-                = convertListToAttributes(
-                dummyAttributes()
-        );
+        Attributes attributes = dummyAttributes();
 
         elementToBeScoredMock = stubElement(null, attributes);
 
@@ -95,10 +91,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         Tag tagStub = stubTag("");
         Mockito.when(tagStub.isEmpty()).thenReturn(true);
 
-        Attributes attributes
-                = convertListToAttributes(
-                dummyAttributes()
-        );
+        Attributes attributes = dummyAttributes();
 
         elementToBeScoredMock = stubElement(tagStub, attributes);
 
@@ -113,33 +106,62 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
     test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
         //////////////////////////////////////////////////////////////////////////////
         //// GENERATE TARGET INPUT/OUTPUT PAIRS //////////////////////////////////////
-        Map<Element, Integer> expectedOutput = new HashMap<>();
+        Map<Element, Integer> targetOutput = new HashMap<>();
 
-        //add Map.Entry<Element, Integer> entries to expectedOutput
+        //add Map.Entry<Element, Integer> entries to targetOutput
         //based on the tagAndAttributeScoreMap
         Map<Element, Integer> scoredMapBasedOnTagAndAttributes
                 = stubElementsAndScoresByTagAndAttributeScores(
                 TagAndAttributeScorer.defaultMap()
         );
-        expectedOutput.putAll(scoredMapBasedOnTagAndAttributes);
+        targetOutput.putAll(scoredMapBasedOnTagAndAttributes);
 
-        //add Map.Entry<Element, Integer> entries to expectedOutput
+        //add Map.Entry<Element, Integer> entries to targetOutput
         //based on the tagEmphasisScoreMap
         Map<Element, Integer> scoresMapBasedOnTags
                 = stubElementsAndScoresByTagScores(
                 TagEmphasisScorer.defaultMap()
         );
-        expectedOutput.putAll(scoresMapBasedOnTags);
+        targetOutput.putAll(scoresMapBasedOnTags);
 
-        assert expectedOutput.size()
+        assert targetOutput.size()
                 == scoredMapBasedOnTagAndAttributes.size()
                 + scoresMapBasedOnTags.size();
 
         //////////////////////////////////////////////////////////////////////////////
         //// GENERATE DUMMY INPUT/OUTPUT PAIRS ///////////////////////////////////////
+        Map<Element, Integer> nonTargetOutput = new HashMap<>();
+        nonTargetOutput.put(
+                stubElement(
+                        stubTag("don't use this!"),
+                        dummyAttributes()
+                ),
+                Scorer.DEFAULT_SCORE
+        );
+        nonTargetOutput.put(
+                stubElement(
+                        stubTag("really, don't use it, it's not a good tag."),
+                        dummyAttributes()
+                ),
+                Scorer.DEFAULT_SCORE
+        );
 
+        Map<Element, Integer> expectedOutput = new HashMap<>();
+        expectedOutput.putAll(targetOutput);
+        expectedOutput.putAll(nonTargetOutput);
 
-        //TODO: define input
+        //////////////////////////////////////////////////////////////////////////////
+        //// RUN THE OUTPUT GENERATION ///////////////////////////////////////////////
+
+        Map<Element, Integer> actualOutputs = new HashMap<>();
+        for (Element input :
+                expectedOutput.keySet()) {
+            actualOutputs.put(input, emphasisElementScorerSUT.score(input));
+        }
+
+        //////////////////////////////////////////////////////////////////////////////
+        //// COMPARE INPUT AND OUTPUT ////////////////////////////////////////////////
+        assertEquals(expectedOutput, actualOutputs);
     }
 
 
