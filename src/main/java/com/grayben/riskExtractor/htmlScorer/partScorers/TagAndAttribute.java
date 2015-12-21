@@ -1,7 +1,11 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers;
 
 import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TagAndAttribute {
 	private final Tag tag;
@@ -13,6 +17,15 @@ public class TagAndAttribute {
 
     public Attribute getAttribute() {
         return attribute;
+    }
+
+    public static List<TagAndAttribute> fromElement(Element element){
+        List<TagAndAttribute> list = new ArrayList<>();
+        for (Attribute attribute :
+                element.attributes()) {
+            list.add(new TagAndAttribute(element.tag(), attribute));
+        }
+        return list;
     }
 
     public TagAndAttribute(Tag tag, Attribute attribute) {
