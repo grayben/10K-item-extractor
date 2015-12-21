@@ -117,8 +117,8 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
     @Test
     public void
     test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-
-        // GENERATE OUTPUT ////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        //// GENERATE TARGET INPUT/OUTPUT PAIRS //////////////////////////////////////
         Map<Element, Integer> expectedOutput = new HashMap<>();
 
         //add Map.Entry<Element, Integer> entries to expectedOutput
@@ -140,7 +140,10 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         assert expectedOutput.size()
                 == scoredMapBasedOnTagAndAttributes.size()
                 + scoresMapBasedOnTags.size();
-        ///////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////
+        //// GENERATE DUMMY INPUT/OUTPUT PAIRS ///////////////////////////////////////
+
 
         //TODO: define input
     }
