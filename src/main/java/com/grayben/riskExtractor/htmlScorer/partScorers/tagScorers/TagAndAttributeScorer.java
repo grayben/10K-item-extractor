@@ -26,6 +26,11 @@ public class TagAndAttributeScorer
 	}
 
     private void validateScoreInput(TagAndAttribute input){
+        if(input == null){
+            throw new NullPointerException(
+                    "The input cannot be null"
+            );
+        }
         if (input.getAttribute() == null){
             throw new NullPointerException(
                     "The input cannot have null Attribute"
