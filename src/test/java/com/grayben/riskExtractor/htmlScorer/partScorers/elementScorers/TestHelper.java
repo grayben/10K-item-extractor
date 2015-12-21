@@ -116,11 +116,14 @@ public final class TestHelper {
 
     public static List<Element> mockRandomElements(int amountToMock, Set<Element> notEqualToAnyOf){
         List<Element> mocks = new ArrayList<>();
+        for (int i = 0; i < amountToMock; i++){
+            //
+        }
 
     }
 
     public static Element
-    mockElementConformingToTagAndAttribute(TagAndAttribute tagAndAttribute){
+    stubElementConformingToTagAndAttribute(TagAndAttribute tagAndAttribute){
         Element elementMock = Mockito.mock(Element.class);
 
         //the element returns the scored TagAndAttribute.getTag()
@@ -148,12 +151,12 @@ public final class TestHelper {
     }
 
     public static Map<Element, Integer>
-    mockElementsAndScoresConformingToTagAndAttributeScoreMap
+    stubElementsAndScoresConformingToTagAndAttributeScoreMap
             (Map<TagAndAttribute, Integer> scoreMap){
         Map<Element, Integer> elementsAndScores = new HashMap<>();
 
         for (Map.Entry<TagAndAttribute, Integer> entry : scoreMap.entrySet()){
-            Element elementMock = mockElementConformingToTagAndAttribute(
+            Element elementMock = stubElementConformingToTagAndAttribute(
                     entry.getKey()
             );
 
@@ -167,7 +170,7 @@ public final class TestHelper {
         return elementsAndScores;
     }
 
-    public static Element mockElementConformingToTag(Tag tag){
+    public static Element stubElementConformingToTag(Tag tag){
         Element elementMock = Mockito.mock(Element.class);
 
         //the element returns the scored Tag
@@ -186,7 +189,7 @@ public final class TestHelper {
     }
 
     public static Map<Element, Integer>
-    mockElementsAndScoresConformingToTagScoreMap
+    stubElementsAndScoresConformingToTagScoreMap
             (Map<Tag, Integer> scoreMap) {
 
         Map<Element, Integer> elementsAndScores = new HashMap<>();
@@ -194,7 +197,7 @@ public final class TestHelper {
         for (Map.Entry<Tag, Integer> entry :
                 scoreMap.entrySet()) {
 
-            Element elementMock = mockElementConformingToTag(entry.getKey());
+            Element elementMock = stubElementConformingToTag(entry.getKey());
 
             // expect the element mock to be scored
             // according to the tag in the map

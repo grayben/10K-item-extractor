@@ -124,7 +124,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         //add Map.Entry<Element, Integer> entries to expectedOutput
         //based on the tagAndAttributeScoreMap
         Map<Element, Integer> scoredMapBasedOnTagAndAttributes
-                = mockElementsAndScoresConformingToTagAndAttributeScoreMap(
+                = stubElementsAndScoresConformingToTagAndAttributeScoreMap(
                 TagAndAttributeScorer.defaultMap()
         );
         expectedOutput.putAll(scoredMapBasedOnTagAndAttributes);
@@ -132,7 +132,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         //add Map.Entry<Element, Integer> entries to expectedOutput
         //based on the tagEmphasisScoreMap
         Map<Element, Integer> scoresMapBasedOnTags
-                = mockElementsAndScoresConformingToTagScoreMap(
+                = stubElementsAndScoresConformingToTagScoreMap(
                 TagEmphasisScorer.defaultMap()
         );
         expectedOutput.putAll(scoresMapBasedOnTags);
