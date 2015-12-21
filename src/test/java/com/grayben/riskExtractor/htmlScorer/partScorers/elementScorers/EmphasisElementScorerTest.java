@@ -36,7 +36,16 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
 
     @Before
     public void setUp() throws Exception {
-        this.emphasisElementScorerSUT = new EmphasisElementScorer();
+        TagAndAttributeScorer tagAndAttributeScorer
+                = new TagAndAttributeScorer(
+                TagAndAttributeScorer.defaultMap());
+        TagEmphasisScorer tagEmphasisScorer
+                = new TagEmphasisScorer(TagEmphasisScorer.defaultMap());
+        this.emphasisElementScorerSUT
+                = new EmphasisElementScorer(
+                tagEmphasisScorer,
+                tagAndAttributeScorer
+        );
         super.setScorerSUT(this.emphasisElementScorerSUT);
         super.setArgumentToBeScoredMock(elementToBeScoredMock);
         super.setUp();

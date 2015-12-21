@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import org.jsoup.nodes.Element;
@@ -15,13 +16,22 @@ public class EmphasisElementScorer extends Scorer<Element> {
 	TagEmphasisScorer tagEmphasisScorer;
 	TagAndAttributeScorer comboScorer;
 
-	public EmphasisElementScorer() {
+	//TODO: test init conditions
+    public EmphasisElementScorer(
+            TagEmphasisScorer tagEmphasisScorer,
+            TagAndAttributeScorer tagAndAttributeScorer) {
 		super(SCORE_LABEL);
+        this.tagEmphasisScorer = tagEmphasisScorer;
+        this.comboScorer = tagAndAttributeScorer;
 	}
 
 	@Override
 	public int score(Element input) {
         validateScoreInput(input);
+        int tagScore = tagEmphasisScorer.score(input.tag());
+        TagAndAttribute tagAndAttribute = null;
+        int tagAndAttributeScore = comboScorer.score(tagAndAttribute);
+
         return 0;
 	}
 
