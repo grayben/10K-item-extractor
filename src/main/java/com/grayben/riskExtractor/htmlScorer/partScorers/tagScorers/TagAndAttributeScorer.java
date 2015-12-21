@@ -15,7 +15,7 @@ public class TagAndAttributeScorer
     public final static String SCORE_LABEL
             = "tag-and-attribute-emphasis";
 
-    protected TagAndAttributeScorer(Map<TagAndAttribute, Integer> tagScores) {
+    public TagAndAttributeScorer(Map<TagAndAttribute, Integer> tagScores) {
         super(SCORE_LABEL, tagScores);
     }
 
@@ -26,6 +26,11 @@ public class TagAndAttributeScorer
 	}
 
     private void validateScoreInput(TagAndAttribute input){
+        if(input == null){
+            throw new NullPointerException(
+                    "The input cannot be null"
+            );
+        }
         if (input.getAttribute() == null){
             throw new NullPointerException(
                     "The input cannot have null Attribute"
