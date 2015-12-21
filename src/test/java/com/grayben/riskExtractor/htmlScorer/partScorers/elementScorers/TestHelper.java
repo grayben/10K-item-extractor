@@ -26,10 +26,43 @@ public final class TestHelper {
         return element;
     }
 
+    public static Element stubElement(Tag tag){
+        Element elementMock = Mockito.mock(Element.class);
+
+        //the element returns the scored Tag
+        Mockito.when(elementMock.tag()).thenReturn(tag);
+
+        //add some dummy attributes to the element
+        //(they shouldn't matter, since only the tag is important)
+        Attributes attributes = convertListToAttributes(
+                dummyAttributes()
+        );
+        Mockito.when(elementMock.attributes()).thenReturn(attributes);
+
+        return elementMock;
+    }
+
+    public static Element stubElement(TagAndAttribute tagAndAttribute){
+        Tag tag;
+        Attribute attribute;
+
+        tag = tagAndAttribute.getTag();
+        attribute = tagAndAttribute.getAttribute();
+
+        //Stub the Attributes randomly - these ones don't matter
+        Attributes attributeMocks = convertListToAttributes(
+                dummyAttributes()
+        );
+
+        attributeMocks.put(attribute);
+
+        return stubElement(tag, attributeMocks);
+    }
+
     public static Tag stubTag(String tagName){
         Tag tag = Mockito.mock(Tag.class);
         Mockito.when(tag.isEmpty()).thenReturn(false);
-        Mockito.when(tag.getName()).thenReturn("font");
+        Mockito.when(tag.getName()).thenReturn(tagName);
 
         return tag;
     }
@@ -69,43 +102,12 @@ public final class TestHelper {
         return stubAttributes(dummyMap);
     }
 
-    public static Element
-    stubElementConformingToTagAndAttribute(TagAndAttribute tagAndAttribute){
-        Element elementMock = Mockito.mock(Element.class);
-
-        //the element returns the scored TagAndAttribute.getTag()
-        Mockito.when(elementMock.tag()).thenReturn(tagAndAttribute.getTag());
-
-        //generate the target attribute from the scored key
-        Attribute targetAttributeMock = stubAttribute(
-                tagAndAttribute.getAttribute().getKey(),
-                tagAndAttribute.getAttribute().getValue()
-        );
-
-
-
-        //Stub the Attributes randomly - these ones don't matter
-        Attributes attributeMocks = convertListToAttributes(
-                dummyAttributes()
-        );
-
-        //but then add the target attribute
-        attributeMocks.put(targetAttributeMock);
-
-        //the element returns the attributes
-        // containing TagAndAttribute.getAttribute();
-        Mockito.when(elementMock.attributes()).thenReturn(attributeMocks);
-
-        return elementMock;
-    }
-
     public static Map<Element, Integer>
-    stubElementsAndScoresConformingToTagAndAttributeScoreMap
-            (Map<TagAndAttribute, Integer> scoreMap){
+    stubElementsAndScoresByTagAndAttributeScores(Map<TagAndAttribute, Integer> scoreMap){
         Map<Element, Integer> elementsAndScores = new HashMap<>();
 
         for (Map.Entry<TagAndAttribute, Integer> entry : scoreMap.entrySet()){
-            Element elementMock = stubElementConformingToTagAndAttribute(
+            Element elementMock = stubElement(
                     entry.getKey()
             );
 
@@ -119,24 +121,8 @@ public final class TestHelper {
         return elementsAndScores;
     }
 
-    public static Element stubElementConformingToTag(Tag tag){
-        Element elementMock = Mockito.mock(Element.class);
-
-        //the element returns the scored Tag
-        Mockito.when(elementMock.tag()).thenReturn(tag);
-
-        //add some dummy attributes to the element
-        //(they shouldn't matter, since only the tag is important)
-        Attributes attributes = convertListToAttributes(
-                dummyAttributes()
-        );
-        Mockito.when(elementMock.attributes()).thenReturn(attributes);
-
-        return elementMock;
-    }
-
     public static Map<Element, Integer>
-    stubElementsAndScoresConformingToTagScoreMap
+    stubElementsAndScoresByTagScores
             (Map<Tag, Integer> scoreMap) {
 
         Map<Element, Integer> elementsAndScores = new HashMap<>();
@@ -144,7 +130,7 @@ public final class TestHelper {
         for (Map.Entry<Tag, Integer> entry :
                 scoreMap.entrySet()) {
 
-            Element elementMock = stubElementConformingToTag(entry.getKey());
+            Element elementMock = stubElement(entry.getKey());
 
             // expect the element mock to be scored
             // according to the tag in the map
