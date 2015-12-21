@@ -51,8 +51,11 @@ public final class TestHelper {
         while ( ! unique ){
             String name = Integer.toString(random.nextInt());
             tagStub = stubTag(name);
-            if (notEqualTo.contains(tagStub) == false)
-                unique = true;
+            unique = true;
+            for (Tag avoid: notEqualTo){
+                if (avoid.getName().equals(tagStub.getName()))
+                    unique = false;
+            }
         }
         return tagStub;
     }
@@ -70,8 +73,13 @@ public final class TestHelper {
         boolean unique = false;
         while ( ! unique ){
             attributeStub = stubAttribute(randomString(), randomString());
-            if(notEqualToMocks.contains(attributeStub) == false)
-                unique = true;
+            unique = true;
+            for (Attribute attribute : notEqualToMocks){
+                if (attribute.getKey().equals(attributeStub.getKey()))
+                    unique = false;
+                if (attribute.getValue().equals(attributeStub.getValue()))
+                    unique = false;
+            }
         }
         assert attributeStub != null;
         return attributeStub;
