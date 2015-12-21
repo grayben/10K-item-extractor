@@ -14,12 +14,6 @@ import java.util.*;
  */
 public final class TestHelper {
 
-    private static Random random = new Random();
-
-    private static String randomString(){
-        return Integer.toString(random.nextInt());
-    }
-
     private TestHelper(){}
 
     public static Element stubElement(Tag tag, Attributes attributes){
@@ -32,19 +26,6 @@ public final class TestHelper {
         return element;
     }
 
-    public static Element stubRandomElementUNFINISHED(Set<Element> notEqualtoMocks){
-        //TODO: make this a real method
-        return Mockito.mock(Element.class);
-    }
-
-    public static boolean stubsAreEqual(Tag tag1, Tag tag2){
-        return true;
-    }
-
-    public static boolean stubsAreEqual(Attribute atr1, Attribute atr2){
-        return true;
-    }
-
     public static Tag stubTag(String tagName){
         Tag tag = Mockito.mock(Tag.class);
         Mockito.when(tag.isEmpty()).thenReturn(false);
@@ -53,44 +34,12 @@ public final class TestHelper {
         return tag;
     }
 
-    public static Tag stubRandomTag(Set<Tag> notEqualTo){
-        boolean unique = false;
-        Tag tagStub = null;
-        while ( ! unique ){
-            String name = Integer.toString(random.nextInt());
-            tagStub = stubTag(name);
-            unique = true;
-            for (Tag avoid: notEqualTo){
-                if (avoid.getName().equals(tagStub.getName()))
-                    unique = false;
-            }
-        }
-        return tagStub;
-    }
-
     public static Attribute stubAttribute(String key, String value){
         Attribute attribute = Mockito.mock(Attribute.class);
         Mockito.when(attribute.getKey()).thenReturn(key);
         Mockito.when(attribute.getValue()).thenReturn(value);
 
         return attribute;
-    }
-
-    public static Attribute stubRandomAttribute(Set<Attribute> notEqualToMocks){
-        Attribute attributeStub = null;
-        boolean unique = false;
-        while ( ! unique ){
-            attributeStub = stubAttribute(randomString(), randomString());
-            unique = true;
-            for (Attribute attribute : notEqualToMocks){
-                if (attribute.getKey().equals(attributeStub.getKey()))
-                    unique = false;
-                if (attribute.getValue().equals(attributeStub.getValue()))
-                    unique = false;
-            }
-        }
-        assert attributeStub != null;
-        return attributeStub;
     }
 
     public static List<Attribute> stubAttributes(Map<String, String> mapping){
@@ -103,15 +52,6 @@ public final class TestHelper {
         return attributes;
     }
 
-    public static List<Attribute> stubRandomAttributes
-            (int amountToStub, Set<Attribute> notEqualToAnyOfTheseMocks){
-        List<Attribute> attributes = new ArrayList<>();
-        for (int i = 0; i < amountToStub; i++){
-            attributes.add(stubRandomAttribute(notEqualToAnyOfTheseMocks));
-        }
-        return attributes;
-    }
-
     public static Attributes convertListToAttributes(List<Attribute> attributeList){
         Attributes attributes = new Attributes();
         for (Attribute attribute :
@@ -121,18 +61,12 @@ public final class TestHelper {
         return attributes;
     }
 
-    public static Map<String, String> randomMap(int number){
-        Map<String, String> map = new HashMap<>();
-        Iterator<Integer> it = random.ints(number * 2).iterator();
-        while(it.hasNext()){
-            map.put(
-                    it.next().toString(),
-                    it.next().toString()
-            );
-        }
-        assert map.size() == number;
+    public static List<Attribute> dummmyAttributes(){
+        Map<String, String> dummyMap = new HashMap<>();
+        dummyMap.put("pleaseNeverUseThisKey", "orThisVALUE");
+        dummyMap.put("andForGoodnessSake, not this either.", "JustDon't.");
 
-        return map;
+        return stubAttributes(dummyMap);
     }
 
     public static Element
@@ -148,9 +82,11 @@ public final class TestHelper {
                 tagAndAttribute.getAttribute().getValue()
         );
 
+
+
         //Stub the Attributes randomly - these ones don't matter
         Attributes attributeMocks = convertListToAttributes(
-                stubAttributes(randomMap(5))
+                dummmyAttributes()
         );
 
         //but then add the target attribute
@@ -192,9 +128,7 @@ public final class TestHelper {
         //add some dummy attributes to the element
         //(they shouldn't matter, since only the tag is important)
         Attributes attributes = convertListToAttributes(
-                stubAttributes(
-                        randomMap(2)
-                )
+                dummmyAttributes()
         );
         Mockito.when(elementMock.attributes()).thenReturn(attributes);
 
