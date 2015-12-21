@@ -21,9 +21,17 @@ public class EmphasisElementScorer extends Scorer<Element> {
 
 	@Override
 	public int score(Element input) {
-		// TODO Auto-generated method stub
-		return 0;
+        validateScoreInput(input);
+        return 0;
 	}
+
+    private void validateScoreInput(Element input){
+        if (input == null){
+            throw new NullPointerException(
+                    "The input cannot be null"
+            );
+        }
+    }
 
 	@Override
 	public String getScoreLabel() {
