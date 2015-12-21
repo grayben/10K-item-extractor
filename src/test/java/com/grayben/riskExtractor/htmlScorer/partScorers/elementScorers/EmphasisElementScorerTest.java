@@ -10,7 +10,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -256,7 +255,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         Element elementMock = Mockito.mock(Element.class);
 
         //the element returns the scored Tag
-        Mockito.when(elementMock.tag()).thenReturn(entry.getKey());
+        Mockito.when(elementMock.tag()).thenReturn(tag);
 
         //add some dummy attributes to the element
         //(they shouldn't matter, since only the tag is important)
