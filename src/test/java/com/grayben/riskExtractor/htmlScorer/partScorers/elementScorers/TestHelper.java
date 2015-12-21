@@ -61,7 +61,7 @@ public final class TestHelper {
         return attributes;
     }
 
-    public static List<Attribute> dummmyAttributes(){
+    public static List<Attribute> dummyAttributes(){
         Map<String, String> dummyMap = new HashMap<>();
         dummyMap.put("pleaseNeverUseThisKey", "orThisVALUE");
         dummyMap.put("andForGoodnessSake, not this either.", "JustDon't.");
@@ -86,7 +86,7 @@ public final class TestHelper {
 
         //Stub the Attributes randomly - these ones don't matter
         Attributes attributeMocks = convertListToAttributes(
-                dummmyAttributes()
+                dummyAttributes()
         );
 
         //but then add the target attribute
@@ -128,7 +128,7 @@ public final class TestHelper {
         //add some dummy attributes to the element
         //(they shouldn't matter, since only the tag is important)
         Attributes attributes = convertListToAttributes(
-                dummmyAttributes()
+                dummyAttributes()
         );
         Mockito.when(elementMock.attributes()).thenReturn(attributes);
 
