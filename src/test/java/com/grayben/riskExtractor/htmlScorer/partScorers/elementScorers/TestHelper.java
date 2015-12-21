@@ -14,6 +14,12 @@ import java.util.*;
  */
 public final class TestHelper {
 
+    private static Random random = new Random();
+
+    private static String randomString(){
+        return Integer.toString(random.nextInt());
+    }
+
     private TestHelper(){}
 
     public static Element stubElement(Tag tag, Attributes attributes){
@@ -34,12 +40,36 @@ public final class TestHelper {
         return tag;
     }
 
+    public static Tag stubRandomTag(Set<Tag> notEqualTo){
+        boolean unique = false;
+        Tag tagStub = null;
+        while ( ! unique ){
+            String name = Integer.toString(random.nextInt());
+            tagStub = stubTag(name);
+            if (notEqualTo.contains(tagStub) == false)
+                unique = true;
+        }
+        return tagStub;
+    }
+
     public static Attribute stubAttribute(String key, String value){
         Attribute attribute = Mockito.mock(Attribute.class);
         Mockito.when(attribute.getKey()).thenReturn(key);
         Mockito.when(attribute.getValue()).thenReturn(value);
 
         return attribute;
+    }
+
+    public static Attribute stubRandomAttribute(Set<Attribute> notEqualToMocks){
+        Attribute attributeStub = null;
+        boolean unique = false;
+        while ( ! unique ){
+            attributeStub = stubAttribute(randomString(), randomString());
+            if(notEqualToMocks.contains(attributeStub) == false)
+                unique = true;
+        }
+        assert attributeStub != null;
+        return attributeStub;
     }
 
     public static List<Attribute> stubAttributes(Map<String, String> mapping){
@@ -49,6 +79,15 @@ public final class TestHelper {
         }
 
         assert attributes.size() == mapping.size();
+        return attributes;
+    }
+
+    public static List<Attribute> stubRandomAttributes
+            (int amountToStub, Set<Attribute> notEqualToAnyOfTheseMocks){
+        List<Attribute> attributes = new ArrayList<>();
+        for (int i = 0; i < amountToStub; i++){
+            attributes.add(stubRandomAttribute(notEqualToAnyOfTheseMocks))
+        }
         return attributes;
     }
 
@@ -63,8 +102,7 @@ public final class TestHelper {
 
     public static Map<String, String> randomMap(int number){
         Map<String, String> map = new HashMap<>();
-        Random rand = new Random();
-        Iterator<Integer> it = rand.ints(number * 2).iterator();
+        Iterator<Integer> it = random.ints(number * 2).iterator();
         while(it.hasNext()){
             map.put(
                     it.next().toString(),
@@ -74,6 +112,11 @@ public final class TestHelper {
         assert map.size() == number;
 
         return map;
+    }
+
+    public static List<Element> mockRandomElements(int amountToMock, Set<Element> notEqualToAnyOf){
+        List<Element> mocks = new ArrayList<>();
+
     }
 
     public static Element
@@ -144,11 +187,11 @@ public final class TestHelper {
 
     public static Map<Element, Integer>
     mockElementsAndScoresConformingToTagScoreMap
-            (Map<Tag, Integer> scoreMap){
+            (Map<Tag, Integer> scoreMap) {
 
         Map<Element, Integer> elementsAndScores = new HashMap<>();
 
-        for (Map.Entry<Tag, Integer> entry:
+        for (Map.Entry<Tag, Integer> entry :
                 scoreMap.entrySet()) {
 
             Element elementMock = mockElementConformingToTag(entry.getKey());
