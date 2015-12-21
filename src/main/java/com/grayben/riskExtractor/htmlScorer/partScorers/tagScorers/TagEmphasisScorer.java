@@ -10,7 +10,7 @@ public class TagEmphasisScorer
 
     public static final String SCORE_LABEL = "tag-emphasis";
 
-	TagEmphasisScorer(Map<Tag, Integer> tagScores) {
+	public TagEmphasisScorer(Map<Tag, Integer> tagScores) {
 		super(SCORE_LABEL, tagScores);
 	}
 
