@@ -34,9 +34,8 @@ public final class TestHelper {
 
         //add some dummy attributes to the element
         //(they shouldn't matter, since only the tag is important)
-        Attributes attributes = convertListToAttributes(
-                dummyAttributes()
-        );
+        Attributes attributes = dummyAttributes();
+
         Mockito.when(elementMock.attributes()).thenReturn(attributes);
 
         return elementMock;
@@ -50,9 +49,7 @@ public final class TestHelper {
         attribute = tagAndAttribute.getAttribute();
 
         //Stub the Attributes randomly - these ones don't matter
-        Attributes attributeMocks = convertListToAttributes(
-                dummyAttributes()
-        );
+        Attributes attributeMocks = dummyAttributes();
 
         attributeMocks.put(attribute);
 
@@ -75,14 +72,14 @@ public final class TestHelper {
         return attribute;
     }
 
-    public static List<Attribute> stubAttributes(Map<String, String> mapping){
+    public static Attributes stubAttributes(Map<String, String> mapping){
         List<Attribute> attributes = new ArrayList<>();
         for (Map.Entry<String, String> entry: mapping.entrySet()) {
             attributes.add(stubAttribute(entry.getKey(), entry.getValue()));
         }
 
         assert attributes.size() == mapping.size();
-        return attributes;
+        return convertListToAttributes(attributes);
     }
 
     public static Attributes convertListToAttributes(List<Attribute> attributeList){
@@ -94,7 +91,7 @@ public final class TestHelper {
         return attributes;
     }
 
-    public static List<Attribute> dummyAttributes(){
+    public static Attributes dummyAttributes(){
         Map<String, String> dummyMap = new HashMap<>();
         dummyMap.put("pleaseNeverUseThisKey", "orThisVALUE");
         dummyMap.put("andForGoodnessSake, not this either.", "JustDon't.");
