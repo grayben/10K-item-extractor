@@ -54,9 +54,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         Tag tag = stubTag("font");
         Attributes attributes
                 = convertListToAttributes(
-                stubAttributes(
-                        randomMap(5)
-                )
+                dummyAttributes()
         );
 
         elementToBeScoredMock = stubElement(tag, attributes);
@@ -73,9 +71,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
 
         Attributes attributes
                 = convertListToAttributes(
-                stubAttributes(
-                        randomMap(5)
-                )
+                dummyAttributes()
         );
 
         elementToBeScoredMock = stubElement(null, attributes);
@@ -101,9 +97,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
 
         Attributes attributes
                 = convertListToAttributes(
-                stubAttributes(
-                        randomMap(5)
-                )
+                dummyAttributes()
         );
 
         elementToBeScoredMock = stubElement(tagStub, attributes);
