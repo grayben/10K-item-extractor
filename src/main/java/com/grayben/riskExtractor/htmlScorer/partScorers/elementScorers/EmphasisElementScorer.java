@@ -25,9 +25,26 @@ public class EmphasisElementScorer extends Scorer<Element> {
             TagEmphasisScorer tagEmphasisScorer,
             TagAndAttributeScorer tagAndAttributeScorer) {
 		super(SCORE_LABEL);
+        validateConstructorParams(tagEmphasisScorer, tagAndAttributeScorer);
         this.tagEmphasisScorer = tagEmphasisScorer;
         this.comboScorer = tagAndAttributeScorer;
 	}
+
+    private boolean validateConstructorParams(
+            TagEmphasisScorer tagEmphasisScorer,
+            TagAndAttributeScorer tagAndAttributeScorer){
+        if (tagEmphasisScorer == null) {
+            throw new NullPointerException(
+                    "tagEmphasisScorer was null"
+            );
+        }
+        if (tagAndAttributeScorer == null) {
+            throw new NullPointerException(
+                    "tagAndAttributeScorer was null"
+            );
+        }
+        return true;
+    }
 
 	@Override
 	public int score(Element input) {
