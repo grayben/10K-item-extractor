@@ -2,14 +2,16 @@ package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.*;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.fail;
 
@@ -22,7 +24,6 @@ public class SegmentationElementScorerTest
 
     SegmentationElementScorer elementScorerSUT;
 
-    @Mock
     public Element elementToBeScoredMock;
 
     @Before
@@ -45,6 +46,10 @@ public class SegmentationElementScorerTest
     @Test
     public void
     test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
+        Tag tagStub = stubTag("a-tag-name");
+        Attributes attributeStubs = dummyAttributes();
+        elementToBeScoredMock = stubElement(tagStub, attributeStubs);
+        
         Integer returned = elementScorerSUT.score(elementToBeScoredMock);
 
         assertEquals(Integer.class, returned.getClass());
