@@ -18,7 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.TestHelper.*;
+import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.*;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 

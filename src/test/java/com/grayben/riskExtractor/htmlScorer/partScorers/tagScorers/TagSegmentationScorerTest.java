@@ -5,14 +5,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import java.lang.Object;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.TestHelper.*;
+import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.*;
 import static org.junit.Assert.*;
 
 /**

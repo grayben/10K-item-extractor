@@ -1,13 +1,15 @@
-package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
+package com.grayben.riskExtractor.htmlScorer.partScorers;
 
-import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by beng on 21/12/2015.
