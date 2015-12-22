@@ -84,16 +84,6 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         emphasisElementScorerSUT = new EmphasisElementScorer(scorer1, scorer2);
     }
 
-    @Test
-    public void
-    test_ScoreThrowsNullPointerException_WhenElementIsNull() throws Exception {
-        thrown.expect(NullPointerException.class);
-
-        elementToBeScoredMock = null;
-
-        emphasisElementScorerSUT.score(null);
-    }
-
     @Override
     @Test
     public void
