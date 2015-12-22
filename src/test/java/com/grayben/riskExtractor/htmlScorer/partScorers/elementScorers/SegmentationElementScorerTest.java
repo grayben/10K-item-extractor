@@ -1,24 +1,21 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
-import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.fail;
 
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class SegmentationElementScorerTest
         extends ScorerTest<Element> {
@@ -26,13 +23,13 @@ public class SegmentationElementScorerTest
     SegmentationElementScorer elementScorerSUT;
 
     @Mock
-    public Scorer<Tag> tagScorerMock;
-    @Mock
     public Element elementToBeScoredMock;
 
     @Before
     public void setUp() throws Exception {
-        elementScorerSUT = new SegmentationElementScorer(tagScorerMock);
+        TagEmphasisScorer tagScorer
+                = new TagEmphasisScorer(TagEmphasisScorer.defaultMap());
+        elementScorerSUT = new SegmentationElementScorer(tagScorer);
         super.setScorerSUT(elementScorerSUT);
         super.setArgumentToBeScoredMock(elementToBeScoredMock);
         super.setUp();
@@ -48,11 +45,9 @@ public class SegmentationElementScorerTest
     @Test
     public void
     test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
-        Mockito.when(tagScorerMock.score(Mockito.any())).thenReturn(1);
-
         Integer returned = elementScorerSUT.score(elementToBeScoredMock);
 
-        assert returned.getClass() == Integer.class;
+        assertEquals(Integer.class, returned.getClass());
     }
 
     @Override
