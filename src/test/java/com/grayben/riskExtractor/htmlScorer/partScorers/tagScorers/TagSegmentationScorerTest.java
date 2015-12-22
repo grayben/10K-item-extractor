@@ -8,7 +8,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import java.lang.Object;
 
+import static com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.TestHelper.*;
 import static org.junit.Assert.*;
 
 /**
@@ -19,7 +21,7 @@ public class TagSegmentationScorerTest extends MapScorerTest<Tag> {
 
     TagSegmentationScorer tagSegmentationScorerSUT;
 
-    @Mock public Tag tagToBeScoredMock;
+    public Tag tagToBeScoredMock;
 
     @Before
     public void setUp() throws Exception {
@@ -27,6 +29,8 @@ public class TagSegmentationScorerTest extends MapScorerTest<Tag> {
                 = new TagSegmentationScorer(
                 TagSegmentationScorer.defaultMap()
         );
+        this.tagToBeScoredMock = stubTag("some-name-to-use");
+        super.setArgumentToBeScoredMock(this.tagToBeScoredMock);
         super.setMapScorerSUT(this.tagSegmentationScorerSUT);
         super.setUp();
     }
@@ -39,18 +43,20 @@ public class TagSegmentationScorerTest extends MapScorerTest<Tag> {
     @Override
     @Test
     public void test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
+        Object returned = tagSegmentationScorerSUT.score(tagToBeScoredMock);
 
+        assertEquals(Integer.class, returned.getClass());
     }
 
     @Override
     @Test
     public void test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Override
     @Test
     public void test_InitThrowsNullPointerException_WhenMapParamIsNull() throws Exception {
-
+        fail("Test not implemented");
     }
 }
