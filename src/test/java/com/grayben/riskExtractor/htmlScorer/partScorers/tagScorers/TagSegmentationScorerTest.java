@@ -57,7 +57,9 @@ public class TagSegmentationScorerTest extends MapScorerTest<Tag> {
     @Override
     @Test
     public void test_InitThrowsNullPointerException_WhenMapParamIsNull() throws Exception {
-        fail("Test not implemented");
+        thrown.expect(NullPointerException.class);
+
+        new TagSegmentationScorer(null);
     }
 
     @Test
