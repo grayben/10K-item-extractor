@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import java.lang.Object;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.TestHelper.*;
 import static org.junit.Assert.*;
@@ -51,7 +53,22 @@ public class TagSegmentationScorerTest extends MapScorerTest<Tag> {
     @Override
     @Test
     public void test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-        fail("Test not implemented");
+        Map<Tag, Integer> tagScoresMap = new HashMap<>();
+        tagScoresMap.put(Tag.valueOf("table"), 1);
+        tagScoresMap.put(Tag.valueOf("li"), 1);
+        tagScoresMap.put(Tag.valueOf("tr"), 2);
+        tagScoresMap.put(Tag.valueOf("th"), 1);
+
+        tagSegmentationScorerSUT = new TagSegmentationScorer(tagScoresMap);
+
+        Map<Tag, Integer> expectedResults = new HashMap<>(tagScoresMap);
+        assert expectedResults.put(Tag.valueOf("foo"), 0) == null;
+        assert expectedResults.put(Tag.valueOf("bar"), 0) == null;
+        assert expectedResults.put(Tag.valueOf("baz"), 0) == null;
+
+        super.testHelper_ScoreGivesExpectedResult_WhenSimpleInput(
+                tagSegmentationScorerSUT,
+                expectedResults);
     }
 
     @Override
