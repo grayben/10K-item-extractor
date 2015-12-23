@@ -20,6 +20,7 @@ public class SegmentationElementScorer extends Scorer<Element> {
 
 	@Override
 	public int score(Element input) {
+		validateScoreInput(input);
 		int score = tagScorer.score(input.tag());
 		return score;
 	}
@@ -27,6 +28,19 @@ public class SegmentationElementScorer extends Scorer<Element> {
 	@Override
 	public String getScoreLabel() {
 		return null;
+	}
+
+	private void validateScoreInput(Element input){
+		if (input == null){
+			throw new NullPointerException(
+					"The input cannot be null"
+			);
+		}
+		if(input.attributes() == null){
+			throw new NullPointerException(
+					"the input.attributes cannot be null"
+			);
+		}
 	}
 
 
