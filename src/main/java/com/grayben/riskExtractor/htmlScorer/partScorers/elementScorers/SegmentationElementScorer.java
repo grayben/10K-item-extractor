@@ -25,11 +25,6 @@ public class SegmentationElementScorer extends Scorer<Element> {
 		return score;
 	}
 
-	@Override
-	public String getScoreLabel() {
-		return null;
-	}
-
 	private void validateScoreInput(Element input){
 		if (input == null){
 			throw new NullPointerException(
