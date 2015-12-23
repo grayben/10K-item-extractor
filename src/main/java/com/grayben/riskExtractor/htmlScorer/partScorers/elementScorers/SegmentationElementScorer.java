@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 
@@ -13,7 +14,7 @@ public class SegmentationElementScorer extends Scorer<Element> {
 
 	Scorer<Tag> tagScorer;
 
-	public SegmentationElementScorer(Scorer<Tag> tagScorer){
+	public SegmentationElementScorer(TagSegmentationScorer tagScorer){
 		super(SCORE_LABEL);
 		this.tagScorer = tagScorer;
 	}
