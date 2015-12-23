@@ -10,29 +10,23 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentati
 import org.jsoup.nodes.Element;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.jsoup.helper.Validate.fail;
+import static junit.framework.TestCase.fail;
 
 /**
  * Created by beng on 28/11/2015.
  */
 @RunWith(MockitoJUnitRunner.class)
-@Ignore
 public class ScoringAndFlatteningNodeVisitorTest
         extends NodeVisitorTest {
 
     private ScoringAndFlatteningNodeVisitor nodeVisitorSUT;
-
-    @Mock
-    public Scorer<Element>[] elementScorersMock;
 
     @Before
     @Override
@@ -59,9 +53,7 @@ public class ScoringAndFlatteningNodeVisitorTest
                 )
         );
         this.nodeVisitorSUT
-                = new ScoringAndFlatteningNodeVisitor(
-                (Scorer<Element>[]) elementScorers.toArray()
-        );
+                = new ScoringAndFlatteningNodeVisitor(elementScorers);
         super.setNodeVisitorSUT(nodeVisitorSUT);
         super.setUp();
     }

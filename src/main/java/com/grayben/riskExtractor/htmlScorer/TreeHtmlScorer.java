@@ -24,7 +24,7 @@ public class TreeHtmlScorer implements HtmlScorer {
 	 */
 	public TreeHtmlScorer() {
 		super();
-		this.nv = new ScoringAndFlatteningNodeVisitor();
+		//this.nv = new ScoringAndFlatteningNodeVisitor();
 		this.nt = new NodeTraversor(this.nv);
 	}
 	

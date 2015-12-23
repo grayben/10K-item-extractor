@@ -6,7 +6,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.jsoup.helper.Validate.fail;
+import static org.junit.Assert.fail;
 
 /**
  * Created by beng on 16/12/2015.

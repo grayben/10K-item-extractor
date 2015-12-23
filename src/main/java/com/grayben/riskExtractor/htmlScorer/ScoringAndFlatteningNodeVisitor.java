@@ -6,6 +6,7 @@ import org.jsoup.nodes.Node;
 import org.jsoup.select.NodeVisitor;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
@@ -14,10 +15,10 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	
 	int emphasisScore = 0;
 	int separationScore = 0;
-	Scorer<Element>[] elementScorers;
+	List<Scorer<Element>> elementScorers;
 	
 
-	public ScoringAndFlatteningNodeVisitor(Scorer<Element> ... elementScorers) {
+	public ScoringAndFlatteningNodeVisitor(List<Scorer<Element>> elementScorers) {
 		super();
 		this.elementScorers = elementScorers;
 		this.flatText = new ScoredText();
