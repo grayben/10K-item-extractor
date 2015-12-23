@@ -1,6 +1,8 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
+import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
@@ -10,9 +12,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.*;
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.TestCase.fail;
 
 /**
  * Created by beng on 28/11/2015.
@@ -58,7 +62,52 @@ public class SegmentationElementScorerTest
     @Test
     public void
     test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-        fail("Test not implemented");
+        //////////////////////////////////////////////////////////////////////////////
+        //// GENERATE TARGET INPUT/OUTPUT PAIRS //////////////////////////////////////
+        Map<Element, Integer> targetOutput = new HashMap<>();
+
+        //add Map.Entry<Element, Integer> entries to targetOutput
+        //based on the tagEmphasisScoreMap
+        Map<Element, Integer> scoresMapBasedOnTags
+                = stubElementsAndScoresByTagScores(
+                TagSegmentationScorer.defaultMap()
+        );
+        targetOutput.putAll(scoresMapBasedOnTags);
+
+        //////////////////////////////////////////////////////////////////////////////
+        //// GENERATE DUMMY INPUT/OUTPUT PAIRS ///////////////////////////////////////
+        Map<Element, Integer> nonTargetOutput = new HashMap<>();
+        nonTargetOutput.put(
+                stubElement(
+                        stubTag("don't use this!"),
+                        dummyAttributes()
+                ),
+                Scorer.DEFAULT_SCORE
+        );
+        nonTargetOutput.put(
+                stubElement(
+                        stubTag("really, don't use it, it's not a good tag."),
+                        dummyAttributes()
+                ),
+                Scorer.DEFAULT_SCORE
+        );
+
+        Map<Element, Integer> expectedOutput = new HashMap<>();
+        expectedOutput.putAll(targetOutput);
+        expectedOutput.putAll(nonTargetOutput);
+
+        //////////////////////////////////////////////////////////////////////////////
+        //// RUN THE OUTPUT GENERATION ///////////////////////////////////////////////
+
+        Map<Element, Integer> actualOutputs = new HashMap<>();
+        for (Element input :
+                expectedOutput.keySet()) {
+            actualOutputs.put(input, elementScorerSUT.score(input));
+        }
+
+        //////////////////////////////////////////////////////////////////////////////
+        //// COMPARE INPUT AND OUTPUT ////////////////////////////////////////////////
+        assertEquals(expectedOutput, actualOutputs);
     }
 
     @Test

@@ -29,18 +29,11 @@ public final class TestHelper {
     }
 
     public static Element stubElement(Tag tag){
-        Element elementMock = Mockito.mock(Element.class);
-
-        //the element returns the scored Tag
-        Mockito.when(elementMock.tag()).thenReturn(tag);
-
         //add some dummy attributes to the element
         //(they shouldn't matter, since only the tag is important)
         Attributes attributes = dummyAttributes();
 
-        Mockito.when(elementMock.attributes()).thenReturn(attributes);
-
-        return elementMock;
+        return stubElement(tag, attributes);
     }
 
     public static Element stubElement(TagAndAttribute tagAndAttribute){
@@ -52,7 +45,6 @@ public final class TestHelper {
 
         //Stub the Attributes randomly - these ones don't matter
         Attributes attributeMocks = dummyAttributes();
-
         attributeMocks.put(attribute);
 
         return stubElement(tag, attributeMocks);
@@ -130,6 +122,8 @@ public final class TestHelper {
                 scoreMap.entrySet()) {
 
             Element elementMock = stubElement(entry.getKey());
+
+            System.out.println(elementMock.tag().toString());
 
             // expect the element mock to be scored
             // according to the tag in the map

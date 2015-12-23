@@ -20,7 +20,8 @@ public class SegmentationElementScorer extends Scorer<Element> {
 
 	@Override
 	public int score(Element input) {
-		return tagScorer.score(input.tag());
+		int score = tagScorer.score(input.tag());
+		return score;
 	}
 
 	@Override
