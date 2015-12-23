@@ -123,8 +123,6 @@ public final class TestHelper {
 
             Element elementMock = stubElement(entry.getKey());
 
-            System.out.println(elementMock.tag().toString());
-
             // expect the element mock to be scored
             // according to the tag in the map
             elementsAndScores.put(elementMock, entry.getValue());
