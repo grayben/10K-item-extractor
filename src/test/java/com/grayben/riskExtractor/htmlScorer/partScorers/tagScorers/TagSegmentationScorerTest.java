@@ -5,14 +5,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import java.lang.Object;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.TestHelper.*;
+import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.*;
 import static org.junit.Assert.*;
 
 /**
@@ -32,7 +31,7 @@ public class TagSegmentationScorerTest extends MapScorerTest<Tag> {
                 TagSegmentationScorer.defaultMap()
         );
         this.tagToBeScoredMock = stubTag("some-name-to-use");
-        super.setArgumentToBeScoredMock(this.tagToBeScoredMock);
+        super.setArgumentToBeScored(this.tagToBeScoredMock);
         super.setMapScorerSUT(this.tagSegmentationScorerSUT);
         super.setUp();
     }
@@ -77,17 +76,6 @@ public class TagSegmentationScorerTest extends MapScorerTest<Tag> {
         thrown.expect(NullPointerException.class);
 
         new TagSegmentationScorer(null);
-    }
-
-    @Test
-    public void
-    test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        Mockito.when(tagToBeScoredMock.isEmpty())
-                .thenReturn(true);
-
-        thrown.expect(IllegalArgumentException.class);
-
-        tagSegmentationScorerSUT.score(tagToBeScoredMock);
     }
 
     @Test

@@ -1,40 +1,40 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static junit.framework.TestCase.fail;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class SegmentationElementScorerTest
-        extends ScorerTest<Element> {
+        extends ElementScorerBaseTest {
 
     SegmentationElementScorer elementScorerSUT;
 
-    @Mock
-    public Scorer<Tag> tagScorerMock;
-    @Mock
     public Element elementToBeScoredMock;
 
     @Before
     public void setUp() throws Exception {
-        elementScorerSUT = new SegmentationElementScorer(tagScorerMock);
+        TagSegmentationScorer tagScorer
+                = new TagSegmentationScorer(TagSegmentationScorer.defaultMap());
+        elementScorerSUT = new SegmentationElementScorer(tagScorer);
         super.setScorerSUT(elementScorerSUT);
-        super.setArgumentToBeScoredMock(elementToBeScoredMock);
+        super.setArgumentToBeScored(elementToBeScoredMock);
         super.setUp();
     }
 
@@ -48,24 +48,86 @@ public class SegmentationElementScorerTest
     @Test
     public void
     test_ScoreReturnsInteger_WhenArgumentIsNotEmpty() throws Exception {
-        Mockito.when(tagScorerMock.score(Mockito.any())).thenReturn(1);
+        Tag tagStub = stubTag("a-tag-name");
+        Attributes attributeStubs = dummyAttributes();
+        elementToBeScoredMock = stubElement(tagStub, attributeStubs);
 
         Integer returned = elementScorerSUT.score(elementToBeScoredMock);
 
-        assert returned.getClass() == Integer.class;
+        assertEquals(Integer.class, returned.getClass());
     }
 
     @Override
     @Test
     public void
     test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-        fail("Test not implemented");
+        //////////////////////////////////////////////////////////////////////////////
+        //// GENERATE TARGET INPUT/OUTPUT PAIRS //////////////////////////////////////
+        Map<Element, Integer> targetOutput = new HashMap<>();
+
+        //add Map.Entry<Element, Integer> entries to targetOutput
+        //based on the tagEmphasisScoreMap
+        Map<Element, Integer> scoresMapBasedOnTags
+                = stubElementsAndScoresByTagScores(
+                TagSegmentationScorer.defaultMap()
+        );
+        targetOutput.putAll(scoresMapBasedOnTags);
+
+        //////////////////////////////////////////////////////////////////////////////
+        //// GENERATE DUMMY INPUT/OUTPUT PAIRS ///////////////////////////////////////
+        Map<Element, Integer> nonTargetOutput = new HashMap<>();
+        nonTargetOutput.put(
+                stubElement(
+                        stubTag("don't use this!"),
+                        dummyAttributes()
+                ),
+                Scorer.DEFAULT_SCORE
+        );
+        nonTargetOutput.put(
+                stubElement(
+                        stubTag("really, don't use it, it's not a good tag."),
+                        dummyAttributes()
+                ),
+                Scorer.DEFAULT_SCORE
+        );
+
+        Map<Element, Integer> expectedOutput = new HashMap<>();
+        expectedOutput.putAll(targetOutput);
+        expectedOutput.putAll(nonTargetOutput);
+
+        //////////////////////////////////////////////////////////////////////////////
+        //// RUN THE OUTPUT GENERATION ///////////////////////////////////////////////
+
+        Map<Element, Integer> actualOutputs = new HashMap<>();
+        for (Element input :
+                expectedOutput.keySet()) {
+            actualOutputs.put(input, elementScorerSUT.score(input));
+        }
+
+        //////////////////////////////////////////////////////////////////////////////
+        //// COMPARE INPUT AND OUTPUT ////////////////////////////////////////////////
+        assertEquals(expectedOutput, actualOutputs);
     }
 
     @Test
     public void
-    test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        fail("Test not implemented: decide whether appropriate");
+    test_ScoreThrowsNullPointerException_WhenTagIsNull() throws Exception {
+        thrown.expect(NullPointerException.class);
+
+        Attributes attributes = dummyAttributes();
+
+        elementToBeScoredMock = stubElement(null, attributes);
+
+        elementScorerSUT.score(elementToBeScoredMock);
     }
 
+    @Test
+    public void
+    test_ScoreThrowsNullPointerException_WhenAttributesIsNull() throws Exception {
+        thrown.expect(NullPointerException.class);
+
+        elementToBeScoredMock = stubElement(stubTag("font"), null);
+
+        elementScorerSUT.score(elementToBeScoredMock);
+    }
 }

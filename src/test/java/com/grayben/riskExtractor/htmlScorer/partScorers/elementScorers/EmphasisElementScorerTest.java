@@ -1,7 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import org.jsoup.nodes.Attributes;
@@ -12,13 +11,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.TestHelper.*;
+import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.*;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
@@ -27,7 +25,7 @@ import static junit.framework.Assert.assertNotNull;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class EmphasisElementScorerTest extends ScorerTest<Element> {
+public class EmphasisElementScorerTest extends ElementScorerBaseTest {
 
     EmphasisElementScorer emphasisElementScorerSUT;
 
@@ -47,7 +45,7 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
                 tagAndAttributeScorer
         );
         super.setScorerSUT(this.emphasisElementScorerSUT);
-        super.setArgumentToBeScoredMock(elementToBeScoredMock);
+        super.setArgumentToBeScored(elementToBeScoredMock);
         super.setUp();
     }
 
@@ -116,21 +114,6 @@ public class EmphasisElementScorerTest extends ScorerTest<Element> {
         thrown.expect(NullPointerException.class);
 
         elementToBeScoredMock = stubElement(stubTag("font"), null);
-
-        emphasisElementScorerSUT.score(elementToBeScoredMock);
-    }
-
-    @Test
-    public void
-    test_ScoreThrowsIllegalArgumentException_WhenTagIsEmpty() throws Exception {
-        Tag tagStub = stubTag("");
-        Mockito.when(tagStub.isEmpty()).thenReturn(true);
-
-        Attributes attributes = dummyAttributes();
-
-        elementToBeScoredMock = stubElement(tagStub, attributes);
-
-        thrown.expect(IllegalArgumentException.class);
 
         emphasisElementScorerSUT.score(elementToBeScoredMock);
     }

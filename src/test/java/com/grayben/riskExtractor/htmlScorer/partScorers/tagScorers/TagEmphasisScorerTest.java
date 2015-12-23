@@ -34,7 +34,7 @@ public class TagEmphasisScorerTest
         super.setMapScorerSUT(tagEmphasisScorerSUT);
 
         assert this.tagToBeScoredMock != null;
-        super.setArgumentToBeScoredMock(tagToBeScoredMock);
+        super.setArgumentToBeScored(tagToBeScoredMock);
 
         super.setUp();
     }
@@ -84,17 +84,6 @@ public class TagEmphasisScorerTest
         super.testHelper_ScoreGivesExpectedResult_WhenSimpleInput(
                 tagEmphasisScorerSUT,
                 expectedResults);
-    }
-
-    @Test
-    public void
-    test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        Mockito.when(tagToBeScoredMock.isEmpty())
-                .thenReturn(true);
-
-        thrown.expect(IllegalArgumentException.class);
-
-        tagEmphasisScorerSUT.score(tagToBeScoredMock);
     }
 
     @Test

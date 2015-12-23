@@ -69,5 +69,10 @@ public class EmphasisElementScorer extends Scorer<Element> {
                     "The input cannot be null"
             );
         }
+        if(input.attributes() == null){
+            throw new NullPointerException(
+                    "the input.attributes cannot be null"
+            );
+        }
     }
 }

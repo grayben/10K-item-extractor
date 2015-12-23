@@ -1,13 +1,15 @@
-package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
+package com.grayben.riskExtractor.htmlScorer.partScorers;
 
-import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by beng on 21/12/2015.
@@ -27,18 +29,11 @@ public final class TestHelper {
     }
 
     public static Element stubElement(Tag tag){
-        Element elementMock = Mockito.mock(Element.class);
-
-        //the element returns the scored Tag
-        Mockito.when(elementMock.tag()).thenReturn(tag);
-
         //add some dummy attributes to the element
         //(they shouldn't matter, since only the tag is important)
         Attributes attributes = dummyAttributes();
 
-        Mockito.when(elementMock.attributes()).thenReturn(attributes);
-
-        return elementMock;
+        return stubElement(tag, attributes);
     }
 
     public static Element stubElement(TagAndAttribute tagAndAttribute){
@@ -50,7 +45,6 @@ public final class TestHelper {
 
         //Stub the Attributes randomly - these ones don't matter
         Attributes attributeMocks = dummyAttributes();
-
         attributeMocks.put(attribute);
 
         return stubElement(tag, attributeMocks);

@@ -38,11 +38,6 @@ public class TagEmphasisScorer
 	}
 
     public static void validateTagInput(Tag input){
-        if(input.isEmpty()){
-            throw new IllegalArgumentException(
-                    "Input cannot be empty"
-            );
-        }
         if(input.getName().isEmpty()){
             throw new IllegalArgumentException(
                     "Input Tag must have a non-empty name"
