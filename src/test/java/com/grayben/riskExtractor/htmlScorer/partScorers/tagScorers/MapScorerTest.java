@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
+import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import junit.framework.Assert;
 import org.junit.After;
@@ -15,13 +16,19 @@ public abstract class MapScorerTest<T> extends ScorerTest<T> {
 
     private MapScorer<T> mapScorerSUT;
 
+    @Override
+    protected void setScorerSUT(Scorer<T> scorerSUT){
+        super.setScorerSUT(scorerSUT);
+    }
     protected void setMapScorerSUT(MapScorer<T> mapScorerSUT){
         this.mapScorerSUT = mapScorerSUT;
+        this.setScorerSUT(mapScorerSUT);
     }
 
     private T argumentToBeScoredMock;
 
-    protected void setArgumentToBeScoredMock(T argumentToBeScoredMock){
+    @Override
+    protected void setArgumentToBeScored(T argumentToBeScoredMock){
         this.argumentToBeScoredMock = argumentToBeScoredMock;
     }
 
@@ -32,7 +39,7 @@ public abstract class MapScorerTest<T> extends ScorerTest<T> {
         super.setScorerSUT(this.mapScorerSUT);
 
         assert this.argumentToBeScoredMock != null;
-        super.setArgumentToBeScoredMock(this.argumentToBeScoredMock);
+        super.setArgumentToBeScored(this.argumentToBeScoredMock);
 
         super.setUp();
     }

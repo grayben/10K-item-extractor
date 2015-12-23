@@ -1,6 +1,5 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
-import com.grayben.riskExtractor.htmlScorer.partScorers.ScorerTest;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
@@ -9,7 +8,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.*;
@@ -21,7 +19,7 @@ import static junit.framework.TestCase.fail;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class SegmentationElementScorerTest
-        extends ScorerTest<Element> {
+        extends ElementScorerBaseTest {
 
     SegmentationElementScorer elementScorerSUT;
 
@@ -33,7 +31,7 @@ public class SegmentationElementScorerTest
                 = new TagEmphasisScorer(TagEmphasisScorer.defaultMap());
         elementScorerSUT = new SegmentationElementScorer(tagScorer);
         super.setScorerSUT(elementScorerSUT);
-        super.setArgumentToBeScoredMock(elementToBeScoredMock);
+        super.setArgumentToBeScored(elementToBeScoredMock);
         super.setUp();
     }
 
@@ -84,20 +82,4 @@ public class SegmentationElementScorerTest
 
         elementScorerSUT.score(elementToBeScoredMock);
     }
-
-    @Test
-    public void
-    test_ScoreThrowsIllegalArgumentException_WhenTagIsEmpty() throws Exception {
-        Tag tagStub = stubTag("");
-        Mockito.when(tagStub.isEmpty()).thenReturn(true);
-
-        Attributes attributes = dummyAttributes();
-
-        elementToBeScoredMock = stubElement(tagStub, attributes);
-
-        thrown.expect(IllegalArgumentException.class);
-
-        elementScorerSUT.score(elementToBeScoredMock);
-    }
-
 }

@@ -33,7 +33,7 @@ public class TagAndAttributeScorerTest
         tagAndAttributeScorerSUT = new TagAndAttributeScorer(
                 TagAndAttributeScorer.defaultMap()
         );
-        super.setArgumentToBeScoredMock(tagAndAttributeToBeScoredMock);
+        super.setArgumentToBeScored(tagAndAttributeToBeScoredMock);
         super.setMapScorerSUT(tagAndAttributeScorerSUT);
         super.setUp();
     }

@@ -31,7 +31,7 @@ public class TagSegmentationScorerTest extends MapScorerTest<Tag> {
                 TagSegmentationScorer.defaultMap()
         );
         this.tagToBeScoredMock = stubTag("some-name-to-use");
-        super.setArgumentToBeScoredMock(this.tagToBeScoredMock);
+        super.setArgumentToBeScored(this.tagToBeScoredMock);
         super.setMapScorerSUT(this.tagSegmentationScorerSUT);
         super.setUp();
     }

@@ -25,7 +25,7 @@ public abstract class ScorerTest<T> {
 
     private T argumentToBeScoredMock;
 
-    protected void setArgumentToBeScoredMock(T argumentToBeScoredMock){
+    protected void setArgumentToBeScored(T argumentToBeScoredMock){
         this.argumentToBeScoredMock = argumentToBeScoredMock;
     }
 

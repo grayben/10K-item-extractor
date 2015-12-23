@@ -34,7 +34,7 @@ public class TagEmphasisScorerTest
         super.setMapScorerSUT(tagEmphasisScorerSUT);
 
         assert this.tagToBeScoredMock != null;
-        super.setArgumentToBeScoredMock(tagToBeScoredMock);
+        super.setArgumentToBeScored(tagToBeScoredMock);
 
         super.setUp();
     }
