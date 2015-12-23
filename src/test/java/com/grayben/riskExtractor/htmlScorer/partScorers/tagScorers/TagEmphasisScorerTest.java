@@ -88,17 +88,6 @@ public class TagEmphasisScorerTest
 
     @Test
     public void
-    test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        Mockito.when(tagToBeScoredMock.isEmpty())
-                .thenReturn(true);
-
-        thrown.expect(IllegalArgumentException.class);
-
-        tagEmphasisScorerSUT.score(tagToBeScoredMock);
-    }
-
-    @Test
-    public void
     test_ScoreThrowsIllegalArgumentException_WhenTagHasNoName() throws Exception {
         Mockito.when(tagToBeScoredMock.isEmpty())
                 .thenReturn(false);

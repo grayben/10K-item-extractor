@@ -80,17 +80,6 @@ public class TagSegmentationScorerTest extends MapScorerTest<Tag> {
 
     @Test
     public void
-    test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        Mockito.when(tagToBeScoredMock.isEmpty())
-                .thenReturn(true);
-
-        thrown.expect(IllegalArgumentException.class);
-
-        tagSegmentationScorerSUT.score(tagToBeScoredMock);
-    }
-
-    @Test
-    public void
     test_ScoreThrowsIllegalArgumentException_WhenTagHasNoName() throws Exception {
         Mockito.when(tagToBeScoredMock.isEmpty())
                 .thenReturn(false);
