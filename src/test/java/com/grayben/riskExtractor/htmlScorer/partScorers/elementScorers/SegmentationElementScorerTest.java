@@ -1,7 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
@@ -31,8 +30,8 @@ public class SegmentationElementScorerTest
 
     @Before
     public void setUp() throws Exception {
-        TagEmphasisScorer tagScorer
-                = new TagEmphasisScorer(TagEmphasisScorer.defaultMap());
+        TagSegmentationScorer tagScorer
+                = new TagSegmentationScorer(TagSegmentationScorer.defaultMap());
         elementScorerSUT = new SegmentationElementScorer(tagScorer);
         super.setScorerSUT(elementScorerSUT);
         super.setArgumentToBeScored(elementToBeScoredMock);
