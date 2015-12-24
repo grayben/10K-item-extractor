@@ -2,7 +2,6 @@ package com.grayben.riskExtractor.htmlScorer;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -13,7 +12,6 @@ import static junit.framework.TestCase.fail;
  * Created by beng on 28/11/2015.
  */
 @RunWith(MockitoJUnitRunner.class)
-@Ignore
 public class TreeHtmlScorerTest
         extends HtmlScorerTest {
 
