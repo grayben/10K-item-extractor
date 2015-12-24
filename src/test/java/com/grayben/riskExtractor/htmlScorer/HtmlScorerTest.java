@@ -39,6 +39,13 @@ public abstract class HtmlScorerTest {
 
     @Test
     public void
+    test_ScoreHtmlThrowsNullPointerException_WhenURLIsNull
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Test
+    public void
     test_ScoreHtmlThrowsNullPointerException_WhenHtmlFileIsNull
             () throws Exception {
         fail("Test not implemented");
@@ -53,7 +60,7 @@ public abstract class HtmlScorerTest {
 
     @Test
     public void
-    test_ScoreHtmlThrowsNullPointerException_WhenURLIsNull
+    test_ScoreHtmlThrowsIllegalArgumentException_WhenCharsetNameIsNotRecognised
             () throws Exception {
         fail("Test not implemented");
     }
@@ -67,14 +74,35 @@ public abstract class HtmlScorerTest {
 
     @Test
     public void
-    test_ScoreHtmlThrowsIllegalArgumentException_WhenURLIsEmptyString
+    test_ScoreHtmlThrowsMalformedURLExceptionException_WhenUrlIsNotValid
             () throws Exception {
         fail("Test not implemented");
     }
 
     @Test
     public void
-    test_ScoreHtmlThrowsException_WhenURLCannotBeResolved
+    test_ScoreHtmlThrowsHttpStatusException_IfResponseIsNotOK
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlThrowsUnsupportedMimeTypeException_WhenMimeTypeUnsupported
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlThrowsSocketTimeoutException_WhenConnectionTimeout
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlThrowsIOException_WhenURLCannotBeResolved
             () throws Exception {
         fail("Test not implemented");
     }
@@ -99,7 +127,7 @@ public abstract class HtmlScorerTest {
             () throws Exception {
         fail("Test not implemented");
     }
-
+    
     @Test
     abstract public void
     test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple
