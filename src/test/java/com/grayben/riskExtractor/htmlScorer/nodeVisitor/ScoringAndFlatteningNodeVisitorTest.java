@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 
+import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
@@ -7,7 +8,10 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.Segmentat
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +21,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.Assert.*;
 import static junit.framework.TestCase.fail;
 
 /**
@@ -68,56 +73,119 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_InitThrowsNullPointerException_WhenElementScorersIsNull
             () throws Exception {
-        fail("Test not implemented");
+        thrown.expect(NullPointerException.class);
+
+        List<Scorer<Element>> elementScorers = null;
+
+        this.nodeVisitorSUT = new ScoringAndFlatteningNodeVisitor(elementScorers);
     }
 
     @Test
     public void
     test_InitThrowsNullPointerException_WhenAnyElementScorerIsNull
             () throws Exception {
-        fail("Test not implemented");
+        thrown.expect(NullPointerException.class);
+
+        List<Scorer<Element>> elementScorers = new ArrayList<>();
+        elementScorers.add(
+                new SegmentationElementScorer(
+                        new TagSegmentationScorer(
+                                TagSegmentationScorer.defaultMap()
+                        )
+                )
+        );
+        elementScorers.add(null);
+
+        this.nodeVisitorSUT = new ScoringAndFlatteningNodeVisitor(elementScorers);
     }
 
     @Test
     public void
     test_GetScoredTextReturnsNonNull_ImmediatelyAfterSUTIsInitialised
             () throws Exception {
-        fail("Test not implemented");
+        Object returned = nodeVisitorSUT.getFlatText();
+
+        assertNotNull(returned);
     }
 
     @Test
     public void
     test_GetScoredTextReturnsEmpty_ImmediatelyAfterSUTIsInitialised
             () throws Exception {
-        fail("Test not implemented");
+        ScoredText scoredText = nodeVisitorSUT.getFlatText();
+
+        assertTrue(scoredText.toString().isEmpty());
+    }
+
+    private void visitNode(Node node, int depth){
+        nodeVisitorSUT.head(node, depth);
+        nodeVisitorSUT.tail(node, depth);
     }
 
     @Test
     public void
     test_GetScoredTextReturnsEmpty_AfterSingleVisitToNonElementNode
             () throws Exception {
-        fail("Test not implemented");
+        Node nonElementNode = new Comment(
+                "my-comment",
+                "http://www.istonyabbottstillpm.com");
+
+        visitNode(nonElementNode, 0);
+
+        ScoredText scoredText = nodeVisitorSUT.getFlatText();
+
+        assertTrue(scoredText.toString().isEmpty());
     }
 
     @Test
     public void
     test_GetScoredTextReturnsEmpty_AfterSingleVisitToElementWithNoText
             () throws Exception {
-        fail("Test not implemented");
+
+        Tag tag = Tag.valueOf("a-tag-name");
+
+        Node elementNode = new Element(tag, "http://www.baseURI.com");
+
+        visitNode(elementNode, 0);
+
+        ScoredText scoredText = nodeVisitorSUT.getFlatText();
+
+        assertTrue(scoredText.toString().isEmpty());
     }
 
     @Test
     public void
     test_GetScoredTextReturnsNotEmpty_AfterSingleVisitToElementNodeWithText
             () throws Exception {
-        fail("Test not implemented");
+        Tag tag = Tag.valueOf("a-tag-name");
+
+        Element element = new Element(tag, "a-base-URI");
+
+        element.text("Some text is here.");
+
+        visitNode(element, 0);
+
+        ScoredText scoredText = nodeVisitorSUT.getFlatText();
+
+        assertFalse(scoredText.toString().isEmpty());
     }
 
     @Test
     public void
     test_GetScoredTextReturnsExpectedText_AfterSingleVisitToElementWithText
             () throws Exception {
-        fail("Test not implemented");
+        String expectedText = "This is the text we expect to see present in the list.";
+        Tag tag = Tag.valueOf("a-tag-name");
+
+        Element element = new Element(tag, "a-base-uri");
+
+        element.text(expectedText);
+
+        visitNode(element, 0);
+
+        String output = nodeVisitorSUT.getFlatText().toString();
+
+        assertEquals(expectedText, output);
     }
 
     @Test
@@ -126,21 +194,6 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         fail("Test not implemented");
     }
-
-    @Test
-    public void
-    test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
     @Test
     public void
     test_EmphasisScoreIsZero_ImmediatelyAfterInit
@@ -178,22 +231,37 @@ public class ScoringAndFlatteningNodeVisitorTest
 
     @Test
     public void
-    test_SegmentationScoreIsZero_AfterScoringNonEmphasisElement
+    test_SegmentationScoreIsZero_AfterScoringNonSegmentationElement
             () throws Exception {
         fail("Test not implemented");
     }
 
     @Test
     public void
-    test_SegmentationScoreIsGreaterThanZero_AfterScoringEmphasisElement
+    test_SegmentationScoreIsGreaterThanZero_AfterScoringSegmentationElement
             () throws Exception {
         fail("Test not implemented");
     }
 
     @Test
     public void
-    test_SegmentationScoreIsGreaterThanZero_AfterScoringEmphasisElementThenNonEmphasisElement
+    test_SegmentationScoreIsGreaterThanZero_AfterScoringSegmentationElementThenNonSegmentationElement
             () throws Exception {
         fail("Test not implemented");
     }
+
+    @Test
+    public void
+    test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Test
+    public void
+    test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
 }

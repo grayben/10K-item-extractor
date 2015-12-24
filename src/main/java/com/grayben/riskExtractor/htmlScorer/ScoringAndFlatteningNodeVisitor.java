@@ -10,10 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
-	
+
 	ScoredText flatText;
-	
-	int emphasisScore = 0;
+
+    public ScoredText getFlatText() {
+        return flatText;
+    }
+
+    int emphasisScore = 0;
 	int separationScore = 0;
 	List<Scorer<Element>> elementScorers;
 	
