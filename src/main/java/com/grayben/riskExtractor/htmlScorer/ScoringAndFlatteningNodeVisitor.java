@@ -16,7 +16,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 	int emphasisScore = 0;
 	int separationScore = 0;
 	List<Scorer<Element>> elementScorers;
-	
+
 
 	public ScoringAndFlatteningNodeVisitor(List<Scorer<Element>> elementScorers) {
 		super();
@@ -26,15 +26,11 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 
 	@Override
 	public void head(Node node, int depth) {
-		Element element = null;
-		if(!node.getClass().equals(Element.class)){
-			/* System.err.println("The node was not an " + Element.class
-					+ ": " + node.toString());
-					*/
-			return;
-		} else {
-			element = (Element) node;
-		}
+        validateInput(node, depth);
+        if(! isElement(node))
+            return;
+		Element element = (Element) node;
+        
 		// if the node has emphasis, add a score to this node.
 		if(/* test for attributes */ true){
 			// flatStructure.element(id).incrementEmphasis();
@@ -51,7 +47,28 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 
 	@Override
 	public void tail(Node node, int depth) {
-		return;
+        validateInput(node, depth);
+        if (! isElement(node))
+            return;
+        return;
 
 	}
+
+    private void validateInput(Node node, int depth){
+        if (node == null)
+            throw new NullPointerException(
+                    "Node was null"
+            );
+        if (depth < 0)
+            throw new IllegalArgumentException(
+                    "Depth was less than 0"
+            );
+    }
+
+    private boolean isElement(Node node){
+        if (node.getClass().equals(Element.class))
+            return true;
+        else
+            return false;
+    }
 }
