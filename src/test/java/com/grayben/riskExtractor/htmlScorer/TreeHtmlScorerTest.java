@@ -93,6 +93,7 @@ public class TreeHtmlScorerTest
     @Test
     public void
     test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple
+    public void test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple
             () throws Exception {
         fail("Test not implemented");
     }
