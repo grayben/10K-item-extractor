@@ -14,17 +14,13 @@ import static junit.framework.TestCase.fail;
 @RunWith(MockitoJUnitRunner.class)
 public abstract class HtmlScorerTest {
 
-    private HtmlScorer htmlScorer;
+    private HtmlScorer htmlScorerSUT;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    protected void setHtmlScorer(HtmlScorer htmlScorer){
-        this.htmlScorer = htmlScorer;
-    }
-
-    protected HtmlScorer getHtmlScorer(){
-        return this.htmlScorer;
+    protected void setHtmlScorerSUT(HtmlScorer htmlScorerSUT){
+        this.htmlScorerSUT = htmlScorerSUT;
     }
 
     @Before

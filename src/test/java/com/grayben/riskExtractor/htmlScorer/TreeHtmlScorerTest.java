@@ -18,12 +18,12 @@ public class TreeHtmlScorerTest
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        setHtmlScorer(new TreeHtmlScorer());
+        setHtmlScorerSUT(new TreeHtmlScorer());
     }
 
     @After
     public void tearDown() throws Exception {
-        setHtmlScorer(null);
+        setHtmlScorerSUT(null);
     }
 
     @Test
