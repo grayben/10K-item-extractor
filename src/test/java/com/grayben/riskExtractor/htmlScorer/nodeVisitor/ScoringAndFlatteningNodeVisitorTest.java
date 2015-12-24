@@ -75,7 +75,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         thrown.expect(NullPointerException.class);
 
-        List<Scorer<Element>> elementScorers = null;
+        Set<Scorer<Element>> elementScorers = null;
 
         this.nodeVisitorSUT = new ScoringAndFlatteningNodeVisitor(elementScorers);
     }
@@ -86,7 +86,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         thrown.expect(NullPointerException.class);
 
-        List<Scorer<Element>> elementScorers = new ArrayList<>();
+        Set<Scorer<Element>> elementScorers = new HashSet<>();
         elementScorers.add(
                 new SegmentationElementScorer(
                         new TagSegmentationScorer(
