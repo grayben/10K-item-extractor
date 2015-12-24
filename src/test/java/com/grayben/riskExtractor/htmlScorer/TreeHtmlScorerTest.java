@@ -28,63 +28,7 @@ public class TreeHtmlScorerTest
 
     @Test
     public void
-    test_ScoreHtmlThrowsNullPointerException_WhenUrlIsNull
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_ScoreHtmlThrowsNullPointerException_WhenHtmlFileIsNull
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_ScoreHtmlThrowsNullPointerException_WhenCharsetNameIsNull
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
     test_InitThrowsNullPointerException_WhenNodeTraversorIsNull
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_ScoreHtmlThrowsIllegalArgumentException_WhenCharsetNameIsNotRecognised
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_ScoreHtmlThrowsMalformedURLExceptionException_WhenUrlIsNotValid
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_ScoreHtmlThrowsHttpStatusException_IfResponseIsNotOK
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_ScoreHtmlThrowsUnsopportedMimeTypeException_WhenMimeTypeUnsupported
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_ScoreHtmlThrowsSocketTimeoutException_WhenConnectionTimeout
             () throws Exception {
         fail("Test not implemented");
     }
