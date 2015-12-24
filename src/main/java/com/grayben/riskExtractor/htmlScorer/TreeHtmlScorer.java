@@ -49,7 +49,8 @@ public class TreeHtmlScorer implements HtmlScorer {
 			System.out.println(i++);
 			System.out.println(iterator.next().html());	
 		}
-		
+
+		//TODO: implement
 		
 		return null;
 	}
