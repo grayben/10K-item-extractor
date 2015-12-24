@@ -62,6 +62,7 @@ public class TreeHtmlScorer implements HtmlScorer {
 
 	@Override
 	public ScoredText scoreHtml(String url) {
+		//TODO: use JSoup to get a Connection.Response so can remove SEC head
 		Document doc = parseHtmlUrl(url);
 		return traverse(doc);
 	}
