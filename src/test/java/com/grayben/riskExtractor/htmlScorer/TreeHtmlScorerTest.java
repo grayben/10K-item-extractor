@@ -28,13 +28,15 @@ public class TreeHtmlScorerTest
 
     @Override
     @Test
-    public void test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple() throws Exception {
+    public void test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple
+            () throws Exception {
         fail("Test not implemented");
     }
 
     @Override
     @Test
-    public void test_ScoreHtmlReturnsExpected_WhenTextInputIsComplicated() throws Exception {
+    public void test_ScoreHtmlReturnsExpected_WhenTextInputIsComplicated
+            () throws Exception {
         fail("Test not implemented");
     }
 }
