@@ -28,14 +28,37 @@ public class TreeHtmlScorerTest
 
     @Override
     @Test
-    public void test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple
+    public void
+    test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple
             () throws Exception {
         fail("Test not implemented");
     }
 
     @Override
     @Test
-    public void test_ScoreHtmlReturnsExpected_WhenTextInputIsComplicated
+    public void
+    test_ScoreHtmlReturnsExpected_WhenTextInputIsComplicated
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlThrowsNullPointerException_WhenUrlIsNull
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlThrowsNullPointerException_WhenHtmlFileIsNull
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlThrowsNullPointerException_WhenCharsetNameIsNull
             () throws Exception {
         fail("Test not implemented");
     }
