@@ -127,7 +127,7 @@ public abstract class HtmlScorerTest {
             () throws Exception {
         fail("Test not implemented");
     }
-    
+
     @Test
     abstract public void
     test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple
