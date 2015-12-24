@@ -30,7 +30,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
         if(! isElement(node))
             return;
 		Element element = (Element) node;
-        
+
 		// if the node has emphasis, add a score to this node.
 		if(/* test for attributes */ true){
 			// flatStructure.element(id).incrementEmphasis();
@@ -50,8 +50,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
         validateInput(node, depth);
         if (! isElement(node))
             return;
-        return;
-
+        Element element = (Element) node;
 	}
 
     private void validateInput(Node node, int depth){
