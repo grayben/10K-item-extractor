@@ -1,9 +1,5 @@
 package com.grayben.riskExtractor.htmlScorer;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ListIterator;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,16 +8,15 @@ import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ListIterator;
+
 public class TreeHtmlScorer implements HtmlScorer {
 	
 	NodeTraversor nt;
 	ScoringAndFlatteningNodeVisitor nv;
-	
 
-	/**
-	 * @param parser
-	 * @param documentScorer
-	 */
 	public TreeHtmlScorer() {
 		super();
 		//this.nv = new ScoringAndFlatteningNodeVisitor();
@@ -35,7 +30,7 @@ public class TreeHtmlScorer implements HtmlScorer {
 		} else {
 			throw new NullPointerException();
 		}
-		return nv.flatText;
+		return nv.getFlatText();
 	}
 
 

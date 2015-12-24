@@ -13,6 +13,11 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 
     private Set<Scorer<Element>> elementScorers;
 	private ScoredText flatText;
+
+    public ScoredText getFlatText() {
+        return flatText;
+    }
+
     private Map<String, Integer> currentScores;
 
     private String currentString;
