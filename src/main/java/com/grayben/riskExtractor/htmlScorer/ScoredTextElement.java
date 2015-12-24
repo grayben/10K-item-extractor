@@ -26,12 +26,12 @@ public class ScoredTextElement {
         }
 		if(scores == null) {
             throw new NullPointerException(
-                    "Tried to pass in null scores:Map<Integer, Integer>"
+                    "Tried to pass in null currentScores:Map<Integer, Integer>"
             );
         }
 		if(scores.isEmpty()){
 			throw new IllegalArgumentException(
-                    "Tried to pass in empty scores:Map<Integer, Integer>"
+                    "Tried to pass in empty currentScores:Map<Integer, Integer>"
             );
 		}
 		this.textElement = text;

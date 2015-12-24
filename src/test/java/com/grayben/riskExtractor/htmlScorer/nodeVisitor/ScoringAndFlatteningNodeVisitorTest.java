@@ -18,8 +18,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static junit.framework.Assert.*;
 import static junit.framework.TestCase.fail;
@@ -36,8 +36,8 @@ public class ScoringAndFlatteningNodeVisitorTest
     @Before
     @Override
     public void setUp() throws Exception {
-        List<Scorer<Element>> elementScorers
-                = new ArrayList<>();
+        Set<Scorer<Element>> elementScorers
+                = new HashSet<>();
 
         TagEmphasisScorer tagEmphasisScorer
                 = new TagEmphasisScorer(TagEmphasisScorer.defaultMap());
