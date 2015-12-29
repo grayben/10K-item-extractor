@@ -69,6 +69,9 @@ public class ScoringAndFlatteningNodeVisitorTest
         super.tearDown();
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    // Constructor tests //////////////////////////////////////////////////////
+
     @Test
     public void
     test_InitThrowsNullPointerException_WhenElementScorersIsNull
@@ -121,6 +124,9 @@ public class ScoringAndFlatteningNodeVisitorTest
         nodeVisitorSUT.head(node, depth);
         nodeVisitorSUT.tail(node, depth);
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Method tests (without NodeTraversor) ///////////////////////////////////
 
     @Test
     public void
@@ -332,5 +338,8 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         fail("Cannot access ScoredText::scores");
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Method tests (with NodeTraversor) //////////////////////////////////////
 
 }
