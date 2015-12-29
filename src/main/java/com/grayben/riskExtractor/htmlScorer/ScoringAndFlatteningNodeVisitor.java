@@ -13,7 +13,12 @@ import java.util.Set;
 public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 
     private Set<Scorer<Element>> elementScorers;
-	private ScoredText flatText;
+
+    public Set<Scorer<Element>> getElementScorers() {
+        return Collections.unmodifiableSet(elementScorers);
+    }
+
+    private ScoredText flatText;
 
     public ScoredText getFlatText() {
         return flatText;
