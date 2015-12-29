@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import static junit.framework.Assert.*;
@@ -237,9 +238,28 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         Integer expectGreaterThan = 0;
 
+        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
+        Iterator<Scorer<Element>> it = nodeVisitorSUT.getElementScorers().iterator();
+        Element emphasisedElement = null;
+        while(emphasisedElement == null && it.hasNext()){
+            Scorer<Element> nextScorer = it.next();
+            if(nextScorer.getScoreLabel()
+                    .equals(scoreLabel)){
+                Tag emphasisedTag = ((EmphasisElementScorer)nextScorer)
+                        .getTagEmphasisScorer()
+                        .getScoresMap().entrySet().iterator().next().getKey();
+                emphasisedElement = new Element(emphasisedTag, "some-string");
+            }
+        }
+        if (emphasisedElement == null)
+            throw new Exception("Couldn't create an emphasised element");
 
-        Element emphasised = new Element(nodeVisitorSUT.getElementScorers().iterator().)
+        visitNode(emphasisedElement, 1);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertTrue(returned > expectGreaterThan);
     }
 
     @Test
