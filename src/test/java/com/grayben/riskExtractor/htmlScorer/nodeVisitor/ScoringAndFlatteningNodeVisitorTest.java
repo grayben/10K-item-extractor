@@ -127,12 +127,6 @@ public class ScoringAndFlatteningNodeVisitorTest
     // Method tests (without NodeTraversor) ///////////////////////////////////
     @Test
     public void
-    test_GetScoredTextReturnsExpectedScores_AfterSingleVisitToElementWithText
-            () throws Exception {
-        fail("Test not implemented");
-    }
-    @Test
-    public void
     test_EmphasisScoreIsZero_ImmediatelyAfterInit
             () throws Exception {
         Integer expected = 0;
