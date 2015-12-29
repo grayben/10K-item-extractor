@@ -310,7 +310,14 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_SegmentationScoreIsZero_ImmediatelyAfterInit
             () throws Exception {
-        fail("Test not implemented");
+        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
+
+        Integer expected = 0;
+
+        Integer returned
+                = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertEquals(expected, returned);
     }
 
     @Test
