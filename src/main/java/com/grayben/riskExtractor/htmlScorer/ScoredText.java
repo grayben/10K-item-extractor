@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ScoredText {
@@ -44,4 +45,8 @@ public class ScoredText {
         }
 		text.add(st);
 	}
+
+	public List<ScoredTextElement> getList(){
+        return Collections.unmodifiableList(this.text);
+    }
 }
