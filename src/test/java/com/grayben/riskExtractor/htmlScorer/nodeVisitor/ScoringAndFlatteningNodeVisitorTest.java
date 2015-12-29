@@ -34,32 +34,26 @@ public class ScoringAndFlatteningNodeVisitorTest
 
     private ScoringAndFlatteningNodeVisitor nodeVisitorSUT;
 
-    TagEmphasisScorer tagEmphasisScorer;
-    TagSegmentationScorer tagSegmentationScorer;
-    TagAndAttributeScorer tagAndAttributeScorer;
-    EmphasisElementScorer emphasisElementScorer;
-    SegmentationElementScorer segmentationElementScorer;
-
     @Before
     @Override
     public void setUp() throws Exception {
         Set<Scorer<Element>> elementScorers
                 = new HashSet<>();
 
-        tagEmphasisScorer
+        TagEmphasisScorer tagEmphasisScorer
                 = new TagEmphasisScorer(TagEmphasisScorer.defaultMap());
-        tagAndAttributeScorer
+        TagAndAttributeScorer tagAndAttributeScorer
                 = new TagAndAttributeScorer(TagAndAttributeScorer.defaultMap());
-        emphasisElementScorer
+        EmphasisElementScorer emphasisElementScorer
                 = new EmphasisElementScorer(
                         tagEmphasisScorer,
                         tagAndAttributeScorer
                 );
         elementScorers.add(emphasisElementScorer);
 
-        tagSegmentationScorer
+        TagSegmentationScorer tagSegmentationScorer
                 = new TagSegmentationScorer(TagSegmentationScorer.defaultMap());
-        segmentationElementScorer
+        SegmentationElementScorer segmentationElementScorer
                 = new SegmentationElementScorer(tagSegmentationScorer);
         elementScorers.add(
                 segmentationElementScorer
