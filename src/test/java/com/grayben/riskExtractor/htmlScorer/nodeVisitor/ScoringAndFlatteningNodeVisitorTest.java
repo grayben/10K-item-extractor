@@ -211,14 +211,26 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_EmphasisScoreIsZero_AfterScoringNonEmphasisElement
             () throws Exception {
-        fail("Cannot access ScoredText::scores");
+        Integer expected = 0;
+
+        Element notEmphasised = new Element(Tag.valueOf("foo"), "a-base-uri");
+
+        visitNode(notEmphasised, 1);
+
+        Integer returned
+                = nodeVisitorSUT.getCurrentScores()
+                .get(EmphasisElementScorer.SCORE_LABEL);
+
+        assertEquals(expected, returned);
     }
 
     @Test
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterScoringEmphasisElement
             () throws Exception {
-        fail("Cannot access ScoredText::scores");
+        Integer expectGreaterThan = 0;
+
+        //Element emphasised = new Element(EmphasisElementScorer.)
     }
 
     @Test
