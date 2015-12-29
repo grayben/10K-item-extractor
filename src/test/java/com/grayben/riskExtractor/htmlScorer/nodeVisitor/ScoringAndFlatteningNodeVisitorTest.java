@@ -177,6 +177,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         Integer expectedScore = null;
 
         Iterator<Scorer<Element>> it = nodeVisitor.getElementScorers().iterator();
+
         while(emphasisedElement == null && it.hasNext()){
             Scorer<Element> nextScorer = it.next();
             if(nextScorer.getScoreLabel()
