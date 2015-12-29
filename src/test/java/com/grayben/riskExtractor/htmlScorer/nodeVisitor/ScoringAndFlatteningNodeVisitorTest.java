@@ -284,7 +284,26 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterHeadOn2EmphasisElementsAndTailOnLatterElement
             () throws Exception {
-        fail("Test not implemented");
+        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
+
+        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
+                .entrySet().iterator();
+        Map.Entry<Element, Integer> emphasisedElementAndScore;
+
+        emphasisedElementAndScore = it.next();
+        Element emphasisedElement1 = emphasisedElementAndScore.getKey();
+        Integer expected = emphasisedElementAndScore.getValue();
+
+        Element emphasisedElement2
+                = it.next().getKey();
+
+        nodeVisitorSUT.head(emphasisedElement1, 1);
+        nodeVisitorSUT.head(emphasisedElement2, 2);
+        nodeVisitorSUT.tail(emphasisedElement2, 1);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertEquals(expected, returned);
     }
 
     @Test
