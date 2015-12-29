@@ -18,7 +18,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import static junit.framework.Assert.*;
 import static junit.framework.TestCase.fail;
@@ -120,79 +122,8 @@ public class ScoringAndFlatteningNodeVisitorTest
         assertTrue(scoredText.toString().isEmpty());
     }
 
-    private void visitNode(Node node, int depth){
-        nodeVisitorSUT.head(node, depth);
-        nodeVisitorSUT.tail(node, depth);
-    }
-
     ///////////////////////////////////////////////////////////////////////////
     // Method tests (without NodeTraversor) ///////////////////////////////////
-
-    @Test
-    public void
-    test_GetScoredTextReturnsEmpty_AfterSingleVisitToNonElementNode
-            () throws Exception {
-        Node nonElementNode = new Comment(
-                "my-comment",
-                "http://www.istonyabbottstillpm.com");
-
-        visitNode(nonElementNode, 0);
-
-        ScoredText scoredText = nodeVisitorSUT.getFlatText();
-
-        assertTrue(scoredText.toString().isEmpty());
-    }
-
-    @Test
-    public void
-    test_GetScoredTextReturnsEmpty_AfterSingleVisitToElementWithNoText
-            () throws Exception {
-
-        Tag tag = Tag.valueOf("a-tag-name");
-
-        Node elementNode = new Element(tag, "http://www.baseURI.com");
-
-        visitNode(elementNode, 0);
-
-        ScoredText scoredText = nodeVisitorSUT.getFlatText();
-
-        assertTrue(scoredText.toString().isEmpty());
-    }
-
-    @Test
-    public void
-    test_GetScoredTextReturnsNotEmpty_AfterSingleVisitToElementNodeWithText
-            () throws Exception {
-        Tag tag = Tag.valueOf("a-tag-name");
-
-        Element element = new Element(tag, "a-base-URI");
-
-        element.text("Some text is here.");
-
-        visitNode(element, 0);
-
-        ScoredText scoredText = nodeVisitorSUT.getFlatText();
-
-        assertFalse(scoredText.toString().isEmpty());
-    }
-
-    @Test
-    public void
-    test_GetScoredTextReturnsExpectedText_AfterSingleVisitToElementWithText
-            () throws Exception {
-        String expectedText = "This is the text we expect to see present in the list.";
-        Tag tag = Tag.valueOf("a-tag-name");
-
-        Element element = new Element(tag, "a-base-uri");
-
-        element.text(expectedText);
-
-        visitNode(element, 0);
-
-        String output = nodeVisitorSUT.getFlatText().toString();
-
-        assertEquals(expectedText, output);
-    }
 
     @Test
     public void
@@ -217,7 +148,17 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_EmphasisScoreIsZero_AfterHeadOnNonEmphasisElement
             () throws Exception {
-        fail("Test not implemented");
+        Integer expected = 0;
+
+        Element notEmphasised = new Element(Tag.valueOf("foo"), "a-base-uri");
+
+        nodeVisitorSUT.head(notEmphasised, 1);
+
+        Integer returned
+                = nodeVisitorSUT.getCurrentScores()
+                .get(EmphasisElementScorer.SCORE_LABEL);
+
+        assertEquals(expected, returned);
     }
 
     @Test
@@ -231,14 +172,70 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterHeadOnEmphasisElement
             () throws Exception {
-        fail("Test not implemented");
+        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
+
+        Iterator<Scorer<Element>> it = nodeVisitorSUT.getElementScorers().iterator();
+        Element emphasisedElement = null;
+        Integer expected = null;
+        while(emphasisedElement == null && it.hasNext()){
+            Scorer<Element> nextScorer = it.next();
+            if(nextScorer.getScoreLabel()
+                    .equals(scoreLabel)){
+                Tag emphasisedTag = ((EmphasisElementScorer)nextScorer)
+                        .getTagEmphasisScorer()
+                        .getScoresMap().entrySet().iterator().next().getKey();
+                expected = ((EmphasisElementScorer)nextScorer)
+                        .getTagEmphasisScorer()
+                        .getScoresMap().get(emphasisedTag);
+                emphasisedElement = new Element(emphasisedTag, "some-string");
+            }
+        }
+        if (emphasisedElement == null)
+            throw new Exception("Couldn't create an emphasised element");
+
+        nodeVisitorSUT.head(emphasisedElement, 1);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assert expected > 0;
+
+        assertEquals(expected, returned);
     }
 
     @Test
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterHeadOnEmphasisElementThenNonEmphasisElement
             () throws Exception {
-        fail("Test not implemented");
+        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
+
+        Iterator<Scorer<Element>> it = nodeVisitorSUT.getElementScorers().iterator();
+        Element emphasisedElement = null;
+        Integer expected = null;
+        while(emphasisedElement == null && it.hasNext()){
+            Scorer<Element> nextScorer = it.next();
+            if(nextScorer.getScoreLabel()
+                    .equals(scoreLabel)){
+                Tag emphasisedTag = ((EmphasisElementScorer)nextScorer)
+                        .getTagEmphasisScorer()
+                        .getScoresMap().entrySet().iterator().next().getKey();
+                expected = ((EmphasisElementScorer)nextScorer)
+                        .getTagEmphasisScorer()
+                        .getScoresMap().get(emphasisedTag);
+                emphasisedElement = new Element(emphasisedTag, "some-string");
+            }
+        }
+        if (emphasisedElement == null)
+            throw new Exception("Couldn't create an emphasised element");
+
+        Element notEmphasisedElement
+                = new Element(Tag.valueOf("foo-bar"), "some-string");
+
+        nodeVisitorSUT.head(emphasisedElement, 1);
+        nodeVisitorSUT.head(notEmphasisedElement, 2);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertEquals(expected, returned);
     }
 
     @Test
@@ -253,90 +250,6 @@ public class ScoringAndFlatteningNodeVisitorTest
     test_EmphasisScoreIsGreaterThanZero_AfterHeadOn2EmphasisElementsAndTailOnLatterElement
             () throws Exception {
         fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_EmphasisScoreIsZero_AfterScoringNonEmphasisElement
-            () throws Exception {
-        Integer expected = 0;
-
-        Element notEmphasised = new Element(Tag.valueOf("foo"), "a-base-uri");
-
-        visitNode(notEmphasised, 1);
-
-        Integer returned
-                = nodeVisitorSUT.getCurrentScores()
-                .get(EmphasisElementScorer.SCORE_LABEL);
-
-        assertEquals(expected, returned);
-    }
-
-    @Test
-    public void
-    test_EmphasisScoreIsGreaterThanZero_AfterScoringEmphasisElement
-            () throws Exception {
-        Integer expectGreaterThan = 0;
-
-        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
-
-        Iterator<Scorer<Element>> it = nodeVisitorSUT.getElementScorers().iterator();
-        Element emphasisedElement = null;
-        while(emphasisedElement == null && it.hasNext()){
-            Scorer<Element> nextScorer = it.next();
-            if(nextScorer.getScoreLabel()
-                    .equals(scoreLabel)){
-                Tag emphasisedTag = ((EmphasisElementScorer)nextScorer)
-                        .getTagEmphasisScorer()
-                        .getScoresMap().entrySet().iterator().next().getKey();
-                emphasisedElement = new Element(emphasisedTag, "some-string");
-            }
-        }
-        if (emphasisedElement == null)
-            throw new Exception("Couldn't create an emphasised element");
-
-        visitNode(emphasisedElement, 1);
-
-        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
-
-        assertTrue(returned > expectGreaterThan);
-    }
-
-    @Test
-    public void
-    test_EmphasisScoreIsGreaterThanZero_AfterScoringEmphasisElementThenNonEmphasisElement
-            () throws Exception {
-        Integer expectGreaterThan = 0;
-
-        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
-
-        Iterator<Scorer<Element>> it = nodeVisitorSUT.getElementScorers().iterator();
-        Element emphasisedElement = null;
-        while(emphasisedElement == null && it.hasNext()){
-            Scorer<Element> nextScorer = it.next();
-            if(nextScorer.getScoreLabel()
-                    .equals(scoreLabel)){
-                Tag emphasisedTag = ((EmphasisElementScorer)nextScorer)
-                        .getTagEmphasisScorer()
-                        .getScoresMap().entrySet().iterator().next().getKey();
-                emphasisedElement = new Element(emphasisedTag, "some-string");
-            }
-        }
-        if (emphasisedElement == null)
-            throw new Exception("Couldn't create an emphasised element");
-
-        Collection<Element> children = new ArrayList<>();
-        Element notEmphasisedElement
-                = new Element(Tag.valueOf("foo-bar"), "some-string");
-        children.add(notEmphasisedElement);
-
-        emphasisedElement.insertChildren(1, children);
-
-        visitNode(emphasisedElement, 1);
-
-        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
-
-        assertTrue(returned > expectGreaterThan);
     }
 
     @Test
@@ -391,6 +304,77 @@ public class ScoringAndFlatteningNodeVisitorTest
     ///////////////////////////////////////////////////////////////////////////
     // Method tests (with NodeTraversor) //////////////////////////////////////
 
+
+    @Test
+    public void
+    test_GetScoredTextReturnsEmpty_AfterSingleVisitToNonElementNode
+            () throws Exception {
+        Node nonElementNode = new Comment(
+                "my-comment",
+                "http://www.istonyabbottstillpm.com");
+
+        //TODO: visit the node with the node traversor
+        fail("Test not implemented");
+
+        ScoredText scoredText = nodeVisitorSUT.getFlatText();
+
+        assertTrue(scoredText.toString().isEmpty());
+    }
+
+    @Test
+    public void
+    test_GetScoredTextReturnsEmpty_AfterSingleVisitToElementWithNoText
+            () throws Exception {
+
+        Tag tag = Tag.valueOf("a-tag-name");
+
+        Node elementNode = new Element(tag, "http://www.baseURI.com");
+
+        //TODO: visit the node with the node traversor
+        fail("Test not implemented");
+
+        ScoredText scoredText = nodeVisitorSUT.getFlatText();
+
+        assertTrue(scoredText.toString().isEmpty());
+    }
+
+    @Test
+    public void
+    test_GetScoredTextReturnsNotEmpty_AfterSingleVisitToElementNodeWithText
+            () throws Exception {
+        Tag tag = Tag.valueOf("a-tag-name");
+
+        Element element = new Element(tag, "a-base-URI");
+
+        element.text("Some text is here.");
+
+        //TODO: visit the node with the node traversor
+        fail("Test not implemented");
+
+        ScoredText scoredText = nodeVisitorSUT.getFlatText();
+
+        assertFalse(scoredText.toString().isEmpty());
+    }
+
+    @Test
+    public void
+    test_GetScoredTextReturnsExpectedText_AfterSingleVisitToElementWithText
+            () throws Exception {
+        String expectedText = "This is the text we expect to see present in the list.";
+        Tag tag = Tag.valueOf("a-tag-name");
+
+        Element element = new Element(tag, "a-base-uri");
+
+        element.text(expectedText);
+
+        //TODO: visit the node with the node traversor
+        fail("Test not implemented");
+
+        String output = nodeVisitorSUT.getFlatText().toString();
+
+        assertEquals(expectedText, output);
+    }
+
     @Test
     public void
     test_AllScoresAreZero_AfterTraversalOfManyTargetElements
@@ -411,4 +395,6 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         fail("Test not implemented");
     }
+
+
 }
