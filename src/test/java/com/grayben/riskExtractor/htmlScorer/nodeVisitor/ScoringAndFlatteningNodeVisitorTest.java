@@ -215,6 +215,48 @@ public class ScoringAndFlatteningNodeVisitorTest
 
     @Test
     public void
+    test_EmphasisScoreIsZero_AfterHeadOnNonEmphasisElement
+            () throws Exception {
+
+    }
+
+    @Test
+    public void
+    test_EmphasisScoreIsZero_AfterTailOnNonEmphasisElement
+            () throws Exception {
+
+    }
+
+    @Test
+    public void
+    test_EmphasisScoreIsGreaterThanZero_AfterHeadOnEmphasisElement
+            () throws Exception {
+
+    }
+
+    @Test
+    public void
+    test_EmphasisScoreIsGreaterThanZero_AfterHeadOnEmphasisElementThenNonEmphasisElement
+            () throws Exception {
+
+    }
+
+    @Test
+    public void
+    test_EmphasisScoreIsZero_AfterHeadAndTailOnEmphasisElement
+            () throws Exception {
+
+    }
+
+    @Test
+    public void
+    test_EmphasisScoreIsGreaterThanZero_AfterHeadOn2EmphasisElementsAndTailOnLatterElement
+            () throws Exception {
+
+    }
+
+    @Test
+    public void
     test_EmphasisScoreIsZero_AfterScoringNonEmphasisElement
             () throws Exception {
         Integer expected = 0;
@@ -306,25 +348,49 @@ public class ScoringAndFlatteningNodeVisitorTest
 
     @Test
     public void
-    test_SegmentationScoreIsZero_AfterScoringNonSegmentationElement
+    test_EmphasisScoreIsZero_AfterHeadOnNonSegmentationElement
             () throws Exception {
-        fail("Cannot access ScoredText::scores");
+
     }
 
     @Test
     public void
-    test_SegmentationScoreIsGreaterThanZero_AfterScoringSegmentationElement
+    test_EmphasisScoreIsZero_AfterTailOnNonSegmentationElement
             () throws Exception {
-        fail("Cannot access ScoredText::scores");
+
     }
 
     @Test
     public void
-    test_SegmentationScoreIsGreaterThanZero_AfterScoringSegmentationElementThenNonSegmentationElement
+    test_EmphasisScoreIsGreaterThanZero_AfterHeadOnSegmentationElement
             () throws Exception {
-        fail("Cannot access ScoredText::scores");
+
     }
 
+    @Test
+    public void
+    test_EmphasisScoreIsGreaterThanZero_AfterHeadOnSegmentationElementThenNonSegmentationElement
+            () throws Exception {
+
+    }
+
+    @Test
+    public void
+    test_EmphasisScoreIsZero_AfterHeadAndTailOnSegmentationElement
+            () throws Exception {
+
+    }
+
+    @Test
+    public void
+    test_EmphasisScoreIsGreaterThanZero_AfterHeadOn2SegmentationElementsAndTailOnLatterElement
+            () throws Exception {
+
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Method tests (with NodeTraversor) //////////////////////////////////////
+    
     @Test
     public void
     test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
@@ -338,8 +404,4 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         fail("Cannot access ScoredText::scores");
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Method tests (with NodeTraversor) //////////////////////////////////////
-
 }
