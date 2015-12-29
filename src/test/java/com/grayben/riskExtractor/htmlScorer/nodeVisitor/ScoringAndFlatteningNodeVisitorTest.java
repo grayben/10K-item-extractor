@@ -33,30 +33,37 @@ public class ScoringAndFlatteningNodeVisitorTest
 
     private ScoringAndFlatteningNodeVisitor nodeVisitorSUT;
 
+    TagEmphasisScorer tagEmphasisScorer;
+    TagSegmentationScorer tagSegmentationScorer;
+    TagAndAttributeScorer tagAndAttributeScorer;
+    EmphasisElementScorer emphasisElementScorer;
+    SegmentationElementScorer segmentationElementScorer;
+
     @Before
     @Override
     public void setUp() throws Exception {
         Set<Scorer<Element>> elementScorers
                 = new HashSet<>();
 
-        TagEmphasisScorer tagEmphasisScorer
+        tagEmphasisScorer
                 = new TagEmphasisScorer(TagEmphasisScorer.defaultMap());
-        TagAndAttributeScorer tagAndAttributeScorer
+        tagAndAttributeScorer
                 = new TagAndAttributeScorer(TagAndAttributeScorer.defaultMap());
-        elementScorers.add(
-                new EmphasisElementScorer(
+        emphasisElementScorer
+                = new EmphasisElementScorer(
                         tagEmphasisScorer,
                         tagAndAttributeScorer
-                )
+                );
+        elementScorers.add(emphasisElementScorer);
+
+        tagSegmentationScorer
+                = new TagSegmentationScorer(TagSegmentationScorer.defaultMap());
+        segmentationElementScorer
+                = new SegmentationElementScorer(tagSegmentationScorer);
+        elementScorers.add(
+                segmentationElementScorer
         );
 
-        elementScorers.add(
-                new SegmentationElementScorer(
-                        new TagSegmentationScorer(
-                                TagSegmentationScorer.defaultMap()
-                        )
-                )
-        );
         this.nodeVisitorSUT
                 = new ScoringAndFlatteningNodeVisitor(elementScorers);
         super.setNodeVisitorSUT(nodeVisitorSUT);
@@ -230,7 +237,9 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         Integer expectGreaterThan = 0;
 
-        //Element emphasised = new Element(EmphasisElementScorer.)
+
+
+        Element emphasised = new Element(nodeVisitorSUT.getElementScorers().iterator().)
     }
 
     @Test
