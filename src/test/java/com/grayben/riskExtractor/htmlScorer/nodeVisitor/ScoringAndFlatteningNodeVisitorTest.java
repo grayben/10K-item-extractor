@@ -365,42 +365,137 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_SegmentationScoreIsZero_AfterHeadOnNonSegmentationElement
             () throws Exception {
-        fail("Test not implemented");
+        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
+
+        Integer expected = 0;
+
+        Element nonSegElem = new Element(
+                Tag.valueOf("foobar"),
+                "some string"
+        );
+
+        nodeVisitorSUT.head(nonSegElem, 1);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertEquals(expected, returned);
     }
 
     @Test
     public void
     test_SegmentationScoreIsZero_AfterTailOnNonSegmentationElement
             () throws Exception {
-        fail("Test not implemented");
+        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
+
+        Integer expected = 0;
+
+        Element nonSegElem = new Element(
+                Tag.valueOf("foobar"),
+                "some string"
+        );
+
+        nodeVisitorSUT.tail(nonSegElem, 1);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertEquals(expected, returned);
     }
 
     @Test
     public void
     test_SegmentationScoreIsGreaterThanZero_AfterHeadOnSegmentationElement
             () throws Exception {
-        fail("Test not implemented");
+        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
+
+        Iterator<Map.Entry<Element, Integer>> it
+                = getSegmentedTargetElements(nodeVisitorSUT)
+                .entrySet().iterator();
+        Map.Entry<Element, Integer> segmentedElementAndScore
+                = it.next();
+        Element segmentedElement = segmentedElementAndScore.getKey();
+        Integer expected = segmentedElementAndScore.getValue();
+        assert expected > 0;
+
+        nodeVisitorSUT.head(segmentedElement, 1);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertEquals(expected, returned);
     }
 
     @Test
     public void
     test_SegmentationScoreIsGreaterThanZero_AfterHeadOnSegmentationElementThenNonSegmentationElement
             () throws Exception {
-        fail("Test not implemented");
+        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
+
+        Iterator<Map.Entry<Element, Integer>> it
+                = getSegmentedTargetElements(nodeVisitorSUT)
+                .entrySet().iterator();
+        Map.Entry<Element, Integer> segmentedElementAndScore
+                = it.next();
+        Element segmentedElement = segmentedElementAndScore.getKey();
+        Integer expected = segmentedElementAndScore.getValue();
+        assert expected > 0;
+
+        Element nonSegmentedElement
+                = new Element(
+                Tag.valueOf("foobar"),
+                "some string"
+        );
+
+        nodeVisitorSUT.head(segmentedElement, 1);
+        nodeVisitorSUT.head(nonSegmentedElement, 1);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertEquals(expected, returned);
     }
 
     @Test
     public void
     test_SegmentationScoreIsZero_AfterHeadAndTailOnSegmentationElement
             () throws Exception {
-        fail("Test not implemented");
+        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
+
+        Integer expected = 0;
+
+        Element segmentedElement
+                = getSegmentedTargetElements(nodeVisitorSUT)
+                .entrySet().iterator().next().getKey();
+
+        nodeVisitorSUT.head(segmentedElement, 1);
+        nodeVisitorSUT.tail(segmentedElement, 1);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertEquals(expected, returned);
     }
 
     @Test
     public void
     test_SegmentationScoreIsGreaterThanZero_AfterHeadOn2SegmentationElementsAndTailOnLatterElement
             () throws Exception {
-        fail("Test not implemented");
+        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
+
+        Iterator<Map.Entry<Element, Integer>> it
+                = getSegmentedTargetElements(nodeVisitorSUT)
+                .entrySet().iterator();
+        Map.Entry<Element, Integer> segmentedElementAndScore
+                = it.next();
+        Element segmentedElement1 = segmentedElementAndScore.getKey();
+        Integer expected = segmentedElementAndScore.getValue();
+        assert expected > 0;
+
+        Element segmentedElement2 = it.next().getKey();
+
+        nodeVisitorSUT.head(segmentedElement1, 1);
+        nodeVisitorSUT.head(segmentedElement2, 1);
+        nodeVisitorSUT.tail(segmentedElement2, 1);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertEquals(expected, returned);
     }
 
 
