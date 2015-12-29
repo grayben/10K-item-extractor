@@ -18,9 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import static junit.framework.Assert.*;
 import static junit.framework.TestCase.fail;
@@ -71,9 +69,10 @@ public class ScoringAndFlatteningNodeVisitorTest
         super.tearDown();
     }
 
+
+
     ///////////////////////////////////////////////////////////////////////////
     // Constructor tests //////////////////////////////////////////////////////
-
     @Test
     public void
     test_InitThrowsNullPointerException_WhenElementScorersIsNull
@@ -122,9 +121,10 @@ public class ScoringAndFlatteningNodeVisitorTest
         assertTrue(scoredText.toString().isEmpty());
     }
 
+
+
     ///////////////////////////////////////////////////////////////////////////
     // Method tests (without NodeTraversor) ///////////////////////////////////
-
     @Test
     public void
     test_GetScoredTextReturnsExpectedScores_AfterSingleVisitToElementWithText
@@ -168,15 +168,15 @@ public class ScoringAndFlatteningNodeVisitorTest
         fail("Test not implemented");
     }
 
-    @Test
-    public void
-    test_EmphasisScoreIsGreaterThanZero_AfterHeadOnEmphasisElement
-            () throws Exception {
-        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
-
-        Iterator<Scorer<Element>> it = nodeVisitorSUT.getElementScorers().iterator();
+    private Map.Entry<Element, Integer>
+    getEmphasisedElement(
+            ScoringAndFlatteningNodeVisitor nodeVisitor,
+            String scoreLabel
+    ) throws Exception {
         Element emphasisedElement = null;
-        Integer expected = null;
+        Integer expectedScore = null;
+
+        Iterator<Scorer<Element>> it = nodeVisitor.getElementScorers().iterator();
         while(emphasisedElement == null && it.hasNext()){
             Scorer<Element> nextScorer = it.next();
             if(nextScorer.getScoreLabel()
@@ -184,7 +184,7 @@ public class ScoringAndFlatteningNodeVisitorTest
                 Tag emphasisedTag = ((EmphasisElementScorer)nextScorer)
                         .getTagEmphasisScorer()
                         .getScoresMap().entrySet().iterator().next().getKey();
-                expected = ((EmphasisElementScorer)nextScorer)
+                expectedScore = ((EmphasisElementScorer)nextScorer)
                         .getTagEmphasisScorer()
                         .getScoresMap().get(emphasisedTag);
                 emphasisedElement = new Element(emphasisedTag, "some-string");
@@ -192,6 +192,21 @@ public class ScoringAndFlatteningNodeVisitorTest
         }
         if (emphasisedElement == null)
             throw new Exception("Couldn't create an emphasised element");
+        return new AbstractMap.SimpleImmutableEntry<>
+                (emphasisedElement, expectedScore);
+
+    }
+
+    @Test
+    public void
+    test_EmphasisScoreIsGreaterThanZero_AfterHeadOnEmphasisElement
+            () throws Exception {
+        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
+
+        Map.Entry<Element, Integer> emphasisedElementAndScore
+                = getEmphasisedElement(nodeVisitorSUT, scoreLabel);
+        Element emphasisedElement = emphasisedElementAndScore.getKey();
+        Integer expected = emphasisedElementAndScore.getValue();
 
         nodeVisitorSUT.head(emphasisedElement, 1);
 
@@ -208,24 +223,10 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
-        Iterator<Scorer<Element>> it = nodeVisitorSUT.getElementScorers().iterator();
-        Element emphasisedElement = null;
-        Integer expected = null;
-        while(emphasisedElement == null && it.hasNext()){
-            Scorer<Element> nextScorer = it.next();
-            if(nextScorer.getScoreLabel()
-                    .equals(scoreLabel)){
-                Tag emphasisedTag = ((EmphasisElementScorer)nextScorer)
-                        .getTagEmphasisScorer()
-                        .getScoresMap().entrySet().iterator().next().getKey();
-                expected = ((EmphasisElementScorer)nextScorer)
-                        .getTagEmphasisScorer()
-                        .getScoresMap().get(emphasisedTag);
-                emphasisedElement = new Element(emphasisedTag, "some-string");
-            }
-        }
-        if (emphasisedElement == null)
-            throw new Exception("Couldn't create an emphasised element");
+        Map.Entry<Element, Integer> emphasisedElementAndScore
+                = getEmphasisedElement(nodeVisitorSUT, scoreLabel);
+        Element emphasisedElement = emphasisedElementAndScore.getKey();
+        Integer expected = emphasisedElementAndScore.getValue();
 
         Element notEmphasisedElement
                 = new Element(Tag.valueOf("foo-bar"), "some-string");
@@ -301,10 +302,10 @@ public class ScoringAndFlatteningNodeVisitorTest
         fail("Test not implemented");
     }
 
+
+    
     ///////////////////////////////////////////////////////////////////////////
     // Method tests (with NodeTraversor) //////////////////////////////////////
-
-
     @Test
     public void
     test_GetScoredTextReturnsEmpty_AfterSingleVisitToNonElementNode
