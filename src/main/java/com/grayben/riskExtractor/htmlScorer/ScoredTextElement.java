@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class ScoredTextElement {
 	}
 	
 	public Map<String, Integer> getScores() {
-		return scores;
+		return Collections.unmodifiableMap(scores);
 	}
 	
 }
