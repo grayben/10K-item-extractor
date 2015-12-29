@@ -5,6 +5,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.NodeVisitor;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +20,10 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
     }
 
     private Map<String, Integer> currentScores;
+
+    public Map<String, Integer> getCurrentScores(){
+        return Collections.unmodifiableMap(currentScores);
+    }
 
     private String currentString;
 
