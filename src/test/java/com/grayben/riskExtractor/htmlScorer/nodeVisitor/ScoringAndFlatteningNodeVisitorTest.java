@@ -179,7 +179,7 @@ public class ScoringAndFlatteningNodeVisitorTest
     }
 
     private Map.Entry<Element, Integer>
-    getEmphasisedElement(
+    getEmphasisedTargetElement(
             ScoringAndFlatteningNodeVisitor nodeVisitor
     ) throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
@@ -216,7 +216,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
         Map.Entry<Element, Integer> emphasisedElementAndScore
-                = getEmphasisedElement(nodeVisitorSUT);
+                = getEmphasisedTargetElement(nodeVisitorSUT);
         Element emphasisedElement = emphasisedElementAndScore.getKey();
         Integer expected = emphasisedElementAndScore.getValue();
 
@@ -236,7 +236,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
         Map.Entry<Element, Integer> emphasisedElementAndScore
-                = getEmphasisedElement(nodeVisitorSUT);
+                = getEmphasisedTargetElement(nodeVisitorSUT);
         Element emphasisedElement = emphasisedElementAndScore.getKey();
         Integer expected = emphasisedElementAndScore.getValue();
 
@@ -255,7 +255,19 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_EmphasisScoreIsZero_AfterHeadAndTailOnEmphasisElement
             () throws Exception {
-        fail("Test not implemented");
+        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
+
+        Integer expected = 0;
+
+        Element emphasisedElement
+                = getEmphasisedTargetElement(nodeVisitorSUT).getKey();
+
+        nodeVisitorSUT.head(emphasisedElement, 1);
+        nodeVisitorSUT.tail(emphasisedElement, 1);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertEquals(expected, returned);
     }
 
     @Test
