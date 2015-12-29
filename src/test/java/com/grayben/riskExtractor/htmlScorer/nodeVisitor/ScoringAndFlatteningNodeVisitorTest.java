@@ -363,42 +363,42 @@ public class ScoringAndFlatteningNodeVisitorTest
 
     @Test
     public void
-    test_EmphasisScoreIsZero_AfterHeadOnNonSegmentationElement
+    test_SegmentationScoreIsZero_AfterHeadOnNonSegmentationElement
             () throws Exception {
         fail("Test not implemented");
     }
 
     @Test
     public void
-    test_EmphasisScoreIsZero_AfterTailOnNonSegmentationElement
+    test_SegmentationScoreIsZero_AfterTailOnNonSegmentationElement
             () throws Exception {
         fail("Test not implemented");
     }
 
     @Test
     public void
-    test_EmphasisScoreIsGreaterThanZero_AfterHeadOnSegmentationElement
+    test_SegmentationScoreIsGreaterThanZero_AfterHeadOnSegmentationElement
             () throws Exception {
         fail("Test not implemented");
     }
 
     @Test
     public void
-    test_EmphasisScoreIsGreaterThanZero_AfterHeadOnSegmentationElementThenNonSegmentationElement
+    test_SegmentationScoreIsGreaterThanZero_AfterHeadOnSegmentationElementThenNonSegmentationElement
             () throws Exception {
         fail("Test not implemented");
     }
 
     @Test
     public void
-    test_EmphasisScoreIsZero_AfterHeadAndTailOnSegmentationElement
+    test_SegmentationScoreIsZero_AfterHeadAndTailOnSegmentationElement
             () throws Exception {
         fail("Test not implemented");
     }
 
     @Test
     public void
-    test_EmphasisScoreIsGreaterThanZero_AfterHeadOn2SegmentationElementsAndTailOnLatterElement
+    test_SegmentationScoreIsGreaterThanZero_AfterHeadOn2SegmentationElementsAndTailOnLatterElement
             () throws Exception {
         fail("Test not implemented");
     }
