@@ -165,14 +165,25 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_EmphasisScoreIsZero_AfterTailOnNonEmphasisElement
             () throws Exception {
-        fail("Test not implemented");
+        Integer expected = 0;
+
+        Element notEmphasised = new Element(Tag.valueOf("foo"), "a-base-uri");
+
+        nodeVisitorSUT.tail(notEmphasised, 1);
+
+        Integer returned
+                = nodeVisitorSUT.getCurrentScores()
+                .get(EmphasisElementScorer.SCORE_LABEL);
+
+        assertEquals(expected, returned);
     }
 
     private Map.Entry<Element, Integer>
     getEmphasisedElement(
-            ScoringAndFlatteningNodeVisitor nodeVisitor,
-            String scoreLabel
+            ScoringAndFlatteningNodeVisitor nodeVisitor
     ) throws Exception {
+        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
+
         Element emphasisedElement = null;
         Integer expectedScore = null;
 
@@ -205,7 +216,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
         Map.Entry<Element, Integer> emphasisedElementAndScore
-                = getEmphasisedElement(nodeVisitorSUT, scoreLabel);
+                = getEmphasisedElement(nodeVisitorSUT);
         Element emphasisedElement = emphasisedElementAndScore.getKey();
         Integer expected = emphasisedElementAndScore.getValue();
 
@@ -225,7 +236,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
         Map.Entry<Element, Integer> emphasisedElementAndScore
-                = getEmphasisedElement(nodeVisitorSUT, scoreLabel);
+                = getEmphasisedElement(nodeVisitorSUT);
         Element emphasisedElement = emphasisedElementAndScore.getKey();
         Integer expected = emphasisedElementAndScore.getValue();
 
