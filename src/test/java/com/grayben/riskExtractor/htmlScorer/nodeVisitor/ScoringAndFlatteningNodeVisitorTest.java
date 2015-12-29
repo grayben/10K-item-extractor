@@ -12,6 +12,7 @@ import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.parser.Tag;
+import org.jsoup.select.NodeTraversor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -504,8 +505,9 @@ public class ScoringAndFlatteningNodeVisitorTest
                 "my-comment",
                 "http://www.istonyabbottstillpm.com");
 
-        //TODO: visit the node with the node traversor
-        fail("Test not implemented");
+        NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitorSUT);
+
+        nodeTraversor.traverse(nonElementNode);
 
         ScoredText scoredText = nodeVisitorSUT.getFlatText();
 
@@ -521,8 +523,8 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         Node elementNode = new Element(tag, "http://www.baseURI.com");
 
-        //TODO: visit the node with the node traversor
-        fail("Test not implemented");
+        NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitorSUT);
+        nodeTraversor.traverse(elementNode);
 
         ScoredText scoredText = nodeVisitorSUT.getFlatText();
 
@@ -539,12 +541,12 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         element.text("Some text is here.");
 
-        //TODO: visit the node with the node traversor
-        fail("Test not implemented");
+        NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitorSUT);
+        nodeTraversor.traverse(element);
 
         ScoredText scoredText = nodeVisitorSUT.getFlatText();
 
-        assertFalse(scoredText.toString().isEmpty());
+        assertFalse(scoredText.getList().isEmpty());
     }
 
     @Test
@@ -558,8 +560,8 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         element.text(expectedText);
 
-        //TODO: visit the node with the node traversor
-        fail("Test not implemented");
+        NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitorSUT);
+        nodeTraversor.traverse(element);
 
         String output = nodeVisitorSUT.getFlatText().toString();
 
