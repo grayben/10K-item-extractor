@@ -198,70 +198,76 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_EmphasisScoreIsZero_ImmediatelyAfterInit
             () throws Exception {
-        fail("Test not implemented");
+        Integer expected = 0;
+
+        Integer returned
+                = nodeVisitorSUT.getCurrentScores()
+                .get(EmphasisElementScorer.SCORE_LABEL);
+
+        assertEquals(expected, returned);
     }
 
     @Test
     public void
     test_EmphasisScoreIsZero_AfterScoringNonEmphasisElement
             () throws Exception {
-        fail("Test not implemented");
+        fail("Cannot access ScoredText::scores");
     }
 
     @Test
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterScoringEmphasisElement
             () throws Exception {
-        fail("Test not implemented");
+        fail("Cannot access ScoredText::scores");
     }
 
     @Test
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterScoringEmphasisElementThenNonEmphasisElement
             () throws Exception {
-        fail("Test not implemented");
+        fail("Cannot access ScoredText::scores");
     }
 
     @Test
     public void
     test_SegmentationScoreIsZero_ImmediatelyAfterInit
             () throws Exception {
-        fail("Test not implemented");
+        fail("Cannot access ScoredText::scores");
     }
 
     @Test
     public void
     test_SegmentationScoreIsZero_AfterScoringNonSegmentationElement
             () throws Exception {
-        fail("Test not implemented");
+        fail("Cannot access ScoredText::scores");
     }
 
     @Test
     public void
     test_SegmentationScoreIsGreaterThanZero_AfterScoringSegmentationElement
             () throws Exception {
-        fail("Test not implemented");
+        fail("Cannot access ScoredText::scores");
     }
 
     @Test
     public void
     test_SegmentationScoreIsGreaterThanZero_AfterScoringSegmentationElementThenNonSegmentationElement
             () throws Exception {
-        fail("Test not implemented");
+        fail("Cannot access ScoredText::scores");
     }
 
     @Test
     public void
     test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
             () throws Exception {
-        fail("Test not implemented");
+        fail("Cannot access ScoredText::scores");
     }
 
     @Test
     public void
     test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
             () throws Exception {
-        fail("Test not implemented");
+        fail("Cannot access ScoredText::scores");
     }
 
 }
