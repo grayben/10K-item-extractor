@@ -178,35 +178,38 @@ public class ScoringAndFlatteningNodeVisitorTest
         assertEquals(expected, returned);
     }
 
-    private Map.Entry<Element, Integer>
-    getEmphasisedTargetElement(
+    private Map<Element, Integer>
+    getEmphasisedTargetElements(
             ScoringAndFlatteningNodeVisitor nodeVisitor
     ) throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
-        Element emphasisedElement = null;
-        Integer expectedScore = null;
+        Map<Element, Integer> targetMap = null;
 
         Iterator<Scorer<Element>> it = nodeVisitor.getElementScorers().iterator();
 
-        while(emphasisedElement == null && it.hasNext()){
+        while(targetMap == null && it.hasNext()){
             Scorer<Element> nextScorer = it.next();
             if(nextScorer.getScoreLabel()
                     .equals(scoreLabel)){
-                Tag emphasisedTag = ((EmphasisElementScorer)nextScorer)
+                Map<Tag, Integer> tagScoresMap = ((EmphasisElementScorer)nextScorer)
                         .getTagEmphasisScorer()
-                        .getScoresMap().entrySet().iterator().next().getKey();
-                expectedScore = ((EmphasisElementScorer)nextScorer)
-                        .getTagEmphasisScorer()
-                        .getScoresMap().get(emphasisedTag);
-                emphasisedElement = new Element(emphasisedTag, "some-string");
+                        .getScoresMap();
+                for (Map.Entry<Tag, Integer> entry:
+                        tagScoresMap.entrySet()) {
+                    targetMap.put(
+                            new Element(
+                                    entry.getKey(),
+                                    "some string"
+                            ),
+                            entry.getValue()
+                    );
+                }
             }
         }
-        if (emphasisedElement == null)
-            throw new Exception("Couldn't create an emphasised element");
-        return new AbstractMap.SimpleImmutableEntry<>
-                (emphasisedElement, expectedScore);
-
+        if (targetMap == null)
+            throw new Exception("Couldn't find any emphasised elements");
+        return targetMap;
     }
 
     @Test
@@ -215,8 +218,10 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
+        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
+                .entrySet().iterator();
         Map.Entry<Element, Integer> emphasisedElementAndScore
-                = getEmphasisedTargetElement(nodeVisitorSUT);
+                = it.next();
         Element emphasisedElement = emphasisedElementAndScore.getKey();
         Integer expected = emphasisedElementAndScore.getValue();
 
@@ -235,8 +240,10 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
+        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
+                .entrySet().iterator();
         Map.Entry<Element, Integer> emphasisedElementAndScore
-                = getEmphasisedTargetElement(nodeVisitorSUT);
+                = it.next();
         Element emphasisedElement = emphasisedElementAndScore.getKey();
         Integer expected = emphasisedElementAndScore.getValue();
 
@@ -259,8 +266,11 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         Integer expected = 0;
 
-        Element emphasisedElement
-                = getEmphasisedTargetElement(nodeVisitorSUT).getKey();
+        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
+                .entrySet().iterator();
+        Map.Entry<Element, Integer> emphasisedElementAndScore
+                = it.next();
+        Element emphasisedElement = emphasisedElementAndScore.getKey();
 
         nodeVisitorSUT.head(emphasisedElement, 1);
         nodeVisitorSUT.tail(emphasisedElement, 1);
