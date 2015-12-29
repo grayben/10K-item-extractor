@@ -18,9 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import static junit.framework.Assert.*;
 import static junit.framework.TestCase.fail;
@@ -260,7 +258,37 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterScoringEmphasisElementThenNonEmphasisElement
             () throws Exception {
-        fail("Cannot access ScoredText::scores");
+        Integer expectGreaterThan = 0;
+
+        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
+
+        Iterator<Scorer<Element>> it = nodeVisitorSUT.getElementScorers().iterator();
+        Element emphasisedElement = null;
+        while(emphasisedElement == null && it.hasNext()){
+            Scorer<Element> nextScorer = it.next();
+            if(nextScorer.getScoreLabel()
+                    .equals(scoreLabel)){
+                Tag emphasisedTag = ((EmphasisElementScorer)nextScorer)
+                        .getTagEmphasisScorer()
+                        .getScoresMap().entrySet().iterator().next().getKey();
+                emphasisedElement = new Element(emphasisedTag, "some-string");
+            }
+        }
+        if (emphasisedElement == null)
+            throw new Exception("Couldn't create an emphasised element");
+
+        Collection<Element> children = new ArrayList<>();
+        Element notEmphasisedElement
+                = new Element(Tag.valueOf("foo-bar"), "some-string");
+        children.add(notEmphasisedElement);
+
+        emphasisedElement.insertChildren(1, children);
+
+        visitNode(emphasisedElement, 1);
+
+        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+
+        assertTrue(returned > expectGreaterThan);
     }
 
     @Test
