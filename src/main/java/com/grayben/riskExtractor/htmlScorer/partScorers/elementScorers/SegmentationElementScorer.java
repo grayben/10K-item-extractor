@@ -14,7 +14,11 @@ public class SegmentationElementScorer extends Scorer<Element> {
 
 	Scorer<Tag> tagScorer;
 
-	public SegmentationElementScorer(TagSegmentationScorer tagScorer){
+    public Scorer<Tag> getTagScorer() {
+        return tagScorer;
+    }
+
+    public SegmentationElementScorer(TagSegmentationScorer tagScorer){
 		super(SCORE_LABEL);
 		this.tagScorer = tagScorer;
 	}
