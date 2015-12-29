@@ -217,42 +217,42 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_EmphasisScoreIsZero_AfterHeadOnNonEmphasisElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_EmphasisScoreIsZero_AfterTailOnNonEmphasisElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterHeadOnEmphasisElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterHeadOnEmphasisElementThenNonEmphasisElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_EmphasisScoreIsZero_AfterHeadAndTailOnEmphasisElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterHeadOn2EmphasisElementsAndTailOnLatterElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Test
@@ -343,65 +343,65 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_SegmentationScoreIsZero_ImmediatelyAfterInit
             () throws Exception {
-        fail("Cannot access ScoredText::scores");
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_EmphasisScoreIsZero_AfterHeadOnNonSegmentationElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_EmphasisScoreIsZero_AfterTailOnNonSegmentationElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterHeadOnSegmentationElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterHeadOnSegmentationElementThenNonSegmentationElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_EmphasisScoreIsZero_AfterHeadAndTailOnSegmentationElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_EmphasisScoreIsGreaterThanZero_AfterHeadOn2SegmentationElementsAndTailOnLatterElement
             () throws Exception {
-
+        fail("Test not implemented");
     }
 
     ///////////////////////////////////////////////////////////////////////////
     // Method tests (with NodeTraversor) //////////////////////////////////////
-    
+
     @Test
     public void
     test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
             () throws Exception {
-        fail("Cannot access ScoredText::scores");
+        fail("Test not implemented");
     }
 
     @Test
     public void
     test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
             () throws Exception {
-        fail("Cannot access ScoredText::scores");
+        fail("Test not implemented");
     }
 }
