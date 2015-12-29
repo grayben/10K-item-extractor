@@ -570,13 +570,6 @@ public class ScoringAndFlatteningNodeVisitorTest
 
     @Test
     public void
-    test_AllScoresAreZero_AfterTraversalOfManyTargetElements
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
     test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
             () throws Exception {
         fail("Test not implemented");
@@ -585,6 +578,13 @@ public class ScoringAndFlatteningNodeVisitorTest
     @Test
     public void
     test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
+            () throws Exception {
+        fail("Test not implemented");
+    }
+
+    @Test
+    public void
+    test_AllScoresAreZero_AfterTraversalOfManyTargetElements
             () throws Exception {
         fail("Test not implemented");
     }
