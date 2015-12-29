@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
+import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
@@ -346,27 +347,22 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_ScoredTextContainsTextWithEmphasisScoreEqualToZero_AfterHeadAndTailOnNonEmphasisElementWithText
             () throws Exception {
-        fail("Test not implemented");
-//        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
-//
-//        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
-//                .entrySet().iterator();
-//        Map.Entry<Element, Integer> emphasisedElementAndScore;
-//
-//        emphasisedElementAndScore = it.next();
-//        Element emphasisedElement1 = emphasisedElementAndScore.getKey();
-//        Integer expected = emphasisedElementAndScore.getValue();
-//
-//        Element emphasisedElement2
-//                = it.next().getKey();
-//
-//        nodeVisitorSUT.head(emphasisedElement1, 1);
-//        nodeVisitorSUT.head(emphasisedElement2, 2);
-//        nodeVisitorSUT.tail(emphasisedElement2, 1);
-//
-//        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
-//
-//        assertEquals(expected, returned);
+        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
+
+        Element element = new Element(Tag.valueOf("foobar"), "some string");
+        String elementText = "This is some text contained by the element.";
+        element.text(elementText);
+
+        nodeVisitorSUT.head(element, 1);
+        nodeVisitorSUT.tail(element, 1);
+
+        ScoredTextElement scoredTextElement
+                = nodeVisitorSUT.getFlatText().getList().iterator().next();
+
+        Integer expected = 0;
+        Integer actual = scoredTextElement.getScores().get(scoreLabel);
+
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -551,27 +547,22 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_ScoredTextContainsTextWithSegmentationScoreEqualToZero_AfterHeadAndTailOnNonSegmentationElementWithText
             () throws Exception {
-        fail("Test not implemented");
-//        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
+//        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 //
-//        Iterator<Map.Entry<Element, Integer>> it
-//                = getSegmentedTargetElements(nodeVisitorSUT)
-//                .entrySet().iterator();
-//        Map.Entry<Element, Integer> segmentedElementAndScore
-//                = it.next();
-//        Element segmentedElement1 = segmentedElementAndScore.getKey();
-//        Integer expected = segmentedElementAndScore.getValue();
-//        assert expected > 0;
+//        Element element = new Element(Tag.valueOf("foobar"), "some string");
+//        String elementText = "This is some text contained by the element.";
+//        element.text(elementText);
 //
-//        Element segmentedElement2 = it.next().getKey();
+//        nodeVisitorSUT.head(element, 1);
+//        nodeVisitorSUT.tail(element, 1);
 //
-//        nodeVisitorSUT.head(segmentedElement1, 1);
-//        nodeVisitorSUT.head(segmentedElement2, 1);
-//        nodeVisitorSUT.tail(segmentedElement2, 1);
+//        ScoredTextElement scoredTextElement
+//                = nodeVisitorSUT.getFlatText().getList().iterator().next();
 //
-//        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
+//        Integer expected = 0;
+//        Integer actual = scoredTextElement.getScores().get(scoreLabel);
 //
-//        assertEquals(expected, returned);
+//        assertEquals(expected, actual);
     }
 
     @Test
