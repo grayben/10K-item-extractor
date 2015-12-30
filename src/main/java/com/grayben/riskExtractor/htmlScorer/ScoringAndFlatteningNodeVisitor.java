@@ -33,8 +33,8 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
     private String currentString;
 
     private enum Operation {
-        INCREMENT,
-        DECREMENT
+        HEAD,
+        TAIL
     }
 
 
@@ -56,7 +56,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
         if(! isElement(node))
             return;
 		Element element = (Element) node;
-        processElement(element, Operation.INCREMENT);
+        processElement(element, Operation.HEAD);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
         if (! isElement(node))
             return;
         Element element = (Element) node;
-        processElement(element, Operation.DECREMENT);
+        processElement(element, Operation.TAIL);
 	}
 
     private void validateInput(Node node, int depth){
@@ -89,7 +89,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
     private void processElement(Element element, Operation operation){
         this.currentString = element.ownText();
         updateScores(element, operation);
-        if(element.ownText().isEmpty() == false)
+        if(operation == Operation.HEAD && element.ownText().isEmpty() == false)
             addScoredTextEntry();
     }
 
@@ -101,10 +101,10 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
             int elementScore = scorer.score(element);
             int newScore;
             switch (operation){
-                case INCREMENT:
+                case HEAD:
                     newScore = currentScore + elementScore;
                     break;
-                case DECREMENT:
+                case TAIL:
                     newScore = currentScore - elementScore;
                     break;
                 default:
