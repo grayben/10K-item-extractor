@@ -118,7 +118,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 
     private void addScoredTextEntry() {
         ScoredTextElement textElement = new ScoredTextElement(
-                this.currentString, this.currentScores
+                this.currentString, new HashMap<>(this.currentScores)
         );
         this.flatText.add(textElement);
     }
