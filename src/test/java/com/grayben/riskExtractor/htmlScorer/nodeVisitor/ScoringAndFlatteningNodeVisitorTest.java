@@ -683,12 +683,50 @@ public class ScoringAndFlatteningNodeVisitorTest
         fail("Test not implemented");
     }
 
-    @Ignore
+    private Element attachElements(Element currentElement, Iterable<Element> elementsToAttach){
+
+        boolean afterNotChild = false;
+
+        for (Element element :
+                elementsToAttach) {
+            afterNotChild = ! afterNotChild;
+            if(afterNotChild){
+                currentElement.after(element);
+            } else {
+                currentElement.appendChild(element);
+            }
+            currentElement = element;
+        }
+        return currentElement;
+    }
+
     @Test
     public void
     test_AllScoresAreZero_AfterTraversalOfManyTargetElements
             () throws Exception {
-        fail("Test not implemented");
+        
+        //fail("Test not implemented");
+
+        Map<Element, Integer> segmentationTargets
+                = getSegmentedTargetElements(nodeVisitorSUT);
+        Map<Element, Integer> emphasisTargets
+                = getEmphasisedTargetElements(nodeVisitorSUT);
+        
+        Element headElement = new Element(Tag.valueOf("foobar"), "a base URI");
+        Element currentElement = new Element(Tag.valueOf("bazaar"), "something else");
+        headElement.appendChild(currentElement);
+
+        currentElement = attachElements(currentElement, segmentationTargets.keySet());
+        currentElement = attachElements(currentElement, emphasisTargets.keySet());
+
+        NodeTraversor nt = new NodeTraversor(this.nodeVisitorSUT);
+        nt.traverse(headElement);
+        Map<String, Integer> sutScores = nodeVisitorSUT.getCurrentScores();
+
+        for (String key :
+                sutScores.keySet()) {
+            assertEquals(new Integer(0), sutScores.get(key));
+        }
     }
 
 
