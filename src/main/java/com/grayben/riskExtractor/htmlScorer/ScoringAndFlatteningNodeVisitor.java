@@ -89,7 +89,8 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
     private void processElement(Element element, Operation operation){
         this.currentString = element.ownText();
         updateScores(element, operation);
-        addScoredTextEntry();
+        if(element.ownText().isEmpty() == false)
+            addScoredTextEntry();
     }
 
     private void updateScores(Element element, Operation operation){
