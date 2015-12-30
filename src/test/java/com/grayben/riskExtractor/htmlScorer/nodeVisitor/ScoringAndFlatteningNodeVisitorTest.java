@@ -375,10 +375,8 @@ public class ScoringAndFlatteningNodeVisitorTest
         ScoredTextElement scoredTextElement
                 = nodeVisitorSUT.getFlatText().getList().iterator().next();
         Integer returnedScore = scoredTextElement.getScores().get(scoreLabel);
-        String returnedString = scoredTextElement.getTextElement();
 
         assertEquals(expectedScore, returnedScore);
-        assertEquals(elementText, returnedString);
     }
 
     @Test
@@ -571,26 +569,27 @@ public class ScoringAndFlatteningNodeVisitorTest
     test_ScoredTextContainsTextWithSegmentationScoreGreaterThanZero_AfterHeadAndTailOnSegmentationElementWithText
             () throws Exception {
         fail("Test not implemented");
-//        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
-//
-//        Iterator<Map.Entry<Element, Integer>> it
-//                = getSegmentedTargetElements(nodeVisitorSUT)
-//                .entrySet().iterator();
-//        Map.Entry<Element, Integer> segmentedElementAndScore
-//                = it.next();
-//        Element segmentedElement1 = segmentedElementAndScore.getKey();
-//        Integer expected = segmentedElementAndScore.getValue();
-//        assert expected > 0;
-//
-//        Element segmentedElement2 = it.next().getKey();
-//
-//        nodeVisitorSUT.head(segmentedElement1, 1);
-//        nodeVisitorSUT.head(segmentedElement2, 1);
-//        nodeVisitorSUT.tail(segmentedElement2, 1);
-//
-//        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
-//
-//        assertEquals(expected, returned);
+        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
+
+        Iterator<Map.Entry<Element, Integer>> it = getSegmentedTargetElements(nodeVisitorSUT)
+                .entrySet().iterator();
+        Map.Entry<Element, Integer> segmentedElementAndScore;
+
+        segmentedElementAndScore = it.next();
+        Element segmentedElement = segmentedElementAndScore.getKey();
+        Integer expectedScore = segmentedElementAndScore.getValue();
+
+        String elementText = "This is some text contained by the element.";
+        segmentedElement.text(elementText);
+
+        nodeVisitorSUT.head(segmentedElement, 1);
+        nodeVisitorSUT.tail(segmentedElement, 1);
+
+        ScoredTextElement scoredTextElement
+                = nodeVisitorSUT.getFlatText().getList().iterator().next();
+        Integer returnedScore = scoredTextElement.getScores().get(scoreLabel);
+
+        assertEquals(expectedScore, returnedScore);
     }
 
 
