@@ -369,27 +369,29 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_ScoredTextContainsTextWithEmphasisScoreGreaterThanZero_AfterHeadAndTailOnEmphasisElementWithText
             () throws Exception {
-        fail("Test not implemented");
-//        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
-//
-//        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
-//                .entrySet().iterator();
-//        Map.Entry<Element, Integer> emphasisedElementAndScore;
-//
-//        emphasisedElementAndScore = it.next();
-//        Element emphasisedElement1 = emphasisedElementAndScore.getKey();
-//        Integer expected = emphasisedElementAndScore.getValue();
-//
-//        Element emphasisedElement2
-//                = it.next().getKey();
-//
-//        nodeVisitorSUT.head(emphasisedElement1, 1);
-//        nodeVisitorSUT.head(emphasisedElement2, 2);
-//        nodeVisitorSUT.tail(emphasisedElement2, 1);
-//
-//        Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
-//
-//        assertEquals(expected, returned);
+        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
+
+        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
+                .entrySet().iterator();
+        Map.Entry<Element, Integer> emphasisedElementAndScore;
+
+        emphasisedElementAndScore = it.next();
+        Element emphasisedElement = emphasisedElementAndScore.getKey();
+        Integer expectedScore = emphasisedElementAndScore.getValue();
+
+        String elementText = "This is some text contained by the element.";
+        emphasisedElement.text(elementText);
+
+        nodeVisitorSUT.head(emphasisedElement, 1);
+        nodeVisitorSUT.tail(emphasisedElement, 1);
+
+        ScoredTextElement scoredTextElement
+                = nodeVisitorSUT.getFlatText().getList().iterator().next();
+        Integer returnedScore = scoredTextElement.getScores().get(scoreLabel);
+        String returnedString = scoredTextElement.getTextElement();
+
+        assertEquals(expectedScore, returnedScore);
+        assertEquals(elementText, returnedString);
     }
 
     @Test
