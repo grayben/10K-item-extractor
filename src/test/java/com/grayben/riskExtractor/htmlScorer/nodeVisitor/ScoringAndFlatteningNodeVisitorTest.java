@@ -16,6 +16,7 @@ import org.jsoup.parser.Tag;
 import org.jsoup.select.NodeTraversor;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -568,7 +569,6 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_ScoredTextContainsTextWithSegmentationScoreGreaterThanZero_AfterHeadAndTailOnSegmentationElementWithText
             () throws Exception {
-        fail("Test not implemented");
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
         Iterator<Map.Entry<Element, Integer>> it = getSegmentedTargetElements(nodeVisitorSUT)
@@ -667,6 +667,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         assertEquals(expectedText, output);
     }
 
+    @Ignore
     @Test
     public void
     test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
@@ -674,6 +675,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         fail("Test not implemented");
     }
 
+    @Ignore
     @Test
     public void
     test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
@@ -681,6 +683,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         fail("Test not implemented");
     }
 
+    @Ignore
     @Test
     public void
     test_AllScoresAreZero_AfterTraversalOfManyTargetElements

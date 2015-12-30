@@ -37,6 +37,7 @@ public abstract class NodeVisitorTest {
 
     }
 
+    @Ignore
     @Test
     public void
     test_HeadThrowsNullPointerException_WhenNodeIsNull
@@ -44,6 +45,7 @@ public abstract class NodeVisitorTest {
         fail("Test not implemented");
     }
 
+    @Ignore
     @Test
     public void
     test_HeadThrowsIllegalArgumentException_WhenDepthBelowZero
@@ -51,6 +53,7 @@ public abstract class NodeVisitorTest {
         fail("Test not implemented");
     }
 
+    @Ignore
     @Test
     public void
     test_TailThrowsNullPointerException_WhenNodeIsNull
@@ -58,6 +61,7 @@ public abstract class NodeVisitorTest {
         fail("Test not implemented");
     }
 
+    @Ignore
     @Test
     public void
     test_TailThrowsIllegalArgumentException_WhenDepthBelowZero
