@@ -16,10 +16,6 @@ public abstract class NodeVisitorTest {
 
     private NodeVisitor nodeVisitorSUT;
 
-    protected NodeVisitor getNodeVisitorSUT() {
-        return nodeVisitorSUT;
-    }
-
     protected void setNodeVisitorSUT(NodeVisitor nodeVisitorSUT) {
         this.nodeVisitorSUT = nodeVisitorSUT;
     }
