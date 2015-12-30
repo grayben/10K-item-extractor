@@ -349,20 +349,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
-        Element element = new Element(Tag.valueOf("foobar"), "some string");
-        String elementText = "This is some text contained by the element.";
-        element.text(elementText);
-
-        nodeVisitorSUT.head(element, 1);
-        nodeVisitorSUT.tail(element, 1);
-
-        ScoredTextElement scoredTextElement
-                = nodeVisitorSUT.getFlatText().getList().iterator().next();
-
-        Integer expected = 0;
-        Integer actual = scoredTextElement.getScores().get(scoreLabel);
-
-        assertEquals(expected, actual);
+        helper_ScoredTextContainsTextWithXScoreEqualToZero_AfterHeadAndTailOnNonXElement(scoreLabel);
     }
 
     @Test
@@ -545,26 +532,38 @@ public class ScoringAndFlatteningNodeVisitorTest
         assertEquals(expected, returned);
     }
 
+    private void helper_ScoreElementAndExpectScore
+            (Element element, String scoreLabel, Integer expectedScore){
+        nodeVisitorSUT.head(element, 1);
+        nodeVisitorSUT.tail(element, 1);
+
+        ScoredTextElement scoredTextElement
+                = nodeVisitorSUT.getFlatText().getList().iterator().next();
+
+        Integer actualScore = scoredTextElement.getScores().get(scoreLabel);
+
+        assertEquals(expectedScore, actualScore);
+    }
+
+    private void
+    helper_ScoredTextContainsTextWithXScoreEqualToZero_AfterHeadAndTailOnNonXElement
+            (String scoreLabel) throws Exception {
+        Element element = new Element(Tag.valueOf("foobar"), "some string");
+        String elementText = "This is some text contained by the element.";
+        element.text(elementText);
+
+        Integer expectedScore = 0;
+
+        helper_ScoreElementAndExpectScore(element, scoreLabel, expectedScore);
+    }
+
     @Test
     public void
     test_ScoredTextContainsTextWithSegmentationScoreEqualToZero_AfterHeadAndTailOnNonSegmentationElementWithText
             () throws Exception {
-//        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
-//
-//        Element element = new Element(Tag.valueOf("foobar"), "some string");
-//        String elementText = "This is some text contained by the element.";
-//        element.text(elementText);
-//
-//        nodeVisitorSUT.head(element, 1);
-//        nodeVisitorSUT.tail(element, 1);
-//
-//        ScoredTextElement scoredTextElement
-//                = nodeVisitorSUT.getFlatText().getList().iterator().next();
-//
-//        Integer expected = 0;
-//        Integer actual = scoredTextElement.getScores().get(scoreLabel);
-//
-//        assertEquals(expected, actual);
+        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
+
+        helper_ScoredTextContainsTextWithXScoreEqualToZero_AfterHeadAndTailOnNonXElement(scoreLabel);
     }
 
     @Test
