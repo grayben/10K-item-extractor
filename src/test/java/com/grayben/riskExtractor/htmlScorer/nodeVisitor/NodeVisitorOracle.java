@@ -11,6 +11,7 @@ import org.jsoup.parser.Tag;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -44,7 +45,7 @@ public class NodeVisitorOracle {
     }
 
     private Map<Element, Integer> scoresMap;
-    private Element rootElement;
+    private AnnotatedElement rootElement;
 
     private ScoredText expectedOutput;
 
@@ -87,6 +88,10 @@ public class NodeVisitorOracle {
 
         Map<String, Integer> scores;
 
+        public AnnotatedElement(Element element, Map<String, Integer> scores){
+            this(element.tag(), element.baseUri(), element.attributes(), scores);
+        }
+
         public AnnotatedElement(Tag tag, String baseUri, Attributes attributes, Map<String, Integer> scores) {
             super(tag, baseUri, attributes);
             this.scores = scores;
@@ -101,28 +106,60 @@ public class NodeVisitorOracle {
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
 
+    private Map<String, Integer> score(Element element) {
+        Map<String, Integer> scores = new HashMap<>();
 
+        for (Scorer<Element> scorer : sutParams) {
+            scores.put(scorer.getScoreLabel(), scorer.score(element));
+        }
+        return scores;
+    }
 
-    private void assembleInSemiRandomTree (
-            Element currentElement,
+    private void replaceScores(Map<String, Integer> destination, Map<String, Integer> source){
+        for(Map.Entry<String, Integer> scoreEntry : source.entrySet()){
+            destination.put(scoreEntry.getKey(), scoreEntry.getValue());
+        }
+    }
+
+    private void incrementScores(Map<String, Integer> destination, Map<String, Integer> source){
+        for(Map.Entry<String, Integer> scoreEntry : source.entrySet()){
+            String key = scoreEntry.getKey();
+            Integer oldValue;
+            if (destination.containsKey(key)) oldValue = destination.get(key);
+
+            //TODO: refactor so that value can be retrieved from a registry mapping scorer to scoreLabel s
+            else oldValue = 0;
+            Integer incoming = scoreEntry.getValue();
+            Integer newValue = oldValue + incoming;
+            destination.put(key, newValue);
+        }
+    }
+
+    private void assembleInTree(
+            AnnotatedElement currentElement,
             Iterable<Element> elementsToAttach) {
+        Map<String, Integer> parentScores = new HashMap<>();
+        Map<String, Integer> currentScores = new HashMap<>();
 
         boolean afterNotChild = false;
 
-        for (Element element :
-                elementsToAttach) {
+        for (Element element : elementsToAttach) {
             afterNotChild = !afterNotChild;
+
             if (afterNotChild) {
-                currentElement.after(element);
+                //since we're moving to a sibling, need to know the parent's scores
+                currentScores = parentScores;
             } else {
-                currentElement.appendChild(element);
+                parentScores = currentScores;
+                currentScores = parentScores;
             }
-            currentElement = element;
+            incrementScores(currentScores, score(element));
+            currentElement = new AnnotatedElement(element, currentScores);
         }
         this.rootElement = currentElement;
     }
 
-    private void assembleInSemiRandomTree(Iterable<Element> elementsToAttach){
-        assembleInSemiRandomTree(this.rootElement, elementsToAttach);
+    private void assembleInTree(Iterable<Element> elementsToAttach){
+        assembleInTree(this.rootElement, elementsToAttach);
     }
 }
