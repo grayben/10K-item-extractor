@@ -4,7 +4,10 @@ import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
@@ -87,10 +90,15 @@ public class NodeVisitorOracle {
     private void generateSutParams() {
         Set<Scorer<Element>> elementScorers = new HashSet<>();
         Scorer<Element> segmentationElementScorer =  new SegmentationElementScorer(
-                new TagSegmentationScorer(
-                        TagSegmentationScorer.defaultMap()
-                )
+                new TagSegmentationScorer(TagSegmentationScorer.defaultMap())
         );
+        elementScorers.add(segmentationElementScorer);
+        Scorer<Element> emphasisElementScorer = new EmphasisElementScorer(
+                new TagEmphasisScorer(TagEmphasisScorer.defaultMap()),
+                new TagAndAttributeScorer(TagAndAttributeScorer.defaultMap())
+        );
+        elementScorers.add(emphasisElementScorer);
+        this.sutParams = elementScorers;
     }
 
     private void generateAnnotatedInput() {
@@ -192,9 +200,7 @@ public class NodeVisitorOracle {
         }
     }
 
-    private void assembleInTree(
-            Element startElement,
-            Iterable<Element> elementsToAttach) {
+    private void assembleInTree(Element startElement, Iterable<Element> elementsToAttach) {
         Map<String, Integer> parentScores = new HashMap<>();
         Map<String, Integer> currentScores = new HashMap<>();
         boolean afterNotChild = false;
