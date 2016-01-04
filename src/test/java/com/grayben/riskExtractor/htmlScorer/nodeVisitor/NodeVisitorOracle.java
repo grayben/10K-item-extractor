@@ -15,10 +15,7 @@ import org.jsoup.select.NodeVisitor;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * For a nominated test configuration: generates the test input, SUT and expected output.
@@ -28,18 +25,38 @@ import java.util.Set;
 @RunWith(MockitoJUnitRunner.class)
 public class NodeVisitorOracle {
 
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // INSTANCE VARIABLES
+    ////////////////////////////////////////////////////////////////////////////////////////
+
     private Set<Scorer<Element>> sutParams;
 
     enum Configuration {
         SEQUENTIAL
     }
-
     private Configuration config;
 
     ScoringAndFlatteningNodeVisitor getSUT(Set<Scorer<Element>> elementScorers){
         return new ScoringAndFlatteningNodeVisitor(elementScorers);
     }
 
+    private AnnotatedElement rootElement;
+
+    private ScoredText expectedOutput;
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTORS
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+    NodeVisitorOracle(Configuration config) {
+        validateInitParams(config);
+        this.config = config;
+        generateArtifacts();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // PACKAGE INTERFACE
+    ////////////////////////////////////////////////////////////////////////////////////////
     Element getInput(){
         return this.rootElement;
     }
@@ -48,15 +65,9 @@ public class NodeVisitorOracle {
         return expectedOutput;
     }
 
-    private AnnotatedElement rootElement;
-
-    private ScoredText expectedOutput;
-
-    NodeVisitorOracle(Configuration config) {
-        validateInitParams(config);
-        this.config = config;
-        generateArtifacts();
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // HIGH LEVEL
+    ////////////////////////////////////////////////////////////////////////////////////////
 
     private void validateInitParams(Configuration config){
         switch(config) {
@@ -84,61 +95,7 @@ public class NodeVisitorOracle {
 
     private void generateAnnotatedInput() {
         Element element = new Element(Tag.valueOf("foobar"), "aBaseURI");
-        assembleInTree(element, someElements);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    private class AnnotatedElement extends Element {
-
-        Map<String, Integer> scores;
-
-        public AnnotatedElement(Element element, Map<String, Integer> scores){
-            this(element.tag(), element.baseUri(), element.attributes(), scores);
-        }
-
-        public AnnotatedElement(Tag tag, String baseUri, Attributes attributes, Map<String, Integer> scores) {
-            super(tag, baseUri, attributes);
-            this.scores = scores;
-        }
-
-        public AnnotatedElement(Tag tag, String baseUri, Map<String, Integer> scores) {
-            super(tag, baseUri);
-            this.scores = scores;
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    private Map<String, Integer> score(Element element) {
-        Map<String, Integer> scores = new HashMap<>();
-
-        for (Scorer<Element> scorer : sutParams) {
-            scores.put(scorer.getScoreLabel(), scorer.score(element));
-        }
-        return scores;
-    }
-
-    private void replaceScores(Map<String, Integer> destination, Map<String, Integer> source){
-        for(Map.Entry<String, Integer> scoreEntry : source.entrySet()){
-            destination.put(scoreEntry.getKey(), scoreEntry.getValue());
-        }
-    }
-
-    private void incrementScores(Map<String, Integer> destination, Map<String, Integer> source){
-        for(Map.Entry<String, Integer> scoreEntry : source.entrySet()){
-            String key = scoreEntry.getKey();
-            Integer oldValue;
-            if (destination.containsKey(key)) oldValue = destination.get(key);
-
-            //TODO: refactor so that value can be retrieved from a registry mapping scorer to scoreLabel s
-            else oldValue = 0;
-            Integer incoming = scoreEntry.getValue();
-            Integer newValue = oldValue + incoming;
-            destination.put(key, newValue);
-        }
+        assembleInTree(element, generateElements());
     }
 
     private void determineExpectedOutput(){
@@ -182,6 +139,59 @@ public class NodeVisitorOracle {
         this.expectedOutput = nv.getScoredText();
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // ENCAPSULATED HELPERS
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+    private class AnnotatedElement extends Element {
+
+        Map<String, Integer> scores;
+
+        public AnnotatedElement(Element element, Map<String, Integer> scores){
+            this(element.tag(), element.baseUri(), element.attributes(), scores);
+        }
+
+        public AnnotatedElement(Tag tag, String baseUri, Attributes attributes, Map<String, Integer> scores) {
+            super(tag, baseUri, attributes);
+            this.scores = scores;
+        }
+
+        public AnnotatedElement(Tag tag, String baseUri, Map<String, Integer> scores) {
+            super(tag, baseUri);
+            this.scores = scores;
+        }
+    }
+
+    private List<Element> generateElements(){
+        //TODO: implement this method
+        return null;
+    }
+
+
+
+    private Map<String, Integer> score(Element element) {
+        Map<String, Integer> scores = new HashMap<>();
+
+        for (Scorer<Element> scorer : sutParams) {
+            scores.put(scorer.getScoreLabel(), scorer.score(element));
+        }
+        return scores;
+    }
+
+    private void incrementScores(Map<String, Integer> destination, Map<String, Integer> source){
+        for(Map.Entry<String, Integer> scoreEntry : source.entrySet()){
+            String key = scoreEntry.getKey();
+            Integer oldValue;
+            if (destination.containsKey(key)) oldValue = destination.get(key);
+
+            //TODO: refactor so that value can be retrieved from a registry mapping scorer to scoreLabel s
+            else oldValue = 0;
+            Integer incoming = scoreEntry.getValue();
+            Integer newValue = oldValue + incoming;
+            destination.put(key, newValue);
+        }
+    }
+
     private void assembleInTree(
             Element startElement,
             Iterable<Element> elementsToAttach) {
@@ -205,9 +215,5 @@ public class NodeVisitorOracle {
             currentElement = new AnnotatedElement(element, currentScores);
         }
         this.rootElement = currentElement;
-    }
-
-    private void assembleInTree(Iterable<Element> elementsToAttach){
-        assembleInTree(this.rootElement, elementsToAttach);
     }
 }
