@@ -3,10 +3,15 @@ package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -64,6 +69,12 @@ public class NodeVisitorOracle {
     }
 
     private void generateSutParams() {
+        Set<Scorer<Element>> elementScorers = new HashSet<>();
+        Scorer<Element> segmentationElementScorer =  new SegmentationElementScorer(
+                new TagSegmentationScorer(
+                        TagSegmentationScorer.defaultMap()
+                )
+        );
     }
 
     private void generateInputAndExpectedOutput() {
@@ -71,6 +82,26 @@ public class NodeVisitorOracle {
 
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
+
+    private class AnnotatedElement extends Element {
+
+        Map<String, Integer> scores;
+
+        public AnnotatedElement(Tag tag, String baseUri, Attributes attributes, Map<String, Integer> scores) {
+            super(tag, baseUri, attributes);
+            this.scores = scores;
+        }
+
+        public AnnotatedElement(Tag tag, String baseUri, Map<String, Integer> scores) {
+            super(tag, baseUri);
+            this.scores = scores;
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+
 
     private void assembleInSemiRandomTree (
             Element currentElement,
