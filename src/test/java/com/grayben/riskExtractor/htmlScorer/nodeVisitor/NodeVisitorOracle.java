@@ -1,13 +1,17 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
+import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.parser.Tag;
+import org.jsoup.select.NodeTraversor;
+import org.jsoup.select.NodeVisitor;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -44,7 +48,6 @@ public class NodeVisitorOracle {
         return expectedOutput;
     }
 
-    private Map<Element, Integer> scoresMap;
     private AnnotatedElement rootElement;
 
     private ScoredText expectedOutput;
@@ -66,7 +69,8 @@ public class NodeVisitorOracle {
 
     private void generateArtifacts() {
         generateSutParams();
-        generateInputAndExpectedOutput();
+        generateAnnotatedInput();
+        determineExpectedOutput();
     }
 
     private void generateSutParams() {
@@ -78,7 +82,9 @@ public class NodeVisitorOracle {
         );
     }
 
-    private void generateInputAndExpectedOutput() {
+    private void generateAnnotatedInput() {
+        Element element = new Element(Tag.valueOf("foobar"), "aBaseURI");
+        assembleInTree(element, someElements);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -135,13 +141,55 @@ public class NodeVisitorOracle {
         }
     }
 
+    private void determineExpectedOutput(){
+        class OracleNodeVisitor implements NodeVisitor {
+
+            ScoredText scoredText;
+
+            ScoredText getScoredText() {
+                return scoredText;
+            }
+
+            OracleNodeVisitor(){
+                this.scoredText = new ScoredText();
+            }
+
+            @Override
+            public void head(Node node, int i) {
+                validateNode(node);
+                AnnotatedElement annotatedElement = (AnnotatedElement) node;
+                scoredText.add(
+                        new ScoredTextElement(annotatedElement.ownText(), annotatedElement.scores)
+                );
+            }
+
+            @Override
+            public void tail(Node node, int i) {
+                validateNode(node);
+            }
+
+            private void validateNode(Node node){
+                if(node.getClass().equals(AnnotatedElement.class) == false){
+                    throw new IllegalArgumentException(
+                            "Tried to pass in a Node which was not an AnnotatedElement"
+                    );
+                }
+            }
+        }
+        OracleNodeVisitor nv = new OracleNodeVisitor();
+        NodeTraversor nt = new NodeTraversor(nv);
+        nt.traverse(this.rootElement);
+        this.expectedOutput = nv.getScoredText();
+    }
+
     private void assembleInTree(
-            AnnotatedElement currentElement,
+            Element startElement,
             Iterable<Element> elementsToAttach) {
         Map<String, Integer> parentScores = new HashMap<>();
         Map<String, Integer> currentScores = new HashMap<>();
-
         boolean afterNotChild = false;
+
+        AnnotatedElement currentElement = new AnnotatedElement(startElement, score(startElement));
 
         for (Element element : elementsToAttach) {
             afterNotChild = !afterNotChild;
