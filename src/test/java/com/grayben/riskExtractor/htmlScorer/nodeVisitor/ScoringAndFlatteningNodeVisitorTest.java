@@ -683,22 +683,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         fail("Test not implemented");
     }
 
-    private Element attachElements(Element currentElement, Iterable<Element> elementsToAttach){
 
-        boolean afterNotChild = false;
-
-        for (Element element :
-                elementsToAttach) {
-            afterNotChild = ! afterNotChild;
-            if(afterNotChild){
-                currentElement.after(element);
-            } else {
-                currentElement.appendChild(element);
-            }
-            currentElement = element;
-        }
-        return currentElement;
-    }
 
     @Test
     public void
@@ -716,8 +701,12 @@ public class ScoringAndFlatteningNodeVisitorTest
         Element currentElement = new Element(Tag.valueOf("bazaar"), "something else");
         headElement.appendChild(currentElement);
 
-        currentElement = attachElements(currentElement, segmentationTargets.keySet());
-        currentElement = attachElements(currentElement, emphasisTargets.keySet());
+        currentElement = attachElementsAndReturnExpectedScoredText(
+                currentElement,
+                segmentationTargets.keySet());
+        currentElement = attachElementsAndReturnExpectedScoredText(
+                currentElement,
+                emphasisTargets.keySet());
 
         NodeTraversor nt = new NodeTraversor(this.nodeVisitorSUT);
         nt.traverse(headElement);
