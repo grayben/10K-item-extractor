@@ -42,10 +42,6 @@ public class NodeVisitorOracle {
 
     private Configuration config;
 
-    ScoringAndFlatteningNodeVisitor getSUT(Set<Scorer<Element>> elementScorers) {
-        return new ScoringAndFlatteningNodeVisitor(elementScorers);
-    }
-
     private AnnotatedElement rootElement;
 
     private ScoredText expectedOutput;
