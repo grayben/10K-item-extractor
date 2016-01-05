@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,12 +27,12 @@ public class ScoredTextElement {
         }
 		if(scores == null) {
             throw new NullPointerException(
-                    "Tried to pass in null scores:Map<Integer, Integer>"
+                    "Tried to pass in null currentScores:Map<Integer, Integer>"
             );
         }
 		if(scores.isEmpty()){
 			throw new IllegalArgumentException(
-                    "Tried to pass in empty scores:Map<Integer, Integer>"
+                    "Tried to pass in empty currentScores:Map<Integer, Integer>"
             );
 		}
 		this.textElement = text;
@@ -43,7 +44,25 @@ public class ScoredTextElement {
 	}
 	
 	public Map<String, Integer> getScores() {
-		return scores;
+		return Collections.unmodifiableMap(scores);
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ScoredTextElement that = (ScoredTextElement) o;
+
+		if (!textElement.equals(that.textElement)) return false;
+		return scores.equals(that.scores);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = textElement.hashCode();
+		result = 31 * result + scores.hashCode();
+		return result;
+	}
 }

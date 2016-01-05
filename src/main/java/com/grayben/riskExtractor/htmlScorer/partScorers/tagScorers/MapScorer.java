@@ -2,6 +2,7 @@ package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -10,6 +11,10 @@ import java.util.Map;
 public abstract class MapScorer<T> extends Scorer<T> {
 
     Map<T, Integer> scoresMap;
+
+    public Map<T, Integer> getScoresMap() {
+        return Collections.unmodifiableMap(scoresMap);
+    }
 
     protected MapScorer(String scoreLabel, Map<T, Integer> scoresMap) {
         super(scoreLabel);
