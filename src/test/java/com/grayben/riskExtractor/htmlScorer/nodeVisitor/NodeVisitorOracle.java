@@ -135,23 +135,25 @@ public class NodeVisitorOracle {
 
             @Override
             public void head(Node node, int i) {
-                validateNode(node);
-                AnnotatedElement annotatedElement = (AnnotatedElement) node;
-                scoredText.add(
-                        new ScoredTextElement(annotatedElement.ownText(), annotatedElement.scores)
-                );
+                if(isAnnotatedElement(node)) {
+
+                    AnnotatedElement annotatedElement = (AnnotatedElement) node;
+                    scoredText.add(
+                            new ScoredTextElement(annotatedElement.ownText(), annotatedElement.scores)
+                    );
+                }
             }
 
             @Override
             public void tail(Node node, int i) {
-                validateNode(node);
+                isAnnotatedElement(node);
             }
 
-            private void validateNode(Node node) {
-                if (node.getClass().equals(AnnotatedElement.class) == false) {
-                    throw new IllegalArgumentException(
-                            "Tried to pass in a Node which was not an AnnotatedElement"
-                    );
+            private boolean isAnnotatedElement(Node node) {
+                if (node.getClass().equals(AnnotatedElement.class)) {
+                    return true;
+                } else {
+                    return false;
                 }
             }
         }
