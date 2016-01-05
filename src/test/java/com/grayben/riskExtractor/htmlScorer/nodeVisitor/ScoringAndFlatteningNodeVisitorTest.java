@@ -16,7 +16,6 @@ import org.jsoup.parser.Tag;
 import org.jsoup.select.NodeTraversor;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -26,7 +25,6 @@ import java.util.*;
 import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorOracle.getEmphasisedTargetElementsAndScores;
 import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorOracle.getSegmentedTargetElementsAndScores;
 import static junit.framework.Assert.*;
-import static junit.framework.TestCase.fail;
 
 /**
  * Created by beng on 28/11/2015.
@@ -594,12 +592,25 @@ public class ScoringAndFlatteningNodeVisitorTest
         assertEquals(expectedText, output);
     }
 
-    @Ignore
     @Test
     public void
     test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
             () throws Exception {
-        fail("Test not implemented");
+        NodeVisitorOracle oracle = new NodeVisitorOracle(NodeVisitorOracle.Configuration.SEQUENTIAL);
+        this.nodeVisitorSUT = oracle.getSUT();
+        Element input = oracle.getInput();
+        NodeTraversor nt = new NodeTraversor(nodeVisitorSUT);
+
+        nt.traverse(input);
+
+        List<ScoredTextElement> expectedOutput = oracle.getExpectedOutput().getList();
+        List<ScoredTextElement> actualOutput = nodeVisitorSUT.getFlatText().getList();
+
+        assert expectedOutput.size() == actualOutput.size();
+
+        for(int i = 0; i < expectedOutput.size(); i++){
+            assertEquals(expectedOutput.get(i).getTextElement(), actualOutput.get(i).getTextElement());
+        }
     }
 
     @Test
@@ -607,7 +618,7 @@ public class ScoringAndFlatteningNodeVisitorTest
     test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
             () throws Exception {
         NodeVisitorOracle oracle = new NodeVisitorOracle(NodeVisitorOracle.Configuration.SEQUENTIAL);
-        this.setNodeVisitorSUT(oracle.getSUT());
+        this.nodeVisitorSUT = oracle.getSUT();
         Element input = oracle.getInput();
         NodeTraversor nt = new NodeTraversor(this.nodeVisitorSUT);
         nt.traverse(input);
