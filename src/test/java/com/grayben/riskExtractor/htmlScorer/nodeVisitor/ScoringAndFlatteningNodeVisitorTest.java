@@ -23,6 +23,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.*;
 
+import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorOracle.getEmphasisedTargetElements;
+import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorOracle.getSegmentedTargetElements;
 import static junit.framework.Assert.*;
 import static junit.framework.TestCase.fail;
 
@@ -173,81 +175,6 @@ public class ScoringAndFlatteningNodeVisitorTest
                 .get(EmphasisElementScorer.SCORE_LABEL);
 
         assertEquals(expected, returned);
-    }
-
-    private Map<Element, Integer>
-    getSegmentedTargetElements(
-            ScoringAndFlatteningNodeVisitor nodeVisitor
-    ) throws Exception {
-        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
-
-        Map<Element, Integer> targetMap = null;
-
-        Iterator<Scorer<Element>> it
-                = nodeVisitor.getElementScorers().iterator();
-
-        while(targetMap == null && it.hasNext()){
-            Scorer<Element> nextScorer = it.next();
-            if(nextScorer.getScoreLabel().equals(scoreLabel)){
-                targetMap = new HashMap<>();
-                Map<Tag, Integer> tagScoresMap =
-                        ((TagSegmentationScorer)
-                                (
-                                        (SegmentationElementScorer) nextScorer
-                                ).getTagScorer()
-                        ).getScoresMap();
-                for (Map.Entry<Tag, Integer> entry :
-                        tagScoresMap.entrySet()) {
-                    targetMap.put(
-                            new Element(
-                                    entry.getKey(), "some string"
-                            ),
-                            entry.getValue()
-                    );
-                }
-            }
-        }
-
-        if (targetMap == null)
-            throw new Exception("Couldn't find any segmented elements");
-
-        return targetMap;
-    }
-
-    private Map<Element, Integer>
-    getEmphasisedTargetElements(
-            ScoringAndFlatteningNodeVisitor nodeVisitor
-    ) throws Exception {
-        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
-
-        Map<Element, Integer> targetMap = null;
-
-        Iterator<Scorer<Element>> it
-                = nodeVisitor.getElementScorers().iterator();
-
-        while(targetMap == null && it.hasNext()){
-            Scorer<Element> nextScorer = it.next();
-            if(nextScorer.getScoreLabel().equals(scoreLabel)){
-                targetMap = new HashMap<>();
-                Map<Tag, Integer> tagScoresMap
-                        = ((EmphasisElementScorer)nextScorer)
-                        .getTagEmphasisScorer()
-                        .getScoresMap();
-                for (Map.Entry<Tag, Integer> entry:
-                        tagScoresMap.entrySet()) {
-                    targetMap.put(
-                            new Element(
-                                    entry.getKey(),
-                                    "some string"
-                            ),
-                            entry.getValue()
-                    );
-                }
-            }
-        }
-        if (targetMap == null)
-            throw new Exception("Couldn't find any emphasised elements");
-        return targetMap;
     }
 
     @Test
