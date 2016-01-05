@@ -23,8 +23,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.*;
 
-import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorOracle.getEmphasisedTargetElements;
-import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorOracle.getSegmentedTargetElements;
+import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorOracle.getEmphasisedTargetElementsAndScores;
+import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorOracle.getSegmentedTargetElementsAndScores;
 import static junit.framework.Assert.*;
 import static junit.framework.TestCase.fail;
 
@@ -183,7 +183,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
+        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElementsAndScores(nodeVisitorSUT)
                 .entrySet().iterator();
         Map.Entry<Element, Integer> emphasisedElementAndScore
                 = it.next();
@@ -205,7 +205,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
+        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElementsAndScores(nodeVisitorSUT)
                 .entrySet().iterator();
         Map.Entry<Element, Integer> emphasisedElementAndScore
                 = it.next();
@@ -231,7 +231,7 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         Integer expected = 0;
 
-        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
+        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElementsAndScores(nodeVisitorSUT)
                 .entrySet().iterator();
         Map.Entry<Element, Integer> emphasisedElementAndScore
                 = it.next();
@@ -251,7 +251,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
+        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElementsAndScores(nodeVisitorSUT)
                 .entrySet().iterator();
         Map.Entry<Element, Integer> emphasisedElementAndScore;
 
@@ -286,7 +286,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElements(nodeVisitorSUT)
+        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElementsAndScores(nodeVisitorSUT)
                 .entrySet().iterator();
         Map.Entry<Element, Integer> emphasisedElementAndScore;
 
@@ -368,7 +368,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
         Iterator<Map.Entry<Element, Integer>> it
-                = getSegmentedTargetElements(nodeVisitorSUT)
+                = getSegmentedTargetElementsAndScores(nodeVisitorSUT)
                 .entrySet().iterator();
         Map.Entry<Element, Integer> segmentedElementAndScore
                 = it.next();
@@ -390,7 +390,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
         Iterator<Map.Entry<Element, Integer>> it
-                = getSegmentedTargetElements(nodeVisitorSUT)
+                = getSegmentedTargetElementsAndScores(nodeVisitorSUT)
                 .entrySet().iterator();
         Map.Entry<Element, Integer> segmentedElementAndScore
                 = it.next();
@@ -421,7 +421,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         Integer expected = 0;
 
         Element segmentedElement
-                = getSegmentedTargetElements(nodeVisitorSUT)
+                = getSegmentedTargetElementsAndScores(nodeVisitorSUT)
                 .entrySet().iterator().next().getKey();
 
         nodeVisitorSUT.head(segmentedElement, 1);
@@ -439,7 +439,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
         Iterator<Map.Entry<Element, Integer>> it
-                = getSegmentedTargetElements(nodeVisitorSUT)
+                = getSegmentedTargetElementsAndScores(nodeVisitorSUT)
                 .entrySet().iterator();
         Map.Entry<Element, Integer> segmentedElementAndScore
                 = it.next();
@@ -498,7 +498,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it = getSegmentedTargetElements(nodeVisitorSUT)
+        Iterator<Map.Entry<Element, Integer>> it = getSegmentedTargetElementsAndScores(nodeVisitorSUT)
                 .entrySet().iterator();
         Map.Entry<Element, Integer> segmentedElementAndScore;
 
@@ -619,24 +619,11 @@ public class ScoringAndFlatteningNodeVisitorTest
         
         //fail("Test not implemented");
 
-        Map<Element, Integer> segmentationTargets
-                = getSegmentedTargetElements(nodeVisitorSUT);
-        Map<Element, Integer> emphasisTargets
-                = getEmphasisedTargetElements(nodeVisitorSUT);
-        
-        Element headElement = new Element(Tag.valueOf("foobar"), "a base URI");
-        Element currentElement = new Element(Tag.valueOf("bazaar"), "something else");
-        headElement.appendChild(currentElement);
-
-        currentElement = attachElementsAndReturnExpectedScoredText(
-                currentElement,
-                segmentationTargets.keySet());
-        currentElement = attachElementsAndReturnExpectedScoredText(
-                currentElement,
-                emphasisTargets.keySet());
-
+        NodeVisitorOracle oracle = new NodeVisitorOracle(NodeVisitorOracle.Configuration.SEQUENTIAL);
+        this.setNodeVisitorSUT(oracle.getSUT());
+        Element input = oracle.getInput();
         NodeTraversor nt = new NodeTraversor(this.nodeVisitorSUT);
-        nt.traverse(headElement);
+        nt.traverse(input);
         Map<String, Integer> sutScores = nodeVisitorSUT.getCurrentScores();
 
         for (String key :

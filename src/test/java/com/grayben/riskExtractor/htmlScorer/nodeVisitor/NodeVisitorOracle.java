@@ -42,7 +42,7 @@ public class NodeVisitorOracle {
 
     private Configuration config;
 
-    private AnnotatedElement rootElement;
+    private AnnotatedElement rootAnnotation;
 
     private ScoredText expectedOutput;
 
@@ -60,7 +60,7 @@ public class NodeVisitorOracle {
     // PACKAGE INTERFACE
     ////////////////////////////////////////////////////////////////////////////////////////
     Element getInput() {
-        return this.rootElement;
+        return this.rootAnnotation;
     }
 
     ScoredText getExpectedOutput() {
@@ -115,8 +115,16 @@ public class NodeVisitorOracle {
     }
 
     private void generateAnnotatedInput() {
-        Element element = new Element(Tag.valueOf("foobar"), "aBaseURI");
-        assembleInTree(element, generateElements());
+        List<Element> elementList = null;
+        switch (config) {
+            case SEQUENTIAL:
+                elementList = new ArrayList<>();
+                elementList.addAll(getEmphasisedTargetElementsAndScores(this.getSUT()).keySet());
+                elementList.addAll(getSegmentedTargetElementsAndScores(this.getSUT()).keySet());
+                break;
+        }
+        TreeAssembler treeAssembler = new TreeAssembler(elementList, config, this.sutParams);
+        rootAnnotation = treeAssembler.getRootAnnotation();
     }
 
     private void determineExpectedOutput() {
@@ -156,7 +164,7 @@ public class NodeVisitorOracle {
         }
         OracleNodeVisitor nv = new OracleNodeVisitor();
         NodeTraversor nt = new NodeTraversor(nv);
-        nt.traverse(this.rootElement);
+        nt.traverse(this.rootAnnotation);
         this.expectedOutput = nv.getScoredText();
     }
 
@@ -188,62 +196,185 @@ public class NodeVisitorOracle {
         switch (this.config){
             case SEQUENTIAL:
                 targetElements = new ArrayList<>();
-                targetElements.addAll(getEmphasisedTargetElements(this.getSUT()).keySet());
-                targetElements.addAll(getSegmentedTargetElements(this.getSUT()).keySet());
+                targetElements.addAll(getEmphasisedTargetElementsAndScores(this.getSUT()).keySet());
+                targetElements.addAll(getSegmentedTargetElementsAndScores(this.getSUT()).keySet());
+                for(Element element : targetElements){
+                    element.text("some text");
+                }
                 break;
         }
         return targetElements;
     }
 
 
-    private Map<String, Integer> score(Element element) {
-        Map<String, Integer> scores = new HashMap<>();
+    private class TreeAssembler {
 
-        for (Scorer<Element> scorer : sutParams) {
-            scores.put(scorer.getScoreLabel(), scorer.score(element));
+        //input fields
+        private List<Element> elementsToAttach;
+
+        private Configuration configuration;
+        private Set<Scorer<Element>> elementScorers;
+
+        //output fields
+        private AnnotatedElement rootAnnotation;
+
+        public AnnotatedElement getRootAnnotation() {
+            return rootAnnotation;
         }
-        return scores;
-    }
 
-    private void incrementScores(Map<String, Integer> destination, Map<String, Integer> source) {
-        for (Map.Entry<String, Integer> scoreEntry : source.entrySet()) {
-            String key = scoreEntry.getKey();
-            Integer oldValue;
-            if (destination.containsKey(key)) oldValue = destination.get(key);
+        //internal working fields
+        private Element currentElement;
+        private HashMap<String, Integer> currentIsolatedScores;
 
-                //TODO: refactor so that value can be retrieved from a registry mapping scorer to scoreLabel s
-            else oldValue = 0;
-            Integer incoming = scoreEntry.getValue();
-            Integer newValue = oldValue + incoming;
-            destination.put(key, newValue);
+        private AnnotatedElement parentAnnotation;
+        private HashMap<String, Integer> parentCumulativeScores;
+
+        private AnnotatedElement childAnnotation;
+        private HashMap<String, Integer> childCumulativeScores;
+
+
+
+        TreeAssembler(List<Element> elementsToAttach, Configuration configuration, Set<Scorer<Element>> elementScorers){
+            validateInitParams(elementsToAttach, configuration, elementScorers);
+            this.elementsToAttach = elementsToAttach;
+            this.configuration = configuration;
+            this.elementScorers = elementScorers;
+            initialiseMaps();
+            //setup the first parent/child AnnotatedElement pair
+            plantSeedling();
+            assembleInTree();
         }
-    }
 
-    private void assembleInTree(Element startElement, Iterable<Element> elementsToAttach) {
-        Map<String, Integer> parentScores = new HashMap<>();
-        Map<String, Integer> currentScores = new HashMap<>();
-        boolean afterNotChild = false;
-
-        AnnotatedElement currentElement = new AnnotatedElement(startElement, score(startElement));
-
-        for (Element element : elementsToAttach) {
-            afterNotChild = !afterNotChild;
-
-            if (afterNotChild) {
-                //since we're moving to a sibling, need to know the parent's scores
-                currentScores = parentScores;
-            } else {
-                parentScores = currentScores;
-                currentScores = parentScores;
+        private void validateInitParams(
+                List<Element> elements,
+                Configuration configuration,
+                Set<Scorer<Element>> elementScorers
+        ) {
+            if(elements == null){
+                throw new NullPointerException(
+                        "The input elements list was null"
+                );
             }
-            incrementScores(currentScores, score(element));
-            currentElement = new AnnotatedElement(element, currentScores);
+            if(elements.size() < 2){
+                throw new IllegalArgumentException(
+                        "The input element list did not have at least 2 elements"
+                );
+            }
+            if(configuration == null){
+                throw new NullPointerException(
+                        "The input configuration option was null"
+                );
+            }
+            switch (configuration){
+                case SEQUENTIAL: break;
+                default: throw new IllegalArgumentException(
+                        "The input configuration option was not recognised"
+                );
+            }
+            if (elementScorers == null) {
+                throw new NullPointerException(
+                        "The input element scorers set was null"
+                );
+            }
+            if (elementScorers.isEmpty()){
+                throw new IllegalArgumentException(
+                        "The input element scorers set was empty"
+                );
+            }
         }
-        this.rootElement = currentElement;
+
+        private void initialiseMaps() {
+            //make sure all the fields are instantiated, contain keys and default values
+            currentIsolatedScores = new HashMap<>();
+            parentCumulativeScores = new HashMap<>();
+            childCumulativeScores = new HashMap<>();
+
+            for(Scorer<Element> scorer : this.elementScorers){
+                currentIsolatedScores.put(scorer.getScoreLabel(), scorer.DEFAULT_SCORE);
+                parentCumulativeScores.put(scorer.getScoreLabel(), scorer.DEFAULT_SCORE);
+                childCumulativeScores.put(scorer.getScoreLabel(), scorer.DEFAULT_SCORE);
+            }
+        }
+
+        private void plantSeedling() {
+            //parent
+
+            currentElement = elementsToAttach.remove(0);
+            currentIsolatedScores = isolatedScore(currentElement);
+            parentCumulativeScores = copyScores(currentIsolatedScores);
+
+            parentAnnotation = new AnnotatedElement(currentElement, parentCumulativeScores);
+
+            //child
+            currentElement = elementsToAttach.remove(0);
+            currentIsolatedScores = isolatedScore(currentElement);
+            childCumulativeScores = addScores(parentCumulativeScores, currentIsolatedScores);
+
+            childAnnotation = new AnnotatedElement(currentElement, childCumulativeScores);
+            parentAnnotation.appendChild(childAnnotation);
+
+            //set root of hierarchy to be built
+            rootAnnotation = parentAnnotation;
+        }
+
+        private AnnotatedElement assembleInTree() {
+
+            boolean childNotSibling = false;
+            while(elementsToAttach.isEmpty() == false){
+                currentElement = elementsToAttach.remove(0);
+                currentIsolatedScores = isolatedScore(currentElement);
+
+                childNotSibling = !childNotSibling;
+                if (childNotSibling){
+                    parentCumulativeScores = childCumulativeScores;
+                    childCumulativeScores = null;
+                    parentAnnotation = childAnnotation;
+                    childAnnotation = null;
+                }
+                childCumulativeScores = addScores(parentCumulativeScores, currentIsolatedScores);
+                childAnnotation = new AnnotatedElement(currentElement, childCumulativeScores);
+
+                parentAnnotation.appendChild(childAnnotation);
+            }
+            return rootAnnotation;
+        }
+
+        private HashMap<String, Integer> copyScores(HashMap<String, Integer> source){
+            HashMap<String, Integer> newMap = (HashMap<String, Integer>)source.clone();
+            return newMap;
+        }
+
+        private HashMap<String, Integer> isolatedScore(Element element) {
+            HashMap<String, Integer> scores = new HashMap<>();
+
+            for (Scorer<Element> scorer : sutParams) {
+                scores.put(scorer.getScoreLabel(), scorer.score(element));
+            }
+            return scores;
+        }
+
+        private HashMap<String, Integer> addScores(Map<String, Integer> map1, Map<String, Integer> map2) {
+
+            assert map1.keySet().equals(map2.keySet());
+
+            HashMap<String, Integer> mapSum = new HashMap<>();
+
+            for (Map.Entry<String, Integer> entry1 : map1.entrySet()) {
+                String key = entry1.getKey();
+                Integer score1 = entry1.getValue();
+                Integer score2 = map2.get(key);
+                Integer scoreSum = score1 + score2;
+
+                mapSum.put(key, scoreSum);
+            }
+
+            return mapSum;
+        }
+
     }
 
     static Map<Element, Integer>
-    getSegmentedTargetElements(ScoringAndFlatteningNodeVisitor nodeVisitor){
+    getSegmentedTargetElementsAndScores(ScoringAndFlatteningNodeVisitor nodeVisitor){
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
         Map<Element, Integer> targetMap = null;
@@ -280,7 +411,7 @@ public class NodeVisitorOracle {
     }
 
     static Map<Element, Integer>
-    getEmphasisedTargetElements(ScoringAndFlatteningNodeVisitor nodeVisitor){
+    getEmphasisedTargetElementsAndScores(ScoringAndFlatteningNodeVisitor nodeVisitor){
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
         Map<Element, Integer> targetMap = null;
