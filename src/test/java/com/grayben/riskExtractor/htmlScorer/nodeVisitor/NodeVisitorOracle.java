@@ -115,14 +115,7 @@ public class NodeVisitorOracle {
     }
 
     private void generateAnnotatedInput() {
-        List<Element> elementList = null;
-        switch (config) {
-            case SEQUENTIAL:
-                elementList = new ArrayList<>();
-                elementList.addAll(getEmphasisedTargetElementsAndScores(this.getSUT()).keySet());
-                elementList.addAll(getSegmentedTargetElementsAndScores(this.getSUT()).keySet());
-                break;
-        }
+        List<Element> elementList = generateElements();
         TreeAssembler treeAssembler = new TreeAssembler(elementList, config, this.sutParams);
         rootAnnotation = treeAssembler.getRootAnnotation();
     }
