@@ -594,6 +594,24 @@ public class ScoringAndFlatteningNodeVisitorTest
 
     @Test
     public void
+    test_AllScoresAreZero_AfterTraversalOfManyTargetElements
+            () throws Exception {
+
+        NodeVisitorOracle oracle = new NodeVisitorOracle(NodeVisitorOracle.Configuration.SEQUENTIAL);
+        this.setNodeVisitorSUT(oracle.getSUT());
+        Element input = oracle.getInput();
+        NodeTraversor nt = new NodeTraversor(this.nodeVisitorSUT);
+        nt.traverse(input);
+        Map<String, Integer> sutScores = nodeVisitorSUT.getCurrentScores();
+
+        for (String key :
+                sutScores.keySet()) {
+            assertEquals(new Integer(0), sutScores.get(key));
+        }
+    }
+
+    @Test
+    public void
     test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
             () throws Exception {
         NodeVisitorOracle oracle = new NodeVisitorOracle(NodeVisitorOracle.Configuration.SEQUENTIAL);
@@ -611,8 +629,6 @@ public class ScoringAndFlatteningNodeVisitorTest
         for(int i = 0; i < expectedOutput.size(); i++){
             assertEquals(expectedOutput.get(i).getTextElement(), actualOutput.get(i).getTextElement());
         }
-
-        assertEquals(expectedOutput, actualOutput);
     }
 
     @Test
@@ -623,6 +639,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         this.nodeVisitorSUT = oracle.getSUT();
         Element input = oracle.getInput();
         NodeTraversor nt = new NodeTraversor(this.nodeVisitorSUT);
+
         nt.traverse(input);
 
         List<ScoredTextElement> expectedOutput = oracle.getExpectedOutput().getList();
@@ -637,20 +654,19 @@ public class ScoringAndFlatteningNodeVisitorTest
 
     @Test
     public void
-    test_AllScoresAreZero_AfterTraversalOfManyTargetElements
+    test_GetScoredTextReturnsExpected_AfterVisitsToManyElementsWithText
             () throws Exception {
-
         NodeVisitorOracle oracle = new NodeVisitorOracle(NodeVisitorOracle.Configuration.SEQUENTIAL);
-        this.setNodeVisitorSUT(oracle.getSUT());
+        this.nodeVisitorSUT = oracle.getSUT();
         Element input = oracle.getInput();
-        NodeTraversor nt = new NodeTraversor(this.nodeVisitorSUT);
-        nt.traverse(input);
-        Map<String, Integer> sutScores = nodeVisitorSUT.getCurrentScores();
+        NodeTraversor nt = new NodeTraversor(nodeVisitorSUT);
 
-        for (String key :
-                sutScores.keySet()) {
-            assertEquals(new Integer(0), sutScores.get(key));
-        }
+        nt.traverse(input);
+
+        List<ScoredTextElement> expectedOutput = oracle.getExpectedOutput().getList();
+        List<ScoredTextElement> actualOutput = nodeVisitorSUT.getFlatText().getList();
+
+        assertEquals(expectedOutput, actualOutput);
     }
 
 
