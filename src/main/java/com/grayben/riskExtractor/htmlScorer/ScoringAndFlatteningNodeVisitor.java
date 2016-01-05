@@ -80,7 +80,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
     }
 
     private boolean isElement(Node node){
-        if (node.getClass().equals(Element.class))
+        if (Element.class.isAssignableFrom(node.getClass()))
             return true;
         else
             return false;
