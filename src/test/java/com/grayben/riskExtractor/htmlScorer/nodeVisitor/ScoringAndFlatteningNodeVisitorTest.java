@@ -616,8 +616,6 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_AllScoresAreZero_AfterTraversalOfManyTargetElements
             () throws Exception {
-        
-        //fail("Test not implemented");
 
         NodeVisitorOracle oracle = new NodeVisitorOracle(NodeVisitorOracle.Configuration.SEQUENTIAL);
         this.setNodeVisitorSUT(oracle.getSUT());
