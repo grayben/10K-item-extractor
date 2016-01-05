@@ -46,5 +46,23 @@ public class ScoredTextElement {
 	public Map<String, Integer> getScores() {
 		return Collections.unmodifiableMap(scores);
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ScoredTextElement that = (ScoredTextElement) o;
+
+		if (!textElement.equals(that.textElement)) return false;
+		return scores.equals(that.scores);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = textElement.hashCode();
+		result = 31 * result + scores.hashCode();
+		return result;
+	}
 }

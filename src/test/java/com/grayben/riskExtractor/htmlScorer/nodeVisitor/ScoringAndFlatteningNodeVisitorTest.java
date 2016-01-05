@@ -611,6 +611,8 @@ public class ScoringAndFlatteningNodeVisitorTest
         for(int i = 0; i < expectedOutput.size(); i++){
             assertEquals(expectedOutput.get(i).getTextElement(), actualOutput.get(i).getTextElement());
         }
+
+        assertEquals(expectedOutput, actualOutput);
     }
 
     @Test
