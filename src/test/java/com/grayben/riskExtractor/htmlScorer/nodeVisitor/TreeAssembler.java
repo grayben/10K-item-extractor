@@ -114,6 +114,7 @@ class TreeAssembler {
         parentCumulativeScores = copyScores(currentIsolatedScores);
 
         parentAnnotation = new AnnotatedElement(currentElement, parentCumulativeScores);
+        parentAnnotation.text(currentElement.ownText());
 
         //child
         currentElement = elementsToAttach.remove(0);
@@ -121,6 +122,7 @@ class TreeAssembler {
         childCumulativeScores = addScores(parentCumulativeScores, currentIsolatedScores);
 
         childAnnotation = new AnnotatedElement(currentElement, childCumulativeScores);
+        childAnnotation.text(currentElement.ownText());
         parentAnnotation.appendChild(childAnnotation);
 
         //set root of hierarchy to be built
@@ -143,6 +145,7 @@ class TreeAssembler {
             }
             childCumulativeScores = addScores(parentCumulativeScores, currentIsolatedScores);
             childAnnotation = new AnnotatedElement(currentElement, childCumulativeScores);
+            childAnnotation.text(currentElement.ownText());
 
             parentAnnotation.appendChild(childAnnotation);
         }
