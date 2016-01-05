@@ -18,7 +18,16 @@ public class EmphasisElementScorer extends Scorer<Element> {
 	public final static String SCORE_LABEL = "element-emphasis";
 	
 	TagEmphasisScorer tagEmphasisScorer;
-	TagAndAttributeScorer comboScorer;
+
+    public TagEmphasisScorer getTagEmphasisScorer() {
+        return tagEmphasisScorer;
+    }
+
+    public TagAndAttributeScorer getTagAndAttributeScorer() {
+        return tagAndAttributeScorer;
+    }
+
+    TagAndAttributeScorer tagAndAttributeScorer;
 
 	//TODO: test init conditions
     public EmphasisElementScorer(
@@ -27,7 +36,7 @@ public class EmphasisElementScorer extends Scorer<Element> {
 		super(SCORE_LABEL);
         validateConstructorParams(tagEmphasisScorer, tagAndAttributeScorer);
         this.tagEmphasisScorer = tagEmphasisScorer;
-        this.comboScorer = tagAndAttributeScorer;
+        this.tagAndAttributeScorer = tagAndAttributeScorer;
 	}
 
     private boolean validateConstructorParams(
@@ -56,7 +65,7 @@ public class EmphasisElementScorer extends Scorer<Element> {
                 = TagAndAttribute.fromElement(input);
         for (TagAndAttribute item :
                 tagAndAttributes) {
-            subScores.add(comboScorer.score(item));
+            subScores.add(tagAndAttributeScorer.score(item));
         }
 
         Collections.sort(subScores);
