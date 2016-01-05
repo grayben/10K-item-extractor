@@ -3,10 +3,7 @@ package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import org.jsoup.nodes.Element;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by beng on 5/01/2016.
@@ -27,6 +24,7 @@ class TreeAssembler {
     }
 
     //internal working fields
+    private Random random;
     private Element currentElement;
     private HashMap<String, Integer> currentIsolatedScores;
 
@@ -47,6 +45,7 @@ class TreeAssembler {
         this.elementsToAttach = elementsToAttach;
         this.configuration = configuration;
         this.elementScorers = elementScorers;
+        this.random = new Random(System.currentTimeMillis());
         initialiseMaps();
         //setup the first parent/child AnnotatedElement pair
         plantSeedling();
@@ -74,7 +73,7 @@ class TreeAssembler {
             );
         }
         switch (configuration) {
-            case SEQUENTIAL:
+            case MIXED_TREE:
                 break;
             default:
                 throw new IllegalArgumentException(
@@ -131,13 +130,12 @@ class TreeAssembler {
 
     private AnnotatedElement assembleInTree() {
 
-        boolean childNotSibling = false;
         while (elementsToAttach.isEmpty() == false) {
             currentElement = elementsToAttach.remove(0);
             currentIsolatedScores = isolatedScore(currentElement);
 
-            childNotSibling = !childNotSibling;
-            if (childNotSibling) {
+            //25% chance of moving down the tree
+            if (random.nextInt() % 4 == 0) {
                 parentCumulativeScores = childCumulativeScores;
                 childCumulativeScores = null;
                 parentAnnotation = childAnnotation;
@@ -147,7 +145,11 @@ class TreeAssembler {
             childAnnotation = new AnnotatedElement(currentElement, childCumulativeScores);
             childAnnotation.text(currentElement.ownText());
 
-            parentAnnotation.appendChild(childAnnotation);
+            //50/50 chance: whether to append or prepend sibling
+            if(random.nextInt() % 2 == 0)
+                parentAnnotation.prependChild(childAnnotation);
+            else
+                parentAnnotation.appendChild(childAnnotation);
         }
         return rootAnnotation;
     }

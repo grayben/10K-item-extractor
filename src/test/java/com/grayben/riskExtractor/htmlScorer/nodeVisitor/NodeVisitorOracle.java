@@ -37,7 +37,7 @@ public class NodeVisitorOracle {
     private ScoringAndFlatteningNodeVisitor sut;
 
     enum Configuration {
-        SEQUENTIAL
+        MIXED_TREE
     }
 
     private Configuration config;
@@ -80,7 +80,7 @@ public class NodeVisitorOracle {
 
     private void validateInitParams(Configuration config) {
         switch (config) {
-            case SEQUENTIAL:
+            case MIXED_TREE:
                 break;
             default:
                 throw new IllegalArgumentException("The option was not recognised");
@@ -101,7 +101,7 @@ public class NodeVisitorOracle {
     private void generateSutParams() {
         Set<Scorer<Element>> elementScorers = null;
         switch (config){
-            case SEQUENTIAL:
+            case MIXED_TREE:
                 elementScorers = new HashSet<>();
                 Scorer<Element> segmentationElementScorer = new SegmentationElementScorer(
                         new TagSegmentationScorer(TagSegmentationScorer.defaultMap())
@@ -173,7 +173,7 @@ public class NodeVisitorOracle {
     private List<Element> generateElements() {
         List<Element> targetElements = null;
         switch (this.config){
-            case SEQUENTIAL:
+            case MIXED_TREE:
                 targetElements = new ArrayList<>();
                 targetElements.addAll(getEmphasisedTargetElementsAndScores(this.getSUT()).keySet());
                 targetElements.addAll(getSegmentedTargetElementsAndScores(this.getSUT()).keySet());
