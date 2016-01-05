@@ -1,20 +1,21 @@
 package com.grayben.riskExtractor.htmlScorer;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Tag;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import static junit.framework.TestCase.fail;
@@ -31,15 +32,21 @@ public class TreeHtmlScorerTest
     @Before
     public void setUp() throws Exception {
         Set<Scorer<Element>> elementScorers = new HashSet<>();
-        Map<Tag, Integer> tagEmphasisScores = TagEmphasisScorer.defaultMap();
-        TagEmphasisScorer tagEmphasisScorer
-                = new Mockito().mock(TagEmphasisScorer.class);
-
-
-
-        Mockito.doCallRealMethod().when(tagEmphasisScorer.getScoreLabel());
-        NodeVisitor nv = new ScoringAndFlatteningNodeVisitor(null);
+        elementScorers.add(
+                new EmphasisElementScorer(
+                        new TagEmphasisScorer(TagEmphasisScorer.defaultMap()),
+                        new TagAndAttributeScorer(TagAndAttributeScorer.defaultMap())
+                )
+        );
+        elementScorers.add(
+                new SegmentationElementScorer(
+                        new TagSegmentationScorer(TagSegmentationScorer.defaultMap())
+                )
+        );
+        NodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorers);
         NodeTraversor nt = new NodeTraversor(nv);
+
+        //TODO: inject the NodeTraversor into the TreeHtmlScorer constructor
         setHtmlScorerSUT(new TreeHtmlScorer());
         super.setUp();
     }
