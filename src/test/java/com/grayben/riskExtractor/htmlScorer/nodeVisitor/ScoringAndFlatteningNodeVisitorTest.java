@@ -602,15 +602,25 @@ public class ScoringAndFlatteningNodeVisitorTest
         fail("Test not implemented");
     }
 
-    @Ignore
     @Test
     public void
     test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
             () throws Exception {
-        fail("Test not implemented");
+        NodeVisitorOracle oracle = new NodeVisitorOracle(NodeVisitorOracle.Configuration.SEQUENTIAL);
+        this.setNodeVisitorSUT(oracle.getSUT());
+        Element input = oracle.getInput();
+        NodeTraversor nt = new NodeTraversor(this.nodeVisitorSUT);
+        nt.traverse(input);
+
+        List<ScoredTextElement> expectedOutput = oracle.getExpectedOutput().getList();
+        List<ScoredTextElement> actualOutput = nodeVisitorSUT.getFlatText().getList();
+
+        assert expectedOutput.size() == actualOutput.size();
+
+        for(int i = 0; i < expectedOutput.size(); i++){
+            assertEquals(expectedOutput.get(i).getScores(), actualOutput.get(i).getScores());
+        }
     }
-
-
 
     @Test
     public void
