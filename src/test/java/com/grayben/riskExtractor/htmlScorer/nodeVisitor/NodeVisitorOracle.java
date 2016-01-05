@@ -123,7 +123,7 @@ public class NodeVisitorOracle {
                 elementList.addAll(getSegmentedTargetElementsAndScores(this.getSUT()).keySet());
                 break;
         }
-        TreeAssembler treeAssembler = new TreeAssembler(elementList, config, this.sutParams);
+        TreeAssembler treeAssembler = new TreeAssembler(this, elementList, config, this.sutParams);
         rootAnnotation = treeAssembler.getRootAnnotation();
     }
 
