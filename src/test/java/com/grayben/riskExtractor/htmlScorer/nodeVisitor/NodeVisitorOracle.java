@@ -46,6 +46,8 @@ public class NodeVisitorOracle {
 
     private ScoredText expectedOutput;
 
+    Random random;
+
     ////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +55,7 @@ public class NodeVisitorOracle {
     NodeVisitorOracle(Configuration config) {
         validateInitParams(config);
         this.config = config;
+        random = new Random(System.currentTimeMillis());
         generateArtifacts();
     }
 
@@ -174,12 +177,19 @@ public class NodeVisitorOracle {
                 targetElements = new ArrayList<>();
                 targetElements.addAll(getEmphasisedTargetElementsAndScores(this.getSUT()).keySet());
                 targetElements.addAll(getSegmentedTargetElementsAndScores(this.getSUT()).keySet());
+                targetElements.addAll(generateAndScoreRandomElements(100).keySet());
                 for(Element element : targetElements){
-                    element.text("some text");
+                    element.text(randomString());
                 }
                 break;
         }
+        Collections.shuffle(targetElements, random);
         return targetElements;
+    }
+
+    private String randomString(){
+        int number = random.nextInt();
+        return Integer.toString(number);
     }
 
 
@@ -269,6 +279,19 @@ public class NodeVisitorOracle {
         if (targetMap == null)
             throw new IllegalArgumentException("Couldn't find any emphasised elements");
         return targetMap;
+    }
+
+    private Map<Element, Map<String, Integer>> generateAndScoreRandomElements(int numberToGenerate) {
+        Map<Element, Map<String, Integer>> result = new HashMap<>();
+        while(numberToGenerate-- > 0){
+            Element element = new Element(Tag.valueOf(randomString()), randomString());
+            Map<String, Integer> scores = new HashMap<>();
+            for(Scorer<Element> scorer : sutParams){
+                scores.put(scorer.getScoreLabel(), scorer.score(element));
+            }
+            result.put(element, scores);
+        }
+        return result;
     }
 }
 
