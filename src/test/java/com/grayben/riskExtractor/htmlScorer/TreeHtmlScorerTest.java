@@ -70,8 +70,7 @@ public class TreeHtmlScorerTest
     public void
     test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple
             () throws Exception {
-
-
+        fail("Test not implemented");
     }
 
     @Override
