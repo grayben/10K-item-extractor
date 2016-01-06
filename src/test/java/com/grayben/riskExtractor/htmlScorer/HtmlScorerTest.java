@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
+import java.net.UnknownHostException;
 
 import static junit.framework.TestCase.fail;
 
@@ -108,6 +109,17 @@ public abstract class HtmlScorerTest {
         String url = "ggggg:%//l";
 
         thrown.expect(IllegalArgumentException.class);
+
+        htmlScorerSUT.scoreHtml(url);
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlThrowsUnknownHostException_WhenUrlCanNotBeFound
+            () throws Exception {
+        String url = "http://ggggggggggggggggggggggggggggggggggg.com.au";
+
+        thrown.expect(UnknownHostException.class);
 
         htmlScorerSUT.scoreHtml(url);
     }
