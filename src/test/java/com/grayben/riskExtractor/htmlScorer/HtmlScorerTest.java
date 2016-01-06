@@ -59,7 +59,7 @@ public abstract class HtmlScorerTest {
             () throws Exception {
         File file = null;
 
-        String charsetName = "ASCII";
+        String charsetName = "UTF-8";
 
         thrown.expect(NullPointerException.class);
 
