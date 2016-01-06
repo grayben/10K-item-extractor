@@ -7,16 +7,13 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttribu
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import static junit.framework.TestCase.fail;
@@ -74,21 +71,7 @@ public class TreeHtmlScorerTest
     test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple
             () throws Exception {
 
-        int positiveScore = 42;
 
-        Map<Tag, Integer> tagSegmentationScores = new HashMap<>();
-        tagSegmentationScores.put(Tag.valueOf("li"), positiveScore);
-
-        Set<Scorer<Element>> elementScorers = new HashSet<>();
-        elementScorers.add(
-                new SegmentationElementScorer(
-                        new TagSegmentationScorer(
-                                tagSegmentationScores
-                        )
-                )
-        );
-        ScoringAndFlatteningNodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorers);
-        treeHtmlScorerSUT = new TreeHtmlScorer(nv);
     }
 
     @Override
