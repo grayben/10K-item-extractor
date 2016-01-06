@@ -8,12 +8,16 @@ import java.util.*;
 /**
  * Created by beng on 5/01/2016.
  */
-class TreeAssembler {
+class AnnotatedElementTreeAssembler {
+
+    enum Configuration {
+        MIXED_TREE
+    }
 
     //input fields
     private List<Element> elementsToAttach;
+    private Configuration configuration;
 
-    private NodeVisitorOracle.Configuration configuration;
     private Set<Scorer<Element>> elementScorers;
 
     //output fields
@@ -22,22 +26,22 @@ class TreeAssembler {
     public AnnotatedElement getRootAnnotation() {
         return rootAnnotation;
     }
-
     //internal working fields
     private Random random;
     private Element currentElement;
+
     private HashMap<String, Integer> currentIsolatedScores;
-
     private AnnotatedElement parentAnnotation;
-    private HashMap<String, Integer> parentCumulativeScores;
 
+    private HashMap<String, Integer> parentCumulativeScores;
     private AnnotatedElement childAnnotation;
+
+
     private HashMap<String, Integer> childCumulativeScores;
 
-
-    TreeAssembler(
+    AnnotatedElementTreeAssembler(
             List<Element> elementsToAttach,
-            NodeVisitorOracle.Configuration configuration,
+            Configuration configuration,
             Set<Scorer<Element>> elementScorers
     ) {
 
@@ -54,7 +58,7 @@ class TreeAssembler {
 
     private void validateInitParams(
             List<Element> elements,
-            NodeVisitorOracle.Configuration configuration,
+            Configuration configuration,
             Set<Scorer<Element>> elementScorers
     ) {
         if (elements == null) {
@@ -185,5 +189,4 @@ class TreeAssembler {
 
         return mapSum;
     }
-
 }
