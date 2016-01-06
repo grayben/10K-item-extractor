@@ -25,12 +25,12 @@ public abstract class HtmlScorerTest {
 
     @Before
     public void setUp() throws Exception {
-
+        assert htmlScorerSUT != null;
     }
 
     @After
     public void tearDown() throws Exception {
-
+        this.htmlScorerSUT = null;
     }
 
     @Test
