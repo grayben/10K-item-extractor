@@ -89,7 +89,13 @@ public abstract class HtmlScorerTest {
     public void
     test_ScoreHtmlThrowsIllegalArgumentException_WhenCharsetNameIsEmptyString
             () throws Exception {
-        fail("Test not implemented");
+        File file = new File("src/test/resources/sample.html");
+
+        String charsetName = "";
+
+        thrown.expect(IllegalArgumentException.class);
+
+        htmlScorerSUT.scoreHtml(file, charsetName);
     }
 
     @Test
