@@ -8,9 +8,9 @@ import java.util.*;
 /**
  * Created by beng on 5/01/2016.
  */
-class AnnotatedElementTreeAssembler {
+public class AnnotatedElementTreeAssembler {
 
-    enum Configuration {
+    public enum Configuration {
         MIXED_TREE
     }
 
@@ -39,7 +39,7 @@ class AnnotatedElementTreeAssembler {
 
     private HashMap<String, Integer> childCumulativeScores;
 
-    AnnotatedElementTreeAssembler(
+    public AnnotatedElementTreeAssembler(
             List<Element> elementsToAttach,
             Configuration configuration,
             Set<Scorer<Element>> elementScorers
