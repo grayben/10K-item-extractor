@@ -62,7 +62,7 @@ public abstract class HtmlScorerTest {
     public void
     test_ScoreHtmlThrowsNullPointerException_WhenCharsetNameIsNull
             () throws Exception {
-        File file = new File()
+        File file = new File("src/test/resources/sample.html");
 
         String charsetName = null;
 
@@ -125,6 +125,19 @@ public abstract class HtmlScorerTest {
     test_ScoreHtmlReturnsNonNull_WhenSimpleInput
             () throws Exception {
         fail("Test not implemented");
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlReturnsNonNull_WhenLengthyInput
+            () throws Exception {
+        File file = new File("src/test/resources/sample.html");
+
+        String charsetName = null;
+
+        thrown.expect(NullPointerException.class);
+
+        htmlScorerSUT.scoreHtml(file, charsetName);
     }
 
     @Test
