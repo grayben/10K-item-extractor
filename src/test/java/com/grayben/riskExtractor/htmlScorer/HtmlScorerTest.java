@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer;
 
+import org.apache.commons.io.FileUtils;
 import org.jsoup.HttpStatusException;
 import org.junit.After;
 import org.junit.Before;
@@ -10,10 +11,11 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
+import java.net.URL;
 import java.net.UnknownHostException;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.fail;
 
 /**
  * Created by beng on 28/11/2015.
@@ -189,14 +191,32 @@ public abstract class HtmlScorerTest {
     public void
     test_ScoreHtmlReturnsNonNull_WhenEmptyFile
             () throws Exception {
-        fail("Test not implemented");
+        File file = new File("src/test/resources/sample.html");
+
+        String charsetName = "UTF-8";
+
+        ScoredText returned = htmlScorerSUT.scoreHtml(file, charsetName);
+
+        assertNotNull(returned);
     }
 
     @Test
     public void
     test_ScoreHtmlReturnsSameFromAnySignature_WhenTextInputIsSameSimple
             () throws Exception {
-        fail("Test not implemented");
+        File file = File.createTempFile("foo", "bar");
+
+        String urlString = "https://en.wikipedia.org/wiki/Albert_Einstein";
+        String charsetName = "UTF-8";
+
+        URL url = new URL(urlString);
+
+        FileUtils.copyURLToFile(url, file);
+
+        ScoredText returnedFromLocal = htmlScorerSUT.scoreHtml(file, charsetName);
+        ScoredText returnedFromRemote = htmlScorerSUT.scoreHtml(urlString);
+
+        assertEquals(returnedFromLocal, returnedFromRemote);
     }
     
     @Test
