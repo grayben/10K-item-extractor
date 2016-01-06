@@ -56,9 +56,13 @@ public class TreeHtmlScorerTest
 
     @Test
     public void
-    test_InitThrowsNullPointerException_WhenNodeTraversorIsNull
+    test_InitThrowsNullPointerException_WhenNodeVisitorIsNull
             () throws Exception {
-        fail("Test not implemented");
+        ScoringAndFlatteningNodeVisitor nv = null;
+
+        thrown.expect(NullPointerException.class);
+
+        treeHtmlScorerSUT = new TreeHtmlScorer(nv);
     }
 
     @Override
