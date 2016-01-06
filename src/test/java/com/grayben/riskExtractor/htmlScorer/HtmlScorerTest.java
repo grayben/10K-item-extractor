@@ -12,6 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.io.File;
 import java.net.UnknownHostException;
 
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.fail;
 
 /**
@@ -138,14 +139,31 @@ public abstract class HtmlScorerTest {
 
     @Test
     public void
-    test_ScoreHtmlReturnsNonNull_WhenSimpleInput
+    test_ScoreHtmlReturnsNonNull_WhenSimpleLocalInput
             () throws Exception {
-        fail("Test not implemented");
+        File file = new File("src/test/resources/simple.html");
+
+        String charsetName = "UTF-8";
+
+        ScoredText returned = htmlScorerSUT.scoreHtml(file, charsetName);
+
+        assertNotNull(returned);
     }
 
     @Test
     public void
-    test_ScoreHtmlReturnsNonNull_WhenLengthyInput
+    test_ScoreHtmlReturnsNonNull_WhenSimpleRemoteInput
+            () throws Exception {
+        String url = "http://grayben.com";
+
+        ScoredText returned = htmlScorerSUT.scoreHtml(url);
+
+        assertNotNull(returned);
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlReturnsNonNull_WhenLengthyLocalInput
             () throws Exception {
         File file = new File("src/test/resources/sample.html");
 
@@ -154,6 +172,17 @@ public abstract class HtmlScorerTest {
         thrown.expect(NullPointerException.class);
 
         htmlScorerSUT.scoreHtml(file, charsetName);
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlReturnsNonNull_WhenLengthyRemoteInput
+            () throws Exception {
+        String url = "https://en.wikipedia.org/wiki/Albert_Einstein";
+
+        ScoredText returned = htmlScorerSUT.scoreHtml(url);
+
+        assertNotNull(returned);
     }
 
     @Test
