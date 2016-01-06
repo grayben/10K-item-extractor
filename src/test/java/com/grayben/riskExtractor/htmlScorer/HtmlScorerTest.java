@@ -211,7 +211,7 @@ public abstract class HtmlScorerTest {
 
         URL url = new URL(urlString);
 
-        FileUtils.copyURLToFile(url, file);
+        FileUtils.copyURLToFile(url, file, 2000, 2000);
 
         ScoredText returnedFromLocal = htmlScorerSUT.scoreHtml(file, charsetName);
         ScoredText returnedFromRemote = htmlScorerSUT.scoreHtml(urlString);
