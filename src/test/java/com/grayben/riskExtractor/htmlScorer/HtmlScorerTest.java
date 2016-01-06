@@ -5,12 +5,13 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.File;
+
 import static junit.framework.TestCase.fail;
 
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public abstract class HtmlScorerTest {
 
@@ -37,21 +38,37 @@ public abstract class HtmlScorerTest {
     public void
     test_ScoreHtmlThrowsNullPointerException_WhenURLIsNull
             () throws Exception {
-        fail("Test not implemented");
+        String url = null;
+
+        thrown.expect(NullPointerException.class);
+
+        htmlScorerSUT.scoreHtml(url);
     }
 
     @Test
     public void
     test_ScoreHtmlThrowsNullPointerException_WhenHtmlFileIsNull
             () throws Exception {
-        fail("Test not implemented");
+        File file = null;
+
+        String charsetName = "ASCII";
+
+        thrown.expect(NullPointerException.class);
+
+        htmlScorerSUT.scoreHtml(file, charsetName);
     }
 
     @Test
     public void
     test_ScoreHtmlThrowsNullPointerException_WhenCharsetNameIsNull
             () throws Exception {
-        fail("Test not implemented");
+        File file = new File()
+
+        String charsetName = null;
+
+        thrown.expect(NullPointerException.class);
+
+        htmlScorerSUT.scoreHtml(file, charsetName);
     }
 
     @Test
