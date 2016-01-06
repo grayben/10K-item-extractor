@@ -7,8 +7,6 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttribu
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.NodeTraversor;
-import org.jsoup.select.NodeVisitor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,17 +41,17 @@ public class TreeHtmlScorerTest
                         new TagSegmentationScorer(TagSegmentationScorer.defaultMap())
                 )
         );
-        NodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorers);
-        NodeTraversor nt = new NodeTraversor(nv);
+        ScoringAndFlatteningNodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorers);
 
         //TODO: inject the NodeTraversor into the TreeHtmlScorer constructor
-        setHtmlScorerSUT(new TreeHtmlScorer());
+        setHtmlScorerSUT(new TreeHtmlScorer(nv));
         super.setUp();
     }
 
     @After
     public void tearDown() throws Exception {
-        setHtmlScorerSUT(null);
+        super.tearDown();
+        this.treeHtmlScorerSUT = null;
     }
 
     @Test

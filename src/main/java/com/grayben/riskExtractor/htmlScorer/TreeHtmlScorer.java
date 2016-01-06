@@ -12,14 +12,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ListIterator;
 
-public class TreeHtmlScorer implements HtmlScorer {
+public class TreeHtmlScorer<T> implements HtmlScorer {
 	
 	NodeTraversor nt;
 	ScoringAndFlatteningNodeVisitor nv;
 
-	public TreeHtmlScorer() {
+	//TODO: refactor ScoringAndFlatteningNodeVisitor into intermediate abstraction
+	public TreeHtmlScorer(ScoringAndFlatteningNodeVisitor nv) {
 		super();
-		//this.nv = new ScoringAndFlatteningNodeVisitor();
+		this.nv = nv;
 		this.nt = new NodeTraversor(this.nv);
 	}
 	
