@@ -57,19 +57,14 @@ public class TreeHtmlScorer<T> implements HtmlScorer {
 	}
 
 	@Override
-	public ScoredText scoreHtml(String url) {
+	public ScoredText scoreHtml(String url) throws IOException {
 		//TODO: use JSoup to get a Connection.Response so can remove SEC head
 		Document doc = parseHtmlUrl(url);
 		return traverse(doc);
 	}
 	
-	private Document parseHtmlUrl(String url) {
-		Document doc = null;
-		try {
-			doc = Jsoup.connect(url).get();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private Document parseHtmlUrl(String url) throws IOException {
+		Document doc = Jsoup.connect(url).get();
 		return doc;
 	}
 

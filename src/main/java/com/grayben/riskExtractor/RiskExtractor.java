@@ -14,6 +14,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +23,7 @@ public class RiskExtractor {
 	
 	static long startTime;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		startingMain();
 		
 		boolean testParse = true;
@@ -71,7 +72,7 @@ public class RiskExtractor {
 		return nv;
 	}
 	
-	private static void testParse(String url){
+	private static void testParse(String url) throws IOException {
 		ScoringAndFlatteningNodeVisitor nv = setupNodeVisitor();
 		HtmlScorer scorer = new TreeHtmlScorer(nv);
 		ScoredText scoredText = scorer.scoreHtml(url);
