@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ListIterator;
 
-public class TreeHtmlScorer<T> implements HtmlScorer {
+public class TreeHtmlScorer implements HtmlScorer {
 	
 	NodeTraversor nt;
 	ScoringAndFlatteningNodeVisitor nv;
