@@ -1,6 +1,9 @@
 package com.grayben.riskExtractor.htmlScorer;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -100,9 +103,13 @@ public abstract class HtmlScorerTest {
 
     @Test
     public void
-    test_ScoreHtmlThrowsMalformedURLExceptionException_WhenUrlIsNotValid
+    test_ScoreHtmlThrowsIllegalArgumentException_WhenUrlIsNotValid
             () throws Exception {
-        fail("Test not implemented");
+        String url = "ggggg:%//l";
+
+        thrown.expect(IllegalArgumentException.class);
+
+        htmlScorerSUT.scoreHtml(url);
     }
 
     @Test
