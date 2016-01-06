@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer;
 
+import org.jsoup.HttpStatusException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -128,7 +129,11 @@ public abstract class HtmlScorerTest {
     public void
     test_ScoreHtmlThrowsHttpStatusException_IfResponseIsNotOK
             () throws Exception {
-        fail("Test not implemented");
+        String url = "http://www.google.com/sfadgadbdbddb";
+
+        thrown.expect(HttpStatusException.class);
+
+        htmlScorerSUT.scoreHtml(url);
     }
 
     @Test
