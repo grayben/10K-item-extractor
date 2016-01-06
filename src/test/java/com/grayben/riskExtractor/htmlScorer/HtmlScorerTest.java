@@ -70,7 +70,7 @@ public abstract class HtmlScorerTest {
     public void
     test_ScoreHtmlThrowsNullPointerException_WhenCharsetNameIsNull
             () throws Exception {
-        File file = new File("src/test/resources/sample.html");
+        File file = new File("src/test/resources/lengthy.html");
 
         String charsetName = null;
 
@@ -83,7 +83,7 @@ public abstract class HtmlScorerTest {
     public void
     test_ScoreHtmlThrowsIllegalArgumentException_WhenCharsetNameIsNotRecognised
             () throws Exception {
-        File file = new File("src/test/resources/sample.html");
+        File file = new File("src/test/resources/lengthy.html");
 
         String charsetName = "foo bar baz";
 
@@ -97,7 +97,7 @@ public abstract class HtmlScorerTest {
     public void
     test_ScoreHtmlThrowsIllegalArgumentException_WhenCharsetNameIsEmptyString
             () throws Exception {
-        File file = new File("src/test/resources/sample.html");
+        File file = new File("src/test/resources/lengthy.html");
 
         String charsetName = "";
 
@@ -167,7 +167,7 @@ public abstract class HtmlScorerTest {
     public void
     test_ScoreHtmlReturnsNonNull_WhenLengthyLocalInput
             () throws Exception {
-        File file = new File("src/test/resources/sample.html");
+        File file = new File("src/test/resources/lengthy.html");
 
         String charsetName = null;
 
@@ -191,7 +191,7 @@ public abstract class HtmlScorerTest {
     public void
     test_ScoreHtmlReturnsNonNull_WhenEmptyFile
             () throws Exception {
-        File file = new File("src/test/resources/sample.html");
+        File file = new File("src/test/resources/lengthy.html");
 
         String charsetName = "UTF-8";
 
