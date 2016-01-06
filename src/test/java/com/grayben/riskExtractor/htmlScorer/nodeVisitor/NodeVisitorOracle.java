@@ -36,11 +36,7 @@ public class NodeVisitorOracle {
     private Set<Scorer<Element>> sutParams;
     private ScoringAndFlatteningNodeVisitor sut;
 
-    enum Configuration {
-        MIXED_TREE
-    }
-
-    private Configuration config;
+    private AnnotatedElementTreeAssembler.Configuration config;
 
     private AnnotatedElement rootAnnotation;
 
@@ -52,7 +48,7 @@ public class NodeVisitorOracle {
     // CONSTRUCTORS
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    NodeVisitorOracle(Configuration config) {
+    NodeVisitorOracle(AnnotatedElementTreeAssembler.Configuration config) {
         validateInitParams(config);
         this.config = config;
         random = new Random(System.currentTimeMillis());
@@ -78,7 +74,7 @@ public class NodeVisitorOracle {
     // HIGH LEVEL
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    private void validateInitParams(Configuration config) {
+    private void validateInitParams(AnnotatedElementTreeAssembler.Configuration config) {
         switch (config) {
             case MIXED_TREE:
                 break;
@@ -119,8 +115,8 @@ public class NodeVisitorOracle {
 
     private void generateAnnotatedInput() {
         List<Element> elementList = generateElements();
-        TreeAssembler treeAssembler = new TreeAssembler(elementList, config, this.sutParams);
-        rootAnnotation = treeAssembler.getRootAnnotation();
+        AnnotatedElementTreeAssembler annotatedElementTreeAssembler = new AnnotatedElementTreeAssembler(elementList, config, this.sutParams);
+        rootAnnotation = annotatedElementTreeAssembler.getRootAnnotation();
     }
 
     private void determineExpectedOutput() {
