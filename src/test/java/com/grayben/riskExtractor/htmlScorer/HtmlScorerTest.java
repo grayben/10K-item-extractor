@@ -138,27 +138,6 @@ public abstract class HtmlScorerTest {
 
     @Test
     public void
-    test_ScoreHtmlThrowsUnsupportedMimeTypeException_WhenMimeTypeUnsupported
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_ScoreHtmlThrowsSocketTimeoutException_WhenConnectionTimeout
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_ScoreHtmlThrowsIOException_WhenURLCannotBeResolved
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
     test_ScoreHtmlReturnsNonNull_WhenSimpleInput
             () throws Exception {
         fail("Test not implemented");
