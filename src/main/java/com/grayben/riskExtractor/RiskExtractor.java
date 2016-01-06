@@ -83,7 +83,7 @@ public class RiskExtractor {
 		String fileName = args[0];
 		File htmlFile = new File(fileName);
 		String charsetName = args[1];
-		HtmlScorer scorer = new TreeHtmlScorer();
+		HtmlScorer scorer = new TreeHtmlScorer(setupNodeVisitor());
 		ScoredText scoredText = scorer.scoreHtml(htmlFile, charsetName);
 		System.out.print(scoredText.toString());
 		File outFile = new File("/Volumes/MBS Data/EDGAR-Form10K/output.txt");
