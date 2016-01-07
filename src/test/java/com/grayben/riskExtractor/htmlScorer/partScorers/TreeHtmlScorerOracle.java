@@ -9,6 +9,8 @@ import com.grayben.testing.SeedBasedInputExpectedOutputGenerator;
 import org.mockito.Mockito;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -22,24 +24,19 @@ public class TreeHtmlScorerOracle implements InputAndExpectedOutputRetrievable<F
 
     //a tree htmlScorer instantiated with an appropriate stub of ScoringAndFlatteningNodeVisitor
     TreeHtmlScorer sut;
-    File input;
-    ScoredText expectedOutput;
 
     TreeHtmlScorer getSut(){
-        //TODO: implement
-        return null;
+        return this.sut;
     }
 
     @Override
     public File getInput() {
-        //TODO: implement
-        return null;
+        return this.generator.getInput();
     }
 
     @Override
     public ScoredText getExpectedOutput(){
-        //TODO: implement
-        return null;
+        return this.generator.getExpectedOutput();
     }
 
     //internal fields
@@ -91,13 +88,9 @@ public class TreeHtmlScorerOracle implements InputAndExpectedOutputRetrievable<F
         //f(seed) -> (File input, ScoredText expectedOutput) should be simpler
         //than SUT.process(File input) -> ScoredText output, otherwise this oracle is
         //more complex than the SUT itself and therefore pointless.
-        setupSeed();
+        AnnotatedElement seed = setupSeed();
 
-        setupInput();
-
-        setupExpectedOutput();
-
-        setupSutCollaborators();
+        setupGenerator(seed);
 
         setupSut();
     }
@@ -113,25 +106,45 @@ public class TreeHtmlScorerOracle implements InputAndExpectedOutputRetrievable<F
         return annotationTree;
     }
 
-    //convert AnnotatedElement annotationTree into File input
-    private void setupInput(){
-        //TODO: implement
+    private void setupGenerator(AnnotatedElement seed) {
+        this.generator = new SeedBasedInputExpectedOutputGenerator<AnnotatedElement, File, ScoredText>(seed) {
+
+
+            @Override
+            protected File generateInput(AnnotatedElement seed) {
+                //TODO: implement
+                return null;
+            }
+
+            @Override
+            protected ScoredText generateExpectedOutput(AnnotatedElement seed) {
+                //TODO: implement
+                return null;
+            }
+
+            @Override
+            protected void validateInitParams(AnnotatedElement seed) {
+                if (seed == null) {
+                    throw new NullPointerException(
+                            "The input parameter 'seed' was null"
+                    );
+                }
+            }
+        };
     }
 
-    //convert AnnotatedElement annotationTree into ScoredText output
-    private void setupExpectedOutput(){
-        //TODO: implement
+    private List<Object> setupSutInitParams() {
+        List<Object> sutInitParams = new ArrayList<>();
+        NVStubber stubber = new NVStubber();
+        ScoringAndFlatteningNodeVisitor nvStub = stubber.apply(getExpectedOutput());
+        sutInitParams.add(nvStub);
+        return sutInitParams;
     }
 
     //use the generated file scorer to create a configured SUT Spy
     private void setupSut(){
-        NVStubber stubber = new NVStubber();
-        ScoringAndFlatteningNodeVisitor nvStub = stubber.apply(expectedOutput);
-        this.sut = new TreeHtmlScorer(nvStub);
-    }
-
-    private void setupSutCollaborators() {
-        //TODO: implement
+        List<Object> sutInitParams = setupSutInitParams();
+        this.sut = new TreeHtmlScorer((ScoringAndFlatteningNodeVisitor) sutInitParams.remove(0));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
