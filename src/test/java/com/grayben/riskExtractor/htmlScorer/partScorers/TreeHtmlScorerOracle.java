@@ -4,6 +4,7 @@ import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
+import com.grayben.testing.InputAndOutputPairGenerator;
 import org.mockito.Mockito;
 
 import java.io.File;
@@ -39,6 +40,7 @@ public class TreeHtmlScorerOracle {
     }
 
     //internal fields
+
     enum Configuration {
         SIMPLE
     }
@@ -54,6 +56,8 @@ public class TreeHtmlScorerOracle {
             return nv;
         }
     }
+
+    InputAndOutputPairGenerator<AnnotatedElement, File, ScoredText> inputAndOutputPairGenerator;
 
     //constructors
 
@@ -79,8 +83,6 @@ public class TreeHtmlScorerOracle {
     }
 
     private void setup() {
-        //this will be used by the SUT Spy to stub f(File input) -> ScoredText output
-        Function<File, ScoredText> fileProcessorFunction = setupFileProcessorFunction();
 
         //this is the input to generating both input and output.
         //f(seed) -> (File input, ScoredText expectedOutput) should be simpler
@@ -92,18 +94,9 @@ public class TreeHtmlScorerOracle {
 
         setupExpectedOutput();
 
-        setupSut();
-    }
+        setupSutCollaborators();
 
-    //create a
-    private Function<File, ScoredText> setupFileProcessorFunction(){
-        Function<File, ScoredText> function = null;
-        switch (configuration){
-            case SIMPLE:
-                function = simpleSetupFileProcessorFunction();
-                break;
-        }
-        return function;
+        setupSut();
     }
 
     //create AnnotatedElement annotationTree using the provided List<Scorer<Element>> and List<Element>
@@ -119,52 +112,26 @@ public class TreeHtmlScorerOracle {
 
     //convert AnnotatedElement annotationTree into File input
     private void setupInput(){
-        switch (configuration){
-            case SIMPLE:
-                simpleSetupInput();
-                break;
-        }
+        //TODO: implement
     }
 
     //convert AnnotatedElement annotationTree into ScoredText output
     private void setupExpectedOutput(){
-        switch (configuration){
-            case SIMPLE:
-                simpleSetupExpectedOutput();
-                break;
-        }
+        //TODO: implement
     }
 
     //use the generated file scorer to create a configured SUT Spy
     private void setupSut(){
-        switch (configuration){
-            case SIMPLE:
-                simpleSetupSut();
-                break;
-        }
+        NVStubber stubber = new NVStubber();
+        ScoringAndFlatteningNodeVisitor nvStub = stubber.apply(expectedOutput);
+        this.sut = new TreeHtmlScorer(nvStub);
     }
 
-    private Function<File, ScoredText> simpleSetupFileProcessorFunction() {
-        //TODO: implement
-        return null;
+    private void setupSutCollaborators() {
     }
 
     private AnnotatedElement simpleSetupSeed() {
         //TODO: implement
         return null;
-    }
-
-    private void simpleSetupInput() {
-        //TODO: implement
-    }
-
-    private void simpleSetupExpectedOutput() {
-        //TODO: implement
-    }
-
-    private void simpleSetupSut() {
-        NVStubber stubber = new NVStubber();
-        ScoringAndFlatteningNodeVisitor nvStub = stubber.apply(expectedOutput);
-        this.sut = new TreeHtmlScorer(nvStub);
     }
 }
