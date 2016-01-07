@@ -39,7 +39,9 @@ public class TreeHtmlScorerOracle {
     //internal fields
 
     //this will be used by the SUT Spy to stub f(File input) -> ScoredText output
-    Function<File, ScoredText> oracleScorer;
+    Function<File, ScoredText> fileProcessorFunction;
+
+    //this will be used by both the
 
     //this is the input to generating both input and output.
     //f(seed) -> (File input, ScoredText expectedOutput) should be simpler
@@ -77,21 +79,23 @@ public class TreeHtmlScorerOracle {
     }
 
     private void setup() {
-        setupScorer();
+        setupFileProcessorFunction();
         setupSut();
         setupSeed();
         setupInput();
         setupExpectedOutput();
     }
 
-    private void setupScorer(){
+    //create a
+    private void setupFileProcessorFunction(){
         switch (configuration){
             case SIMPLE:
-                simpleSetupScorer();
+                simpleSetupFileProcessorFunction();
                 break;
         }
     }
 
+    //use the generated file scorer to create a configured SUT Spy
     private void setupSut(){
         switch (configuration){
             case SIMPLE:
@@ -100,6 +104,7 @@ public class TreeHtmlScorerOracle {
         }
     }
 
+    //create AnnotatedElement annotationTree using the provided List<Scorer<Element>> and List<Element>
     private void setupSeed() {
         switch (configuration){
             case SIMPLE:
@@ -108,6 +113,7 @@ public class TreeHtmlScorerOracle {
         }
     }
 
+    //convert AnnotatedElement annotationTree into File input
     private void setupInput(){
         switch (configuration){
             case SIMPLE:
@@ -116,6 +122,7 @@ public class TreeHtmlScorerOracle {
         }
     }
 
+    //convert AnnotatedElement annotationTree into ScoredText output
     private void setupExpectedOutput(){
         switch (configuration){
             case SIMPLE:
@@ -124,7 +131,7 @@ public class TreeHtmlScorerOracle {
         }
     }
 
-    private void simpleSetupScorer() {
+    private void simpleSetupFileProcessorFunction() {
         //TODO: implement
     }
 
