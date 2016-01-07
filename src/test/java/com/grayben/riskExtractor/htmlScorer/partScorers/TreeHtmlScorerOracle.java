@@ -1,8 +1,10 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
+import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
+import org.mockito.Mockito;
 
 import java.io.File;
 import java.util.function.Function;
@@ -54,6 +56,16 @@ public class TreeHtmlScorerOracle {
     }
 
     private Configuration configuration;
+
+    private class NVStubber implements Function<ScoredText, ScoringAndFlatteningNodeVisitor> {
+
+        @Override
+        public ScoringAndFlatteningNodeVisitor apply(ScoredText scoredText) {
+            ScoringAndFlatteningNodeVisitor nv = Mockito.mock(ScoringAndFlatteningNodeVisitor.class);
+            Mockito.doReturn(scoredText).when(nv.getFlatText());
+            return nv;
+        }
+    }
 
     //constructors
 
@@ -136,7 +148,9 @@ public class TreeHtmlScorerOracle {
     }
 
     private void simpleSetupSut() {
-        //TODO: implement
+        NVStubber stubber = new NVStubber();
+        ScoringAndFlatteningNodeVisitor nvStub = stubber.apply(expectedOutput);
+        this.sut = new TreeHtmlScorer(nvStub);
     }
 
     private void simpleSetupSeed() {
