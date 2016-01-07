@@ -138,7 +138,7 @@ public class NodeVisitorOracle {
 
                     AnnotatedElement annotatedElement = (AnnotatedElement) node;
                     scoredText.add(
-                            new ScoredTextElement(annotatedElement.ownText(), annotatedElement.scores)
+                            new ScoredTextElement(annotatedElement.ownText(), annotatedElement.getScores())
                     );
                 }
             }
