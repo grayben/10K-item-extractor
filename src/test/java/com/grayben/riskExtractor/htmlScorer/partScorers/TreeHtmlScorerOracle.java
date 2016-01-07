@@ -18,8 +18,6 @@ import java.util.function.Function;
  */
 public class TreeHtmlScorerOracle implements InputAndExpectedOutputRetrievable<File, ScoredText> {
 
-    //TODO: decide on design, declare needed instance variables, decide upon flow of control
-
     //interface fields
 
     //a tree htmlScorer instantiated with an appropriate stub of ScoringAndFlatteningNodeVisitor
