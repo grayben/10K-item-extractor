@@ -32,7 +32,7 @@ public abstract class MapScorer<T> extends Scorer<T> {
     }
 
     @Override
-    public int score(T input){
+    public Integer apply(T input){
         validateScoreInput(input);
         boolean containsKey = scoresMap.containsKey(input);
         if (containsKey)
