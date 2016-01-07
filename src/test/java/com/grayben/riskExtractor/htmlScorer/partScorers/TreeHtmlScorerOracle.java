@@ -2,7 +2,7 @@ package com.grayben.riskExtractor.htmlScorer.partScorers;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
-import org.jsoup.nodes.Node;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
 
 import java.io.File;
 import java.util.function.Function;
@@ -45,7 +45,7 @@ public class TreeHtmlScorerOracle {
     //f(seed) -> (File input, ScoredText expectedOutput) should be simpler
     //than SUT.process(File input) -> ScoredText output, otherwise this oracle is
     //more complex than the SUT itself and therefore pointless.
-    Node seed;
+    AnnotatedElement annotationTree;
 
     enum Configuration {
         SIMPLE
