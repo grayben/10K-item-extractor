@@ -18,7 +18,7 @@ public class TreeHtmlScorerOracle {
 
     //interface fields
 
-    //a tree htmlScorer instantiated with an appropriate Mocked Spy of ScoringAndFlatteningNodeVisitor
+    //a tree htmlScorer instantiated with an appropriate stub of ScoringAndFlatteningNodeVisitor
     TreeHtmlScorer sut;
     File input;
     ScoredText expectedOutput;
@@ -39,18 +39,6 @@ public class TreeHtmlScorerOracle {
     }
 
     //internal fields
-
-    //this will be used by the SUT Spy to stub f(File input) -> ScoredText output
-    Function<File, ScoredText> fileProcessorFunction;
-
-    //this will be used by both the
-
-    //this is the input to generating both input and output.
-    //f(seed) -> (File input, ScoredText expectedOutput) should be simpler
-    //than SUT.process(File input) -> ScoredText output, otherwise this oracle is
-    //more complex than the SUT itself and therefore pointless.
-    AnnotatedElement annotationTree;
-
     enum Configuration {
         SIMPLE
     }
@@ -91,38 +79,42 @@ public class TreeHtmlScorerOracle {
     }
 
     private void setup() {
-        setupFileProcessorFunction();
-        setupSut();
+        //this will be used by the SUT Spy to stub f(File input) -> ScoredText output
+        Function<File, ScoredText> fileProcessorFunction = setupFileProcessorFunction();
+
+        //this is the input to generating both input and output.
+        //f(seed) -> (File input, ScoredText expectedOutput) should be simpler
+        //than SUT.process(File input) -> ScoredText output, otherwise this oracle is
+        //more complex than the SUT itself and therefore pointless.
         setupSeed();
+
         setupInput();
+
         setupExpectedOutput();
+
+        setupSut();
     }
 
     //create a
-    private void setupFileProcessorFunction(){
+    private Function<File, ScoredText> setupFileProcessorFunction(){
+        Function<File, ScoredText> function = null;
         switch (configuration){
             case SIMPLE:
-                simpleSetupFileProcessorFunction();
+                function = simpleSetupFileProcessorFunction();
                 break;
         }
-    }
-
-    //use the generated file scorer to create a configured SUT Spy
-    private void setupSut(){
-        switch (configuration){
-            case SIMPLE:
-                simpleSetupSut();
-                break;
-        }
+        return function;
     }
 
     //create AnnotatedElement annotationTree using the provided List<Scorer<Element>> and List<Element>
-    private void setupSeed() {
+    private AnnotatedElement setupSeed() {
+        AnnotatedElement annotationTree = null;
         switch (configuration){
             case SIMPLE:
-                simpleSetupSeed();
+                annotationTree = simpleSetupSeed();
                 break;
         }
+        return annotationTree;
     }
 
     //convert AnnotatedElement annotationTree into File input
@@ -143,18 +135,23 @@ public class TreeHtmlScorerOracle {
         }
     }
 
-    private void simpleSetupFileProcessorFunction() {
-        //TODO: implement
+    //use the generated file scorer to create a configured SUT Spy
+    private void setupSut(){
+        switch (configuration){
+            case SIMPLE:
+                simpleSetupSut();
+                break;
+        }
     }
 
-    private void simpleSetupSut() {
-        NVStubber stubber = new NVStubber();
-        ScoringAndFlatteningNodeVisitor nvStub = stubber.apply(expectedOutput);
-        this.sut = new TreeHtmlScorer(nvStub);
+    private Function<File, ScoredText> simpleSetupFileProcessorFunction() {
+        //TODO: implement
+        return null;
     }
 
-    private void simpleSetupSeed() {
+    private AnnotatedElement simpleSetupSeed() {
         //TODO: implement
+        return null;
     }
 
     private void simpleSetupInput() {
@@ -163,5 +160,11 @@ public class TreeHtmlScorerOracle {
 
     private void simpleSetupExpectedOutput() {
         //TODO: implement
+    }
+
+    private void simpleSetupSut() {
+        NVStubber stubber = new NVStubber();
+        ScoringAndFlatteningNodeVisitor nvStub = stubber.apply(expectedOutput);
+        this.sut = new TreeHtmlScorer(nvStub);
     }
 }
