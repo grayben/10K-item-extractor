@@ -79,6 +79,7 @@ public class TreeHtmlScorerOracle {
     private void setup() {
         setupScorer();
         setupSut();
+        setupSeed();
         setupInput();
         setupExpectedOutput();
     }
@@ -95,6 +96,14 @@ public class TreeHtmlScorerOracle {
         switch (configuration){
             case SIMPLE:
                 simpleSetupSut();
+                break;
+        }
+    }
+
+    private void setupSeed() {
+        switch (configuration){
+            case SIMPLE:
+                simpleSetupSeed();
                 break;
         }
     }
@@ -120,6 +129,10 @@ public class TreeHtmlScorerOracle {
     }
 
     private void simpleSetupSut() {
+        //TODO: implement
+    }
+
+    private void simpleSetupSeed() {
         //TODO: implement
     }
 
