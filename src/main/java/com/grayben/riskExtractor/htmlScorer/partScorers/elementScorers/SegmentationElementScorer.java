@@ -23,13 +23,6 @@ public class SegmentationElementScorer extends Scorer<Element> {
 		this.tagScorer = tagScorer;
 	}
 
-	@Override
-	public int score(Element input) {
-		validateScoreInput(input);
-		int score = tagScorer.score(input.tag());
-		return score;
-	}
-
 	private void validateScoreInput(Element input){
 		if (input == null){
 			throw new NullPointerException(
@@ -43,5 +36,10 @@ public class SegmentationElementScorer extends Scorer<Element> {
 		}
 	}
 
-
+	@Override
+	public Integer apply(Element input) {
+		validateScoreInput(input);
+		int score = tagScorer.score(input.tag());
+		return score;
+	}
 }
