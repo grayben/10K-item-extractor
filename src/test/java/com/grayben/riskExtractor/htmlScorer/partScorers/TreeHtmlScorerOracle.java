@@ -4,7 +4,7 @@ import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
-import com.grayben.testing.InputAndOutputPairGenerator;
+import com.grayben.testing.InputAndExpectedOutputRetrievable;
 import org.mockito.Mockito;
 
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.function.Function;
 /**
  * Created by beng on 6/01/2016.
  */
-public class TreeHtmlScorerOracle {
+public class TreeHtmlScorerOracle implements InputAndExpectedOutputRetrievable<File, ScoredText> {
 
     //TODO: decide on design, declare needed instance variables, decide upon flow of control
 
@@ -29,12 +29,14 @@ public class TreeHtmlScorerOracle {
         return null;
     }
 
-    File getInput() {
+    @Override
+    public File getInput() {
         //TODO: implement
         return null;
     }
 
-    ScoredText getExpectedOutput(){
+    @Override
+    public ScoredText getExpectedOutput(){
         //TODO: implement
         return null;
     }
@@ -56,8 +58,6 @@ public class TreeHtmlScorerOracle {
             return nv;
         }
     }
-
-    InputAndOutputPairGenerator<AnnotatedElement, File, ScoredText> inputAndOutputPairGenerator;
 
     //constructors
 
@@ -128,8 +128,12 @@ public class TreeHtmlScorerOracle {
     }
 
     private void setupSutCollaborators() {
+        //TODO: implement
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Config-specific methods //////////////////////////////////////////////////////////////////////////////
+    
     private AnnotatedElement simpleSetupSeed() {
         //TODO: implement
         return null;
