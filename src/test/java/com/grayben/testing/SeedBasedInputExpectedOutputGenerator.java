@@ -9,17 +9,17 @@ public abstract class SeedBasedInputExpectedOutputGenerator<S, I, O>
     I input;
     O expectedOutput;
 
-    SeedBasedInputExpectedOutputGenerator(S seed){
+    protected SeedBasedInputExpectedOutputGenerator(S seed){
         validateInitParams(seed);
         this.input = generateInput(seed);
         this.expectedOutput = generateExpectedOutput(seed);
     }
 
-    abstract I generateInput(S seed);
+    protected abstract I generateInput(S seed);
 
-    abstract O generateExpectedOutput(S seed);
+    protected abstract O generateExpectedOutput(S seed);
 
-    abstract void validateInitParams(S seed);
+    protected abstract void validateInitParams(S seed);
 
     @Override
     public I getInput() {

@@ -5,6 +5,7 @@ import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
 import com.grayben.testing.InputAndExpectedOutputRetrievable;
+import com.grayben.testing.SeedBasedInputExpectedOutputGenerator;
 import org.mockito.Mockito;
 
 import java.io.File;
@@ -58,6 +59,8 @@ public class TreeHtmlScorerOracle implements InputAndExpectedOutputRetrievable<F
             return nv;
         }
     }
+
+    SeedBasedInputExpectedOutputGenerator<AnnotatedElement, File, ScoredText> generator;
 
     //constructors
 
