@@ -55,8 +55,21 @@ public class EmphasisElementScorer extends Scorer<Element> {
         return true;
     }
 
-	@Override
-	public int score(Element input) {
+    private void validateScoreInput(Element input){
+        if (input == null){
+            throw new NullPointerException(
+                    "The input cannot be null"
+            );
+        }
+        if(input.attributes() == null){
+            throw new NullPointerException(
+                    "the input.attributes cannot be null"
+            );
+        }
+    }
+
+    @Override
+    public Integer apply(Element input) {
         List<Integer> subScores = new ArrayList<>();
         validateScoreInput(input);
         subScores.add(tagEmphasisScorer.score(input.tag()));
@@ -70,18 +83,5 @@ public class EmphasisElementScorer extends Scorer<Element> {
 
         Collections.sort(subScores);
         return subScores.get(subScores.size() - 1);
-    }
-
-    private void validateScoreInput(Element input){
-        if (input == null){
-            throw new NullPointerException(
-                    "The input cannot be null"
-            );
-        }
-        if(input.attributes() == null){
-            throw new NullPointerException(
-                    "the input.attributes cannot be null"
-            );
-        }
     }
 }

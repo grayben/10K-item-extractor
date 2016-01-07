@@ -1,6 +1,8 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers;
 
 
+import java.util.function.Function;
+
 /**
  * Element scorer interface. Provide an implementing class to {@link ScoringAndFlatteningVisitor}.
  * <p/>
@@ -8,7 +10,7 @@ package com.grayben.riskExtractor.htmlScorer.partScorers;
  * @author beng
  *
  */
-public abstract class Scorer<T> {
+public abstract class Scorer<T> implements Function<T, Integer>{
 
     private String scoreLabel;
 
@@ -23,7 +25,9 @@ public abstract class Scorer<T> {
 	 * @param input the Element to score
 	 * @return the score of element
 	 */
-	public abstract int score(T input);
+	public int score(T input){
+        return this.apply(input);
+    }
 
     public String getScoreLabel(){
         return this.scoreLabel;
