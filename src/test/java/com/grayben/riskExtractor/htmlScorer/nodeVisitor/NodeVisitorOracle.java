@@ -9,6 +9,7 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementSc
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import com.grayben.testing.InputAndExpectedOutputRetrievable;
 import com.grayben.testing.SeedBasedInputExpectedOutputGenerator;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
@@ -27,7 +28,7 @@ import java.util.*;
  *
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NodeVisitorOracle {
+public class NodeVisitorOracle implements InputAndExpectedOutputRetrievable<Element, ScoredText> {
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // INSTANCE VARIABLES
@@ -62,11 +63,13 @@ public class NodeVisitorOracle {
     ////////////////////////////////////////////////////////////////////////////////////////
     // PACKAGE INTERFACE
     ////////////////////////////////////////////////////////////////////////////////////////
-    Element getInput() {
+    @Override
+    public Element getInput() {
         return this.inputExpectedOutputGenerator.getInput();
     }
 
-    ScoredText getExpectedOutput() {
+    @Override
+    public ScoredText getExpectedOutput() {
         return expectedOutput;
     }
 
