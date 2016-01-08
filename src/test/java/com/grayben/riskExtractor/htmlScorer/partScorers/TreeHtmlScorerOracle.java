@@ -82,7 +82,8 @@ public class TreeHtmlScorerOracle implements InputAndExpectedOutputRetrievable<F
                     "AnnotatedElementTreeAssembler was null"
             );
         }
-        AnnotatedElementTreeAssembler assembler = new AnnotatedElementTreeAssembler()
+        //TODO: complete method
+        //AnnotatedElementTreeAssembler assembler = new AnnotatedElementTreeAssembler()
     }
 
     private void processInitParams(Configuration configuration, AnnotatedElementTreeAssembler treeAssembler) {
