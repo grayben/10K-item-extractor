@@ -9,6 +9,7 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementSc
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import com.grayben.testing.SeedBasedInputExpectedOutputGenerator;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -44,6 +45,8 @@ public class NodeVisitorOracle {
     private ScoredText expectedOutput;
 
     Random random;
+    private SeedBasedInputExpectedOutputGenerator<AnnotatedElement, Element, ScoredText>
+            inputExpectedOutputGenerator;
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS
@@ -60,7 +63,7 @@ public class NodeVisitorOracle {
     // PACKAGE INTERFACE
     ////////////////////////////////////////////////////////////////////////////////////////
     Element getInput() {
-        return this.rootAnnotation;
+        return this.inputExpectedOutputGenerator.getInput();
     }
 
     ScoredText getExpectedOutput() {
