@@ -46,7 +46,7 @@ public class TreeHtmlScorerOracle implements InputAndExpectedOutputRetrievable<F
 
     private Configuration configuration;
 
-    private class NVStubber implements Function<ScoredText, ScoringAndFlatteningNodeVisitor> {
+    private static class NVStubber implements Function<ScoredText, ScoringAndFlatteningNodeVisitor> {
 
         @Override
         public ScoringAndFlatteningNodeVisitor apply(ScoredText scoredText) {
