@@ -4,6 +4,7 @@ import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElementTreeAssembler;
 import com.grayben.testing.InputAndExpectedOutputRetrievable;
 import com.grayben.testing.SeedBasedInputExpectedOutputGenerator;
 import org.mockito.Mockito;
@@ -55,17 +56,19 @@ public class TreeHtmlScorerOracle implements InputAndExpectedOutputRetrievable<F
         }
     }
 
-    SeedBasedInputExpectedOutputGenerator<AnnotatedElement, File, ScoredText> generator;
+    private AnnotatedElementTreeAssembler treeAssembler;
+
+    private SeedBasedInputExpectedOutputGenerator<AnnotatedElement, File, ScoredText> generator;
 
     //constructors
 
-    TreeHtmlScorerOracle(Configuration configuration){
-        validateInitParams(configuration);
-        processInitParams(configuration);
+    TreeHtmlScorerOracle(Configuration configuration, AnnotatedElementTreeAssembler treeAssembler){
+        validateInitParams(configuration, treeAssembler);
+        processInitParams(configuration, treeAssembler);
         setup();
     }
 
-    private void validateInitParams(Configuration configuration) {
+    private void validateInitParams(Configuration configuration, AnnotatedElementTreeAssembler treeAssembler) {
         switch (configuration){
             case SIMPLE:
                 break;
@@ -74,10 +77,17 @@ public class TreeHtmlScorerOracle implements InputAndExpectedOutputRetrievable<F
                         "Configuration option was not recognised"
                 );
         }
+        if (treeAssembler == null) {
+            throw new NullPointerException(
+                    "AnnotatedElementTreeAssembler was null"
+            );
+        }
+        AnnotatedElementTreeAssembler assembler = new AnnotatedElementTreeAssembler()
     }
 
-    private void processInitParams(Configuration configuration) {
+    private void processInitParams(Configuration configuration, AnnotatedElementTreeAssembler treeAssembler) {
         this.configuration = configuration;
+        this.treeAssembler = treeAssembler;
     }
 
     private void setup() {
