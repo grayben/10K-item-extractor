@@ -5,12 +5,12 @@ package com.grayben.testing;
  */
 public class SUTInputAndOutputOracle<SUT, I, O>
         implements
-        SUTRetrievable<SUT>,
+        SystemUnderTestRetrievable<SUT>,
         InputAndExpectedOutputRetrievable<I, O>
 {
 
     InputAndExpectedOutputRetrievable<I, O> ioGenerator;
-    SUTRetrievable<SUT> sutGenerator;
+    SystemUnderTestRetrievable<SUT> sutGenerator;
 
     @Override
     final public I getInput() {
