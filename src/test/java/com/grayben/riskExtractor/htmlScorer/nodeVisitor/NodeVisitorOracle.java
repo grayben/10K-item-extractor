@@ -54,10 +54,24 @@ public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatten
     ////////////////////////////////////////////////////////////////////////////////////////
 
     NodeVisitorOracle(AnnotatedElementTreeAssembler.Configuration config) {
-        validateInitParams(config);
+        processInitParams(config);
         this.config = config;
         random = new Random(System.currentTimeMillis());
         generateArtifacts();
+    }
+
+    private void validateInitParams(AnnotatedElementTreeAssembler.Configuration config) {
+        switch (config) {
+            case MIXED_TREE:
+                break;
+            default:
+                throw new IllegalArgumentException("The option was not recognised");
+        }
+    }
+
+    private void processInitParams(AnnotatedElementTreeAssembler.Configuration config){
+        validateInitParams(config);
+        this.config = config;
     }
 
     @Override
@@ -71,17 +85,10 @@ public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatten
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
-    // HIGH LEVEL
+    /// HIGH LEVEL
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    private void validateInitParams(AnnotatedElementTreeAssembler.Configuration config) {
-        switch (config) {
-            case MIXED_TREE:
-                break;
-            default:
-                throw new IllegalArgumentException("The option was not recognised");
-        }
-    }
+
 
     private void generateArtifacts() {
         instantiateGenerators();
