@@ -2,8 +2,9 @@ package com.grayben.riskExtractor.htmlScorer.partScorers;
 
 
 /**
- * Element scorer interface. Provide an implementing class to {@link ScoringAndFlatteningVisitor}.
- * <p/>
+ * Element scorer interface. Provide an implementing class to
+ * {@link com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor}.
+ * <p>
  * This interface contains a single method that takes an {@link org.jsoup.nodes.Element} and returns a score.
  * @author beng
  *
