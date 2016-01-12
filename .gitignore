@@ -8,9 +8,21 @@
 *.war
 *.ear
 
+# Mac OS crap #
+.DS_Store
+
 # Eclipse configs #
 .project
+.classpath
+.settings/
+
+# IntelliJ IDEA configs #
+.idea/workspaces.xml
+.idea/workspace.xml
+.idea/tasks.xml
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /bin/
+/target/
+/javadoc/
