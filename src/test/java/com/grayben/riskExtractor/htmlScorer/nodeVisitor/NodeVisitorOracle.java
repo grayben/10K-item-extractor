@@ -9,8 +9,8 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementSc
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
-import com.grayben.testing.SUTInputAndOutputOracle;
-import com.grayben.testing.SeedBasedInputExpectedOutputGenerator;
+import com.grayben.testOracle.generator.SeedBasedInputExpectedOutputGenerator;
+import com.grayben.testOracle.oracle.SUTInputAndOutputOracle;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -28,7 +28,7 @@ import java.util.*;
  *
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatteningNodeVisitor, Element, ScoredText>{
+public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatteningNodeVisitor, Element, ScoredText> {
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // INSTANCE VARIABLES

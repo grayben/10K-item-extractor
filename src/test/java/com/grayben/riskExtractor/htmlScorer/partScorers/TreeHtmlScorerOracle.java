@@ -5,8 +5,8 @@ import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElementTreeAssembler;
-import com.grayben.testing.InputAndExpectedOutputRetrievable;
-import com.grayben.testing.SeedBasedInputExpectedOutputGenerator;
+import com.grayben.testOracle.generator.InputAndExpectedOutputRetrievable;
+import com.grayben.testOracle.generator.SeedBasedInputExpectedOutputGenerator;
 import org.mockito.Mockito;
 
 import java.io.File;
