@@ -9,7 +9,14 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementSc
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import com.grayben.testOracle.generator.InputAndExpectedOutputGenerator;
+import com.grayben.testOracle.generator.InputAndExpectedOutputRetrievable;
 import com.grayben.testOracle.generator.SeedBasedInputExpectedOutputGenerator;
+import com.grayben.testOracle.generator.input.InputRetrievable;
+import com.grayben.testOracle.generator.input.SeedBasedInputGenerator;
+import com.grayben.testOracle.generator.output.ExpectedOutputRetrievable;
+import com.grayben.testOracle.generator.output.SeedBasedExpectedOutputGenerator;
+import com.grayben.testOracle.generator.sut.SystemUnderTestRetrievable;
 import com.grayben.testOracle.oracle.SUTInputAndOutputOracle;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
@@ -21,6 +28,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * For a nominated test configuration: generates the test input, SUT and expected output.
@@ -29,6 +37,41 @@ import java.util.*;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatteningNodeVisitor, Element, ScoredText> {
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // NESTED CLASSES
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+    class ElementAndScoredTextGenerator extends InputAndExpectedOutputGenerator<Element, ScoredText> {
+
+        class InputGenerator extends SeedBasedInputGenerator<AnnotatedElement, Element> {
+
+            public InputGenerator(AnnotatedElement seed) {
+                super(seed, annotatedElement -> {
+                    //TODO: implement lambda
+                    throw new UnsupportedOperationException(
+                            "This operation has not been implemented"
+                    );
+                });
+            }
+        }
+
+        class ExpectedOutputGenerator extends SeedBasedExpectedOutputGenerator {
+
+            public ExpectedOutputGenerator(Object seed) {
+                super(seed, annotatedElement -> {
+                    //TODO: implement lambda
+                    throw new UnsupportedOperationException(
+                            "This operation has not been implemented"
+                    );
+                });
+            }
+        }
+
+        protected ElementAndScoredTextGenerator(InputRetrievable<Element> inputGenerator, ExpectedOutputRetrievable<ScoredText> expectedOutputGenerator) {
+            super(new InputGenerator(seed), new ExpectedOutputGenerator(seed));
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // INSTANCE VARIABLES
@@ -46,14 +89,19 @@ public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatten
     private ScoredText expectedOutput;
 
     Random random;
-    private SeedBasedInputExpectedOutputGenerator<AnnotatedElement, Element, ScoredText>
-            inputExpectedOutputGenerator;
+    private InputAndExpectedOutputRetrievable<Element, ScoredText>
+            inputAndExpectedOutputGenerator;
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    NodeVisitorOracle(AnnotatedElementTreeAssembler.Configuration config) {
+    //TODO: use nested classes to pass into super()
+    NodeVisitorOracle(
+            AnnotatedElementTreeAssembler.Configuration config,
+            InputAndExpectedOutputRetrievable<Element, ScoredText> inputAndExpectedOutputRetrievable,
+            SystemUnderTestRetrievable<ScoringAndFlatteningNodeVisitor> systemUnderTestRetrievable) {
+        super(inputAndExpectedOutputRetrievable, systemUnderTestRetrievable);
         processInitParams(config);
         this.config = config;
         random = new Random(System.currentTimeMillis());
@@ -76,6 +124,18 @@ public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatten
 
     @Override
     protected void instantiateIoGenerator() {
+        InputAndExpectedOutputRetrievable<Element, ScoredText> ioGenerator;
+        ioGenerator = new InputAndExpectedOutputRetrievable<Element, ScoredText>() {
+            @Override
+            public Element getInput() {
+                return null;
+            }
+
+            @Override
+            public ScoredText getExpectedOutput() {
+                return null;
+            }
+        };
 
     }
 
