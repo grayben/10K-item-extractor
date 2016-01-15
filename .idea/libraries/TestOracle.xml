@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="TestOracle">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../TestOracle" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../TestOracle/src/main/java" />
+    </SOURCES>
+  </library>
+</component>
