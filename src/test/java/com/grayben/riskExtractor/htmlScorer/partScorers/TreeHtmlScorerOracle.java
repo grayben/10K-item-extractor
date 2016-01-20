@@ -63,7 +63,8 @@ public class TreeHtmlScorerOracle
 
         private Function<Configuration, AnnotatedElement> setupConfigurationAdapter() {
 
-            Function<Configuration, Triple<
+            Function
+                    <Configuration, Triple<
                     List<Element>,
                     AnnotatedElementTreeAssembler.Configuration,
                     Set<Scorer<Element>>>
