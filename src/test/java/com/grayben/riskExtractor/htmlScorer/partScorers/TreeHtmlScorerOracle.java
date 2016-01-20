@@ -10,8 +10,11 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -63,31 +66,31 @@ public class TreeHtmlScorerOracle
 
         private Function<Configuration, AnnotatedElement> setupConfigurationAdapter() {
 
-            Function
-                    <Configuration, Triple<
-                    List<Element>,
-                    AnnotatedElementTreeAssembler.Configuration,
-                    Set<Scorer<Element>>>
-                    > generateAssemblerParamsFunction = generateAssemblerParamsFunction();
+            return instantiateAssembler().andThen(AnnotatedElementTreeAssembler::getRootAnnotation);
+        }
 
-            Function<
-                    Triple<
-                            List<Element>,
-                            AnnotatedElementTreeAssembler.Configuration,
-                            Set<Scorer<Element>>
-                            >
-                    , AnnotatedElementTreeAssembler>
-                    constructAssemblerFunction = constructAssemblerFunction();
+        private Function<Configuration, AnnotatedElementTreeAssembler> instantiateAssembler() {
+            Function<Configuration, List<? extends Object>> initParams;
 
-            //TODO: consider moving into AnnotatedElementTreeAssembler itself
-            Function<AnnotatedElementTreeAssembler, AnnotatedElement> assembleTreeFunction
-                    = AnnotatedElementTreeAssembler::getRootAnnotation;
+            Function<List<? extends Object>, AnnotatedElementTreeAssembler> instantiate
+                    = objects -> {
+                ListIterator<? extends Object> it = objects.listIterator();
+                List<Element> elementList;
+                AnnotatedElementTreeAssembler.Configuration assemblerConfig;
+                Set<Scorer<Element>> scorers;
 
-            return generateAssemblerParamsFunction.andThen(constructAssemblerFunction).andThen(assembleTreeFunction);
+                elementList = ((List<Element>) it.next());
+                assemblerConfig = ((AnnotatedElementTreeAssembler.Configuration) it.next());
+                scorers = ((Set<Scorer<Element>>) it.next());
+
+                return new AnnotatedElementTreeAssembler(elementList, assemblerConfig, scorers);
+            };
+            //return instantiateAssemblerFunction().andThen();
         }
 
         //TODO: consider moving to AnnotatedElementTreeAssembler.Factory
         private Function<Configuration, Triple<List<Element>, AnnotatedElementTreeAssembler.Configuration, Set<Scorer<Element>>>> generateAssemblerParamsFunction() {
+            //// TODO: 21/01/2016 implement
             return null;
         }
 
