@@ -24,8 +24,16 @@
         <processorPath useClasspath="true" />
         <module name="SectionExtractor" />
       </profile>
+      <profile default="false" name="Annotation profile for 10K-Extractor" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="10K-Extractor" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="10K-Extractor" target="1.8" />
       <module name="SectionExtractor" target="1.8" />
     </bytecodeTargetLevel>
   </component>
