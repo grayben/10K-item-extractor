@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/10K-item-extractor.iml" filepath="$PROJECT_DIR$/10K-item-extractor.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SectionExtractor.iml" filepath="$PROJECT_DIR$/SectionExtractor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/10K-Extractor.iml" filepath="$PROJECT_DIR$/10K-Extractor.iml" />
     </modules>
   </component>
 </project>
