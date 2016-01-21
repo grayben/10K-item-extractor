@@ -18,6 +18,8 @@ import com.grayben.testOracle.generator.output.ExpectedOutputRetrievable;
 import com.grayben.testOracle.generator.output.SeedBasedExpectedOutputGenerator;
 import com.grayben.testOracle.generator.sut.SystemUnderTestRetrievable;
 import com.grayben.testOracle.oracle.SUTInputAndOutputOracle;
+import com.grayben.tools.math.parametricEquation.AdaptedParametricEquation;
+import com.grayben.tools.testOracle.ParametricTestOracle;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -36,43 +38,13 @@ import java.util.function.Function;
  *
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatteningNodeVisitor, Element, ScoredText> {
+public class NodeVisitorOracle
+        extends AdaptedParametricEquation<NodeVisitorOracle.Config, AnnotatedElement, Element, ScoredText> {
 
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // NESTED CLASSES
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    class ElementAndScoredTextGenerator extends InputAndExpectedOutputGenerator<Element, ScoredText> {
-
-        class InputGenerator extends SeedBasedInputGenerator<AnnotatedElement, Element> {
-
-            public InputGenerator(AnnotatedElement seed) {
-                super(seed, annotatedElement -> {
-                    //TODO: implement lambda
-                    throw new UnsupportedOperationException(
-                            "This operation has not been implemented"
-                    );
-                });
-            }
-        }
-
-        class ExpectedOutputGenerator extends SeedBasedExpectedOutputGenerator {
-
-            public ExpectedOutputGenerator(Object seed) {
-                super(seed, annotatedElement -> {
-                    //TODO: implement lambda
-                    throw new UnsupportedOperationException(
-                            "This operation has not been implemented"
-                    );
-                });
-            }
-        }
-
-        protected ElementAndScoredTextGenerator(InputRetrievable<Element> inputGenerator, ExpectedOutputRetrievable<ScoredText> expectedOutputGenerator) {
-            super(new InputGenerator(seed), new ExpectedOutputGenerator(seed));
-        }
+    public enum Config {
+        DEFAULT
     }
-
+    
     ////////////////////////////////////////////////////////////////////////////////////////
     // INSTANCE VARIABLES
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -89,8 +61,6 @@ public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatten
     private ScoredText expectedOutput;
 
     Random random;
-    private InputAndExpectedOutputRetrievable<Element, ScoredText>
-            inputAndExpectedOutputGenerator;
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS
