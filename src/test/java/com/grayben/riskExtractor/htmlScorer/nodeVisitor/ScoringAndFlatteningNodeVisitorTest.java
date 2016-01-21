@@ -1,30 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 
-import com.grayben.riskExtractor.htmlScorer.ScoredText;
-import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
-import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
-import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
-import org.jsoup.nodes.Comment;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.parser.Tag;
-import org.jsoup.select.NodeTraversor;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.*;
-
-import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorOracle.getEmphasisedTargetElementsAndScores;
-import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorOracle.getSegmentedTargetElementsAndScores;
-import static junit.framework.Assert.*;
 
 /**
  * Created by beng on 28/11/2015.
@@ -32,6 +9,8 @@ import static junit.framework.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ScoringAndFlatteningNodeVisitorTest
         extends NodeVisitorTest {
+
+    /*
 
     private ScoringAndFlatteningNodeVisitor nodeVisitorSUT;
 
@@ -669,5 +648,6 @@ public class ScoringAndFlatteningNodeVisitorTest
         assertEquals(expectedOutput, actualOutput);
     }
 
+    */
 
 }
