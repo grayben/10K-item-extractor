@@ -10,11 +10,9 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -85,6 +83,7 @@ public class TreeHtmlScorerOracle
 
                 return new AnnotatedElementTreeAssembler(elementList, assemblerConfig, scorers);
             };
+            throw new UnsupportedOperationException();
             //return instantiateAssemblerFunction().andThen();
         }
 
