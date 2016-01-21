@@ -41,7 +41,7 @@ public class TagAndAttributeScorer
                     "The input cannot have null Tag"
             );
         }
-        if(input.getAttribute().getValue().isEmpty()){
+        if(input.getAttribute().getKey().isEmpty()){
             throw new IllegalArgumentException(
                     "The input cannot have an empty Attribute"
             );

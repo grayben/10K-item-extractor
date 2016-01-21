@@ -4,22 +4,21 @@ import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
-import org.jsoup.nodes.Attributes;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
+import com.grayben.tools.math.parametricEquation.AdaptedParametricEquation;
+import com.grayben.tools.math.parametricEquation.ParametricEquation;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.jsoup.parser.Tag;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.*;
+import java.io.File;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * For a nominated test configuration: generates the test input, SUT and expected output.
@@ -27,7 +26,22 @@ import java.util.*;
  *
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NodeVisitorOracle {
+public class NodeVisitorOracle
+extends AdaptedParametricEquation<NodeVisitorOracle.Config, AnnotatedElement, File, ScoredText> {
+
+    public NodeVisitorOracle(Function<Config, AnnotatedElement> inputAdapter, ParametricEquation<AnnotatedElement, File, ScoredText> parametricEquation) {
+        super(inputAdapter, parametricEquation);
+    }
+
+    public enum Config {
+        DEFAULT
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // NESTED CLASSES
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // INSTANCE VARIABLES
@@ -36,11 +50,9 @@ public class NodeVisitorOracle {
     private Set<Scorer<Element>> sutParams;
     private ScoringAndFlatteningNodeVisitor sut;
 
-    enum Configuration {
-        MIXED_TREE
-    }
+    private ElementScorerSetSupplier elementScorerSetProducer;
 
-    private Configuration config;
+    private AnnotatedElementTreeAssembler.Configuration config;
 
     private AnnotatedElement rootAnnotation;
 
@@ -52,33 +64,7 @@ public class NodeVisitorOracle {
     // CONSTRUCTORS
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    NodeVisitorOracle(Configuration config) {
-        validateInitParams(config);
-        this.config = config;
-        random = new Random(System.currentTimeMillis());
-        generateArtifacts();
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // PACKAGE INTERFACE
-    ////////////////////////////////////////////////////////////////////////////////////////
-    Element getInput() {
-        return this.rootAnnotation;
-    }
-
-    ScoredText getExpectedOutput() {
-        return expectedOutput;
-    }
-
-    ScoringAndFlatteningNodeVisitor getSUT(){
-        return this.sut;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // HIGH LEVEL
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    private void validateInitParams(Configuration config) {
+    private void validateInitParams(AnnotatedElementTreeAssembler.Configuration config) {
         switch (config) {
             case MIXED_TREE:
                 break;
@@ -87,11 +73,34 @@ public class NodeVisitorOracle {
         }
     }
 
+    private void processInitParams(AnnotatedElementTreeAssembler.Configuration config){
+        validateInitParams(config);
+        this.config = config;
+    }
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    /// HIGH LEVEL
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+    /*
+
     private void generateArtifacts() {
+        instantiateGenerators();
         generateSutParams();
         generateSut();
         generateAnnotatedInput();
         determineExpectedOutput();
+    }
+
+    */
+
+    private void instantiateGenerators() {
+        Set<ElementScorerSetSupplier.Content> contents = new HashSet<>();
+        contents.add(ElementScorerSetSupplier.Content.SEGMENTATION_ELEMENT_SCORER);
+        contents.add(ElementScorerSetSupplier.Content.EMPHASIS_ELEMENT_SCORER);
+        this.elementScorerSetProducer = new ElementScorerSetSupplier(contents);
     }
 
     private void generateSut() {
@@ -99,29 +108,18 @@ public class NodeVisitorOracle {
     }
 
     private void generateSutParams() {
-        Set<Scorer<Element>> elementScorers = null;
-        switch (config){
-            case MIXED_TREE:
-                elementScorers = new HashSet<>();
-                Scorer<Element> segmentationElementScorer = new SegmentationElementScorer(
-                        new TagSegmentationScorer(TagSegmentationScorer.defaultMap())
-                );
-                elementScorers.add(segmentationElementScorer);
-                Scorer<Element> emphasisElementScorer = new EmphasisElementScorer(
-                        new TagEmphasisScorer(TagEmphasisScorer.defaultMap()),
-                        new TagAndAttributeScorer(TagAndAttributeScorer.defaultMap())
-                );
-                elementScorers.add(emphasisElementScorer);
-                break;
-        }
-        this.sutParams = elementScorers;
+        this.sutParams = elementScorerSetProducer.get();
     }
+
+    /*
 
     private void generateAnnotatedInput() {
         List<Element> elementList = generateElements();
-        TreeAssembler treeAssembler = new TreeAssembler(elementList, config, this.sutParams);
-        rootAnnotation = treeAssembler.getRootAnnotation();
+        AnnotatedElementTreeAssembler annotatedElementTreeAssembler = new AnnotatedElementTreeAssembler(elementList, config, this.sutParams);
+        rootAnnotation = annotatedElementTreeAssembler.getRootAnnotation();
     }
+
+    */
 
     private void determineExpectedOutput() {
         class OracleNodeVisitor implements NodeVisitor {
@@ -142,7 +140,7 @@ public class NodeVisitorOracle {
 
                     AnnotatedElement annotatedElement = (AnnotatedElement) node;
                     scoredText.add(
-                            new ScoredTextElement(annotatedElement.ownText(), annotatedElement.scores)
+                            new ScoredTextElement(annotatedElement.ownText(), annotatedElement.getScores())
                     );
                 }
             }
@@ -169,6 +167,8 @@ public class NodeVisitorOracle {
     ////////////////////////////////////////////////////////////////////////////////////////
     // ENCAPSULATED HELPERS
     ////////////////////////////////////////////////////////////////////////////////////////
+
+    /*
 
     private List<Element> generateElements() {
         List<Element> targetElements = null;
@@ -293,5 +293,7 @@ public class NodeVisitorOracle {
         }
         return result;
     }
+
+    */
 }
 

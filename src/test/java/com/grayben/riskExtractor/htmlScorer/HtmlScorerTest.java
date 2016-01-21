@@ -1,105 +1,224 @@
 package com.grayben.riskExtractor.htmlScorer;
 
-import org.junit.*;
+import org.apache.commons.io.FileUtils;
+import org.jsoup.HttpStatusException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static junit.framework.TestCase.fail;
+import java.io.File;
+import java.net.URL;
+import java.net.UnknownHostException;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
 
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public abstract class HtmlScorerTest {
 
-    private HtmlScorer htmlScorer;
+    private HtmlScorer htmlScorerSUT;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    protected void setHtmlScorer(HtmlScorer htmlScorer){
-        this.htmlScorer = htmlScorer;
-    }
-
-    protected HtmlScorer getHtmlScorer(){
-        return this.htmlScorer;
+    protected void setHtmlScorerSUT(HtmlScorer htmlScorerSUT){
+        this.htmlScorerSUT = htmlScorerSUT;
     }
 
     @Before
     public void setUp() throws Exception {
-
+        assert htmlScorerSUT != null;
     }
 
     @After
     public void tearDown() throws Exception {
-
-    }
-
-    @Test
-    public void
-    test_ScoreHtmlThrowsNullPointerException_WhenHtmlFileIsNull
-            () throws Exception {
-        fail("Test not implemented");
-    }
-
-    @Test
-    public void
-    test_ScoreHtmlThrowsNullPointerException_WhenCharsetNameIsNull
-            () throws Exception {
-        fail("Test not implemented");
+        this.htmlScorerSUT = null;
     }
 
     @Test
     public void
     test_ScoreHtmlThrowsNullPointerException_WhenURLIsNull
             () throws Exception {
-        fail("Test not implemented");
+        String url = null;
+
+        thrown.expect(NullPointerException.class);
+
+        htmlScorerSUT.scoreHtml(url);
     }
+
+    @Test
+    public void
+    test_ScoreHtmlThrowsNullPointerException_WhenHtmlFileIsNull
+            () throws Exception {
+        File file = null;
+
+        String charsetName = "UTF-8";
+
+        thrown.expect(NullPointerException.class);
+
+        htmlScorerSUT.scoreHtml(file, charsetName);
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlThrowsNullPointerException_WhenCharsetNameIsNull
+            () throws Exception {
+        File file = new File("src/test/resources/lengthy.html");
+
+        String charsetName = null;
+
+        thrown.expect(NullPointerException.class);
+
+        htmlScorerSUT.scoreHtml(file, charsetName);
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlThrowsIllegalArgumentException_WhenCharsetNameIsNotRecognised
+            () throws Exception {
+        File file = new File("src/test/resources/lengthy.html");
+
+        String charsetName = "foo bar baz";
+
+        thrown.expect(IllegalArgumentException.class);
+
+        htmlScorerSUT.scoreHtml(file, charsetName);
+    }
+
 
     @Test
     public void
     test_ScoreHtmlThrowsIllegalArgumentException_WhenCharsetNameIsEmptyString
             () throws Exception {
-        fail("Test not implemented");
+        File file = new File("src/test/resources/lengthy.html");
+
+        String charsetName = "";
+
+        thrown.expect(IllegalArgumentException.class);
+
+        htmlScorerSUT.scoreHtml(file, charsetName);
     }
 
     @Test
     public void
-    test_ScoreHtmlThrowsIllegalArgumentException_WhenURLIsEmptyString
+    test_ScoreHtmlThrowsIllegalArgumentException_WhenUrlIsNotValid
             () throws Exception {
-        fail("Test not implemented");
+        String url = "ggggg:%//l";
+
+        thrown.expect(IllegalArgumentException.class);
+
+        htmlScorerSUT.scoreHtml(url);
     }
 
     @Test
     public void
-    test_ScoreHtmlThrowsException_WhenURLCannotBeResolved
+    test_ScoreHtmlThrowsUnknownHostException_WhenUrlCanNotBeFound
             () throws Exception {
-        fail("Test not implemented");
+        String url = "http://ggggggggggggggggggggggggggggggggggg.com.au";
+
+        thrown.expect(UnknownHostException.class);
+
+        htmlScorerSUT.scoreHtml(url);
     }
 
     @Test
     public void
-    test_ScoreHtmlReturnsNonNull_WhenSimpleInput
+    test_ScoreHtmlThrowsHttpStatusException_IfResponseIsNotOK
             () throws Exception {
-        fail("Test not implemented");
+        String url = "http://www.google.com/sfadgadbdbddb";
+
+        thrown.expect(HttpStatusException.class);
+
+        htmlScorerSUT.scoreHtml(url);
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlReturnsNonNull_WhenSimpleLocalInput
+            () throws Exception {
+        File file = new File("src/test/resources/simple.html");
+
+        String charsetName = "UTF-8";
+
+        ScoredText returned = htmlScorerSUT.scoreHtml(file, charsetName);
+
+        assertNotNull(returned);
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlReturnsNonNull_WhenSimpleRemoteInput
+            () throws Exception {
+        String url = "http://grayben.com";
+
+        ScoredText returned = htmlScorerSUT.scoreHtml(url);
+
+        assertNotNull(returned);
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlReturnsNonNull_WhenLengthyLocalInput
+            () throws Exception {
+        File file = new File("src/test/resources/lengthy.html");
+
+        String charsetName = null;
+
+        thrown.expect(NullPointerException.class);
+
+        htmlScorerSUT.scoreHtml(file, charsetName);
+    }
+
+    @Test
+    public void
+    test_ScoreHtmlReturnsNonNull_WhenLengthyRemoteInput
+            () throws Exception {
+        String url = "https://en.wikipedia.org/wiki/Albert_Einstein";
+
+        ScoredText returned = htmlScorerSUT.scoreHtml(url);
+
+        assertNotNull(returned);
     }
 
     @Test
     public void
     test_ScoreHtmlReturnsNonNull_WhenEmptyFile
             () throws Exception {
-        fail("Test not implemented");
+        File file = new File("src/test/resources/lengthy.html");
+
+        String charsetName = "UTF-8";
+
+        ScoredText returned = htmlScorerSUT.scoreHtml(file, charsetName);
+
+        assertNotNull(returned);
     }
 
     @Test
     public void
     test_ScoreHtmlReturnsSameFromAnySignature_WhenTextInputIsSameSimple
             () throws Exception {
-        fail("Test not implemented");
-    }
+        File file = File.createTempFile("foo", "bar");
 
+        String urlString = "https://en.wikipedia.org/wiki/Albert_Einstein";
+        String charsetName = "UTF-8";
+
+        URL url = new URL(urlString);
+
+        FileUtils.copyURLToFile(url, file, 2000, 2000);
+
+        ScoredText returnedFromLocal = htmlScorerSUT.scoreHtml(file, charsetName);
+        ScoredText returnedFromRemote = htmlScorerSUT.scoreHtml(urlString);
+
+        assertEquals(returnedFromLocal, returnedFromRemote);
+    }
+    
     @Test
     abstract public void
     test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple

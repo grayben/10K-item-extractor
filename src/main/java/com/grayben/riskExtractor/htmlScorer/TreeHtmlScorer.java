@@ -17,9 +17,10 @@ public class TreeHtmlScorer implements HtmlScorer {
 	NodeTraversor nt;
 	ScoringAndFlatteningNodeVisitor nv;
 
-	public TreeHtmlScorer() {
+	//TODO: refactor ScoringAndFlatteningNodeVisitor into intermediate abstraction
+	public TreeHtmlScorer(ScoringAndFlatteningNodeVisitor nv) {
 		super();
-		//this.nv = new ScoringAndFlatteningNodeVisitor();
+		this.nv = nv;
 		this.nt = new NodeTraversor(this.nv);
 	}
 	
@@ -49,24 +50,21 @@ public class TreeHtmlScorer implements HtmlScorer {
 			System.out.println(i++);
 			System.out.println(iterator.next().html());	
 		}
-		
+
+		//TODO: implement
 		
 		return null;
 	}
 
 	@Override
-	public ScoredText scoreHtml(String url) {
+	public ScoredText scoreHtml(String url) throws IOException {
+		//TODO: use JSoup to get a Connection.Response so can remove SEC head
 		Document doc = parseHtmlUrl(url);
 		return traverse(doc);
 	}
 	
-	private Document parseHtmlUrl(String url) {
-		Document doc = null;
-		try {
-			doc = Jsoup.connect(url).get();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private Document parseHtmlUrl(String url) throws IOException {
+		Document doc = Jsoup.connect(url).get();
 		return doc;
 	}
 
