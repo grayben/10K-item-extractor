@@ -4,23 +4,21 @@ import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
-import com.grayben.testOracle.generator.SeedBasedInputExpectedOutputGenerator;
-import com.grayben.testOracle.oracle.SUTInputAndOutputOracle;
-import org.jsoup.nodes.Attributes;
+import com.grayben.tools.math.parametricEquation.AdaptedParametricEquation;
+import com.grayben.tools.math.parametricEquation.ParametricEquation;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.jsoup.parser.Tag;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.*;
+import java.io.File;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * For a nominated test configuration: generates the test input, SUT and expected output.
@@ -28,7 +26,22 @@ import java.util.*;
  *
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatteningNodeVisitor, Element, ScoredText> {
+public class NodeVisitorOracle
+extends AdaptedParametricEquation<NodeVisitorOracle.Config, AnnotatedElement, File, ScoredText> {
+
+    public NodeVisitorOracle(Function<Config, AnnotatedElement> inputAdapter, ParametricEquation<AnnotatedElement, File, ScoredText> parametricEquation) {
+        super(inputAdapter, parametricEquation);
+    }
+
+    public enum Config {
+        DEFAULT
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // NESTED CLASSES
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // INSTANCE VARIABLES
@@ -46,19 +59,10 @@ public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatten
     private ScoredText expectedOutput;
 
     Random random;
-    private SeedBasedInputExpectedOutputGenerator<AnnotatedElement, Element, ScoredText>
-            inputExpectedOutputGenerator;
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS
     ////////////////////////////////////////////////////////////////////////////////////////
-
-    NodeVisitorOracle(AnnotatedElementTreeAssembler.Configuration config) {
-        processInitParams(config);
-        this.config = config;
-        random = new Random(System.currentTimeMillis());
-        generateArtifacts();
-    }
 
     private void validateInitParams(AnnotatedElementTreeAssembler.Configuration config) {
         switch (config) {
@@ -74,21 +78,13 @@ public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatten
         this.config = config;
     }
 
-    @Override
-    protected void instantiateIoGenerator() {
 
-    }
-
-    @Override
-    protected void instantiateSutGenerator() {
-
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
     /// HIGH LEVEL
     ////////////////////////////////////////////////////////////////////////////////////////
 
-
+    /*
 
     private void generateArtifacts() {
         instantiateGenerators();
@@ -97,6 +93,8 @@ public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatten
         generateAnnotatedInput();
         determineExpectedOutput();
     }
+
+    */
 
     private void instantiateGenerators() {
         Set<ElementScorerSetSupplier.Content> contents = new HashSet<>();
@@ -113,11 +111,15 @@ public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatten
         this.sutParams = elementScorerSetProducer.get();
     }
 
+    /*
+
     private void generateAnnotatedInput() {
         List<Element> elementList = generateElements();
         AnnotatedElementTreeAssembler annotatedElementTreeAssembler = new AnnotatedElementTreeAssembler(elementList, config, this.sutParams);
         rootAnnotation = annotatedElementTreeAssembler.getRootAnnotation();
     }
+
+    */
 
     private void determineExpectedOutput() {
         class OracleNodeVisitor implements NodeVisitor {
@@ -165,6 +167,8 @@ public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatten
     ////////////////////////////////////////////////////////////////////////////////////////
     // ENCAPSULATED HELPERS
     ////////////////////////////////////////////////////////////////////////////////////////
+
+    /*
 
     private List<Element> generateElements() {
         List<Element> targetElements = null;
@@ -289,5 +293,7 @@ public class NodeVisitorOracle extends SUTInputAndOutputOracle<ScoringAndFlatten
         }
         return result;
     }
+
+    */
 }
 

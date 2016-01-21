@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
 
-    private Set<Scorer<Element>> elementScorers;
+    private Set<? extends Scorer<Element>> elementScorers;
 
     public Set<Scorer<Element>> getElementScorers() {
         return Collections.unmodifiableSet(elementScorers);
@@ -38,7 +38,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
     }
 
 
-	public ScoringAndFlatteningNodeVisitor(Set<Scorer<Element>> elementScorers) {
+	public ScoringAndFlatteningNodeVisitor(Set<? extends Scorer<Element>> elementScorers) {
 		super();
 		this.elementScorers = elementScorers;
 		this.flatText = new ScoredText();

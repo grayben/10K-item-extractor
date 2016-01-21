@@ -1,166 +1,101 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
-import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
-import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElementTreeAssembler;
-import com.grayben.testOracle.generator.InputAndExpectedOutputRetrievable;
-import com.grayben.testOracle.generator.SeedBasedInputExpectedOutputGenerator;
-import org.mockito.Mockito;
+import com.grayben.tools.math.parametricEquation.AdaptedParametricEquation;
+import com.grayben.tools.math.parametricEquation.ParametricEquation;
+import com.grayben.tools.testOracle.ParametricTestOracle;
+import org.apache.commons.lang3.tuple.Triple;
+import org.jsoup.nodes.Element;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
  * Created by beng on 6/01/2016.
  */
-public class TreeHtmlScorerOracle implements InputAndExpectedOutputRetrievable<File, ScoredText> {
+public class TreeHtmlScorerOracle
+        extends ParametricTestOracle<TreeHtmlScorerOracle.Configuration, File, ScoredText> {
 
-    //interface fields
-
-    //a tree htmlScorer instantiated with an appropriate stub of ScoringAndFlatteningNodeVisitor
-    TreeHtmlScorer sut;
-
-    TreeHtmlScorer getSut(){
-        return this.sut;
+    private TreeHtmlScorerOracle(ParametricEquation<Configuration, File, ScoredText> parametricEquation) {
+        super(parametricEquation);
     }
-
-    @Override
-    public File getInput() {
-        return this.generator.getInput();
-    }
-
-    @Override
-    public ScoredText getExpectedOutput(){
-        return this.generator.getExpectedOutput();
-    }
-
-    //internal fields
 
     enum Configuration {
         SIMPLE
     }
 
-    private Configuration configuration;
+    public static class Factory {
 
-    private static class NVStubber implements Function<ScoredText, ScoringAndFlatteningNodeVisitor> {
-
-        @Override
-        public ScoringAndFlatteningNodeVisitor apply(ScoredText scoredText) {
-            ScoringAndFlatteningNodeVisitor nv = Mockito.mock(ScoringAndFlatteningNodeVisitor.class);
-            Mockito.doReturn(scoredText).when(nv.getFlatText());
-            return nv;
+        public static TreeHtmlScorerOracle create(TreeHtmlScorerOracle.Configuration configuration) {
+            Factory factory = new Factory(configuration);
+            return factory.oracle();
         }
-    }
 
-    private AnnotatedElementTreeAssembler treeAssembler;
+        private final TreeHtmlScorerOracle.Configuration configuration;
 
-    private SeedBasedInputExpectedOutputGenerator<AnnotatedElement, File, ScoredText> generator;
-
-    //constructors
-
-    TreeHtmlScorerOracle(Configuration configuration, AnnotatedElementTreeAssembler treeAssembler){
-        validateInitParams(configuration, treeAssembler);
-        processInitParams(configuration, treeAssembler);
-        setup();
-    }
-
-    private void validateInitParams(Configuration configuration, AnnotatedElementTreeAssembler treeAssembler) {
-        switch (configuration){
-            case SIMPLE:
-                break;
-            default:
-                throw new IllegalArgumentException(
-                        "Configuration option was not recognised"
-                );
+        private Factory(Configuration configuration){
+            this.configuration = configuration;
         }
-        if (treeAssembler == null) {
-            throw new NullPointerException(
-                    "AnnotatedElementTreeAssembler was null"
-            );
+
+        private TreeHtmlScorerOracle oracle(){
+            AdaptedParametricEquation<Configuration, AnnotatedElement, File, ScoredText> adaptedParametricEquation
+                    = setupAdaptedParametricEquation();
+            return new TreeHtmlScorerOracle(adaptedParametricEquation);
         }
-        //TODO: complete method
-        //AnnotatedElementTreeAssembler assembler = new AnnotatedElementTreeAssembler()
-    }
 
-    private void processInitParams(Configuration configuration, AnnotatedElementTreeAssembler treeAssembler) {
-        this.configuration = configuration;
-        this.treeAssembler = treeAssembler;
-    }
-
-    private void setup() {
-
-        //this is the input to generating both input and output.
-        //f(seed) -> (File input, ScoredText expectedOutput) should be simpler
-        //than SUT.process(File input) -> ScoredText output, otherwise this oracle is
-        //more complex than the SUT itself and therefore pointless.
-        AnnotatedElement seed = setupSeed();
-
-        setupGenerator(seed);
-
-        setupSut();
-    }
-
-    //create AnnotatedElement annotationTree using the provided List<Scorer<Element>> and List<Element>
-    private AnnotatedElement setupSeed() {
-        AnnotatedElement annotationTree = null;
-        switch (configuration){
-            case SIMPLE:
-                annotationTree = simpleSetupSeed();
-                break;
+        private AdaptedParametricEquation<Configuration,AnnotatedElement,File,ScoredText>
+        setupAdaptedParametricEquation() {
+            Function<Configuration, AnnotatedElement> adapter
+                    = setupConfigurationAdapter();
+            ParametricEquation<AnnotatedElement, File, ScoredText> annotationUnpackingFunction
+                    = setupAnnotationUnpackingFunction();
+            return new AdaptedParametricEquation<>(adapter, annotationUnpackingFunction);
         }
-        return annotationTree;
-    }
 
-    private void setupGenerator(AnnotatedElement seed) {
-        this.generator = new SeedBasedInputExpectedOutputGenerator<AnnotatedElement, File, ScoredText>(seed) {
+        //TODO: consider moving to class AnnotatedElementTreeDisassembler or similar class
+        private ParametricEquation<AnnotatedElement, File, ScoredText> setupAnnotationUnpackingFunction() {
+            return null;
+        }
 
+        private Function<Configuration, AnnotatedElement> setupConfigurationAdapter() {
 
-            @Override
-            protected File generateInput(AnnotatedElement seed) {
-                //TODO: implement
-                return null;
-            }
+            return instantiateAssembler().andThen(AnnotatedElementTreeAssembler::getRootAnnotation);
+        }
 
-            @Override
-            protected ScoredText generateExpectedOutput(AnnotatedElement seed) {
-                //TODO: implement
-                return null;
-            }
+        private Function<Configuration, AnnotatedElementTreeAssembler> instantiateAssembler() {
+            Function<Configuration, List<? extends Object>> initParams;
 
-            @Override
-            protected void validateInitParams(AnnotatedElement seed) {
-                if (seed == null) {
-                    throw new NullPointerException(
-                            "The input parameter 'seed' was null"
-                    );
-                }
-            }
-        };
-    }
+            Function<List<? extends Object>, AnnotatedElementTreeAssembler> instantiate
+                    = objects -> {
+                ListIterator<? extends Object> it = objects.listIterator();
+                List<Element> elementList;
+                AnnotatedElementTreeAssembler.Configuration assemblerConfig;
+                Set<Scorer<Element>> scorers;
 
-    private List<Object> setupSutInitParams() {
-        List<Object> sutInitParams = new ArrayList<>();
-        NVStubber stubber = new NVStubber();
-        ScoringAndFlatteningNodeVisitor nvStub = stubber.apply(getExpectedOutput());
-        sutInitParams.add(nvStub);
-        return sutInitParams;
-    }
+                elementList = ((List<Element>) it.next());
+                assemblerConfig = ((AnnotatedElementTreeAssembler.Configuration) it.next());
+                scorers = ((Set<Scorer<Element>>) it.next());
 
-    //use the generated file scorer to create a configured SUT Spy
-    private void setupSut(){
-        List<Object> sutInitParams = setupSutInitParams();
-        this.sut = new TreeHtmlScorer((ScoringAndFlatteningNodeVisitor) sutInitParams.remove(0));
-    }
+                return new AnnotatedElementTreeAssembler(elementList, assemblerConfig, scorers);
+            };
+            throw new UnsupportedOperationException();
+            //return instantiateAssemblerFunction().andThen();
+        }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Config-specific methods //////////////////////////////////////////////////////////////////////////////
+        //TODO: consider moving to AnnotatedElementTreeAssembler.Factory
+        private Function<Configuration, Triple<List<Element>, AnnotatedElementTreeAssembler.Configuration, Set<Scorer<Element>>>> generateAssemblerParamsFunction() {
+            //// TODO: 21/01/2016 implement
+            return null;
+        }
 
-    private AnnotatedElement simpleSetupSeed() {
-        //TODO: implement
-        return null;
+        //TODO: consider moving into AnnotatedElementTreeAssembler itself
+        private Function<Triple<List<Element>, AnnotatedElementTreeAssembler.Configuration, Set<Scorer<Element>>>, AnnotatedElementTreeAssembler> constructAssemblerFunction() {
+            return triple -> new AnnotatedElementTreeAssembler(triple.getLeft(), triple.getMiddle(), triple.getRight());
+        }
     }
 }

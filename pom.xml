@@ -56,6 +56,7 @@
                 <artifactId>jgitflow-maven-plugin</artifactId>
                 <version>1.0-m5.1</version>
                 <configuration>
+                    <enableSshAgent>true</enableSshAgent>
                     <!-- For specific plugin configuration options,
                     see the Goals documentation page -->
                 </configuration>
@@ -69,10 +70,15 @@
         </repository>
     </repositories>
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
         <dependency>
-            <groupId>com.github.grayben</groupId>
+            <groupId>com.grayben.tools</groupId>
             <artifactId>test-oracle</artifactId>
-            <version>0.1.2</version>
+            <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
 		<dependency>
