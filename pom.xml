@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.grayben.work</groupId>
 	<artifactId>10K-item-extractor</artifactId>
-	<version>0.1.1</version>
+	<version>0.1.2</version>
 	<build>
 		<plugins>
 			<plugin>
@@ -62,7 +62,19 @@
             </plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
 	<dependencies>
+		<dependency>
+			<groupId>com.github.grayben</groupId>
+			<artifactId>test-oracle</artifactId>
+			<version>0.1.2</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
