@@ -16,9 +16,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * For a nominated test configuration: generates the test input, SUT and expected output.
@@ -27,9 +29,9 @@ import java.util.function.Function;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class NodeVisitorOracle
-extends AdaptedParametricEquation<NodeVisitorOracle.Config, AnnotatedElement, File, ScoredText> {
+        extends AdaptedParametricEquation<NodeVisitorOracle.Config, AnnotatedElement, File, ScoredText> {
 
-    public NodeVisitorOracle(Function<Config, AnnotatedElement> inputAdapter, ParametricEquation<AnnotatedElement, File, ScoredText> parametricEquation) {
+    private NodeVisitorOracle(Function<Config, AnnotatedElement> inputAdapter, ParametricEquation<AnnotatedElement, File, ScoredText> parametricEquation) {
         super(inputAdapter, parametricEquation);
     }
 
@@ -37,11 +39,95 @@ extends AdaptedParametricEquation<NodeVisitorOracle.Config, AnnotatedElement, Fi
         DEFAULT
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // NESTED CLASSES
-    ////////////////////////////////////////////////////////////////////////////////////////
+    public static class Factory {
+        public static NodeVisitorOracle getInstance(Config config){
+            Function<Config, AnnotatedElement> inputAdapter = inputAdapter();
+            ParametricEquation<AnnotatedElement, File, ScoredText> parametricEquation = parametricEquation();
+            return new NodeVisitorOracle(inputAdapter, parametricEquation);
+        }
+
+        private static Function<Config, AnnotatedElement> inputAdapter() {
+            return null;
+        }
+
+        private static ParametricEquation<AnnotatedElement, File, ScoredText> parametricEquation() {
+            return null;
+        }
+
+        private static class InputAdapterSupplier implements Supplier<Function<Config, AnnotatedElement>> {
+
+            @Override
+            public Function<Config, AnnotatedElement> get() {
+                Function<Config, List<Element>> elementListSupplier
+                        = new ElementListSupplier(null);
+                Function<Config, AnnotatedElementTreeAssembler.Configuration> configurationAdapter
+                        = new ConfigurationAdapter();
+                Function<Config, Set<? extends Scorer<Element>>> elementScorerSetSupplier
+                        = new ElementScorerSetSupplier();
+
+                return config -> new AnnotatedElementTreeAssembler(
+                        elementListSupplier.apply(config),
+                        configurationAdapter.apply(config),
+                        elementScorerSetSupplier.apply(config)).getRootAnnotation();
+            }
 
 
+            private static class ElementListSupplier implements Function<Config, List<Element>> {
+
+                private enum Config {
+                    DEFAULT
+                }
+
+                private final Config config;
+
+                private ElementListSupplier(Config config) {
+                    this.config = config;
+                }
+
+                @Override
+                public List<Element> apply(NodeVisitorOracle.Config config) {
+                    return null;
+                }
+            }
+
+            private class ConfigurationAdapter implements Function<Config, AnnotatedElementTreeAssembler.Configuration> {
+
+                @Override
+                public AnnotatedElementTreeAssembler.Configuration apply(Config config) {
+                    return null;
+                }
+            }
+
+            private class ElementScorerSetSupplier implements Function<Config, Set<? extends Scorer<Element>>> {
+
+                @Override
+                public Set<? extends Scorer<Element>> apply(Config config) {
+                    return null;
+                }
+            }
+        }
+
+        private static class ParametricEquationSupplier
+                implements Supplier<ParametricEquation<AnnotatedElement, File, ScoredText>> {
+
+            @Override
+            public ParametricEquation<AnnotatedElement, File, ScoredText> get() {
+                return null;
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // NEW SCAFFOLDING  /\
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // OLD CRAP         \/
+    ////////////////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // INSTANCE VARIABLES
@@ -59,24 +145,6 @@ extends AdaptedParametricEquation<NodeVisitorOracle.Config, AnnotatedElement, Fi
     private ScoredText expectedOutput;
 
     Random random;
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // CONSTRUCTORS
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    private void validateInitParams(AnnotatedElementTreeAssembler.Configuration config) {
-        switch (config) {
-            case MIXED_TREE:
-                break;
-            default:
-                throw new IllegalArgumentException("The option was not recognised");
-        }
-    }
-
-    private void processInitParams(AnnotatedElementTreeAssembler.Configuration config){
-        validateInitParams(config);
-        this.config = config;
-    }
 
 
 

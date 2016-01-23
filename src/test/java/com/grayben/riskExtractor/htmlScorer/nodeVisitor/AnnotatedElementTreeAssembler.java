@@ -18,7 +18,7 @@ public class AnnotatedElementTreeAssembler {
     private List<Element> elementsToAttach;
     private Configuration configuration;
 
-    private Set<Scorer<Element>> elementScorers;
+    private Set<? extends Scorer<Element>> elementScorers;
 
     //output fields
     private AnnotatedElement rootAnnotation;
@@ -42,7 +42,7 @@ public class AnnotatedElementTreeAssembler {
     public AnnotatedElementTreeAssembler(
             List<Element> elementsToAttach,
             Configuration configuration,
-            Set<Scorer<Element>> elementScorers
+            Set<? extends Scorer<Element>> elementScorers
     ) {
 
         validateInitParams(elementsToAttach, configuration, elementScorers);
@@ -59,7 +59,7 @@ public class AnnotatedElementTreeAssembler {
     private void validateInitParams(
             List<Element> elements,
             Configuration configuration,
-            Set<Scorer<Element>> elementScorers
+            Set<? extends Scorer<Element>> elementScorers
     ) {
         if (elements == null) {
             throw new NullPointerException(

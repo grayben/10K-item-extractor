@@ -7,6 +7,16 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</snapshots>
         </repository>
     </repositories>
 	<dependencies>
@@ -24,7 +34,7 @@
 		<dependency>
 			<groupId>com.github.grayben</groupId>
 			<artifactId>test-oracle</artifactId>
-			<version>345f64fbdc</version>
+			<version>0.1.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
