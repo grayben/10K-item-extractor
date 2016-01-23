@@ -3,6 +3,7 @@ package com.grayben.riskExtractor.htmlScorer;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElementTreeAssembler;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
 import com.grayben.tools.math.parametricEquation.AdaptedParametricEquation;
 import com.grayben.tools.math.parametricEquation.ParametricEquation;
 import com.grayben.tools.testOracle.ParametricTestOracle;
@@ -10,8 +11,8 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -50,15 +51,13 @@ public class TreeHtmlScorerOracle
 
         private AdaptedParametricEquation<Configuration,AnnotatedElement,File,ScoredText>
         setupAdaptedParametricEquation() {
-            Function<Configuration, AnnotatedElement> adapter
-                    = setupConfigurationAdapter();
-            ParametricEquation<AnnotatedElement, File, ScoredText> annotationUnpackingFunction
-                    = setupAnnotationUnpackingFunction();
-            return new AdaptedParametricEquation<>(adapter, annotationUnpackingFunction);
+            Function<Configuration, AnnotatedElement> adapter = setupConfigurationAdapter();
+            ParametricEquation<AnnotatedElement, File, ScoredText> parametricEquation = parametricEquation();
+            return new AdaptedParametricEquation<>(adapter, parametricEquation);
         }
 
         //TODO: consider moving to class AnnotatedElementTreeDisassembler or similar class
-        private ParametricEquation<AnnotatedElement, File, ScoredText> setupAnnotationUnpackingFunction() {
+        private ParametricEquation<AnnotatedElement, File, ScoredText> parametricEquation() {
             return null;
         }
 
@@ -68,32 +67,40 @@ public class TreeHtmlScorerOracle
         }
 
         private Function<Configuration, AnnotatedElementTreeAssembler> instantiateAssembler() {
-            Function<Configuration, List<? extends Object>> initParams;
+            return new Function<Configuration, AnnotatedElementTreeAssembler>() {
+                @Override
+                public AnnotatedElementTreeAssembler apply(Configuration configuration) {
+                    List<Element> elements;
+                    AnnotatedElementTreeAssembler.Configuration assemblerConfig;
+                    Set<? extends Scorer<Element>> scorers;
 
-            Function<List<? extends Object>, AnnotatedElementTreeAssembler> instantiate
-                    = objects -> {
-                ListIterator<? extends Object> it = objects.listIterator();
-                List<Element> elementList;
-                AnnotatedElementTreeAssembler.Configuration assemblerConfig;
-                Set<Scorer<Element>> scorers;
+                    Set<ElementScorerSetSupplier.Content> elementScorerSetContents;
 
-                elementList = ((List<Element>) it.next());
-                assemblerConfig = ((AnnotatedElementTreeAssembler.Configuration) it.next());
-                scorers = ((Set<Scorer<Element>>) it.next());
+                    switch (configuration){
+                        case SIMPLE:
 
-                return new AnnotatedElementTreeAssembler(elementList, assemblerConfig, scorers);
+                            assemblerConfig = AnnotatedElementTreeAssembler.Configuration.MIXED_TREE;
+
+                            elementScorerSetContents = new HashSet<>();
+                            elementScorerSetContents.add(ElementScorerSetSupplier.Content.EMPHASIS_ELEMENT_SCORER);
+                            elementScorerSetContents.add(ElementScorerSetSupplier.Content.SEGMENTATION_ELEMENT_SCORER);
+                            break;
+                        default:
+                            throw new IllegalArgumentException(
+                                    "The specified Configuration was not recognised."
+                            );
+                    }
+                    scorers = new ElementScorerSetSupplier(elementScorerSetContents).get();
+                    return new AnnotatedElementTreeAssembler()
+                }
             };
-            throw new UnsupportedOperationException();
-            //return instantiateAssemblerFunction().andThen();
         }
 
-        //TODO: consider moving to AnnotatedElementTreeAssembler.Factory
         private Function<Configuration, Triple<List<Element>, AnnotatedElementTreeAssembler.Configuration, Set<Scorer<Element>>>> generateAssemblerParamsFunction() {
             //// TODO: 21/01/2016 implement
             return null;
         }
 
-        //TODO: consider moving into AnnotatedElementTreeAssembler itself
         private Function<Triple<List<Element>, AnnotatedElementTreeAssembler.Configuration, Set<Scorer<Element>>>, AnnotatedElementTreeAssembler> constructAssemblerFunction() {
             return triple -> new AnnotatedElementTreeAssembler(triple.getLeft(), triple.getMiddle(), triple.getRight());
         }
