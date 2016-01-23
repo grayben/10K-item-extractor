@@ -1,8 +1,8 @@
-package com.grayben.riskExtractor.htmlScorer.partScorers;
+package com.grayben.riskExtractor.htmlScorer;
 
-import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElementTreeAssembler;
+import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.tools.math.parametricEquation.AdaptedParametricEquation;
 import com.grayben.tools.math.parametricEquation.ParametricEquation;
 import com.grayben.tools.testOracle.ParametricTestOracle;
