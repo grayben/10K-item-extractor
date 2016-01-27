@@ -7,6 +7,8 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
 import com.grayben.tools.math.parametricEquation.AdaptedParametricEquation;
 import com.grayben.tools.math.parametricEquation.ParametricEquation;
+import com.grayben.tools.testOracle.ParametricSutConfiguringTestOracle;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.NodeTraversor;
@@ -29,10 +31,11 @@ import java.util.function.Supplier;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class NodeVisitorOracle
-        extends AdaptedParametricEquation<NodeVisitorOracle.Config, AnnotatedElement, File, ScoredText> {
+        extends ParametricSutConfiguringTestOracle<NodeVisitorOracle.Config, ScoringAndFlatteningNodeVisitor, File, ScoredText> {
 
-    private NodeVisitorOracle(Function<Config, AnnotatedElement> inputAdapter, ParametricEquation<AnnotatedElement, File, ScoredText> parametricEquation) {
-        super(inputAdapter, parametricEquation);
+
+    public NodeVisitorOracle(ParametricEquation<Config, Pair<ScoringAndFlatteningNodeVisitor, File>, ScoredText> parametricEquation) {
+        super(parametricEquation);
     }
 
     public enum Config {
@@ -40,17 +43,15 @@ public class NodeVisitorOracle
     }
 
     public static class Factory {
-        public static NodeVisitorOracle getInstance(Config config){
-            Function<Config, AnnotatedElement> inputAdapter = inputAdapter();
-            ParametricEquation<AnnotatedElement, File, ScoredText> parametricEquation = parametricEquation();
-            return new NodeVisitorOracle(inputAdapter, parametricEquation);
+        public static NodeVisitorOracle getInstance(){
+            return new NodeVisitorOracle(new AdaptedParametricEquation<>(inputAdapter(), parametricEquation()));
         }
 
         private static Function<Config, AnnotatedElement> inputAdapter() {
             return null;
         }
 
-        private static ParametricEquation<AnnotatedElement, File, ScoredText> parametricEquation() {
+        private static ParametricEquation<AnnotatedElement, Pair<ScoringAndFlatteningNodeVisitor, File>, ScoredText> parametricEquation() {
             return null;
         }
 
