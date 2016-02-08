@@ -75,12 +75,6 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
-        <dependency>
-            <groupId>com.grayben.tools</groupId>
-            <artifactId>test-oracle</artifactId>
-            <version>0.1.0</version>
-            <scope>test</scope>
-        </dependency>
 		<dependency>
 			<groupId>com.github.grayben</groupId>
 			<artifactId>test-oracle</artifactId>
