@@ -5,9 +5,9 @@ import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
-import com.grayben.tools.math.parametricEquation.AdaptedParametricEquation;
-import com.grayben.tools.math.parametricEquation.ParametricEquation;
-import com.grayben.tools.testOracle.ParametricSutConfiguringTestOracle;
+import com.grayben.tools.math.function.parametric.AdaptedParametricEquation;
+import com.grayben.tools.math.function.parametric.ParametricEquation;
+import com.grayben.tools.testOracle.testContainer.TestContainer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -31,11 +31,11 @@ import java.util.function.Supplier;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class NodeVisitorOracle
-        extends ParametricSutConfiguringTestOracle<NodeVisitorOracle.Config, ScoringAndFlatteningNodeVisitor, File, ScoredText> {
+        extends TestContainer<File, ScoredText> {
 
 
-    public NodeVisitorOracle(ParametricEquation<Config, Pair<ScoringAndFlatteningNodeVisitor, File>, ScoredText> parametricEquation) {
-        super(parametricEquation);
+    protected NodeVisitorOracle(Builder<File, ScoredText> builder) {
+        super(builder);
     }
 
     public enum Config {
