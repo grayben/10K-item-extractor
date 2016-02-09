@@ -33,6 +33,13 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
     @Override
     public TestContainer<Config, ScoredText> get() {
 
+        Function<Config, Set<Scorer<Element>>> configElementScorerSetFunction = new Function<Config, Set<Scorer<Element>>>() {
+            @Override
+            public Set<Scorer<Element>> apply(Config config) {
+                throw new UnsupportedOperationException("Not implemented");
+            }
+        };
+
         Function<Config, AnnotatedElement> configAnnotatedElementFunction = new Function<Config, AnnotatedElement>() {
 
             @Override
@@ -51,13 +58,6 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
                     }
                 };
 
-                Function<Config, Set<Scorer<Element>>> configElementScorerSetFunction = new Function<Config, Set<Scorer<Element>>>() {
-                    @Override
-                    public Set<Scorer<Element>> apply(Config config) {
-                        throw new UnsupportedOperationException("Not implemented");
-                    }
-                };
-
                 return new AnnotatedElementTreeAssembler(
                         configElementListFunction.apply(config),
                         configConfigurationFunction.apply(config),
@@ -72,19 +72,33 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
             @Override
             public SystemUnderTest<Config, ScoredText> get() {
 
+                Function<Config, ScoringAndFlatteningNodeVisitor> scoringAndFlatteningNodeVisitorFunction = new Function<Config, ScoringAndFlatteningNodeVisitor>() {
+                    @Override
+                    public ScoringAndFlatteningNodeVisitor apply(Config config) {
+                        return new ScoringAndFlatteningNodeVisitor(configElementScorerSetFunction.apply(config));
+                    }
+                };
+
                 Function<AnnotatedElement, Element> annotatedElementToElementFunction = annotatedElement -> annotatedElement;
 
                 SystemUnderTest<Element, ScoredText> underlyingSystemUnderTest = new SystemUnderTest<Element, ScoredText>() {
                     @Override
                     public ScoredText apply(Element element) {
+                        ScoringAndFlatteningNodeVisitor nodeVisitor = new ScoringAndFlatteningNodeVisitor();
                         throw new UnsupportedOperationException("Not implemented");
                     }
                 };
 
-                return config1 -> configAnnotatedElementFunction
-                        .andThen(annotatedElementToElementFunction)
-                        .andThen(underlyingSystemUnderTest)
-                        .apply(config1);
+                return new SystemUnderTest<Config, ScoredText>() {
+                    @Override
+                    public ScoredText apply(Config config) {
+                        Element rootElement = configAnnotatedElementFunction.andThen(annotatedElementToElementFunction).apply(config);
+                        ScoringAndFlatteningNodeVisitor nodeVisitor = scoringAndFlatteningNodeVisitorFunction.apply(config);
+                        NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitor);
+                        nodeTraversor.traverse(rootElement);
+                        return nodeVisitor.getFlatText();
+                    }
+                };
             }
         };
 
@@ -96,42 +110,39 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
                     @Override
                     public ScoredText apply(Config config) {
 
-                        Function<AnnotatedElement, ScoredText> annotatedElementScoredTextFunction = new Function<AnnotatedElement, ScoredText>() {
-                            @Override
-                            public ScoredText apply(AnnotatedElement annotatedElement) {
+                        Function<AnnotatedElement, ScoredText> annotatedElementScoredTextFunction = annotatedElement -> {
 
-                                ScoredText scoredText = new ScoredText();
+                            ScoredText scoredText = new ScoredText();
 
-                                NodeVisitor nodeVisitor = new NodeVisitor() {
+                            NodeVisitor nodeVisitor = new NodeVisitor() {
 
-                                    @Override
-                                    public void head(Node node, int i) {
-                                        if(isAnnotatedElement(node)) {
-                                            AnnotatedElement annotatedElement = (AnnotatedElement) node;
-                                            scoredText.add(
-                                                    new ScoredTextElement(annotatedElement.ownText(), annotatedElement.getScores())
-                                            );
-                                        }
+                                @Override
+                                public void head(Node node, int i) {
+                                    if(isAnnotatedElement(node)) {
+                                        AnnotatedElement annotatedElement = (AnnotatedElement) node;
+                                        scoredText.add(
+                                                new ScoredTextElement(annotatedElement.ownText(), annotatedElement.getScores())
+                                        );
                                     }
+                                }
 
-                                    @Override
-                                    public void tail(Node node, int i) {
-                                        isAnnotatedElement(node);
+                                @Override
+                                public void tail(Node node, int i) {
+                                    isAnnotatedElement(node);
+                                }
+
+                                private boolean isAnnotatedElement(Node node) {
+                                    if (node.getClass().equals(AnnotatedElement.class)) {
+                                        return true;
+                                    } else {
+                                        return false;
                                     }
+                                }
+                            };
 
-                                    private boolean isAnnotatedElement(Node node) {
-                                        if (node.getClass().equals(AnnotatedElement.class)) {
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
-                                    }
-                                };
-
-                                NodeTraversor nt = new NodeTraversor(nodeVisitor);
-                                nt.traverse(annotatedElement);
-                                return scoredText;
-                            }
+                            NodeTraversor nt = new NodeTraversor(nodeVisitor);
+                            nt.traverse(annotatedElement);
+                            return scoredText;
                         };
                         return configAnnotatedElementFunction.andThen(annotatedElementScoredTextFunction).apply(config);
                     }
