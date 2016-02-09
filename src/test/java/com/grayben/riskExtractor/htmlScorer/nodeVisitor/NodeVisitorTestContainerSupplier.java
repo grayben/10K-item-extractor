@@ -32,13 +32,13 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
     @Override
     public TestContainer<Config, ScoredText> get() {
-
         Function<Config, Set<Scorer<Element>>> configElementScorerSetFunction = config1 -> {
             throw new UnsupportedOperationException("Not implemented");
         };
 
         Function<Config, AnnotatedElement> configAnnotatedElementFunction = config1 -> {
 
+            //TODO: List<Element> produces hits for Set<Scorer<Element>>
             Function<Config, List<Element>> configElementListFunction = config11 -> {
                 throw new UnsupportedOperationException("Not implemented");
             };
@@ -373,7 +373,6 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
         }
         return result;
     }
-
     */
 }
 
