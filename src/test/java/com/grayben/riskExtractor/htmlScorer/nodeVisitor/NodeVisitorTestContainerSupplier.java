@@ -99,7 +99,38 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
                         Function<AnnotatedElement, ScoredText> annotatedElementScoredTextFunction = new Function<AnnotatedElement, ScoredText>() {
                             @Override
                             public ScoredText apply(AnnotatedElement annotatedElement) {
-                                throw new UnsupportedOperationException("Not implemented");
+
+                                ScoredText scoredText = new ScoredText();
+
+                                NodeVisitor nodeVisitor = new NodeVisitor() {
+
+                                    @Override
+                                    public void head(Node node, int i) {
+                                        if(isAnnotatedElement(node)) {
+                                            AnnotatedElement annotatedElement = (AnnotatedElement) node;
+                                            scoredText.add(
+                                                    new ScoredTextElement(annotatedElement.ownText(), annotatedElement.getScores())
+                                            );
+                                        }
+                                    }
+
+                                    @Override
+                                    public void tail(Node node, int i) {
+                                        isAnnotatedElement(node);
+                                    }
+
+                                    private boolean isAnnotatedElement(Node node) {
+                                        if (node.getClass().equals(AnnotatedElement.class)) {
+                                            return true;
+                                        } else {
+                                            return false;
+                                        }
+                                    }
+                                };
+
+                                NodeTraversor nt = new NodeTraversor(nodeVisitor);
+                                nt.traverse(annotatedElement);
+                                return scoredText;
                             }
                         };
                         return configAnnotatedElementFunction.andThen(annotatedElementScoredTextFunction).apply(config);
@@ -243,48 +274,6 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
     */
 
-    private void determineExpectedOutput() {
-        class OracleNodeVisitor implements NodeVisitor {
-
-            ScoredText scoredText;
-
-            ScoredText getScoredText() {
-                return scoredText;
-            }
-
-            OracleNodeVisitor() {
-                this.scoredText = new ScoredText();
-            }
-
-            @Override
-            public void head(Node node, int i) {
-                if(isAnnotatedElement(node)) {
-
-                    AnnotatedElement annotatedElement = (AnnotatedElement) node;
-                    scoredText.add(
-                            new ScoredTextElement(annotatedElement.ownText(), annotatedElement.getScores())
-                    );
-                }
-            }
-
-            @Override
-            public void tail(Node node, int i) {
-                isAnnotatedElement(node);
-            }
-
-            private boolean isAnnotatedElement(Node node) {
-                if (node.getClass().equals(AnnotatedElement.class)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-        OracleNodeVisitor nv = new OracleNodeVisitor();
-        NodeTraversor nt = new NodeTraversor(nv);
-        nt.traverse(this.rootAnnotation);
-        this.expectedOutput = nv.getScoredText();
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // ENCAPSULATED HELPERS
