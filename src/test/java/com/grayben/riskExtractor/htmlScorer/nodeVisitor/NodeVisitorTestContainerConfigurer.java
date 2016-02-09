@@ -5,9 +5,11 @@ import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
-import com.grayben.tools.math.function.parametric.AdaptedParametricEquation;
 import com.grayben.tools.math.function.parametric.ParametricEquation;
+import com.grayben.tools.testOracle.SystemUnderTest;
+import com.grayben.tools.testOracle.oracle.passive.PassiveOracle;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -30,12 +32,38 @@ import java.util.function.Supplier;
  *
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NodeVisitorOracle
-        extends TestContainer<File, ScoredText> {
+public class NodeVisitorTestContainerConfigurer {
 
+    private static Function<Config, AnnotatedElement> annotatedElementFunction;
+    private static Function<AnnotatedElement, ScoredText> outputProducer;
+    private static Function<AnnotatedElement, File> inputProducer;
+    private static Function<Config, SystemUnderTest<Config, ScoredText>> effectiveSystemUnderTestFunction;
+    private static Function<Config, PassiveOracle<Config, ScoredText>> effectivePassiveOracleFunction;
 
-    protected NodeVisitorOracle(Builder<File, ScoredText> builder) {
-        super(builder);
+    public static TestContainer<Config, ScoredText> getConfiguredTestContainer(Config config){
+        switch (config){
+
+            // determine adapters
+                // configToSeed: Config -> Tree<AnnotatedElement>
+                    // determineElements: Config -> List<Element>
+                    // determineScorers: Config -> Set<Scorer<Element>>
+                    // adaptConfiguration: Config -> AnnotatedElementTreeAssembler.Config
+                    // AnnotatedElementTreeAssembler.getRootAnnotation:
+                        // List<Element>
+                        // * Set<Scorer<Element>>
+                        // * AnnotatedElementTreeAssembler.Config
+                        //      -> Tree<AnnotatedElement>
+
+            // determine SUT: SystemUnderTest<Config, ScoredText>
+                // setup: Config -> ~~ScoringAndFlatteningNodeVisitor~~
+                    // determine elements: Config -> List<Element>
+                    // determine scorers: Config -> Set<Scorer<Element>>
+            // determine PassiveOracle<Config, ScoredText>
+                // determine INPUT: Tree<AnnotatedElement> -> Tree<Element>
+                // determine EXPECTED OUTPUT: Tree<AnnotatedElement> -> ScoredText
+        }
+        TestContainer<Config, ScoredText> testContainer = new TestContainer.Builder<>().begin()
+        throw new NotImplementedException("This method is not implemented");
     }
 
     public enum Config {
@@ -43,8 +71,8 @@ public class NodeVisitorOracle
     }
 
     public static class Factory {
-        public static NodeVisitorOracle getInstance(){
-            return new NodeVisitorOracle(new AdaptedParametricEquation<>(inputAdapter(), parametricEquation()));
+        public static NodeVisitorTestContainerConfigurer getInstance(){
+            new TestContainer.Builder().begin().systemUnderTest(effectiveSystemUnderTestFunction.apply()).oracle(e)
         }
 
         private static Function<Config, AnnotatedElement> inputAdapter() {
@@ -86,7 +114,7 @@ public class NodeVisitorOracle
                 }
 
                 @Override
-                public List<Element> apply(NodeVisitorOracle.Config config) {
+                public List<Element> apply(NodeVisitorTestContainerConfigurer.Config config) {
                     return null;
                 }
             }
