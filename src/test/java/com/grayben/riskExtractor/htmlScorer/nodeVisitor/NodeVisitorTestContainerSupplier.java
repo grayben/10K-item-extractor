@@ -5,12 +5,9 @@ import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
-import com.grayben.tools.math.function.parametric.ParametricEquation;
 import com.grayben.tools.testOracle.SystemUnderTest;
 import com.grayben.tools.testOracle.oracle.passive.PassiveOracle;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
-import org.apache.commons.lang3.NotImplementedException;
-import org.apache.commons.lang3.tuple.Pair;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.NodeTraversor;
@@ -18,13 +15,11 @@ import org.jsoup.select.NodeVisitor;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -123,151 +118,57 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
     }
 
-    public static TestContainer<Config, ScoredText> getConfiguredTestContainer(Config config){
-        switch (config){
+    // TestContainerSupplier<Config, ScoredText> extends Supplier<TestContainer<Config, ScoredText>>
+    //      -
+    //      - transformToUnderlyingInput: Config -> Element {}
+    //      - buildUnderlyingSUT: Element -> ScoredText {}
+    //      - buildSUT: () -> SUT<Config, ScoredText> {
+    //      |   return () -> transformToUnderlyingInput.andThen(buildUnderlyingSUT);
+    //      }
+    //      - buildPassiveOracle: () -> PassiveOracle<Config, ScoredText> {
+    //      |   Element element = transformToUnderlyingInput.apply(config);
+    //      |   ScoredText scoredText =
+    //      |   return () -> {
+    //          |   underlyingPassiveOracle.test(
+    //      + get: () -> TestContainer<Config, ScoredText> {
+    //          return new TestContainer<>.Builder().build().sut(
+    //
+    //      }
+    //      :TestContainer<Element, ScoredText>
 
-            // TestContainerSupplier<Config, ScoredText> extends Supplier<TestContainer<Config, ScoredText>>
-            //      -
-            //      - transformToUnderlyingInput: Config -> Element {}
-            //      - buildUnderlyingSUT: Element -> ScoredText {}
-            //      - buildSUT: () -> SUT<Config, ScoredText> {
-            //      |   return () -> transformToUnderlyingInput.andThen(buildUnderlyingSUT);
-            //      }
-            //      - buildPassiveOracle: () -> PassiveOracle<Config, ScoredText> {
-            //      |   Element element = transformToUnderlyingInput.apply(config);
-            //      |   ScoredText scoredText =
-            //      |   return () -> {
-            //          |   underlyingPassiveOracle.test(
-            //      + get: () -> TestContainer<Config, ScoredText> {
-            //          return new TestContainer<>.Builder().build().sut(
-            //
-            //      }
-            //      :TestContainer<Element, ScoredText>
+    // determine adapters
+        // determineScorers: Config -> Set<Scorer<Element>>
+        // configToSeed: Config -> Tree<AnnotatedElement>
+            // determineScorers.apply(config) -> Set<Scorer<Element>>
+            // determineElements: Config -> List<Element>
+            // adaptConfiguration: Config -> AnnotatedElementTreeAssembler.Config
+            // AnnotatedElementTreeAssembler.getRootAnnotation:
+                // List<Element>
+                // * Set<Scorer<Element>>
+                // * AnnotatedElementTreeAssembler.Config
+                //      -> Tree<AnnotatedElement>
+        // annotationTreeToElementTree: Tree<AnnotatedElement> -> Tree<Element>
+        // annotationTreeToFile
 
+    // input generator: Tree<AnnotatedElement> -> File
+        // annotationTreeToElementTree.apply(annotationTree) -> Tree<Element>
+        // writeToFile: Tree<Element> -> File
 
+    // determine SUT: SystemUnderTest<Config, ScoredText>
+        //
+        // configToSeed.apply(config) -> Tree<AnnotatedElement>
+        // setup nv: Set<Scorer<Element>> -> ScoringAndFlatteningNodeVisitor
+        // setup nt: ScoringAndFlatteningNodeVisitor -> NodeTraversor
+        // apply nt to input: Tree<Element> * ScoringAndFlatteningNodeVisitor -> ScoredText
+    // determine PassiveOracle<Config, ScoredText>
+        // configToSeed.apply(config) -> Tree<AnnotatedElement>
+            // determine INPUT: Tree<AnnotatedElement> -> File
 
+            // determine EXPECTED OUTPUT: Tree<AnnotatedElement> -> ScoredText
 
-
-
-
-
-
-
-
-
-
-            // determine adapters
-                // determineScorers: Config -> Set<Scorer<Element>>
-                // configToSeed: Config -> Tree<AnnotatedElement>
-                    // determineScorers.apply(config) -> Set<Scorer<Element>>
-                    // determineElements: Config -> List<Element>
-                    // adaptConfiguration: Config -> AnnotatedElementTreeAssembler.Config
-                    // AnnotatedElementTreeAssembler.getRootAnnotation:
-                        // List<Element>
-                        // * Set<Scorer<Element>>
-                        // * AnnotatedElementTreeAssembler.Config
-                        //      -> Tree<AnnotatedElement>
-                // annotationTreeToElementTree: Tree<AnnotatedElement> -> Tree<Element>
-                // annotationTreeToFile
-
-            // input generator: Tree<AnnotatedElement> -> File
-                // annotationTreeToElementTree.apply(annotationTree) -> Tree<Element>
-                // writeToFile: Tree<Element> -> File
-
-            // determine SUT: SystemUnderTest<Config, ScoredText>
-                //
-                // configToSeed.apply(config) -> Tree<AnnotatedElement>
-                // setup nv: Set<Scorer<Element>> -> ScoringAndFlatteningNodeVisitor
-                // setup nt: ScoringAndFlatteningNodeVisitor -> NodeTraversor
-                // apply nt to input: Tree<Element> * ScoringAndFlatteningNodeVisitor -> ScoredText
-            // determine PassiveOracle<Config, ScoredText>
-                // configToSeed.apply(config) -> Tree<AnnotatedElement>
-                    // determine INPUT: Tree<AnnotatedElement> -> File
-
-                    // determine EXPECTED OUTPUT: Tree<AnnotatedElement> -> ScoredText
-        }
-        TestContainer<Config, ScoredText> testContainer = new TestContainer.Builder<>().begin()
-        throw new NotImplementedException("This method is not implemented");
-    }
 
     public enum Config {
         DEFAULT
-    }
-
-    public static class Factory {
-        public static NodeVisitorTestContainerSupplier getInstance(){
-            new TestContainer.Builder().begin().systemUnderTest(effectiveSystemUnderTestFunction.apply()).oracle(e)
-        }
-
-        private static Function<Config, AnnotatedElement> inputAdapter() {
-            return null;
-        }
-
-        private static ParametricEquation<AnnotatedElement, Pair<ScoringAndFlatteningNodeVisitor, File>, ScoredText> parametricEquation() {
-            return null;
-        }
-
-        private static class InputAdapterSupplier implements Supplier<Function<Config, AnnotatedElement>> {
-
-            @Override
-            public Function<Config, AnnotatedElement> get() {
-                Function<Config, List<Element>> elementListSupplier
-                        = new ElementListSupplier(null);
-                Function<Config, AnnotatedElementTreeAssembler.Configuration> configurationAdapter
-                        = new ConfigurationAdapter();
-                Function<Config, Set<? extends Scorer<Element>>> elementScorerSetSupplier
-                        = new ElementScorerSetSupplier();
-
-                return config -> new AnnotatedElementTreeAssembler(
-                        elementListSupplier.apply(config),
-                        configurationAdapter.apply(config),
-                        elementScorerSetSupplier.apply(config)).getRootAnnotation();
-            }
-
-
-            private static class ElementListSupplier implements Function<Config, List<Element>> {
-
-                private enum Config {
-                    DEFAULT
-                }
-
-                private final Config config;
-
-                private ElementListSupplier(Config config) {
-                    this.config = config;
-                }
-
-                @Override
-                public List<Element> apply(NodeVisitorTestContainerSupplier.Config config) {
-                    return null;
-                }
-            }
-
-            private class ConfigurationAdapter implements Function<Config, AnnotatedElementTreeAssembler.Configuration> {
-
-                @Override
-                public AnnotatedElementTreeAssembler.Configuration apply(Config config) {
-                    return null;
-                }
-            }
-
-            private class ElementScorerSetSupplier implements Function<Config, Set<? extends Scorer<Element>>> {
-
-                @Override
-                public Set<? extends Scorer<Element>> apply(Config config) {
-                    return null;
-                }
-            }
-        }
-
-        private static class ParametricEquationSupplier
-                implements Supplier<ParametricEquation<AnnotatedElement, File, ScoredText>> {
-
-            @Override
-            public ParametricEquation<AnnotatedElement, File, ScoredText> get() {
-                return null;
-            }
-        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
