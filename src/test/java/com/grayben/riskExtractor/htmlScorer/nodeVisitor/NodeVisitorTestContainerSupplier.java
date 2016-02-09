@@ -33,123 +33,83 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
     @Override
     public TestContainer<Config, ScoredText> get() {
 
-        Function<Config, Set<Scorer<Element>>> configElementScorerSetFunction = new Function<Config, Set<Scorer<Element>>>() {
-            @Override
-            public Set<Scorer<Element>> apply(Config config) {
+        Function<Config, Set<Scorer<Element>>> configElementScorerSetFunction = config1 -> {
+            throw new UnsupportedOperationException("Not implemented");
+        };
+
+        Function<Config, AnnotatedElement> configAnnotatedElementFunction = config1 -> {
+            Function<Config, List<Element>> configElementListFunction = config11 -> {
                 throw new UnsupportedOperationException("Not implemented");
-            }
+            };
+
+            Function<Config, AnnotatedElementTreeAssembler.Configuration> configConfigurationFunction = config11 -> {
+                throw new UnsupportedOperationException("Not implemented");
+            };
+
+            return new AnnotatedElementTreeAssembler(
+                    configElementListFunction.apply(config1),
+                    configConfigurationFunction.apply(config1),
+                    configElementScorerSetFunction.apply(config1)
+            ).getRootAnnotation();
         };
 
-        Function<Config, AnnotatedElement> configAnnotatedElementFunction = new Function<Config, AnnotatedElement>() {
+        Supplier<SystemUnderTest<Config, ScoredText>> systemUnderTestSupplier = () -> {
 
-            @Override
-            public AnnotatedElement apply(Config config) {
-                Function<Config, List<Element>> configElementListFunction = new Function<Config, List<Element>>() {
-                    @Override
-                    public List<Element> apply(Config config) {
-                        throw new UnsupportedOperationException("Not implemented");
-                    }
-                };
+            Function<Config, ScoringAndFlatteningNodeVisitor> scoringAndFlatteningNodeVisitorFunction = config1 -> new ScoringAndFlatteningNodeVisitor(configElementScorerSetFunction.apply(config1));
 
-                Function<Config, AnnotatedElementTreeAssembler.Configuration> configConfigurationFunction = new Function<Config, AnnotatedElementTreeAssembler.Configuration>() {
-                    @Override
-                    public AnnotatedElementTreeAssembler.Configuration apply(Config config) {
-                        throw new UnsupportedOperationException("Not implemented");
-                    }
-                };
+            Function<AnnotatedElement, Element> annotatedElementToElementFunction = annotatedElement -> annotatedElement;
 
-                return new AnnotatedElementTreeAssembler(
-                        configElementListFunction.apply(config),
-                        configConfigurationFunction.apply(config),
-                        configElementScorerSetFunction.apply(config)
-                ).getRootAnnotation();
-            }
-
-
+            return config1 -> {
+                Element rootElement = configAnnotatedElementFunction.andThen(annotatedElementToElementFunction).apply(config1);
+                ScoringAndFlatteningNodeVisitor nodeVisitor = scoringAndFlatteningNodeVisitorFunction.apply(config1);
+                NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitor);
+                nodeTraversor.traverse(rootElement);
+                return nodeVisitor.getFlatText();
+            };
         };
 
-        Supplier<SystemUnderTest<Config, ScoredText>> systemUnderTestSupplier = new Supplier<SystemUnderTest<Config, ScoredText>>() {
-            @Override
-            public SystemUnderTest<Config, ScoredText> get() {
+        Supplier<PassiveOracle<Config, ScoredText>> passiveOracleSupplier = () -> {
 
-                Function<Config, ScoringAndFlatteningNodeVisitor> scoringAndFlatteningNodeVisitorFunction = new Function<Config, ScoringAndFlatteningNodeVisitor>() {
-                    @Override
-                    public ScoringAndFlatteningNodeVisitor apply(Config config) {
-                        return new ScoringAndFlatteningNodeVisitor(configElementScorerSetFunction.apply(config));
-                    }
+            Function<Config, ScoredText> configScoredTextFunction = config1 -> {
+
+                Function<AnnotatedElement, ScoredText> annotatedElementScoredTextFunction = annotatedElement -> {
+
+                    ScoredText scoredText = new ScoredText();
+
+                    NodeVisitor nodeVisitor = new NodeVisitor() {
+
+                        @Override
+                        public void head(Node node, int i) {
+                            if(isAnnotatedElement(node)) {
+                                AnnotatedElement annotatedElement = (AnnotatedElement) node;
+                                scoredText.add(
+                                        new ScoredTextElement(annotatedElement.ownText(), annotatedElement.getScores())
+                                );
+                            }
+                        }
+
+                        @Override
+                        public void tail(Node node, int i) {
+                            isAnnotatedElement(node);
+                        }
+
+                        private boolean isAnnotatedElement(Node node) {
+                            if (node.getClass().equals(AnnotatedElement.class)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    };
+
+                    NodeTraversor nt = new NodeTraversor(nodeVisitor);
+                    nt.traverse(annotatedElement);
+                    return scoredText;
                 };
+                return configAnnotatedElementFunction.andThen(annotatedElementScoredTextFunction).apply(config1);
+            };
 
-                Function<AnnotatedElement, Element> annotatedElementToElementFunction = annotatedElement -> annotatedElement;
-
-                SystemUnderTest<Element, ScoredText> underlyingSystemUnderTest = new SystemUnderTest<Element, ScoredText>() {
-                    @Override
-                    public ScoredText apply(Element element) {
-                        ScoringAndFlatteningNodeVisitor nodeVisitor = new ScoringAndFlatteningNodeVisitor();
-                        throw new UnsupportedOperationException("Not implemented");
-                    }
-                };
-
-                return new SystemUnderTest<Config, ScoredText>() {
-                    @Override
-                    public ScoredText apply(Config config) {
-                        Element rootElement = configAnnotatedElementFunction.andThen(annotatedElementToElementFunction).apply(config);
-                        ScoringAndFlatteningNodeVisitor nodeVisitor = scoringAndFlatteningNodeVisitorFunction.apply(config);
-                        NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitor);
-                        nodeTraversor.traverse(rootElement);
-                        return nodeVisitor.getFlatText();
-                    }
-                };
-            }
-        };
-
-        Supplier<PassiveOracle<Config, ScoredText>> passiveOracleSupplier = new Supplier<PassiveOracle<Config, ScoredText>>() {
-            @Override
-            public PassiveOracle<Config, ScoredText> get() {
-
-                Function<Config, ScoredText> configScoredTextFunction = new Function<Config, ScoredText>() {
-                    @Override
-                    public ScoredText apply(Config config) {
-
-                        Function<AnnotatedElement, ScoredText> annotatedElementScoredTextFunction = annotatedElement -> {
-
-                            ScoredText scoredText = new ScoredText();
-
-                            NodeVisitor nodeVisitor = new NodeVisitor() {
-
-                                @Override
-                                public void head(Node node, int i) {
-                                    if(isAnnotatedElement(node)) {
-                                        AnnotatedElement annotatedElement = (AnnotatedElement) node;
-                                        scoredText.add(
-                                                new ScoredTextElement(annotatedElement.ownText(), annotatedElement.getScores())
-                                        );
-                                    }
-                                }
-
-                                @Override
-                                public void tail(Node node, int i) {
-                                    isAnnotatedElement(node);
-                                }
-
-                                private boolean isAnnotatedElement(Node node) {
-                                    if (node.getClass().equals(AnnotatedElement.class)) {
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                }
-                            };
-
-                            NodeTraversor nt = new NodeTraversor(nodeVisitor);
-                            nt.traverse(annotatedElement);
-                            return scoredText;
-                        };
-                        return configAnnotatedElementFunction.andThen(annotatedElementScoredTextFunction).apply(config);
-                    }
-                };
-
-                return (config1, scoredText) -> configScoredTextFunction.apply(config1).equals(scoredText);
-            }
+            return (config1, scoredText) -> configScoredTextFunction.apply(config1).equals(scoredText);
         };
 
         return new TestContainer.Builder<Config, ScoredText>()
