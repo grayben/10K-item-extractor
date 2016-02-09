@@ -28,39 +28,64 @@ import java.util.function.Supplier;
 
 /**
  * For a nominated test configuration: generates the test input, SUT and expected output.
- * <p/>
+ * <p>
  *
  */
 @RunWith(MockitoJUnitRunner.class)
 public class NodeVisitorTestContainerConfigurer {
 
-    private static Function<Config, AnnotatedElement> annotatedElementFunction;
-    private static Function<AnnotatedElement, ScoredText> outputProducer;
-    private static Function<AnnotatedElement, File> inputProducer;
-    private static Function<Config, SystemUnderTest<Config, ScoredText>> effectiveSystemUnderTestFunction;
-    private static Function<Config, PassiveOracle<Config, ScoredText>> effectivePassiveOracleFunction;
-
     public static TestContainer<Config, ScoredText> getConfiguredTestContainer(Config config){
         switch (config){
 
+            // TestContainerSupplier<Config, ScoredText> extends Supplier<TestContainer<Config, ScoredText>>
+            //      transformInput: Config -> File
+            //      get: () -> TestContainer<Config, ScoredText> {
+            //          //
+            //          //
+            //      }
+            //      :TestContainer<File, ScoredText>
+
+
+
+
+
+
+
+
+
+
+
+
+
             // determine adapters
+                // determineScorers: Config -> Set<Scorer<Element>>
                 // configToSeed: Config -> Tree<AnnotatedElement>
+                    // determineScorers.apply(config) -> Set<Scorer<Element>>
                     // determineElements: Config -> List<Element>
-                    // determineScorers: Config -> Set<Scorer<Element>>
                     // adaptConfiguration: Config -> AnnotatedElementTreeAssembler.Config
                     // AnnotatedElementTreeAssembler.getRootAnnotation:
                         // List<Element>
                         // * Set<Scorer<Element>>
                         // * AnnotatedElementTreeAssembler.Config
                         //      -> Tree<AnnotatedElement>
+                // annotationTreeToElementTree: Tree<AnnotatedElement> -> Tree<Element>
+                // annotationTreeToFile
+
+            // input generator: Tree<AnnotatedElement> -> File
+                // annotationTreeToElementTree.apply(annotationTree) -> Tree<Element>
+                // writeToFile: Tree<Element> -> File
 
             // determine SUT: SystemUnderTest<Config, ScoredText>
-                // setup: Config -> ~~ScoringAndFlatteningNodeVisitor~~
-                    // determine elements: Config -> List<Element>
-                    // determine scorers: Config -> Set<Scorer<Element>>
+                //
+                // configToSeed.apply(config) -> Tree<AnnotatedElement>
+                // setup nv: Set<Scorer<Element>> -> ScoringAndFlatteningNodeVisitor
+                // setup nt: ScoringAndFlatteningNodeVisitor -> NodeTraversor
+                // apply nt to input: Tree<Element> * ScoringAndFlatteningNodeVisitor -> ScoredText
             // determine PassiveOracle<Config, ScoredText>
-                // determine INPUT: Tree<AnnotatedElement> -> Tree<Element>
-                // determine EXPECTED OUTPUT: Tree<AnnotatedElement> -> ScoredText
+                // configToSeed.apply(config) -> Tree<AnnotatedElement>
+                    // determine INPUT: Tree<AnnotatedElement> -> File
+
+                    // determine EXPECTED OUTPUT: Tree<AnnotatedElement> -> ScoredText
         }
         TestContainer<Config, ScoredText> testContainer = new TestContainer.Builder<>().begin()
         throw new NotImplementedException("This method is not implemented");
