@@ -576,7 +576,7 @@ public class ScoringAndFlatteningNodeVisitorTest
     test_AllScoresAreZero_AfterTraversalOfManyTargetElements
             () throws Exception {
 
-        NodeVisitorTestContainerConfigurer oracle = new NodeVisitorTestContainerConfigurer(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
+        NodeVisitorTestContainerSupplier oracle = new NodeVisitorTestContainerSupplier(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
         this.setNodeVisitorSUT(oracle.getSUT());
         Element input = oracle.getInput();
         NodeTraversor nt = new NodeTraversor(this.nodeVisitorSUT);
@@ -593,7 +593,7 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
             () throws Exception {
-        NodeVisitorTestContainerConfigurer oracle = new NodeVisitorTestContainerConfigurer(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
+        NodeVisitorTestContainerSupplier oracle = new NodeVisitorTestContainerSupplier(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
         this.nodeVisitorSUT = oracle.getSUT();
         Element input = oracle.getInput();
         NodeTraversor nt = new NodeTraversor(nodeVisitorSUT);
@@ -614,7 +614,7 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
             () throws Exception {
-        NodeVisitorTestContainerConfigurer oracle = new NodeVisitorTestContainerConfigurer(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
+        NodeVisitorTestContainerSupplier oracle = new NodeVisitorTestContainerSupplier(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
         this.nodeVisitorSUT = oracle.getSUT();
         Element input = oracle.getInput();
         NodeTraversor nt = new NodeTraversor(this.nodeVisitorSUT);
@@ -635,7 +635,7 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_GetScoredTextReturnsExpected_AfterVisitsToManyElementsWithText
             () throws Exception {
-        NodeVisitorTestContainerConfigurer oracle = new NodeVisitorTestContainerConfigurer(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
+        NodeVisitorTestContainerSupplier oracle = new NodeVisitorTestContainerSupplier(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
         this.nodeVisitorSUT = oracle.getSUT();
         Element input = oracle.getInput();
         NodeTraversor nt = new NodeTraversor(nodeVisitorSUT);

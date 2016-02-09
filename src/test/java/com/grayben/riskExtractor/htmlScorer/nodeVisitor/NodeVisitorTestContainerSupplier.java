@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -32,16 +33,123 @@ import java.util.function.Supplier;
  *
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NodeVisitorTestContainerConfigurer {
+public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<NodeVisitorTestContainerSupplier.Config, ScoredText>> {
+
+    @Override
+    public TestContainer<Config, ScoredText> get() {
+
+        Function<Config, AnnotatedElement> configAnnotatedElementFunction = new Function<Config, AnnotatedElement>() {
+
+            @Override
+            public AnnotatedElement apply(Config config) {
+                Function<Config, List<Element>> configElementListFunction = new Function<Config, List<Element>>() {
+                    @Override
+                    public List<Element> apply(Config config) {
+                        throw new UnsupportedOperationException("Not implemented");
+                    }
+                };
+
+                Function<Config, AnnotatedElementTreeAssembler.Configuration> configConfigurationFunction = new Function<Config, AnnotatedElementTreeAssembler.Configuration>() {
+                    @Override
+                    public AnnotatedElementTreeAssembler.Configuration apply(Config config) {
+                        throw new UnsupportedOperationException("Not implemented");
+                    }
+                };
+
+                Function<Config, Set<Scorer<Element>>> configElementScorerSetFunction = new Function<Config, Set<Scorer<Element>>>() {
+                    @Override
+                    public Set<Scorer<Element>> apply(Config config) {
+                        throw new UnsupportedOperationException("Not implemented");
+                    }
+                };
+
+                return new AnnotatedElementTreeAssembler(
+                        configElementListFunction.apply(config),
+                        configConfigurationFunction.apply(config),
+                        configElementScorerSetFunction.apply(config)
+                ).getRootAnnotation();
+            }
+
+
+        };
+
+        Supplier<SystemUnderTest<Config, ScoredText>> systemUnderTestSupplier = new Supplier<SystemUnderTest<Config, ScoredText>>() {
+            @Override
+            public SystemUnderTest<Config, ScoredText> get() {
+
+                Function<AnnotatedElement, Element> annotatedElementToElementFunction = annotatedElement -> annotatedElement;
+
+                Function<AnnotatedElement, File> annotatedElementFileFunction = new Function<AnnotatedElement, File>() {
+                    @Override
+                    public File apply(AnnotatedElement annotatedElement) {
+                        throw new UnsupportedOperationException("Not implemented");
+                    }
+                };
+
+                SystemUnderTest<File, ScoredText> underlyingSystemUnderTest = new SystemUnderTest<File, ScoredText>() {
+                    @Override
+                    public ScoredText apply(File file) {
+                        throw new UnsupportedOperationException("Not implemented");
+                    }
+                };
+
+                return config1 -> configAnnotatedElementFunction
+                        .andThen(annotatedElementFileFunction)
+                        .andThen(underlyingSystemUnderTest)
+                        .apply(config1);
+            }
+        };
+
+        Supplier<PassiveOracle<Config, ScoredText>> passiveOracleSupplier = new Supplier<PassiveOracle<Config, ScoredText>>() {
+            @Override
+            public PassiveOracle<Config, ScoredText> get() {
+
+                Function<Config, ScoredText> configScoredTextFunction = new Function<Config, ScoredText>() {
+                    @Override
+                    public ScoredText apply(Config config) {
+
+                        Function<Config, AnnotatedElement> myConfigAnnotationFunction
+                                = configAnnotatedElementFunction;
+                        Function<AnnotatedElement, ScoredText> annotatedElementScoredTextFunction = new Function<AnnotatedElement, ScoredText>() {
+                            @Override
+                            public ScoredText apply(AnnotatedElement annotatedElement) {
+                                throw new UnsupportedOperationException("Not implemented");
+                            }
+                        };
+                        return configAnnotatedElementFunction.andThen(annotatedElementScoredTextFunction).apply(config);
+                    }
+                };
+
+                return (config1, scoredText) -> configScoredTextFunction.apply(config1).equals(scoredText);
+            }
+        };
+
+        return new TestContainer.Builder<Config, ScoredText>()
+                .begin()
+                .systemUnderTest(systemUnderTestSupplier.get())
+                .oracle(passiveOracleSupplier.get())
+                .build();
+
+    }
 
     public static TestContainer<Config, ScoredText> getConfiguredTestContainer(Config config){
         switch (config){
 
             // TestContainerSupplier<Config, ScoredText> extends Supplier<TestContainer<Config, ScoredText>>
-            //      transformInput: Config -> File
-            //      get: () -> TestContainer<Config, ScoredText> {
-            //          //
-            //          //
+            //      -
+            //      - transformToUnderlyingInput: Config -> File {}
+            //      - buildUnderlyingSUT: File -> ScoredText {}
+            //      - buildSUT: () -> SUT<Config, ScoredText> {
+            //      |   return () -> transformToUnderlyingInput.andThen(buildUnderlyingSUT);
+            //      }
+            //      - buildPassiveOracle: () -> PassiveOracle<Config, ScoredText> {
+            //      |   File file = transformToUnderlyingInput.apply(config);
+            //      |   ScoredText scoredText =
+            //      |   return () -> {
+            //          |   underlyingPassiveOracle.test(
+            //      + get: () -> TestContainer<Config, ScoredText> {
+            //          return new TestContainer<>.Builder().build().sut(
+            //
             //      }
             //      :TestContainer<File, ScoredText>
 
@@ -96,7 +204,7 @@ public class NodeVisitorTestContainerConfigurer {
     }
 
     public static class Factory {
-        public static NodeVisitorTestContainerConfigurer getInstance(){
+        public static NodeVisitorTestContainerSupplier getInstance(){
             new TestContainer.Builder().begin().systemUnderTest(effectiveSystemUnderTestFunction.apply()).oracle(e)
         }
 
@@ -139,7 +247,7 @@ public class NodeVisitorTestContainerConfigurer {
                 }
 
                 @Override
-                public List<Element> apply(NodeVisitorTestContainerConfigurer.Config config) {
+                public List<Element> apply(NodeVisitorTestContainerSupplier.Config config) {
                     return null;
                 }
             }
