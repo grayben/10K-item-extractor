@@ -79,22 +79,15 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
                 Function<AnnotatedElement, Element> annotatedElementToElementFunction = annotatedElement -> annotatedElement;
 
-                Function<AnnotatedElement, File> annotatedElementFileFunction = new Function<AnnotatedElement, File>() {
+                SystemUnderTest<Element, ScoredText> underlyingSystemUnderTest = new SystemUnderTest<Element, ScoredText>() {
                     @Override
-                    public File apply(AnnotatedElement annotatedElement) {
-                        throw new UnsupportedOperationException("Not implemented");
-                    }
-                };
-
-                SystemUnderTest<File, ScoredText> underlyingSystemUnderTest = new SystemUnderTest<File, ScoredText>() {
-                    @Override
-                    public ScoredText apply(File file) {
+                    public ScoredText apply(Element element) {
                         throw new UnsupportedOperationException("Not implemented");
                     }
                 };
 
                 return config1 -> configAnnotatedElementFunction
-                        .andThen(annotatedElementFileFunction)
+                        .andThen(annotatedElementToElementFunction)
                         .andThen(underlyingSystemUnderTest)
                         .apply(config1);
             }
@@ -108,8 +101,6 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
                     @Override
                     public ScoredText apply(Config config) {
 
-                        Function<Config, AnnotatedElement> myConfigAnnotationFunction
-                                = configAnnotatedElementFunction;
                         Function<AnnotatedElement, ScoredText> annotatedElementScoredTextFunction = new Function<AnnotatedElement, ScoredText>() {
                             @Override
                             public ScoredText apply(AnnotatedElement annotatedElement) {
@@ -137,13 +128,13 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
             // TestContainerSupplier<Config, ScoredText> extends Supplier<TestContainer<Config, ScoredText>>
             //      -
-            //      - transformToUnderlyingInput: Config -> File {}
-            //      - buildUnderlyingSUT: File -> ScoredText {}
+            //      - transformToUnderlyingInput: Config -> Element {}
+            //      - buildUnderlyingSUT: Element -> ScoredText {}
             //      - buildSUT: () -> SUT<Config, ScoredText> {
             //      |   return () -> transformToUnderlyingInput.andThen(buildUnderlyingSUT);
             //      }
             //      - buildPassiveOracle: () -> PassiveOracle<Config, ScoredText> {
-            //      |   File file = transformToUnderlyingInput.apply(config);
+            //      |   Element element = transformToUnderlyingInput.apply(config);
             //      |   ScoredText scoredText =
             //      |   return () -> {
             //          |   underlyingPassiveOracle.test(
@@ -151,7 +142,7 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
             //          return new TestContainer<>.Builder().build().sut(
             //
             //      }
-            //      :TestContainer<File, ScoredText>
+            //      :TestContainer<Element, ScoredText>
 
 
 
