@@ -38,6 +38,7 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
         };
 
         Function<Config, AnnotatedElement> configAnnotatedElementFunction = config1 -> {
+
             Function<Config, List<Element>> configElementListFunction = config11 -> {
                 throw new UnsupportedOperationException("Not implemented");
             };
@@ -55,7 +56,8 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
         Supplier<SystemUnderTest<Config, ScoredText>> systemUnderTestSupplier = () -> {
 
-            Function<Config, ScoringAndFlatteningNodeVisitor> scoringAndFlatteningNodeVisitorFunction = config1 -> new ScoringAndFlatteningNodeVisitor(configElementScorerSetFunction.apply(config1));
+            Function<Config, ScoringAndFlatteningNodeVisitor> scoringAndFlatteningNodeVisitorFunction
+                    = config1 -> new ScoringAndFlatteningNodeVisitor(configElementScorerSetFunction.apply(config1));
 
             Function<AnnotatedElement, Element> annotatedElementToElementFunction = annotatedElement -> annotatedElement;
 
@@ -94,11 +96,7 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
                         }
 
                         private boolean isAnnotatedElement(Node node) {
-                            if (node.getClass().equals(AnnotatedElement.class)) {
-                                return true;
-                            } else {
-                                return false;
-                            }
+                            return node.getClass().equals(AnnotatedElement.class);
                         }
                     };
 
