@@ -7,6 +7,8 @@ import java.util.List;
 
 /**
  * NominatedText which has also had nominees elected.
+ * <p>
+ * Created by Ben Gray, 2015.
  */
 public class ElectedText
         extends
