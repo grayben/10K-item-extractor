@@ -8,7 +8,7 @@ import org.apache.commons.collections4.list.SetUniqueList;
 public interface ElecteesRetrievable {
 
     /**
-     * @return a {@link SetUniqueList} containing the indices into a list corresponding
+     * @return indices into a list corresponding
      * to elected entries
      */
 	SetUniqueList<Integer> getElecteeIndices();
