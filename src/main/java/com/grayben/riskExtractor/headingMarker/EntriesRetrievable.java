@@ -3,7 +3,9 @@ package com.grayben.riskExtractor.headingMarker;
 import java.util.List;
 
 /**
- * Created by beng on 10/02/2016.
+ * An interface allowing a list of entries to be retrieved.
+ * <p>
+ * Created by Ben Gray on 10/02/2016.
  */
 public interface EntriesRetrievable<T> {
 
