@@ -8,7 +8,7 @@ import java.util.List;
 
 public class NominatedText
 		extends UnmodifiableText
-		implements NomineesRetrievable {
+		implements NomineesRetrievable<String> {
 
     private SetUniqueList<Integer> nominees;
 
@@ -41,5 +41,10 @@ public class NominatedText
         );
         newList.addAll(this.nominees);
         return newList;
+    }
+
+    @Override
+    public List<String> getEntries() {
+        return null;
     }
 }

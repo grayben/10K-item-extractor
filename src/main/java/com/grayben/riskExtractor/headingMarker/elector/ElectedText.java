@@ -13,7 +13,7 @@ public class ElectedText
         extends
         NominatedText
         implements
-	    ElecteesRetrievable {
+	    ElecteesRetrievable<String> {
 
     /**
      * The list of indices to the list of Strings corresponding to electees.
@@ -73,4 +73,8 @@ public class ElectedText
         return newSetUniqueList;
     }
 
+    @Override
+    public List<String> getEntries() {
+        return null;
+    }
 }
