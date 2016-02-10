@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextTest;
+import org.apache.commons.collections4.list.SetUniqueList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,9 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -34,7 +33,7 @@ public class ElectedTextTest
         this.setNominatedTextSUT(this.electedTextSUT);
     }
 
-    protected Set<Integer> electeesArgument;
+    protected SetUniqueList<Integer> electeesArgument;
 
     @Before
     @Override
@@ -45,12 +44,14 @@ public class ElectedTextTest
         stringListArgument.add("two");
         stringListArgument.add("cow");
 
-        this.nomineesArgument = new HashSet<>();
+        this.nomineesArgument
+                = SetUniqueList.setUniqueList(new ArrayList<>());
         nomineesArgument.add(0);
         nomineesArgument.add(2);
 
 
-        this.electeesArgument = new HashSet<>();
+        this.electeesArgument
+                = SetUniqueList.setUniqueList(new ArrayList<>());
         electeesArgument.add(0);
 
         this.setElectedTextSUT(
@@ -78,11 +79,13 @@ public class ElectedTextTest
         stringList.add("two");
         stringList.add("three");
 
-        Set<Integer> nominees = new HashSet<>();
+        SetUniqueList<Integer> nominees
+                = SetUniqueList.setUniqueList(new ArrayList<>());
         nominees.add(1);
         nominees.add(2);
 
-        Set<Integer> electees = new HashSet<>();
+        SetUniqueList<Integer> electees
+                = SetUniqueList.setUniqueList(new ArrayList<>());
         electees.add(3);
 
         thrown.expect(IllegalArgumentException.class);
@@ -101,7 +104,7 @@ public class ElectedTextTest
         //setup expectations
 
         //exercise
-        Set<Integer> electeesReturned = electedTextSUT.getElecteeIndices();
+        SetUniqueList<Integer> electeesReturned = electedTextSUT.getElecteeIndices();
         //verify
         assertNotNull(electeesReturned);
     }
@@ -179,9 +182,9 @@ public class ElectedTextTest
     public void
     test_ModifyingReturnedElecteesDoesNotAffectCopyHeldBySUT
             () throws Exception {
-        Set<Integer> returnedFirst = electedTextSUT.getElecteeIndices();
+        SetUniqueList<Integer> returnedFirst = electedTextSUT.getElecteeIndices();
         returnedFirst.add(Integer.MAX_VALUE);
-        Set<Integer> returnedSecond = electedTextSUT.getElecteeIndices();
+        SetUniqueList<Integer> returnedSecond = electedTextSUT.getElecteeIndices();
         assertNotEquals(returnedFirst, returnedSecond);
     }
 

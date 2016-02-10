@@ -1,16 +1,15 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
 import com.grayben.riskExtractor.headingMarker.nominator.NomineesRetrievable;
-
-import java.util.Set;
+import org.apache.commons.collections4.list.SetUniqueList;
 
 /**
- * An interface allowing electeeIndices to be retrieved from an object.
+ * An interface allowing electees to be retrieved from an object.
  */
 public interface ElecteesRetrievable<T> extends NomineesRetrievable<T> {
 
     /**
      * @return indices into {@link #getEntries()} corresponding to elected entries
      */
-	Set<Integer> getElecteeIndices();
+	SetUniqueList<Integer> getElecteeIndices();
 }

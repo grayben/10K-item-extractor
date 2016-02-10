@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
 import com.grayben.riskExtractor.headingMarker.UnmodifiableTextTest;
+import org.apache.commons.collections4.list.SetUniqueList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,8 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -32,7 +31,7 @@ public class NominatedTextTest
         this.setUnmodifiableTextSUT(this.nominatedTextSUT);
     }
 
-    protected Set<Integer> nomineesArgument = null;
+    protected SetUniqueList<Integer> nomineesArgument = null;
 
     @Before
     @Override
@@ -43,7 +42,7 @@ public class NominatedTextTest
         this.stringListArgument.add("two");
         this.stringListArgument.add("cow");
 
-        this.nomineesArgument = new HashSet<>();
+        this.nomineesArgument = SetUniqueList.setUniqueList(new ArrayList<>());
         this.nomineesArgument.add(0);
         this.nomineesArgument.add(2);
 
@@ -119,7 +118,7 @@ public class NominatedTextTest
     test_GetNominees_ReturnsNonNull_Always
             () throws Exception {
 
-        Set<Integer> nomineesReturned = nominatedTextSUT.getNomineeIndices();
+        SetUniqueList<Integer> nomineesReturned = nominatedTextSUT.getNomineeIndices();
 
         assertNotNull(nomineesReturned);
     }
@@ -128,9 +127,9 @@ public class NominatedTextTest
     public void
     test_ModifyingReturnedNomineesDoesNotAffectCopyHeldBySUT
             () throws Exception {
-        Set<Integer> returnedFirst = nominatedTextSUT.getNomineeIndices();
+        SetUniqueList<Integer> returnedFirst = nominatedTextSUT.getNomineeIndices();
         returnedFirst.add(Integer.MAX_VALUE);
-        Set<Integer> returnedSecond = nominatedTextSUT.getNomineeIndices();
+        SetUniqueList<Integer> returnedSecond = nominatedTextSUT.getNomineeIndices();
         assertNotEquals(returnedFirst, returnedSecond);
     }
 }

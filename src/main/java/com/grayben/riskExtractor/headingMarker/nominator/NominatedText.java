@@ -1,33 +1,33 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
 import com.grayben.riskExtractor.headingMarker.UnmodifiableText;
+import org.apache.commons.collections4.list.SetUniqueList;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class NominatedText
 		extends UnmodifiableText
 		implements NomineesRetrievable<String> {
 
-    private Set<Integer> nomineeIndices;
+    private SetUniqueList<Integer> nominees;
 
-    public NominatedText(List<String> stringList, Set<Integer> nomineeIndices) {
+    public NominatedText(List<String> stringList, SetUniqueList<Integer> nominees) {
         super(stringList);
-        if (nomineeIndices == null) {
+        if (nominees == null) {
             throw new NullPointerException("Attempted to pass null argument");
         }
-        this.nomineeIndices = nomineeIndices;
+        this.nominees = nominees;
     }
 
     public NominatedText(
             UnmodifiableText unmodifiableText,
-            Set<Integer> nomineeIndices){
+            SetUniqueList<Integer> nominees){
         super(unmodifiableText);
-        if (nomineeIndices == null) {
+        if (nominees == null) {
             throw new NullPointerException("Attempted to pass null argument");
         }
-        this.nomineeIndices = nomineeIndices;
+        this.nominees = nominees;
     }
 
     public NominatedText(NominatedText nominatedText){
@@ -35,9 +35,16 @@ public class NominatedText
     }
 
     @Override
-    public Set<Integer> getNomineeIndices() {
-        Set<Integer> indices = Collections.emptySet();
-        indices.addAll(this.nomineeIndices);
-        return indices;
+    public SetUniqueList<Integer> getNomineeIndices() {
+        SetUniqueList newList = SetUniqueList.setUniqueList(
+                new ArrayList<>()
+        );
+        newList.addAll(this.nominees);
+        return newList;
+    }
+
+    @Override
+    public List<String> getEntries() {
+        return null;
     }
 }

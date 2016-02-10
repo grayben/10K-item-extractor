@@ -1,10 +1,10 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedText;
+import org.apache.commons.collections4.list.SetUniqueList;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * NominatedText which has also had nominees elected.
@@ -16,41 +16,41 @@ public class ElectedText
 	    ElecteesRetrievable<String> {
 
     /**
-     * The list of indices to the list of Strings corresponding to electeeIndices.
+     * The list of indices to the list of Strings corresponding to electees.
      */
-    Set<Integer> electeeIndices;
+    SetUniqueList<Integer> electees;
 
     /**
      * Constructs ElectedText 'from scratch'.
      * <p>
      * @param textList the list of Strings corresponding to the text
      * @param nominees the indices into textList corresponding to nominated entries
-     * @param electeeIndices the indices into textList corresponding to elected entries
-     * @apiNote electeeIndices must be a subset of nominees
+     * @param electees the indices into textList corresponding to elected entries
+     * @apiNote electees must be a subset of nominees
      */
-    public ElectedText(List<String> textList, Set<Integer> nominees, Set<Integer> electeeIndices){
+    public ElectedText(List<String> textList, SetUniqueList<Integer> nominees, SetUniqueList<Integer> electees){
         super(textList, nominees);
-        if (electeeIndices == null) {
+        if (electees == null) {
             throw new NullPointerException("Attempted to pass illegal null argument");
         }
-        if ( ! nominees.containsAll(electeeIndices))
+        if ( ! nominees.containsAll(electees))
             throw new IllegalArgumentException(
-                    "The electeeIndices argument was not a subset " +
+                    "The electees argument was not a subset " +
                             "of the nominees argument"
             );
-        this.electeeIndices = electeeIndices;
+        this.electees = electees;
     }
 
     /**
      * Construct ElectedText incrementally from an existing {@link NominatedText}
      * @param nominatedText the nominatedText upon which to construct
-     * @param electeeIndices the list of indices into the text list corresponding to elected entries
+     * @param electees the list of indices into the text list corresponding to elected entries
      */
-    public ElectedText(NominatedText nominatedText, Set<Integer> electeeIndices){
+    public ElectedText(NominatedText nominatedText, SetUniqueList<Integer> electees){
         this(
                 nominatedText.getStringList(),
                 nominatedText.getNomineeIndices(),
-                electeeIndices
+                electees
         );
     }
 
@@ -63,10 +63,18 @@ public class ElectedText
     }
 
     @Override
-    public Set<Integer> getElecteeIndices() {
+    public SetUniqueList<Integer> getElecteeIndices() {
 
-        Set<Integer> indices = Collections.emptySet();
-        indices.addAll(this.electeeIndices);
-        return indices;
+        SetUniqueList<Integer> newSetUniqueList
+                = SetUniqueList.setUniqueList(new ArrayList<>());
+
+        newSetUniqueList.addAll(this.electees);
+
+        return newSetUniqueList;
+    }
+
+    @Override
+    public List<String> getEntries() {
+        return null;
     }
 }
