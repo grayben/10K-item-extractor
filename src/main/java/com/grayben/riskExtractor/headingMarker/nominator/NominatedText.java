@@ -42,9 +42,4 @@ public class NominatedText
         newList.addAll(this.nominees);
         return newList;
     }
-
-    @Override
-    public List<String> getEntries() {
-        return null;
-    }
 }

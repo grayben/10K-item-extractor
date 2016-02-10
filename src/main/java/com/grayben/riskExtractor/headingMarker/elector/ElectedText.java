@@ -72,9 +72,4 @@ public class ElectedText
 
         return newSetUniqueList;
     }
-
-    @Override
-    public List<String> getEntries() {
-        return null;
-    }
 }
