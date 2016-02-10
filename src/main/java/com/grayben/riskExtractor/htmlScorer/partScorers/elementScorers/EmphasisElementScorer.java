@@ -103,22 +103,13 @@ public class EmphasisElementScorer extends Scorer<Element> {
     }
 
     /**
-     * Return same as {@link #score(Element)}.
-     * @param input the element to score
-     * @return the score of the specified element
-     */
-    @Override
-    final public Integer apply(Element input){
-        return score(input);
-    }
-
-    /**
      * Score the specified element.
      * @param input the element to score
      * @return the score of the specified element; this is the highest score given by the delegate scorers
      * specified at construction of this object
      */
-    public int score(Element input) {
+    @Override
+    final public Integer apply(Element input){
         /**
          * Store the scores of each delegate scorer.
          */
