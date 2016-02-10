@@ -49,7 +49,7 @@ public class ElectedText
     public ElectedText(NominatedText nominatedText, SetUniqueList<Integer> electees){
         this(
                 nominatedText.getStringList(),
-                nominatedText.getNominees(),
+                nominatedText.getNomineeIndices(),
                 electees
         );
     }

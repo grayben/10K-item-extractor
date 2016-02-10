@@ -33,13 +33,13 @@ final public class MarkedText
         assert this.stringIndexPairs.isEmpty();
 
         //assumes nominees contains all electees
-        assert(getNominees().containsAll(getElecteeIndices()));
+        assert(getNomineeIndices().containsAll(getElecteeIndices()));
 
         Map<Integer, Integer> map = this.stringIndexPairs;
 
         SetUniqueList<Integer> electees = this.getElecteeIndices();
 
-        SetUniqueList<Integer> nominees = this.getNominees();
+        SetUniqueList<Integer> nominees = this.getNomineeIndices();
 
         for (Integer electee : electees) {
             Integer startIndex;

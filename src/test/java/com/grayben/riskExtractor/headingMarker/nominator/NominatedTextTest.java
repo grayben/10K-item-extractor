@@ -118,7 +118,7 @@ public class NominatedTextTest
     test_GetNominees_ReturnsNonNull_Always
             () throws Exception {
 
-        SetUniqueList<Integer> nomineesReturned = nominatedTextSUT.getNominees();
+        SetUniqueList<Integer> nomineesReturned = nominatedTextSUT.getNomineeIndices();
 
         assertNotNull(nomineesReturned);
     }
@@ -127,9 +127,9 @@ public class NominatedTextTest
     public void
     test_ModifyingReturnedNomineesDoesNotAffectCopyHeldBySUT
             () throws Exception {
-        SetUniqueList<Integer> returnedFirst = nominatedTextSUT.getNominees();
+        SetUniqueList<Integer> returnedFirst = nominatedTextSUT.getNomineeIndices();
         returnedFirst.add(Integer.MAX_VALUE);
-        SetUniqueList<Integer> returnedSecond = nominatedTextSUT.getNominees();
+        SetUniqueList<Integer> returnedSecond = nominatedTextSUT.getNomineeIndices();
         assertNotEquals(returnedFirst, returnedSecond);
     }
 }

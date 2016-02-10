@@ -31,11 +31,11 @@ public class NominatedText
     }
 
     public NominatedText(NominatedText nominatedText){
-        this(nominatedText, nominatedText.getNominees());
+        this(nominatedText, nominatedText.getNomineeIndices());
     }
 
     @Override
-    public SetUniqueList<Integer> getNominees() {
+    public SetUniqueList<Integer> getNomineeIndices() {
         SetUniqueList newList = SetUniqueList.setUniqueList(
                 new ArrayList<>()
         );
