@@ -1,6 +1,5 @@
-package com.grayben.riskExtractor.headingMarker.elector;
+package com.grayben.riskExtractor.headingMarker;
 
-import com.grayben.riskExtractor.headingMarker.nominator.NominatedText;
 import org.apache.commons.collections4.list.SetUniqueList;
 
 import java.util.ArrayList;

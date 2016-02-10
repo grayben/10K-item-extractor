@@ -1,6 +1,5 @@
-package com.grayben.riskExtractor.headingMarker.elector;
+package com.grayben.riskExtractor.headingMarker;
 
-import com.grayben.riskExtractor.headingMarker.nominator.NomineesRetrievable;
 import org.apache.commons.collections4.list.SetUniqueList;
 
 /**

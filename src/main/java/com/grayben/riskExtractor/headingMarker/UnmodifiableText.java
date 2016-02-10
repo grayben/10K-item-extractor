@@ -1,7 +1,5 @@
 package com.grayben.riskExtractor.headingMarker;
 
-import com.grayben.riskExtractor.headingMarker.nominator.EntriesRetrievable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

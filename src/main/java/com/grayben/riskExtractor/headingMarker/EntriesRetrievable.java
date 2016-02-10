@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.headingMarker.nominator;
+package com.grayben.riskExtractor.headingMarker;
 
 import java.util.List;
 

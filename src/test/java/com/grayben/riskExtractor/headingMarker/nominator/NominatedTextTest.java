@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
+import com.grayben.riskExtractor.headingMarker.NominatedText;
 import com.grayben.riskExtractor.headingMarker.UnmodifiableTextTest;
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.junit.After;
