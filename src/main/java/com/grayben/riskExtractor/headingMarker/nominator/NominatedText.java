@@ -36,7 +36,7 @@ public class NominatedText
 
     @Override
     public SetUniqueList<Integer> getNomineeIndices() {
-        SetUniqueList newList = SetUniqueList.setUniqueList(
+        SetUniqueList<Integer> newList = SetUniqueList.setUniqueList(
                 new ArrayList<>()
         );
         newList.addAll(this.nominees);
