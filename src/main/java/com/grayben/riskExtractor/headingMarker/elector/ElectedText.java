@@ -59,11 +59,11 @@ public class ElectedText
      * @param electedText the ElectedText to copy
      */
     public ElectedText(ElectedText electedText){
-        this(electedText, electedText.getElectees());
+        this(electedText, electedText.getElecteeIndices());
     }
 
     @Override
-    public SetUniqueList<Integer> getElectees() {
+    public SetUniqueList<Integer> getElecteeIndices() {
 
         SetUniqueList<Integer> newSetUniqueList
                 = SetUniqueList.setUniqueList(new ArrayList<>());
