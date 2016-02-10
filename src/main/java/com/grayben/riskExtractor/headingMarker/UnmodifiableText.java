@@ -1,5 +1,7 @@
 package com.grayben.riskExtractor.headingMarker;
 
+import com.grayben.riskExtractor.headingMarker.nominator.EntriesRetrievable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.List;
 /**
  * Created by beng on 1/12/2015.
  */
-public class UnmodifiableText {
+public class UnmodifiableText implements EntriesRetrievable<String> {
 
     private ArrayList<String> stringList;
 
@@ -25,5 +27,10 @@ public class UnmodifiableText {
 
     public List<String> getStringList(){
         return Collections.unmodifiableList(this.stringList);
+    }
+
+    @Override
+    public final List<String> getEntries() {
+        return this.getStringList();
     }
 }
