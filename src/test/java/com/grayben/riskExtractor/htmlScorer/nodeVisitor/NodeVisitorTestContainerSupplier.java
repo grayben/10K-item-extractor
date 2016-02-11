@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -38,8 +39,7 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
         Function<Config, AnnotatedElement> configAnnotatedElementFunction = config1 -> {
 
-            //TODO: List<Element> produces hits for Set<Scorer<Element>>
-            Function<Config, List<Element>> configElementListFunction = config11 -> {
+            BiFunction<Config, Set<Scorer<Element>>, List<Element>> configElementListFunction = (config11, scorers) -> {
                 throw new UnsupportedOperationException("Not implemented");
             };
 
@@ -47,10 +47,12 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
                 throw new UnsupportedOperationException("Not implemented");
             };
 
+            Set<Scorer<Element>> elementScorers = configElementScorerSetFunction.apply(config1);
+
             return new AnnotatedElementTreeAssembler(
-                    configElementListFunction.apply(config1),
+                    configElementListFunction.apply(config1, elementScorers),
                     configConfigurationFunction.apply(config1),
-                    configElementScorerSetFunction.apply(config1)
+                    elementScorers
             ).getRootAnnotation();
         };
 
