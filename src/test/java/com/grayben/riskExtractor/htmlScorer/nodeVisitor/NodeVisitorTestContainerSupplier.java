@@ -31,10 +31,24 @@ import java.util.function.Supplier;
 @RunWith(MockitoJUnitRunner.class)
 public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<NodeVisitorTestContainerSupplier.Config, ScoredText>> {
 
+    public enum Config {
+        DEFAULT
+    }
+
     @Override
     public TestContainer<Config, ScoredText> get() {
         Function<Config, Set<Scorer<Element>>> configElementScorerSetFunction = config1 -> {
-            throw new UnsupportedOperationException("Not implemented");
+
+            Set<ElementScorerSetSupplier.Content> contents = new HashSet<>();
+
+            switch (config1){
+                case DEFAULT:
+                    contents.add(ElementScorerSetSupplier.Content.SEGMENTATION_ELEMENT_SCORER);
+                    contents.add(ElementScorerSetSupplier.Content.EMPHASIS_ELEMENT_SCORER);
+                    return new ElementScorerSetSupplier(contents).get();
+                default:
+                    throw new IllegalArgumentException("The input option was not recognised");
+            }
         };
 
         Function<Config, AnnotatedElement> configAnnotatedElementFunction = config1 -> {
@@ -169,10 +183,6 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
             // determine EXPECTED OUTPUT: Tree<AnnotatedElement> -> ScoredText
 
 
-    public enum Config {
-        DEFAULT
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////
     // NEW SCAFFOLDING  /\
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -220,12 +230,7 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
     */
 
-    private void instantiateGenerators() {
-        Set<ElementScorerSetSupplier.Content> contents = new HashSet<>();
-        contents.add(ElementScorerSetSupplier.Content.SEGMENTATION_ELEMENT_SCORER);
-        contents.add(ElementScorerSetSupplier.Content.EMPHASIS_ELEMENT_SCORER);
-        this.elementScorerSetProducer = new ElementScorerSetSupplier(contents);
-    }
+
 
     private void generateSut() {
         this.sut = new ScoringAndFlatteningNodeVisitor(this.sutParams);
