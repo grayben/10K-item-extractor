@@ -10,6 +10,7 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttribu
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -21,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.net.URL;
 import java.util.*;
 
 import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.UtilsThatShouldBeRefactored.getEmphasisedTargetElementsAndScores;
@@ -588,17 +590,16 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         assertEquals(expectedText, output);
     }
-    /*
+
 
     @Test
     public void
     test_AllScoresAreZero_AfterTraversalOfManyTargetElements
             () throws Exception {
 
-        NodeVisitorTestContainerSupplier oracle = nodeVisitorOUT;0
-        Element input = oracle.getInput();
         NodeTraversor nt = new NodeTraversor(this.nodeVisitorOUT);
-        nt.traverse(input);
+        nt.traverse(Jsoup.parse(new URL("http://google.com"), 2000).body());
+
         Map<String, Integer> sutScores = nodeVisitorOUT.getCurrentScores();
 
         for (String key :
@@ -611,22 +612,8 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
             () throws Exception {
-        NodeVisitorTestContainerSupplier oracle = new NodeVisitorTestContainerSupplier(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
-        this.nodeVisitorOUT = oracle.getSUT();
-        Element input = oracle.getInput();
-        NodeTraversor nt = new NodeTraversor(nodeVisitorOUT);
-
-        nt.traverse(input);
-
-        List<ScoredTextElement> expectedOutput = oracle.getExpectedOutput().getList();
-        List<ScoredTextElement> actualOutput = nodeVisitorOUT.getFlatText().getList();
-
-        assert expectedOutput.size() == actualOutput.size();
-
-        for(int i = 0; i < expectedOutput.size(); i++){
-            assertEquals(expectedOutput.get(i).getTextElement(), actualOutput.get(i).getTextElement());
-        }
-    }
+        testContainerSupplier.get().verify(NodeVisitorTestContainerSupplier.Config.DEFAULT);
+    }/*
 
     @Test
     public void
@@ -648,23 +635,14 @@ public class ScoringAndFlatteningNodeVisitorTest
             assertEquals(expectedOutput.get(i).getScores(), actualOutput.get(i).getScores());
         }
     }
+    */
 
     @Test
     public void
     test_GetScoredTextReturnsExpected_AfterVisitsToManyElementsWithText
             () throws Exception {
-        NodeVisitorTestContainerSupplier oracle = new NodeVisitorTestContainerSupplier(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
-        this.nodeVisitorOUT = oracle.getSUT();
-        Element input = oracle.getInput();
-        NodeTraversor nt = new NodeTraversor(nodeVisitorOUT);
-
-        nt.traverse(input);
-
-        List<ScoredTextElement> expectedOutput = oracle.getExpectedOutput().getList();
-        List<ScoredTextElement> actualOutput = nodeVisitorOUT.getFlatText().getList();
-
-        assertEquals(expectedOutput, actualOutput);
+        //isn't this the same test now?
+        test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText();
     }
-    */
 
 }
