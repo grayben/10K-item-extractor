@@ -10,7 +10,6 @@ import com.grayben.tools.testOracle.oracle.passive.PassiveOracle;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.jsoup.parser.Tag;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
 import org.junit.runner.RunWith;
@@ -67,9 +66,9 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
                         targetElements = new ArrayList<>();
                         targetElements.addAll(UtilsThatShouldBeRefactored.getEmphasisedTargetElementsAndScores(scorers).keySet());
                         targetElements.addAll(UtilsThatShouldBeRefactored.getSegmentedTargetElementsAndScores(scorers).keySet());
-                        targetElements.addAll(generateAndScoreRandomElements(100).keySet());
+                        targetElements.addAll(UtilsThatShouldBeRefactored.generateAndScoreRandomElements(this.sutParams, 100).keySet());
                         for(Element element : targetElements){
-                            element.text(randomString());
+                            element.text(UtilsThatShouldBeRefactored.randomString());
                         }
                         break;
                     default:
@@ -274,24 +273,5 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
     ////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-    private String randomString(){
-        int number = random.nextInt();
-        return Integer.toString(number);
-    }
-
-
-    private Map<Element, Map<String, Integer>> generateAndScoreRandomElements(int numberToGenerate) {
-        Map<Element, Map<String, Integer>> result = new HashMap<>();
-        while(numberToGenerate-- > 0){
-            Element element = new Element(Tag.valueOf(randomString()), randomString());
-            Map<String, Integer> scores = new HashMap<>();
-            for(Scorer<Element> scorer : sutParams){
-                scores.put(scorer.getScoreLabel(), scorer.score(element));
-            }
-            result.put(element, scores);
-        }
-        return result;
-    }
 }
 

@@ -5,6 +5,7 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
@@ -12,6 +13,7 @@ import org.jsoup.parser.Tag;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Ben Gray on 12/02/2016.
@@ -101,5 +103,22 @@ class UtilsThatShouldBeRefactored {
         if (targetMap == null)
             throw new IllegalArgumentException("Couldn't find any emphasised elements");
         return targetMap;
+    }
+
+    static String randomString(){
+        return RandomStringUtils.random(8);
+    }
+
+    static Map<Element, Map<String, Integer>> generateAndScoreRandomElements(Set<Scorer<Element>> scorers, int numberToGenerate) {
+        Map<Element, Map<String, Integer>> result = new HashMap<>();
+        while(numberToGenerate-- > 0){
+            Element element = new Element(Tag.valueOf(randomString()), randomString());
+            Map<String, Integer> scores = new HashMap<>();
+            for(Scorer<Element> scorer : scorers){
+                scores.put(scorer.getScoreLabel(), scorer.score(element));
+            }
+            result.put(element, scores);
+        }
+        return result;
     }
 }
