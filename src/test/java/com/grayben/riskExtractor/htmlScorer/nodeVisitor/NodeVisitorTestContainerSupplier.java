@@ -4,15 +4,10 @@ import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import com.grayben.tools.testOracle.SystemUnderTest;
 import com.grayben.tools.testOracle.oracle.passive.PassiveOracle;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
-import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.parser.Tag;
@@ -70,8 +65,8 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
                 switch (configConfigurationFunction.apply(config11)){
                     case MIXED_TREE:
                         targetElements = new ArrayList<>();
-                        targetElements.addAll(getEmphasisedTargetElementsAndScores(scorers).keySet());
-                        targetElements.addAll(getSegmentedTargetElementsAndScores(scorers).keySet());
+                        targetElements.addAll(UtilsThatShouldBeRefactored.getEmphasisedTargetElementsAndScores(scorers).keySet());
+                        targetElements.addAll(UtilsThatShouldBeRefactored.getSegmentedTargetElementsAndScores(scorers).keySet());
                         targetElements.addAll(generateAndScoreRandomElements(100).keySet());
                         for(Element element : targetElements){
                             element.text(randomString());
@@ -285,92 +280,6 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
         return Integer.toString(number);
     }
 
-
-    static Map<Element, Integer>
-    getSegmentedTargetElementsAndScores(Iterable<Scorer<Element>> elementScorers){
-        String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
-
-        Map<Element, Integer> targetMap = null;
-
-        Iterator<Scorer<Element>> it = elementScorers.iterator();
-
-        while (targetMap == null && it.hasNext()) {
-            Scorer<Element> nextScorer = it.next();
-            if (nextScorer.getScoreLabel().equals(scoreLabel)) {
-                targetMap = new HashMap<>();
-                Map<Tag, Integer> tagScoresMap =
-                        ((TagSegmentationScorer)
-                                (
-                                        (SegmentationElementScorer) nextScorer
-                                ).getTagScorer()
-                        ).getScoresMap();
-                for (Map.Entry<Tag, Integer> entry :
-                        tagScoresMap.entrySet()) {
-                    targetMap.put(
-                            new Element(
-                                    entry.getKey(), "some string"
-                            ),
-                            entry.getValue()
-                    );
-                }
-            }
-        }
-
-        if (targetMap == null)
-            throw new IllegalArgumentException("Couldn't find any segmented elements");
-
-        return targetMap;
-    }
-
-    static Map<Element, Integer>
-    getEmphasisedTargetElementsAndScores(Iterable<Scorer<Element>> elementScorers){
-        String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
-
-        Map<Element, Integer> targetMap = null;
-
-        Iterator<Scorer<Element>> it = elementScorers.iterator();
-
-        while (targetMap == null && it.hasNext()) {
-            Scorer<Element> nextScorer = it.next();
-            if (nextScorer.getScoreLabel().equals(scoreLabel)) {
-                targetMap = new HashMap<>();
-
-                //tag only emphasis
-                Map<Tag, Integer> tagScoresMap
-                        = ((EmphasisElementScorer) nextScorer)
-                        .getTagEmphasisScorer()
-                        .getScoresMap();
-                for (Map.Entry<Tag, Integer> entry :
-                        tagScoresMap.entrySet()) {
-                    targetMap.put(
-                            new Element(
-                                    entry.getKey(),
-                                    "some string"
-                            ),
-                            entry.getValue()
-                    );
-                }
-                tagScoresMap = null;
-
-                //tag and attribute emphasis
-                Map<TagAndAttribute, Integer> tagAndAttributeScoresMap
-                        =((EmphasisElementScorer)nextScorer)
-                        .getTagAndAttributeScorer()
-                        .getScoresMap();
-                for(Map.Entry<TagAndAttribute, Integer> entry : tagAndAttributeScoresMap.entrySet()){
-                    Attributes attributes = new Attributes();
-                    attributes.put(entry.getKey().getAttribute());
-                    targetMap.put(
-                            new Element(entry.getKey().getTag(), "some string", attributes),
-                            entry.getValue()
-                    );
-                }
-            }
-        }
-        if (targetMap == null)
-            throw new IllegalArgumentException("Couldn't find any emphasised elements");
-        return targetMap;
-    }
 
     private Map<Element, Map<String, Integer>> generateAndScoreRandomElements(int numberToGenerate) {
         Map<Element, Map<String, Integer>> result = new HashMap<>();

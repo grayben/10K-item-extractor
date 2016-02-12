@@ -23,8 +23,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.*;
 
-import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorTestContainerSupplier.getEmphasisedTargetElementsAndScores;
-import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.NodeVisitorTestContainerSupplier.getSegmentedTargetElementsAndScores;
+import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.UtilsThatShouldBeRefactored.getEmphasisedTargetElementsAndScores;
+import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.UtilsThatShouldBeRefactored.getSegmentedTargetElementsAndScores;
 import static org.junit.Assert.*;
 
 /**
