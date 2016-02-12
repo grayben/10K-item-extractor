@@ -38,7 +38,7 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
             Set<ElementScorerSetSupplier.Content> contents = new HashSet<>();
 
-            switch (config1){
+            switch (config1) {
                 case DEFAULT:
                     contents.add(ElementScorerSetSupplier.Content.SEGMENTATION_ELEMENT_SCORER);
                     contents.add(ElementScorerSetSupplier.Content.EMPHASIS_ELEMENT_SCORER);
@@ -51,7 +51,7 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
         Function<Config, AnnotatedElement> configAnnotatedElementFunction = config1 -> {
 
             Function<Config, AnnotatedElementTreeAssembler.Configuration> configConfigurationFunction = config11 -> {
-                switch (config11){
+                switch (config11) {
                     case DEFAULT:
                         return AnnotatedElementTreeAssembler.Configuration.MIXED_TREE;
                     default:
@@ -61,20 +61,20 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
             BiFunction<Config, Set<Scorer<Element>>, List<Element>> configElementListFunction = (config11, scorers) -> {
                 List<Element> targetElements = null;
-                switch (configConfigurationFunction.apply(config11)){
+                switch (configConfigurationFunction.apply(config11)) {
                     case MIXED_TREE:
                         targetElements = new ArrayList<>();
                         targetElements.addAll(UtilsThatShouldBeRefactored.getEmphasisedTargetElementsAndScores(scorers).keySet());
                         targetElements.addAll(UtilsThatShouldBeRefactored.getSegmentedTargetElementsAndScores(scorers).keySet());
-                        targetElements.addAll(UtilsThatShouldBeRefactored.generateAndScoreRandomElements(this.sutParams, 100).keySet());
-                        for(Element element : targetElements){
+                        targetElements.addAll(UtilsThatShouldBeRefactored.generateAndScoreRandomElements(scorers, 100).keySet());
+                        for (Element element : targetElements) {
                             element.text(UtilsThatShouldBeRefactored.randomString());
                         }
                         break;
                     default:
                         throw new IllegalArgumentException("The input option was not recognised");
                 }
-                Collections.shuffle(targetElements, random);
+                Collections.shuffle(targetElements, new Random());
                 return targetElements;
             };
 
@@ -115,7 +115,7 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
                         @Override
                         public void head(Node node, int i) {
-                            if(isAnnotatedElement(node)) {
+                            if (isAnnotatedElement(node)) {
                                 AnnotatedElement annotatedElement = (AnnotatedElement) node;
                                 scoredText.add(
                                         new ScoredTextElement(annotatedElement.ownText(), annotatedElement.getScores())
@@ -150,128 +150,4 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
                 .build();
 
     }
-
-    // TestContainerSupplier<Config, ScoredText> extends Supplier<TestContainer<Config, ScoredText>>
-    //      -
-    //      - transformToUnderlyingInput: Config -> Element {}
-    //      - buildUnderlyingSUT: Element -> ScoredText {}
-    //      - buildSUT: () -> SUT<Config, ScoredText> {
-    //      |   return () -> transformToUnderlyingInput.andThen(buildUnderlyingSUT);
-    //      }
-    //      - buildPassiveOracle: () -> PassiveOracle<Config, ScoredText> {
-    //      |   Element element = transformToUnderlyingInput.apply(config);
-    //      |   ScoredText scoredText =
-    //      |   return () -> {
-    //          |   underlyingPassiveOracle.test(
-    //      + get: () -> TestContainer<Config, ScoredText> {
-    //          return new TestContainer<>.Builder().build().sut(
-    //
-    //      }
-    //      :TestContainer<Element, ScoredText>
-
-    // determine adapters
-        // determineScorers: Config -> Set<Scorer<Element>>
-        // configToSeed: Config -> Tree<AnnotatedElement>
-            // determineScorers.apply(config) -> Set<Scorer<Element>>
-            // determineElements: Config -> List<Element>
-            // adaptConfiguration: Config -> AnnotatedElementTreeAssembler.Config
-            // AnnotatedElementTreeAssembler.getRootAnnotation:
-                // List<Element>
-                // * Set<Scorer<Element>>
-                // * AnnotatedElementTreeAssembler.Config
-                //      -> Tree<AnnotatedElement>
-        // annotationTreeToElementTree: Tree<AnnotatedElement> -> Tree<Element>
-        // annotationTreeToFile
-
-    // input generator: Tree<AnnotatedElement> -> File
-        // annotationTreeToElementTree.apply(annotationTree) -> Tree<Element>
-        // writeToFile: Tree<Element> -> File
-
-    // determine SUT: SystemUnderTest<Config, ScoredText>
-        //
-        // configToSeed.apply(config) -> Tree<AnnotatedElement>
-        // setup nv: Set<Scorer<Element>> -> ScoringAndFlatteningNodeVisitor
-        // setup nt: ScoringAndFlatteningNodeVisitor -> NodeTraversor
-        // apply nt to input: Tree<Element> * ScoringAndFlatteningNodeVisitor -> ScoredText
-    // determine PassiveOracle<Config, ScoredText>
-        // configToSeed.apply(config) -> Tree<AnnotatedElement>
-            // determine INPUT: Tree<AnnotatedElement> -> File
-
-            // determine EXPECTED OUTPUT: Tree<AnnotatedElement> -> ScoredText
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // NEW SCAFFOLDING  /\
-    ////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // OLD CRAP         \/
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // INSTANCE VARIABLES
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    private Set<Scorer<Element>> sutParams;
-    private ScoringAndFlatteningNodeVisitor sut;
-
-    private ElementScorerSetSupplier elementScorerSetProducer;
-
-    private AnnotatedElementTreeAssembler.Configuration config;
-
-    private AnnotatedElement rootAnnotation;
-
-    private ScoredText expectedOutput;
-
-    Random random;
-
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    /// HIGH LEVEL
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    /*
-
-    private void generateArtifacts() {
-        instantiateGenerators();
-        generateSutParams();
-        generateSut();
-        generateAnnotatedInput();
-        determineExpectedOutput();
-    }
-
-    */
-
-
-
-    private void generateSut() {
-        this.sut = new ScoringAndFlatteningNodeVisitor(this.sutParams);
-    }
-
-    private void generateSutParams() {
-        this.sutParams = elementScorerSetProducer.get();
-    }
-
-    /*
-
-    private void generateAnnotatedInput() {
-        List<Element> elementList = generateElements();
-        AnnotatedElementTreeAssembler annotatedElementTreeAssembler = new AnnotatedElementTreeAssembler(elementList, config, this.sutParams);
-        rootAnnotation = annotatedElementTreeAssembler.getRootAnnotation();
-    }
-
-    */
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // ENCAPSULATED HELPERS
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-
 }
-
