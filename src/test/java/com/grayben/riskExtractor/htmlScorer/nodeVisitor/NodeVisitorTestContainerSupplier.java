@@ -4,21 +4,24 @@ import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import com.grayben.tools.testOracle.SystemUnderTest;
 import com.grayben.tools.testOracle.oracle.passive.PassiveOracle;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+import org.jsoup.parser.Tag;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -53,12 +56,32 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
         Function<Config, AnnotatedElement> configAnnotatedElementFunction = config1 -> {
 
-            BiFunction<Config, Set<Scorer<Element>>, List<Element>> configElementListFunction = (config11, scorers) -> {
-                throw new UnsupportedOperationException("Not implemented");
+            Function<Config, AnnotatedElementTreeAssembler.Configuration> configConfigurationFunction = config11 -> {
+                switch (config11){
+                    case DEFAULT:
+                        return AnnotatedElementTreeAssembler.Configuration.MIXED_TREE;
+                    default:
+                        throw new IllegalArgumentException("The input option was not recognised");
+                }
             };
 
-            Function<Config, AnnotatedElementTreeAssembler.Configuration> configConfigurationFunction = config11 -> {
-                throw new UnsupportedOperationException("Not implemented");
+            BiFunction<Config, Set<Scorer<Element>>, List<Element>> configElementListFunction = (config11, scorers) -> {
+                List<Element> targetElements = null;
+                switch (configConfigurationFunction.apply(config11)){
+                    case MIXED_TREE:
+                        targetElements = new ArrayList<>();
+                        targetElements.addAll(getEmphasisedTargetElementsAndScores(scorers).keySet());
+                        targetElements.addAll(getSegmentedTargetElementsAndScores(scorers).keySet());
+                        targetElements.addAll(generateAndScoreRandomElements(100).keySet());
+                        for(Element element : targetElements){
+                            element.text(randomString());
+                        }
+                        break;
+                    default:
+                        throw new IllegalArgumentException("The input option was not recognised");
+                }
+                Collections.shuffle(targetElements, random);
+                return targetElements;
             };
 
             Set<Scorer<Element>> elementScorers = configElementScorerSetFunction.apply(config1);
@@ -255,24 +278,7 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
     // ENCAPSULATED HELPERS
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    /*
 
-    private List<Element> generateElements() {
-        List<Element> targetElements = null;
-        switch (this.config){
-            case MIXED_TREE:
-                targetElements = new ArrayList<>();
-                targetElements.addAll(getEmphasisedTargetElementsAndScores(this.getSUT()).keySet());
-                targetElements.addAll(getSegmentedTargetElementsAndScores(this.getSUT()).keySet());
-                targetElements.addAll(generateAndScoreRandomElements(100).keySet());
-                for(Element element : targetElements){
-                    element.text(randomString());
-                }
-                break;
-        }
-        Collections.shuffle(targetElements, random);
-        return targetElements;
-    }
 
     private String randomString(){
         int number = random.nextInt();
@@ -281,13 +287,12 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
 
 
     static Map<Element, Integer>
-    getSegmentedTargetElementsAndScores(ScoringAndFlatteningNodeVisitor nodeVisitor){
+    getSegmentedTargetElementsAndScores(Iterable<Scorer<Element>> elementScorers){
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
         Map<Element, Integer> targetMap = null;
 
-        Iterator<Scorer<Element>> it
-                = nodeVisitor.getElementScorers().iterator();
+        Iterator<Scorer<Element>> it = elementScorers.iterator();
 
         while (targetMap == null && it.hasNext()) {
             Scorer<Element> nextScorer = it.next();
@@ -318,13 +323,12 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
     }
 
     static Map<Element, Integer>
-    getEmphasisedTargetElementsAndScores(ScoringAndFlatteningNodeVisitor nodeVisitor){
+    getEmphasisedTargetElementsAndScores(Iterable<Scorer<Element>> elementScorers){
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
         Map<Element, Integer> targetMap = null;
 
-        Iterator<Scorer<Element>> it
-                = nodeVisitor.getElementScorers().iterator();
+        Iterator<Scorer<Element>> it = elementScorers.iterator();
 
         while (targetMap == null && it.hasNext()) {
             Scorer<Element> nextScorer = it.next();
