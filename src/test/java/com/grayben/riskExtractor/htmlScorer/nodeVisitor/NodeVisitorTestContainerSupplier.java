@@ -384,6 +384,5 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
         }
         return result;
     }
-    */
 }
 
