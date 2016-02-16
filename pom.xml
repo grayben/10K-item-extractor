@@ -76,9 +76,9 @@
 			<version>3.4</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.grayben</groupId>
+			<groupId>com.grayben.tools</groupId>
 			<artifactId>test-oracle</artifactId>
-			<version>0.3.0</version>
+			<version>0.3.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
