@@ -18,8 +18,8 @@ import java.util.Set;
 /**
  * Created by Ben Gray on 12/02/2016.
  */
-class UtilsThatShouldBeRefactored {
-    static Map<Element, Integer>
+public class UtilsThatShouldBeRefactored {
+    public static Map<Element, Integer>
     getSegmentedTargetElementsAndScores(Iterable<Scorer<Element>> elementScorers){
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
@@ -55,7 +55,7 @@ class UtilsThatShouldBeRefactored {
         return targetMap;
     }
 
-    static Map<Element, Integer>
+    public static Map<Element, Integer>
     getEmphasisedTargetElementsAndScores(Iterable<Scorer<Element>> elementScorers){
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
@@ -105,11 +105,11 @@ class UtilsThatShouldBeRefactored {
         return targetMap;
     }
 
-    static String randomString(){
+    public static String randomString(){
         return RandomStringUtils.random(8);
     }
 
-    static Map<Element, Map<String, Integer>> generateAndScoreRandomElements(Set<Scorer<Element>> scorers, int numberToGenerate) {
+    public static Map<Element, Map<String, Integer>> generateAndScoreRandomElements(Set<Scorer<Element>> scorers, int numberToGenerate) {
         Map<Element, Map<String, Integer>> result = new HashMap<>();
         while(numberToGenerate-- > 0){
             Element element = new Element(Tag.valueOf(randomString()), randomString());
