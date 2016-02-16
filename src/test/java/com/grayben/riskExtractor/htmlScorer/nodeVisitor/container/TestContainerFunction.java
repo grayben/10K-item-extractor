@@ -14,15 +14,15 @@ import java.util.function.Function;
 public class TestContainerFunction implements Function<TestContainerFunction.Config, TestContainer<Element, ScoredText>> {
 
     enum Config {
-        DEFAULT(TestContainerSetupHelpers.NewConfig.DEFAULT);
+        DEFAULT(SetupHelpers.NewConfig.DEFAULT);
 
-        private final TestContainerSetupHelpers.NewConfig testContainerSetupHelpersConfig;
+        private final SetupHelpers.NewConfig testContainerSetupHelpersConfig;
 
-        Config(TestContainerSetupHelpers.NewConfig config) {
+        Config(SetupHelpers.NewConfig config) {
             this.testContainerSetupHelpersConfig = config;
         }
 
-        public TestContainerSetupHelpers.NewConfig getTestContainerSetupHelpersConfig() {
+        public SetupHelpers.NewConfig getTestContainerSetupHelpersConfig() {
             return testContainerSetupHelpersConfig;
         }
     }

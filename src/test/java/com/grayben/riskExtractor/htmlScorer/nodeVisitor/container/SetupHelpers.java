@@ -1,7 +1,5 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.container;
 
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElementTreeAssembler;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.UtilsThatShouldBeRefactored;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
@@ -12,9 +10,9 @@ import java.util.*;
 /**
  * Created by Ben Gray on 12/02/2016.
  */
-class TestContainerSetupHelpers {
+class SetupHelpers {
 
-    private TestContainerSetupHelpers(){}
+    private SetupHelpers(){}
 
     public enum NewConfig {
         DEFAULT(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);

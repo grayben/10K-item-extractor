@@ -3,7 +3,6 @@ package com.grayben.riskExtractor.htmlScorer.nodeVisitor.container;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.AnnotatedElement;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.tools.testOracle.SystemUnderTest;
 import com.grayben.tools.testOracle.oracle.passive.PassiveOracle;
@@ -25,18 +24,18 @@ import java.util.function.Supplier;
  *
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<NodeVisitorTestContainerSupplier.Config, ScoredText>> {
+public class TestContainerSupplier implements Supplier<TestContainer<TestContainerSupplier.Config, ScoredText>> {
 
     public enum Config {
-        DEFAULT(TestContainerSetupHelpers.NewConfig.DEFAULT);
+        DEFAULT(SetupHelpers.NewConfig.DEFAULT);
 
-        public TestContainerSetupHelpers.NewConfig getNewConfig() {
+        public SetupHelpers.NewConfig getNewConfig() {
             return newConfig;
         }
 
-        TestContainerSetupHelpers.NewConfig newConfig;
+        SetupHelpers.NewConfig newConfig;
 
-        Config(TestContainerSetupHelpers.NewConfig config) {
+        Config(SetupHelpers.NewConfig config) {
             this.newConfig = config;
         }
     }
@@ -44,10 +43,10 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
     @Override
     public TestContainer<Config, ScoredText> get() {
         Function<Config, Set<Scorer<Element>>> configElementScorerSetFunction
-                = config1 -> TestContainerSetupHelpers.configureElementScorerSet(config1.getNewConfig());
+                = config1 -> SetupHelpers.configureElementScorerSet(config1.getNewConfig());
 
         Function<Config, AnnotatedElement> configAnnotatedElementFunction
-                = config1 -> TestContainerSetupHelpers.configureAnnotatedElement(config1.getNewConfig());
+                = config1 -> SetupHelpers.configureAnnotatedElement(config1.getNewConfig());
 
         Supplier<SystemUnderTest<Config, ScoredText>> systemUnderTestSupplier = () -> {
 
@@ -55,7 +54,7 @@ public class NodeVisitorTestContainerSupplier implements Supplier<TestContainer<
                     = config1 -> new ScoringAndFlatteningNodeVisitor(configElementScorerSetFunction.apply(config1));
 
             return config1 -> {
-                Element rootElement = TestContainerSetupHelpers.configureAnnotatedElement(config1.getNewConfig());
+                Element rootElement = SetupHelpers.configureAnnotatedElement(config1.getNewConfig());
                 ScoringAndFlatteningNodeVisitor nodeVisitor = scoringAndFlatteningNodeVisitorFunction.apply(config1);
                 NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitor);
                 nodeTraversor.traverse(rootElement);

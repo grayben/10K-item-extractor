@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
+package com.grayben.riskExtractor.htmlScorer.nodeVisitor.container;
 
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
