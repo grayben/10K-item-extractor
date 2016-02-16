@@ -1,11 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
-import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
-import com.grayben.tools.testOracle.SystemUnderTest;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.NodeTraversor;
 
 import java.util.function.Supplier;
 
@@ -18,8 +14,6 @@ public class TestContainerSupplier implements Supplier<TestContainer<AnnotatedEl
 
     @Override
     public TestContainer<AnnotatedElement, ScoredText> get() {
-
-
 
         //TODO: think about wildcard generics: how to solve problem of SUT(Element) and Oracle(AnnotatedElement): Element = AnnotatedElement
         return new TestContainer.Builder<AnnotatedElement, ScoredText>()
