@@ -1,6 +1,5 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup;
 
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.UtilsThatShouldBeRefactored;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
 import org.jsoup.nodes.Element;
