@@ -1,9 +1,10 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
+import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.tools.testOracle.SystemUnderTest;
-import org.apache.commons.lang3.NotImplementedException;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.NodeTraversor;
 
 import java.util.function.Supplier;
 
@@ -16,6 +17,15 @@ public class SystemUnderTestSupplier
 
     @Override
     public SystemUnderTest<Element, ScoredText> get() {
-        throw new NotImplementedException("This class is not implemented");
+
+        Supplier<ScoringAndFlatteningNodeVisitor> scoringAndFlatteningNodeVisitorSupplier
+                = () -> new ScoringAndFlatteningNodeVisitor(SetupHelpers.configureElementScorerSet());
+
+        return element -> {
+            ScoringAndFlatteningNodeVisitor nodeVisitor = scoringAndFlatteningNodeVisitorSupplier.get();
+            NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitor);
+            nodeTraversor.traverse(element);
+            return nodeVisitor.getFlatText();
+        };
     }
 }
