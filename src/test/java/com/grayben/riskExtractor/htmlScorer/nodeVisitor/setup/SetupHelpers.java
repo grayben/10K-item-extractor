@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.htmlScorer.nodeVisitor.container;
+package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup;
 
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.UtilsThatShouldBeRefactored;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
