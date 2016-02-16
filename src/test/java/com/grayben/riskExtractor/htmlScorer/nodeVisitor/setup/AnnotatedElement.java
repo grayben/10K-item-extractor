@@ -37,13 +37,8 @@ public class AnnotatedElement extends Element {
      */
     public static class TreeAssembler {
 
-        public enum Configuration {
-            MIXED_TREE
-        }
-
         //input fields
         private List<Element> elementsToAttach;
-        private Configuration configuration;
 
         private Set<? extends Scorer<Element>> elementScorers;
 
@@ -68,13 +63,11 @@ public class AnnotatedElement extends Element {
 
         public TreeAssembler(
                 List<Element> elementsToAttach,
-                Configuration configuration,
                 Set<? extends Scorer<Element>> elementScorers
         ) {
 
-            validateInitParams(elementsToAttach, configuration, elementScorers);
+            validateInitParams(elementsToAttach, elementScorers);
             this.elementsToAttach = elementsToAttach;
-            this.configuration = configuration;
             this.elementScorers = elementScorers;
             this.random = new Random(System.currentTimeMillis());
             initialiseMaps();
@@ -85,7 +78,6 @@ public class AnnotatedElement extends Element {
 
         private void validateInitParams(
                 List<Element> elements,
-                Configuration configuration,
                 Set<? extends Scorer<Element>> elementScorers
         ) {
             if (elements == null) {
@@ -97,19 +89,6 @@ public class AnnotatedElement extends Element {
                 throw new IllegalArgumentException(
                         "The input element list did not have at least 2 elements"
                 );
-            }
-            if (configuration == null) {
-                throw new NullPointerException(
-                        "The input configuration option was null"
-                );
-            }
-            switch (configuration) {
-                case MIXED_TREE:
-                    break;
-                default:
-                    throw new IllegalArgumentException(
-                            "The input configuration option was not recognised"
-                    );
             }
             if (elementScorers == null) {
                 throw new NullPointerException(
@@ -130,9 +109,9 @@ public class AnnotatedElement extends Element {
             childCumulativeScores = new HashMap<>();
 
             for (Scorer<Element> scorer : this.elementScorers) {
-                currentIsolatedScores.put(scorer.getScoreLabel(), scorer.DEFAULT_SCORE);
-                parentCumulativeScores.put(scorer.getScoreLabel(), scorer.DEFAULT_SCORE);
-                childCumulativeScores.put(scorer.getScoreLabel(), scorer.DEFAULT_SCORE);
+                currentIsolatedScores.put(scorer.getScoreLabel(), Scorer.DEFAULT_SCORE);
+                parentCumulativeScores.put(scorer.getScoreLabel(), Scorer.DEFAULT_SCORE);
+                childCumulativeScores.put(scorer.getScoreLabel(), Scorer.DEFAULT_SCORE);
             }
         }
 

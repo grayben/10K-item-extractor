@@ -3,6 +3,7 @@ package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.AnnotatedElement;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.TestContainerSupplier;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
@@ -11,6 +12,7 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttribu
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Element;
@@ -613,7 +615,9 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
             () throws Exception {
-        testContainerSupplier.get().verify(TestContainerSupplier.Config.DEFAULT);
+        AnnotatedElement annotatedElement = null;
+        //testContainerSupplier.get().verify(annotatedElement);
+        throw new NotImplementedException("This test is not implemented");
     }/*
 
     @Test

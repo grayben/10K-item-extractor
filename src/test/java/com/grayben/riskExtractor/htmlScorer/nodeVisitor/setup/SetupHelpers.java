@@ -13,59 +13,31 @@ class SetupHelpers {
 
     private SetupHelpers(){}
 
-    public enum NewConfig {
-        DEFAULT(AnnotatedElement.TreeAssembler.Configuration.MIXED_TREE);
-
-        private final AnnotatedElement.TreeAssembler.Configuration treeAssemblerConfiguration;
-
-        NewConfig(AnnotatedElement.TreeAssembler.Configuration configuration) {
-            this.treeAssemblerConfiguration = configuration;
-        }
-
-        public AnnotatedElement.TreeAssembler.Configuration getTreeAssemblerConfiguration() {
-            return treeAssemblerConfiguration;
-        }
-    }
-
-    static Set<Scorer<Element>> configureElementScorerSet(NewConfig config) {
+    static Set<Scorer<Element>> configureElementScorerSet() {
         Set<ElementScorerSetSupplier.Content> contents = new HashSet<>();
-
-        switch (config) {
-            case DEFAULT:
-                contents.add(ElementScorerSetSupplier.Content.SEGMENTATION_ELEMENT_SCORER);
-                contents.add(ElementScorerSetSupplier.Content.EMPHASIS_ELEMENT_SCORER);
-                return new ElementScorerSetSupplier(contents).get();
-            default:
-                throw new IllegalArgumentException("The input option was not recognised");
-        }
+        contents.add(ElementScorerSetSupplier.Content.SEGMENTATION_ELEMENT_SCORER);
+        contents.add(ElementScorerSetSupplier.Content.EMPHASIS_ELEMENT_SCORER);
+        return new ElementScorerSetSupplier(contents).get();
     }
 
-    static List<Element> configureElementList(NewConfig config, Set<Scorer<Element>> scorers){
-        List<Element> targetElements;
-        switch (config.getTreeAssemblerConfiguration()) {
-            case MIXED_TREE:
-                targetElements = new ArrayList<>();
-                targetElements.addAll(UtilsThatShouldBeRefactored.getEmphasisedTargetElementsAndScores(scorers).keySet());
-                targetElements.addAll(UtilsThatShouldBeRefactored.getSegmentedTargetElementsAndScores(scorers).keySet());
-                targetElements.addAll(UtilsThatShouldBeRefactored.generateAndScoreRandomElements(scorers, 100).keySet());
-                for (Element element : targetElements) {
-                    element.text(UtilsThatShouldBeRefactored.randomString());
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("The input option was not recognised");
+    static List<Element> configureElementList(Set<Scorer<Element>> scorers){
+        List<Element> targetElements = new ArrayList<>();
+        targetElements.addAll(UtilsThatShouldBeRefactored.getEmphasisedTargetElementsAndScores(scorers).keySet());
+        targetElements.addAll(UtilsThatShouldBeRefactored.getSegmentedTargetElementsAndScores(scorers).keySet());
+        targetElements.addAll(UtilsThatShouldBeRefactored.generateAndScoreRandomElements(scorers, 100).keySet());
+        for (Element element : targetElements) {
+            element.text(UtilsThatShouldBeRefactored.randomString());
         }
         Collections.shuffle(targetElements, new Random());
         return targetElements;
     }
 
-    static AnnotatedElement configureAnnotatedElement(NewConfig config){
+    static AnnotatedElement configureAnnotatedElement(){
 
-        Set<Scorer<Element>> elementScorers = configureElementScorerSet(config);
+        Set<Scorer<Element>> elementScorers = configureElementScorerSet();
 
         return new AnnotatedElement.TreeAssembler(
-                configureElementList(config, elementScorers),
-                config.getTreeAssemblerConfiguration(),
+                configureElementList(elementScorers),
                 elementScorers
         ).getRootAnnotation();
     }
