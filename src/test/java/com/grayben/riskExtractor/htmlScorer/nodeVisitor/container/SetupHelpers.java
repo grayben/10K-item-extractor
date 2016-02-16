@@ -15,15 +15,15 @@ class SetupHelpers {
     private SetupHelpers(){}
 
     public enum NewConfig {
-        DEFAULT(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
+        DEFAULT(AnnotatedElement.TreeAssembler.Configuration.MIXED_TREE);
 
-        private final AnnotatedElementTreeAssembler.Configuration treeAssemblerConfiguration;
+        private final AnnotatedElement.TreeAssembler.Configuration treeAssemblerConfiguration;
 
-        NewConfig(AnnotatedElementTreeAssembler.Configuration configuration) {
+        NewConfig(AnnotatedElement.TreeAssembler.Configuration configuration) {
             this.treeAssemblerConfiguration = configuration;
         }
 
-        public AnnotatedElementTreeAssembler.Configuration getTreeAssemblerConfiguration() {
+        public AnnotatedElement.TreeAssembler.Configuration getTreeAssemblerConfiguration() {
             return treeAssemblerConfiguration;
         }
     }
@@ -64,7 +64,7 @@ class SetupHelpers {
 
         Set<Scorer<Element>> elementScorers = configureElementScorerSet(config);
 
-        return new AnnotatedElementTreeAssembler(
+        return new AnnotatedElement.TreeAssembler(
                 configureElementList(config, elementScorers),
                 config.getTreeAssemblerConfiguration(),
                 elementScorers

@@ -11,10 +11,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.*;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -23,7 +21,6 @@ import java.util.function.Supplier;
  * <p>
  *
  */
-@RunWith(MockitoJUnitRunner.class)
 public class TestContainerSupplier implements Supplier<TestContainer<TestContainerSupplier.Config, ScoredText>> {
 
     public enum Config {

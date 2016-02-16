@@ -50,38 +50,38 @@ public class TreeHtmlScorerOracle {}
 
         private Function<Configuration, AnnotatedElement> setupConfigurationAdapter() {
 
-            return instantiateAssembler().andThen(AnnotatedElementTreeAssembler::getRootAnnotation);
+            return instantiateAssembler().andThen(TreeAssembler::getRootAnnotation);
         }
 
-        private Function<Configuration, AnnotatedElementTreeAssembler> instantiateAssembler() {
+        private Function<Configuration, TreeAssembler> instantiateAssembler() {
             Function<Configuration, List<? extends Object>> initParams;
 
-            Function<List<? extends Object>, AnnotatedElementTreeAssembler> instantiate
+            Function<List<? extends Object>, TreeAssembler> instantiate
                     = objects -> {
                 ListIterator<? extends Object> it = objects.listIterator();
                 List<Element> elementList;
-                AnnotatedElementTreeAssembler.Configuration assemblerConfig;
+                TreeAssembler.Configuration assemblerConfig;
                 Set<Scorer<Element>> scorers;
 
                 elementList = ((List<Element>) it.next());
-                assemblerConfig = ((AnnotatedElementTreeAssembler.Configuration) it.next());
+                assemblerConfig = ((TreeAssembler.Configuration) it.next());
                 scorers = ((Set<Scorer<Element>>) it.next());
 
-                return new AnnotatedElementTreeAssembler(elementList, assemblerConfig, scorers);
+                return new TreeAssembler(elementList, assemblerConfig, scorers);
             };
             throw new UnsupportedOperationException();
             //return instantiateAssemblerFunction().andThen();
         }
 
-        //TODO: consider moving to AnnotatedElementTreeAssembler.Factory
-        private Function<Configuration, Triple<List<Element>, AnnotatedElementTreeAssembler.Configuration, Set<Scorer<Element>>>> generateAssemblerParamsFunction() {
+        //TODO: consider moving to TreeAssembler.Factory
+        private Function<Configuration, Triple<List<Element>, TreeAssembler.Configuration, Set<Scorer<Element>>>> generateAssemblerParamsFunction() {
             //// TODO: 21/01/2016 implement
             return null;
         }
 
-        //TODO: consider moving into AnnotatedElementTreeAssembler itself
-        private Function<Triple<List<Element>, AnnotatedElementTreeAssembler.Configuration, Set<Scorer<Element>>>, AnnotatedElementTreeAssembler> constructAssemblerFunction() {
-            return triple -> new AnnotatedElementTreeAssembler(triple.getLeft(), triple.getMiddle(), triple.getRight());
+        //TODO: consider moving into TreeAssembler itself
+        private Function<Triple<List<Element>, TreeAssembler.Configuration, Set<Scorer<Element>>>, TreeAssembler> constructAssemblerFunction() {
+            return triple -> new TreeAssembler(triple.getLeft(), triple.getMiddle(), triple.getRight());
         }
     }
 }
