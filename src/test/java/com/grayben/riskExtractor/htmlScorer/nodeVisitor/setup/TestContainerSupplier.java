@@ -15,7 +15,6 @@ public class TestContainerSupplier implements Supplier<TestContainer<AnnotatedEl
     @Override
     public TestContainer<AnnotatedElement, ScoredText> get() {
 
-        //TODO: think about wildcard generics: how to solve problem of SUT(Element) and Oracle(AnnotatedElement): Element = AnnotatedElement
         return new TestContainer.Builder<AnnotatedElement, ScoredText>()
                 .begin()
                 .systemUnderTest(new SystemUnderTestSupplier().get())
