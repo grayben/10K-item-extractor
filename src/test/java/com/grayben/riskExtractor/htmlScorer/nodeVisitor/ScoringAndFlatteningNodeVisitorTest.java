@@ -6,7 +6,7 @@ import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementScorersSupplier;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.annotation.AnnotatedElement;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container.ActiveOracleSupplier;
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container.SystemUnderTestFunction;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container.SystemUnderTestSupplier;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container.TestContainerSupplier;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
@@ -42,9 +42,10 @@ import static org.junit.Assert.*;
 public class ScoringAndFlatteningNodeVisitorTest
         extends NodeVisitorTest {
 
+    private ElementScorersSupplier elementScorersSupplier = new ElementScorersSupplier();
+
     private TestContainerSupplier testContainerSupplier = new TestContainerSupplier(
-            new SystemUnderTestFunction(),
-            new ElementScorersSupplier(),
+            new SystemUnderTestSupplier(elementScorersSupplier.get()),
             new ActiveOracleSupplier()
     );
     private Set<Scorer<Element>> validElementScorerSet;

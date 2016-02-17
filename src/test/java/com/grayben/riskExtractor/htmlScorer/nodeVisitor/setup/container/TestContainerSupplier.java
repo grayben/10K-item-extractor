@@ -1,7 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementScorersSupplier;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.annotation.AnnotatedElement;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
 
@@ -14,13 +13,12 @@ import java.util.function.Supplier;
  */
 public class TestContainerSupplier implements Supplier<TestContainer<AnnotatedElement, ScoredText>> {
 
-    private final SystemUnderTestFunction systemUnderTestFunction;
-    private final ElementScorersSupplier elementScorersSupplier;
+    private final SystemUnderTestSupplier systemUnderTestSupplier;
     private final ActiveOracleSupplier activeOracleSupplier;
 
-    public TestContainerSupplier(SystemUnderTestFunction systemUnderTestFunction, ElementScorersSupplier elementScorersSupplier, ActiveOracleSupplier activeOracleSupplier) {
-        this.systemUnderTestFunction = systemUnderTestFunction;
-        this.elementScorersSupplier = elementScorersSupplier;
+    public TestContainerSupplier(SystemUnderTestSupplier systemUnderTestSupplier,
+                                 ActiveOracleSupplier activeOracleSupplier) {
+        this.systemUnderTestSupplier = systemUnderTestSupplier;
         this.activeOracleSupplier = activeOracleSupplier;
     }
 
@@ -29,7 +27,7 @@ public class TestContainerSupplier implements Supplier<TestContainer<AnnotatedEl
 
         return new TestContainer.Builder<AnnotatedElement, ScoredText>()
                 .begin()
-                .systemUnderTest(systemUnderTestFunction.apply(elementScorersSupplier.get()))
+                .systemUnderTest(systemUnderTestSupplier.get())
                 .oracle(activeOracleSupplier.get())
                 .build();
 

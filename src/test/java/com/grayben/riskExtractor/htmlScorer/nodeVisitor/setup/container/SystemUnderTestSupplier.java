@@ -8,21 +8,26 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.NodeTraversor;
 
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Created by Ben Gray on 16/02/2016.
  */
-public class SystemUnderTestFunction
-        implements Function<Set<Scorer<Element>>, SystemUnderTest<Element, ScoredText>> {
+public class SystemUnderTestSupplier
+        implements Supplier<SystemUnderTest<Element, ScoredText>> {
 
+    private final Set<Scorer<Element>> elementScorers;
+
+    public SystemUnderTestSupplier(final Set<Scorer<Element>> elementScorers) {
+        this.elementScorers = elementScorers;
+    }
 
     @Override
-    public SystemUnderTest<Element, ScoredText> apply(Set<Scorer<Element>> scorers) {
+    public SystemUnderTest<Element, ScoredText> get() {
 
         return element -> {
-            ScoringAndFlatteningNodeVisitor nodeVisitor = new ScoringAndFlatteningNodeVisitor(scorers);
-            NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitor);
+            final ScoringAndFlatteningNodeVisitor nodeVisitor = new ScoringAndFlatteningNodeVisitor(elementScorers);
+            final NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitor);
             nodeTraversor.traverse(element);
             return nodeVisitor.getFlatText();
         };
