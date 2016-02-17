@@ -3,7 +3,10 @@ package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementScorersSupplier;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.annotation.AnnotatedElement;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container.ActiveOracleSupplier;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container.SystemUnderTestFunction;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container.TestContainerSupplier;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
@@ -39,7 +42,11 @@ import static org.junit.Assert.*;
 public class ScoringAndFlatteningNodeVisitorTest
         extends NodeVisitorTest {
 
-    private TestContainerSupplier testContainerSupplier = new TestContainerSupplier();
+    private TestContainerSupplier testContainerSupplier = new TestContainerSupplier(
+            new SystemUnderTestFunction(),
+            new ElementScorersSupplier(),
+            new ActiveOracleSupplier()
+    );
     private Set<Scorer<Element>> validElementScorerSet;
     private ScoringAndFlatteningNodeVisitor nodeVisitorOUT;
 

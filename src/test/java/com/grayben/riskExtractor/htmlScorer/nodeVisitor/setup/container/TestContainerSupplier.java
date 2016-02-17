@@ -14,13 +14,23 @@ import java.util.function.Supplier;
  */
 public class TestContainerSupplier implements Supplier<TestContainer<AnnotatedElement, ScoredText>> {
 
+    private final SystemUnderTestFunction systemUnderTestFunction;
+    private final ElementScorersSupplier elementScorersSupplier;
+    private final ActiveOracleSupplier activeOracleSupplier;
+
+    public TestContainerSupplier(SystemUnderTestFunction systemUnderTestFunction, ElementScorersSupplier elementScorersSupplier, ActiveOracleSupplier activeOracleSupplier) {
+        this.systemUnderTestFunction = systemUnderTestFunction;
+        this.elementScorersSupplier = elementScorersSupplier;
+        this.activeOracleSupplier = activeOracleSupplier;
+    }
+
     @Override
     public TestContainer<AnnotatedElement, ScoredText> get() {
 
         return new TestContainer.Builder<AnnotatedElement, ScoredText>()
                 .begin()
-                .systemUnderTest(new SystemUnderTestFunction().apply(new ElementScorersSupplier().get()))
-                .oracle(new ActiveOracleSupplier().get())
+                .systemUnderTest(systemUnderTestFunction.apply(elementScorersSupplier.get()))
+                .oracle(activeOracleSupplier.get())
                 .build();
 
     }
