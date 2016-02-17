@@ -1,7 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
 import org.jsoup.nodes.Element;
 
 import java.util.*;
@@ -12,13 +11,6 @@ import java.util.*;
 class SetupHelpers {
 
     private SetupHelpers(){}
-
-    static Set<Scorer<Element>> configureElementScorerSet() {
-        Set<ElementScorerSetSupplier.Content> contents = new HashSet<>();
-        contents.add(ElementScorerSetSupplier.Content.SEGMENTATION_ELEMENT_SCORER);
-        contents.add(ElementScorerSetSupplier.Content.EMPHASIS_ELEMENT_SCORER);
-        return new ElementScorerSetSupplier(contents).get();
-    }
 
     static List<Element> configureElementList(Set<Scorer<Element>> scorers){
         List<Element> targetElements = new ArrayList<>();
@@ -34,7 +26,7 @@ class SetupHelpers {
 
     static AnnotatedElement configureAnnotatedElement(){
 
-        Set<Scorer<Element>> elementScorers = configureElementScorerSet();
+        Set<Scorer<Element>> elementScorers = new ElementScorersSupplier().get();
 
         return new AnnotatedElement.TreeAssembler(
                 configureElementList(elementScorers),
