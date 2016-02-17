@@ -28,8 +28,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.net.URL;
 import java.util.*;
 
-import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.UtilsThatShouldBeRefactored.getEmphasisedTargetElementsAndScores;
-import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.UtilsThatShouldBeRefactored.getSegmentedTargetElementsAndScores;
+import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementListFunction.getEmphasisedTargetElementsAndScores;
+import static com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementListFunction.getSegmentedTargetElementsAndScores;
 import static org.junit.Assert.*;
 
 /**
