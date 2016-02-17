@@ -1,6 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.annotation;
 
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementListFunction;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementListSupplier;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementScorersSupplier;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import org.jsoup.nodes.Element;
@@ -18,7 +18,7 @@ public class AnnotatedElementSupplier implements Supplier<AnnotatedElement> {
         Set<Scorer<Element>> elementScorers = new ElementScorersSupplier().get();
 
         return new AnnotatedElement.TreeAssembler(
-                new ElementListFunction().apply(elementScorers),
+                new ElementListSupplier(scorers).apply(elementScorers),
                 elementScorers
         ).getRootAnnotation();
     }
