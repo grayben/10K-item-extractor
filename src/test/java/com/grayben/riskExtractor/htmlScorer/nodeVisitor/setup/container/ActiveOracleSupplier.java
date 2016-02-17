@@ -1,7 +1,8 @@
-package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup;
+package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.annotation.AnnotatedElement;
 import com.grayben.tools.testOracle.oracle.active.ActiveOracle;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.NodeTraversor;
