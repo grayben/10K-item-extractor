@@ -19,7 +19,7 @@ public class SystemUnderTestSupplier
     public SystemUnderTest<Element, ScoredText> get() {
 
         Supplier<ScoringAndFlatteningNodeVisitor> scoringAndFlatteningNodeVisitorSupplier
-                = () -> new ScoringAndFlatteningNodeVisitor(SetupHelpers.configureElementScorerSet());
+                = () -> new ScoringAndFlatteningNodeVisitor(new ElementScorersSupplier().get());
 
         return element -> {
             ScoringAndFlatteningNodeVisitor nodeVisitor = scoringAndFlatteningNodeVisitorSupplier.get();
