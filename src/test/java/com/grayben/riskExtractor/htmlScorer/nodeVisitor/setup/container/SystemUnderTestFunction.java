@@ -2,28 +2,26 @@ package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementScorersSupplier;
+import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.tools.testOracle.SystemUnderTest;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.NodeTraversor;
 
-import java.util.function.Supplier;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Created by Ben Gray on 16/02/2016.
  */
-public class SystemUnderTestSupplier
-        implements Supplier<SystemUnderTest<Element, ScoredText>> {
+public class SystemUnderTestFunction
+        implements Function<Set<Scorer<Element>>, SystemUnderTest<Element, ScoredText>> {
 
 
     @Override
-    public SystemUnderTest<Element, ScoredText> get() {
-
-        Supplier<ScoringAndFlatteningNodeVisitor> scoringAndFlatteningNodeVisitorSupplier
-                = () -> new ScoringAndFlatteningNodeVisitor(new ElementScorersSupplier().get());
+    public SystemUnderTest<Element, ScoredText> apply(Set<Scorer<Element>> scorers) {
 
         return element -> {
-            ScoringAndFlatteningNodeVisitor nodeVisitor = scoringAndFlatteningNodeVisitorSupplier.get();
+            ScoringAndFlatteningNodeVisitor nodeVisitor = new ScoringAndFlatteningNodeVisitor(scorers);
             NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitor);
             nodeTraversor.traverse(element);
             return nodeVisitor.getFlatText();
