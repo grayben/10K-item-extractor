@@ -38,9 +38,8 @@ public class AnnotatedElement extends Element {
     public static class TreeAssembler {
 
         //input fields
-        private List<Element> elementsToAttach;
-
-        private Set<? extends Scorer<Element>> elementScorers;
+        private final List<Element> elementsToAttach;
+        private final Set<? extends Scorer<Element>> elementScorers;
 
         //output fields
         private AnnotatedElement rootAnnotation;
@@ -62,8 +61,8 @@ public class AnnotatedElement extends Element {
         private HashMap<String, Integer> childCumulativeScores;
 
         public TreeAssembler(
-                List<Element> elementsToAttach,
-                Set<? extends Scorer<Element>> elementScorers
+                final List<Element> elementsToAttach,
+                final Set<? extends Scorer<Element>> elementScorers
         ) {
 
             validateInitParams(elementsToAttach, elementScorers);
