@@ -14,16 +14,6 @@ public class AnnotatedElement extends Element {
 
     private Map<String, Integer> scores;
 
-    static AnnotatedElement configureAnnotatedElement(){
-
-        Set<Scorer<Element>> elementScorers = new ElementScorersSupplier().get();
-
-        return new TreeAssembler(
-                new ElementListFunction().apply(elementScorers),
-                elementScorers
-        ).getRootAnnotation();
-    }
-
     public Map<String, Integer> getScores() {
         return Collections.unmodifiableMap(scores);
     }
