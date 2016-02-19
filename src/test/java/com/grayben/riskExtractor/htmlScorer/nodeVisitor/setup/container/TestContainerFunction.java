@@ -1,33 +1,34 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementScorersSupplier;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.annotation.AnnotatedElement;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetFunction;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
 
-import java.util.function.Supplier;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * For a nominated test configuration: generates the test input, SUT and expected output.
  * <p>
  *
  */
-public class TestContainerSupplier implements Supplier<TestContainer<AnnotatedElement, ScoredText>> {
+public class TestContainerFunction implements Function<Set<ElementScorerSetFunction.Content>, TestContainer<AnnotatedElement, ScoredText>> {
 
-    private final SystemUnderTestSupplier systemUnderTestSupplier;
+    private final SystemUnderTestFunction systemUnderTestFunction;
     private final ActiveOracleSupplier activeOracleSupplier;
 
-    public TestContainerSupplier(ElementScorersSupplier elementScorersSupplier) {
-        this.systemUnderTestSupplier = new SystemUnderTestSupplier(elementScorersSupplier);
+    public TestContainerFunction() {
+        this.systemUnderTestFunction = new SystemUnderTestFunction();
         this.activeOracleSupplier = new ActiveOracleSupplier();
     }
 
     @Override
-    public TestContainer<AnnotatedElement, ScoredText> get() {
+    public TestContainer<AnnotatedElement, ScoredText> apply(Set<ElementScorerSetFunction.Content> contents) {
 
         return new TestContainer.Builder<AnnotatedElement, ScoredText>()
                 .begin()
-                .systemUnderTest(systemUnderTestSupplier.get())
+                .systemUnderTest(systemUnderTestFunction.apply(contents))
                 .oracle(activeOracleSupplier.get())
                 .build();
 

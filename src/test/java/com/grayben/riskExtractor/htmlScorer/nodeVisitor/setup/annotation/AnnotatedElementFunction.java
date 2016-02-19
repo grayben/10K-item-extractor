@@ -28,4 +28,3 @@ public class AnnotatedElementFunction implements Function<Set<ElementScorerSetFu
         ).getRootAnnotation();
     }
 }
-    

@@ -5,8 +5,9 @@ import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementScorersSupplier;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.annotation.AnnotatedElement;
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container.TestContainerSupplier;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container.TestContainerFunction;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetFunction;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
@@ -44,10 +45,9 @@ public class ScoringAndFlatteningNodeVisitorTest
         extends NodeVisitorTest {
 
     private ElementScorersSupplier elementScorersSupplier = new ElementScorersSupplier();
+    private ElementScorerSetFunction elementScorersSetFunction = new ElementScorerSetFunction();
 
-    private TestContainerSupplier testContainerSupplier = new TestContainerSupplier(
-            elementScorersSupplier
-    );
+    private TestContainerFunction testContainerFunction = new TestContainerFunction();
     private Set<Scorer<Element>> validElementScorerSet;
     private ScoringAndFlatteningNodeVisitor nodeVisitorOUT;
 
@@ -632,7 +632,7 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
             () throws Exception {
-        TestContainerSupplier oracle = new TestContainerSupplier(TreeAssembler.Configuration.MIXED_TREE);
+        TestContainerFunction oracle = new TestContainerFunction(TreeAssembler.Configuration.MIXED_TREE);
         this.nodeVisitorOUT = oracle.getSUT();
         Element input = oracle.getInput();
         NodeTraversor nt = new NodeTraversor(this.nodeVisitorOUT);
