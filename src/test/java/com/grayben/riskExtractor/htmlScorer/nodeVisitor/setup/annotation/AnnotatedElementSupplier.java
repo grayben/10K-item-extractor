@@ -18,7 +18,7 @@ public class AnnotatedElementSupplier implements Supplier<AnnotatedElement> {
         Set<Scorer<Element>> elementScorers = new ElementScorersSupplier().get();
 
         return new AnnotatedElement.TreeAssembler(
-                new ElementListSupplier(scorers).apply(elementScorers),
+                new ElementListSupplier(elementScorers).get(),
                 elementScorers
         ).getRootAnnotation();
     }

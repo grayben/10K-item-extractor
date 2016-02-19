@@ -45,7 +45,7 @@ public class ScoringAndFlatteningNodeVisitorTest
     private ElementScorersSupplier elementScorersSupplier = new ElementScorersSupplier();
 
     private TestContainerSupplier testContainerSupplier = new TestContainerSupplier(
-            new SystemUnderTestSupplier(elementScorersSupplier.get()),
+            new SystemUnderTestSupplier(elementScorersSupplier),
             new ActiveOracleSupplier()
     );
     private Set<Scorer<Element>> validElementScorerSet;
