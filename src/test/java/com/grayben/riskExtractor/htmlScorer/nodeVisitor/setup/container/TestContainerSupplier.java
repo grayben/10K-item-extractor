@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementScorersSupplier;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.annotation.AnnotatedElement;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
 
@@ -16,8 +17,8 @@ public class TestContainerSupplier implements Supplier<TestContainer<AnnotatedEl
     private final SystemUnderTestSupplier systemUnderTestSupplier;
     private final ActiveOracleSupplier activeOracleSupplier;
 
-    public TestContainerSupplier(SystemUnderTestSupplier systemUnderTestSupplier) {
-        this.systemUnderTestSupplier = systemUnderTestSupplier;
+    public TestContainerSupplier(ElementScorersSupplier elementScorersSupplier) {
+        this.systemUnderTestSupplier = new SystemUnderTestSupplier(elementScorersSupplier);
         this.activeOracleSupplier = new ActiveOracleSupplier();
     }
 

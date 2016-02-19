@@ -5,7 +5,6 @@ import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementScorersSupplier;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.annotation.AnnotatedElement;
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container.SystemUnderTestSupplier;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container.TestContainerSupplier;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
@@ -47,7 +46,7 @@ public class ScoringAndFlatteningNodeVisitorTest
     private ElementScorersSupplier elementScorersSupplier = new ElementScorersSupplier();
 
     private TestContainerSupplier testContainerSupplier = new TestContainerSupplier(
-            new SystemUnderTestSupplier(elementScorersSupplier)
+            elementScorersSupplier
     );
     private Set<Scorer<Element>> validElementScorerSet;
     private ScoringAndFlatteningNodeVisitor nodeVisitorOUT;
