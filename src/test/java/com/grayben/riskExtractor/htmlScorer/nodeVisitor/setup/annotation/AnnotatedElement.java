@@ -1,11 +1,14 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.annotation;
 
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementListSupplier;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetFunction;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * Created by beng on 5/01/2016.
@@ -195,5 +198,26 @@ public class AnnotatedElement extends Element {
             return mapSum;
         }
 
+    }
+
+    /**
+     * Created by Ben Gray on 17/02/2016.
+     */
+    public static class AnnotatedElementFunction implements Function<Set<ElementScorerSetFunction.Content>, AnnotatedElement> {
+
+        private final Function<Set<ElementScorerSetFunction.Content>, Set<Scorer<Element>>> scorersFunction;
+
+        public AnnotatedElementFunction() {
+            this.scorersFunction = new ElementScorerSetFunction();
+        }
+
+        @Override
+        public AnnotatedElement apply(Set<ElementScorerSetFunction.Content> contents) {
+
+            return new TreeAssembler(
+                    new ElementListSupplier(scorersFunction.apply(contents)).get(),
+                    scorersFunction.apply(contents)
+            ).getRootAnnotation();
+        }
     }
 }
