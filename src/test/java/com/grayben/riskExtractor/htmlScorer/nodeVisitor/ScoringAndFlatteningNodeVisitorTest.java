@@ -615,29 +615,7 @@ public class ScoringAndFlatteningNodeVisitorTest
                 sutScores.keySet()) {
             assertEquals(new Integer(0), sutScores.get(key));
         }
-    }/*
-
-    @Test
-    public void
-    test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
-            () throws Exception {
-        TestContainerSupplier oracle = new TestContainerSupplier(TreeAssembler.Configuration.MIXED_TREE);
-        this.nodeVisitorOUT = oracle.getSUT();
-        Element input = oracle.getInput();
-        NodeTraversor nt = new NodeTraversor(this.nodeVisitorOUT);
-
-        nt.traverse(input);
-
-        List<ScoredTextElement> expectedOutput = oracle.getExpectedOutput().getList();
-        List<ScoredTextElement> actualOutput = nodeVisitorOUT.getFlatText().getList();
-
-        assert expectedOutput.size() == actualOutput.size();
-
-        for(int i = 0; i < expectedOutput.size(); i++){
-            assertEquals(expectedOutput.get(i).getScores(), actualOutput.get(i).getScores());
-        }
     }
-    */
 
     @Test
     public void
@@ -650,7 +628,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         Set<Scorer<Element>> scorers = new ElementScorerSetFunction().apply(contents);
 
         AnnotatedElement annotatedElement = new AnnotatedElement.AnnotatedElementFunction().apply(scorers);
-        
+
         testContainerSupplier.get().verify(new ImmutablePair<>(scorers, annotatedElement));
     }
 
