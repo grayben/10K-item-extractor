@@ -4,7 +4,7 @@ import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.AnnotatedElement;
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.TestContainerFunction;
+import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.TestContainerSupplier;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetFunction;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
@@ -13,7 +13,7 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttribu
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
-import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Element;
@@ -45,7 +45,7 @@ public class ScoringAndFlatteningNodeVisitorTest
 
     private ElementScorerSetFunction elementScorersSetFunction = new ElementScorerSetFunction();
 
-    private TestContainerFunction testContainerFunction = new TestContainerFunction();
+    private TestContainerSupplier testContainerSupplier = new TestContainerSupplier();
     private Set<Scorer<Element>> validElementScorerSet;
     private ScoringAndFlatteningNodeVisitor nodeVisitorOUT;
 
@@ -615,22 +615,13 @@ public class ScoringAndFlatteningNodeVisitorTest
                 sutScores.keySet()) {
             assertEquals(new Integer(0), sutScores.get(key));
         }
-    }
-
-    @Test
-    public void
-    test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText
-            () throws Exception {
-        AnnotatedElement annotatedElement = null;
-        //testContainerSupplier.get().verify(annotatedElement);
-        throw new NotImplementedException("This test is not implemented");
     }/*
 
     @Test
     public void
     test_GetScoredTextReturnsExpectedScores_AfterVisitsToManyElementsWithText
             () throws Exception {
-        TestContainerFunction oracle = new TestContainerFunction(TreeAssembler.Configuration.MIXED_TREE);
+        TestContainerSupplier oracle = new TestContainerSupplier(TreeAssembler.Configuration.MIXED_TREE);
         this.nodeVisitorOUT = oracle.getSUT();
         Element input = oracle.getInput();
         NodeTraversor nt = new NodeTraversor(this.nodeVisitorOUT);
@@ -652,8 +643,15 @@ public class ScoringAndFlatteningNodeVisitorTest
     public void
     test_GetScoredTextReturnsExpected_AfterVisitsToManyElementsWithText
             () throws Exception {
-        //isn't this the same test now?
-        test_GetScoredTextReturnsExpectedText_AfterVisitsToManyElementsWithText();
+        Set<ElementScorerSetFunction.Content> contents = new HashSet<>();
+        contents.add(ElementScorerSetFunction.Content.EMPHASIS_ELEMENT_SCORER);
+        contents.add(ElementScorerSetFunction.Content.SEGMENTATION_ELEMENT_SCORER);
+
+        Set<Scorer<Element>> scorers = new ElementScorerSetFunction().apply(contents);
+
+        AnnotatedElement annotatedElement = new AnnotatedElement.AnnotatedElementFunction().apply(scorers);
+        
+        testContainerSupplier.get().verify(new ImmutablePair<>(scorers, annotatedElement));
     }
 
 }
