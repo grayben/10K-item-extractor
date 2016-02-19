@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.container;
+package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
