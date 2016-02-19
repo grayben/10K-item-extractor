@@ -3,7 +3,6 @@ package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.annotation.AnnotatedElement;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.tools.testOracle.SystemUnderTest;
 import com.grayben.tools.testOracle.oracle.active.ActiveOracle;
