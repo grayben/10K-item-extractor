@@ -65,7 +65,7 @@ public class ScoringAndFlatteningNodeVisitorTest
                 = new EmphasisElementScorer(
                 tagEmphasisScorer,
                 tagAndAttributeScorer
-                        );
+        );
         elementScorers.add(emphasisElementScorer);
 
                 TagSegmentationScorer tagSegmentationScorer
