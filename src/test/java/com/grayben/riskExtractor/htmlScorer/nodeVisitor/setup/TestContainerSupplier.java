@@ -21,14 +21,14 @@ import java.util.function.Supplier;
  * <p>
  *
  */
-public class TestContainerFunction
+public class TestContainerSupplier
         implements
         Supplier<TestContainer<Pair<Set<Scorer<Element>>, AnnotatedElement>, ScoredText>> {
 
     private final SystemUnderTestFunction systemUnderTestFunction;
     private final ActiveOracleSupplier activeOracleSupplier;
 
-    public TestContainerFunction() {
+    public TestContainerSupplier() {
         this.systemUnderTestFunction = new SystemUnderTestFunction();
         this.activeOracleSupplier = new ActiveOracleSupplier();
     }

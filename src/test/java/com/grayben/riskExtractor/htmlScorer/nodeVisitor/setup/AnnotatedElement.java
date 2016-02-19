@@ -1,7 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetFunction;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
@@ -202,20 +201,17 @@ public class AnnotatedElement extends Element {
     /**
      * Created by Ben Gray on 17/02/2016.
      */
-    public static class AnnotatedElementFunction implements Function<Set<ElementScorerSetFunction.Content>, AnnotatedElement> {
-
-        private final Function<Set<ElementScorerSetFunction.Content>, Set<Scorer<Element>>> scorersFunction;
+    public static class AnnotatedElementFunction implements Function<Set<Scorer<Element>>, AnnotatedElement> {
 
         public AnnotatedElementFunction() {
-            this.scorersFunction = new ElementScorerSetFunction();
         }
 
         @Override
-        public AnnotatedElement apply(Set<ElementScorerSetFunction.Content> contents) {
+        public AnnotatedElement apply(Set<Scorer<Element>> elementScorers) {
 
             return new TreeAssembler(
-                    new ElementListSupplier(scorersFunction.apply(contents)).get(),
-                    scorersFunction.apply(contents)
+                    new ElementListSupplier(elementScorers).get(),
+                    elementScorers
             ).getRootAnnotation();
         }
     }
