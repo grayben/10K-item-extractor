@@ -8,32 +8,19 @@ import org.jsoup.nodes.Element;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 /**
  * Created by beng on 8/01/2016.
  */
-public class ElementScorerSetSupplier implements Supplier<Set<Scorer<Element>>> {
+public class ElementScorerSetFunction implements Function<Set<ElementScorerSetFunction.Content>, Set<Scorer<Element>>> {
 
     public enum Content {
         SEGMENTATION_ELEMENT_SCORER,
         EMPHASIS_ELEMENT_SCORER
     }
 
-    private Set<Content> contents = null;
-
-    private Set<Scorer<Element>> elementScorerSet = null;
-
-    public ElementScorerSetSupplier(Set<Content> contents) {
-        processInputParams(contents);
-    }
-
-    private void processInputParams(Set<Content> contents) {
-        validateInputParams(contents);
-        this.contents = contents;
-    }
-
-    private void validateInputParams(Set<Content> contents) {
+    private void validateParams(Set<Content> contents) {
         if (contents == null) {
             throw new NullPointerException(
                     "Set<Content> contents was null"
@@ -59,14 +46,8 @@ public class ElementScorerSetSupplier implements Supplier<Set<Scorer<Element>>> 
     }
 
     @Override
-    public Set<Scorer<Element>> get() {
-        if (elementScorerSet == null) {
-            generateElementScorers();
-        }
-        return this.elementScorerSet;
-    }
-
-    private void generateElementScorers() {
+    public Set<Scorer<Element>> apply(Set<Content> contents) {
+        validateParams(contents);
         Set<Scorer<Element>> elementScorers = new HashSet<>();
         for (Content content : contents) {
             switch (content) {
@@ -88,6 +69,6 @@ public class ElementScorerSetSupplier implements Supplier<Set<Scorer<Element>>> 
                     break;
             }
         }
-        this.elementScorerSet = elementScorers;
+        return elementScorers;
     }
 }

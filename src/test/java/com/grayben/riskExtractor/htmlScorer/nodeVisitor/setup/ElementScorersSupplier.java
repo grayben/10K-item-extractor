@@ -1,7 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetSupplier;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetFunction;
 import org.jsoup.nodes.Element;
 
 import java.util.HashSet;
@@ -15,9 +15,9 @@ public class ElementScorersSupplier implements Supplier<Set<Scorer<Element>>> {
 
     @Override
     public Set<Scorer<Element>> get() {
-        Set<ElementScorerSetSupplier.Content> contents = new HashSet<>();
-        contents.add(ElementScorerSetSupplier.Content.SEGMENTATION_ELEMENT_SCORER);
-        contents.add(ElementScorerSetSupplier.Content.EMPHASIS_ELEMENT_SCORER);
-        return new ElementScorerSetSupplier(contents).get();
+        Set<ElementScorerSetFunction.Content> contents = new HashSet<>();
+        contents.add(ElementScorerSetFunction.Content.SEGMENTATION_ELEMENT_SCORER);
+        contents.add(ElementScorerSetFunction.Content.EMPHASIS_ELEMENT_SCORER);
+        return new ElementScorerSetFunction().apply(contents);
     }
 }
