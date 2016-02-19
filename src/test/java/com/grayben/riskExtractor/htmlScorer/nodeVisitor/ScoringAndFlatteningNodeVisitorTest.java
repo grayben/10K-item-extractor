@@ -3,7 +3,6 @@ package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
-import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.ElementScorersSupplier;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.AnnotatedElement;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.TestContainerFunction;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
@@ -44,7 +43,6 @@ import static org.junit.Assert.*;
 public class ScoringAndFlatteningNodeVisitorTest
         extends NodeVisitorTest {
 
-    private ElementScorersSupplier elementScorersSupplier = new ElementScorersSupplier();
     private ElementScorerSetFunction elementScorersSetFunction = new ElementScorerSetFunction();
 
     private TestContainerFunction testContainerFunction = new TestContainerFunction();
