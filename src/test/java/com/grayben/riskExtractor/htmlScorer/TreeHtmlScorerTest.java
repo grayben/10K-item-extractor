@@ -25,7 +25,7 @@ import static junit.framework.TestCase.fail;
 public class TreeHtmlScorerTest
         extends HtmlScorerTest {
 
-    TreeHtmlScorer treeHtmlScorerSUT;
+    TreeHtmlScorer validTreeHtmlScorerSUT;
 
     @Before
     public void setUp() throws Exception {
@@ -42,16 +42,17 @@ public class TreeHtmlScorerTest
                 )
         );
         ScoringAndFlatteningNodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorers);
+        validTreeHtmlScorerSUT = new TreeHtmlScorer(nv);
 
         //TODO: inject the NodeTraversor into the TreeHtmlScorer constructor
-        setHtmlScorerSUT(new TreeHtmlScorer(nv));
+        setHtmlScorerSUT(validTreeHtmlScorerSUT);
         super.setUp();
     }
 
     @After
     public void tearDown() throws Exception {
         super.tearDown();
-        this.treeHtmlScorerSUT = null;
+        this.validTreeHtmlScorerSUT = null;
     }
 
     @Test
@@ -62,7 +63,7 @@ public class TreeHtmlScorerTest
 
         thrown.expect(NullPointerException.class);
 
-        treeHtmlScorerSUT = new TreeHtmlScorer(nv);
+        new TreeHtmlScorer(nv);
     }
 
     @Override
