@@ -9,9 +9,6 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetFunction;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jsoup.Jsoup;
@@ -43,6 +40,7 @@ import static org.junit.Assert.*;
 public class ScoringAndFlatteningNodeVisitorTest
         extends NodeVisitorTest {
 
+    private AnnotatedElement.AnnotatedElementFunction annotatedElementFunction = new AnnotatedElement.AnnotatedElementFunction();
     private ElementScorerSetFunction elementScorersSetFunction = new ElementScorerSetFunction();
 
     private TestContainerSupplier testContainerSupplier = new TestContainerSupplier();
@@ -52,29 +50,11 @@ public class ScoringAndFlatteningNodeVisitorTest
     @Before
     @Override
     public void setUp() throws Exception {
-        Set<Scorer<Element>> elementScorers
-        = new HashSet<>();
+        Set<ElementScorerSetFunction.Content> contents = new HashSet<>();
+        contents.add(ElementScorerSetFunction.Content.EMPHASIS_ELEMENT_SCORER);
+        contents.add(ElementScorerSetFunction.Content.SEGMENTATION_ELEMENT_SCORER);
 
-                TagEmphasisScorer tagEmphasisScorer
-                = new TagEmphasisScorer(TagEmphasisScorer.defaultMap());
-        TagAndAttributeScorer tagAndAttributeScorer
-                = new TagAndAttributeScorer(TagAndAttributeScorer.defaultMap());
-        EmphasisElementScorer emphasisElementScorer
-                = new EmphasisElementScorer(
-                tagEmphasisScorer,
-                tagAndAttributeScorer
-        );
-        elementScorers.add(emphasisElementScorer);
-
-                TagSegmentationScorer tagSegmentationScorer
-                = new TagSegmentationScorer(TagSegmentationScorer.defaultMap());
-        SegmentationElementScorer segmentationElementScorer
-                = new SegmentationElementScorer(tagSegmentationScorer);
-        elementScorers.add(
-                         segmentationElementScorer
-                        );
-
-        this.validElementScorerSet = elementScorers;
+        this.validElementScorerSet = elementScorersSetFunction.apply(contents);
         this.nodeVisitorOUT = new ScoringAndFlatteningNodeVisitor(validElementScorerSet);
         super.setNodeVisitorSUT(nodeVisitorOUT);
         super.setUp();
@@ -625,9 +605,9 @@ public class ScoringAndFlatteningNodeVisitorTest
         contents.add(ElementScorerSetFunction.Content.EMPHASIS_ELEMENT_SCORER);
         contents.add(ElementScorerSetFunction.Content.SEGMENTATION_ELEMENT_SCORER);
 
-        Set<Scorer<Element>> scorers = new ElementScorerSetFunction().apply(contents);
+        Set<Scorer<Element>> scorers = elementScorersSetFunction.apply(contents);
 
-        AnnotatedElement annotatedElement = new AnnotatedElement.AnnotatedElementFunction().apply(scorers);
+        AnnotatedElement annotatedElement = annotatedElementFunction.apply(scorers);
 
         testContainerSupplier.get().verify(new ImmutablePair<>(scorers, annotatedElement));
     }
