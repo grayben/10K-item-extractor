@@ -515,7 +515,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         Node nonElementNode = new Comment(
                 "my-comment",
-                "http://www.istonyabbottstillpm.com");
+                "https://google.com");
 
         NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitorOUT);
 
@@ -533,7 +533,7 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         Tag tag = Tag.valueOf("a-tag-name");
 
-        Node elementNode = new Element(tag, "http://www.baseURI.com");
+        Node elementNode = new Element(tag, "https://google.com");
 
         NodeTraversor nodeTraversor = new NodeTraversor(nodeVisitorOUT);
         nodeTraversor.traverse(elementNode);
@@ -549,7 +549,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         Tag tag = Tag.valueOf("a-tag-name");
 
-        Element element = new Element(tag, "a-base-URI");
+        Element element = new Element(tag, "https://google.com");
 
         element.text("Some text is here.");
 
@@ -568,7 +568,7 @@ public class ScoringAndFlatteningNodeVisitorTest
         String expectedText = "This is the text we expect to see present in the list.";
         Tag tag = Tag.valueOf("a-tag-name");
 
-        Element element = new Element(tag, "a-base-uri");
+        Element element = new Element(tag, "https://google.com");
 
         element.text(expectedText);
 
@@ -587,7 +587,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
 
         NodeTraversor nt = new NodeTraversor(this.nodeVisitorOUT);
-        nt.traverse(Jsoup.parse(new URL("http://google.com"), 2000).body());
+        nt.traverse(Jsoup.parse(new URL("https://google.com"), 2000).body());
 
         Map<String, Integer> sutScores = nodeVisitorOUT.getCurrentScores();
 
