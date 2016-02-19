@@ -17,11 +17,8 @@ public class AnnotatedElementSupplier implements Supplier<AnnotatedElement> {
     private final Function<Set<ElementScorerSetFunction.Content>, Set<Scorer<Element>>> scorersFunction;
     private final Set<ElementScorerSetFunction.Content> contents;
 
-    public AnnotatedElementSupplier(
-            Function<Set<ElementScorerSetFunction.Content>, Set<Scorer<Element>>> scorersFunction,
-            Set<ElementScorerSetFunction.Content> contents
-    ) {
-        this.scorersFunction = scorersFunction;
+    public AnnotatedElementSupplier(Set<ElementScorerSetFunction.Content> contents) {
+        this.scorersFunction = new ElementScorerSetFunction();
         this.contents = contents;
     }
 
