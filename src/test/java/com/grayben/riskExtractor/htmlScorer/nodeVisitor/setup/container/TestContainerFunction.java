@@ -17,10 +17,12 @@ public class TestContainerFunction implements Function<Set<ElementScorerSetFunct
 
     private final SystemUnderTestFunction systemUnderTestFunction;
     private final ActiveOracleSupplier activeOracleSupplier;
+    private final ElementScorerSetFunction elementScorerSetFunction;
 
     public TestContainerFunction() {
         this.systemUnderTestFunction = new SystemUnderTestFunction();
         this.activeOracleSupplier = new ActiveOracleSupplier();
+        elementScorerSetFunction = new ElementScorerSetFunction();
     }
 
     @Override
@@ -28,7 +30,7 @@ public class TestContainerFunction implements Function<Set<ElementScorerSetFunct
 
         return new TestContainer.Builder<AnnotatedElement, ScoredText>()
                 .begin()
-                .systemUnderTest(systemUnderTestFunction.apply(contents))
+                .systemUnderTest(systemUnderTestFunction.apply(elementScorerSetFunction.apply(contents)))
                 .oracle(activeOracleSupplier.get())
                 .build();
 
