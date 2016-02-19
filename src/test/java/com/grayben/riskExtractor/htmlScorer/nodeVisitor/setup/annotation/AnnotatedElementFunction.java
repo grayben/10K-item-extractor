@@ -7,23 +7,20 @@ import org.jsoup.nodes.Element;
 
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * Created by Ben Gray on 17/02/2016.
  */
-public class AnnotatedElementSupplier implements Supplier<AnnotatedElement> {
+public class AnnotatedElementFunction implements Function<Set<ElementScorerSetFunction.Content>, AnnotatedElement> {
 
     private final Function<Set<ElementScorerSetFunction.Content>, Set<Scorer<Element>>> scorersFunction;
-    private final Set<ElementScorerSetFunction.Content> contents;
 
-    public AnnotatedElementSupplier(Set<ElementScorerSetFunction.Content> contents) {
+    public AnnotatedElementFunction() {
         this.scorersFunction = new ElementScorerSetFunction();
-        this.contents = contents;
     }
 
     @Override
-    public AnnotatedElement get() {
+    public AnnotatedElement apply(Set<ElementScorerSetFunction.Content> contents) {
 
         return new AnnotatedElement.TreeAssembler(
                 new ElementListSupplier(scorersFunction.apply(contents)).get(),
@@ -31,3 +28,4 @@ public class AnnotatedElementSupplier implements Supplier<AnnotatedElement> {
         ).getRootAnnotation();
     }
 }
+    
