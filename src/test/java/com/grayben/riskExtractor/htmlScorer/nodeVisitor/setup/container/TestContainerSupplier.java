@@ -16,10 +16,9 @@ public class TestContainerSupplier implements Supplier<TestContainer<AnnotatedEl
     private final SystemUnderTestSupplier systemUnderTestSupplier;
     private final ActiveOracleSupplier activeOracleSupplier;
 
-    public TestContainerSupplier(SystemUnderTestSupplier systemUnderTestSupplier,
-                                 ActiveOracleSupplier activeOracleSupplier) {
+    public TestContainerSupplier(SystemUnderTestSupplier systemUnderTestSupplier) {
         this.systemUnderTestSupplier = systemUnderTestSupplier;
-        this.activeOracleSupplier = activeOracleSupplier;
+        this.activeOracleSupplier = new ActiveOracleSupplier();
     }
 
     @Override
