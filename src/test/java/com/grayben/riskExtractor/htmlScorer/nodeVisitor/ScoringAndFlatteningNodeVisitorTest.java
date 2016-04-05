@@ -1,7 +1,30 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 
+import com.grayben.riskExtractor.htmlScorer.ScoredText;
+import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
+import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
+import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import org.jsoup.nodes.Comment;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.parser.Tag;
+import org.jsoup.select.NodeTraversor;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by beng on 28/11/2015.
@@ -10,9 +33,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ScoringAndFlatteningNodeVisitorTest
         extends NodeVisitorTest {
 
-    /*
-
     private ScoringAndFlatteningNodeVisitor nodeVisitorSUT;
+    private static final Element EMPHASISED = new Element(Tag.valueOf("h1"), "a-base-uri");
+    private static final Element SEGMENTED = new Element(Tag.valueOf("div"), "a-base-uri");
+    private static final Element MEANINGLESS = new Element(Tag.valueOf("foo"), "a-base-uri");
 
     @Before
     @Override
@@ -41,6 +65,7 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         this.nodeVisitorSUT
                 = new ScoringAndFlatteningNodeVisitor(elementScorers);
+
         super.setNodeVisitorSUT(nodeVisitorSUT);
         super.setUp();
     }
@@ -126,9 +151,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         Integer expected = 0;
 
-        Element notEmphasised = new Element(Tag.valueOf("foo"), "a-base-uri");
-
-        nodeVisitorSUT.head(notEmphasised, 1);
+        nodeVisitorSUT.head(MEANINGLESS, 1);
 
         Integer returned
                 = nodeVisitorSUT.getCurrentScores()
@@ -143,9 +166,7 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         Integer expected = 0;
 
-        Element notEmphasised = new Element(Tag.valueOf("foo"), "a-base-uri");
-
-        nodeVisitorSUT.tail(notEmphasised, 1);
+        nodeVisitorSUT.tail(MEANINGLESS, 1);
 
         Integer returned
                 = nodeVisitorSUT.getCurrentScores()
@@ -160,20 +181,11 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElementsAndScores(nodeVisitorSUT)
-                .entrySet().iterator();
-        Map.Entry<Element, Integer> emphasisedElementAndScore
-                = it.next();
-        Element emphasisedElement = emphasisedElementAndScore.getKey();
-        Integer expected = emphasisedElementAndScore.getValue();
-
-        nodeVisitorSUT.head(emphasisedElement, 1);
+        nodeVisitorSUT.head(EMPHASISED, 1);
 
         Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
 
-        assert expected > 0;
-
-        assertEquals(expected, returned);
+        assertTrue(returned > 0);
     }
 
     @Test
@@ -182,22 +194,12 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElementsAndScores(nodeVisitorSUT)
-                .entrySet().iterator();
-        Map.Entry<Element, Integer> emphasisedElementAndScore
-                = it.next();
-        Element emphasisedElement = emphasisedElementAndScore.getKey();
-        Integer expected = emphasisedElementAndScore.getValue();
-
-        Element notEmphasisedElement
-                = new Element(Tag.valueOf("foo-bar"), "some-string");
-
-        nodeVisitorSUT.head(emphasisedElement, 1);
-        nodeVisitorSUT.head(notEmphasisedElement, 2);
+        nodeVisitorSUT.head(EMPHASISED, 1);
+        nodeVisitorSUT.head(MEANINGLESS, 2);
 
         Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
 
-        assertEquals(expected, returned);
+        assertTrue(returned > 0);
     }
 
     @Test
@@ -208,14 +210,8 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         Integer expected = 0;
 
-        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElementsAndScores(nodeVisitorSUT)
-                .entrySet().iterator();
-        Map.Entry<Element, Integer> emphasisedElementAndScore
-                = it.next();
-        Element emphasisedElement = emphasisedElementAndScore.getKey();
-
-        nodeVisitorSUT.head(emphasisedElement, 1);
-        nodeVisitorSUT.tail(emphasisedElement, 1);
+        nodeVisitorSUT.head(EMPHASISED, 1);
+        nodeVisitorSUT.tail(EMPHASISED, 1);
 
         Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
 
@@ -228,24 +224,13 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElementsAndScores(nodeVisitorSUT)
-                .entrySet().iterator();
-        Map.Entry<Element, Integer> emphasisedElementAndScore;
-
-        emphasisedElementAndScore = it.next();
-        Element emphasisedElement1 = emphasisedElementAndScore.getKey();
-        Integer expected = emphasisedElementAndScore.getValue();
-
-        Element emphasisedElement2
-                = it.next().getKey();
-
-        nodeVisitorSUT.head(emphasisedElement1, 1);
-        nodeVisitorSUT.head(emphasisedElement2, 2);
-        nodeVisitorSUT.tail(emphasisedElement2, 1);
+        nodeVisitorSUT.head(EMPHASISED, 1);
+        nodeVisitorSUT.head(EMPHASISED, 2);
+        nodeVisitorSUT.tail(EMPHASISED, 1);
 
         Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
 
-        assertEquals(expected, returned);
+        assertTrue(returned > 0);
     }
 
     @Test
@@ -263,16 +248,8 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = EmphasisElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it = getEmphasisedTargetElementsAndScores(nodeVisitorSUT)
-                .entrySet().iterator();
-        Map.Entry<Element, Integer> emphasisedElementAndScore;
-
-        emphasisedElementAndScore = it.next();
-        Element emphasisedElement = emphasisedElementAndScore.getKey();
-        Integer expectedScore = emphasisedElementAndScore.getValue();
-
         String elementText = "This is some text contained by the element.";
-        emphasisedElement.text(elementText);
+        Element emphasisedElement = new Element(EMPHASISED.tag(), EMPHASISED.baseUri()).text(elementText);
 
         nodeVisitorSUT.head(emphasisedElement, 1);
         nodeVisitorSUT.tail(emphasisedElement, 1);
@@ -281,7 +258,7 @@ public class ScoringAndFlatteningNodeVisitorTest
                 = nodeVisitorSUT.getFlatText().getList().iterator().next();
         Integer returnedScore = scoredTextElement.getScores().get(scoreLabel);
 
-        assertEquals(expectedScore, returnedScore);
+        assertTrue(returnedScore > 0);
     }
 
     @Test
@@ -306,12 +283,7 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         Integer expected = 0;
 
-        Element nonSegElem = new Element(
-                Tag.valueOf("foobar"),
-                "some string"
-        );
-
-        nodeVisitorSUT.head(nonSegElem, 1);
+        nodeVisitorSUT.head(MEANINGLESS, 1);
 
         Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
 
@@ -326,12 +298,7 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         Integer expected = 0;
 
-        Element nonSegElem = new Element(
-                Tag.valueOf("foobar"),
-                "some string"
-        );
-
-        nodeVisitorSUT.tail(nonSegElem, 1);
+        nodeVisitorSUT.tail(MEANINGLESS, 1);
 
         Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
 
@@ -344,20 +311,11 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it
-                = getSegmentedTargetElementsAndScores(nodeVisitorSUT)
-                .entrySet().iterator();
-        Map.Entry<Element, Integer> segmentedElementAndScore
-                = it.next();
-        Element segmentedElement = segmentedElementAndScore.getKey();
-        Integer expected = segmentedElementAndScore.getValue();
-        assert expected > 0;
-
-        nodeVisitorSUT.head(segmentedElement, 1);
+        nodeVisitorSUT.head(SEGMENTED, 1);
 
         Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
 
-        assertEquals(expected, returned);
+        assertTrue(returned > 0);
     }
 
     @Test
@@ -366,27 +324,12 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it
-                = getSegmentedTargetElementsAndScores(nodeVisitorSUT)
-                .entrySet().iterator();
-        Map.Entry<Element, Integer> segmentedElementAndScore
-                = it.next();
-        Element segmentedElement = segmentedElementAndScore.getKey();
-        Integer expected = segmentedElementAndScore.getValue();
-        assert expected > 0;
-
-        Element nonSegmentedElement
-                = new Element(
-                Tag.valueOf("foobar"),
-                "some string"
-        );
-
-        nodeVisitorSUT.head(segmentedElement, 1);
-        nodeVisitorSUT.head(nonSegmentedElement, 1);
+        nodeVisitorSUT.head(SEGMENTED, 1);
+        nodeVisitorSUT.head(MEANINGLESS, 1);
 
         Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
 
-        assertEquals(expected, returned);
+        assertTrue(returned > 0);
     }
 
     @Test
@@ -395,18 +338,12 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
-        Integer expected = 0;
-
-        Element segmentedElement
-                = getSegmentedTargetElementsAndScores(nodeVisitorSUT)
-                .entrySet().iterator().next().getKey();
-
-        nodeVisitorSUT.head(segmentedElement, 1);
-        nodeVisitorSUT.tail(segmentedElement, 1);
+        nodeVisitorSUT.head(SEGMENTED, 1);
+        nodeVisitorSUT.tail(SEGMENTED, 1);
 
         Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
 
-        assertEquals(expected, returned);
+        assertEquals(new Integer(0), returned);
     }
 
     @Test
@@ -415,24 +352,13 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it
-                = getSegmentedTargetElementsAndScores(nodeVisitorSUT)
-                .entrySet().iterator();
-        Map.Entry<Element, Integer> segmentedElementAndScore
-                = it.next();
-        Element segmentedElement1 = segmentedElementAndScore.getKey();
-        Integer expected = segmentedElementAndScore.getValue();
-        assert expected > 0;
-
-        Element segmentedElement2 = it.next().getKey();
-
-        nodeVisitorSUT.head(segmentedElement1, 1);
-        nodeVisitorSUT.head(segmentedElement2, 1);
-        nodeVisitorSUT.tail(segmentedElement2, 1);
+        nodeVisitorSUT.head(SEGMENTED, 1);
+        nodeVisitorSUT.head(SEGMENTED, 1);
+        nodeVisitorSUT.tail(SEGMENTED, 1);
 
         Integer returned = nodeVisitorSUT.getCurrentScores().get(scoreLabel);
 
-        assertEquals(expected, returned);
+        assertTrue(returned > 0);
     }
 
     private void helper_ScoreElementAndExpectScore
@@ -475,25 +401,17 @@ public class ScoringAndFlatteningNodeVisitorTest
             () throws Exception {
         String scoreLabel = SegmentationElementScorer.SCORE_LABEL;
 
-        Iterator<Map.Entry<Element, Integer>> it = getSegmentedTargetElementsAndScores(nodeVisitorSUT)
-                .entrySet().iterator();
-        Map.Entry<Element, Integer> segmentedElementAndScore;
-
-        segmentedElementAndScore = it.next();
-        Element segmentedElement = segmentedElementAndScore.getKey();
-        Integer expectedScore = segmentedElementAndScore.getValue();
-
         String elementText = "This is some text contained by the element.";
-        segmentedElement.text(elementText);
+        Element segmentedElement = new Element(SEGMENTED.tag(), SEGMENTED.baseUri()).text(elementText);
 
         nodeVisitorSUT.head(segmentedElement, 1);
         nodeVisitorSUT.tail(segmentedElement, 1);
 
         ScoredTextElement scoredTextElement
                 = nodeVisitorSUT.getFlatText().getList().iterator().next();
-        Integer returnedScore = scoredTextElement.getScores().get(scoreLabel);
+        Integer score = scoredTextElement.getScores().get(scoreLabel);
 
-        assertEquals(expectedScore, returnedScore);
+        assertTrue(score > 0);
     }
 
 
@@ -576,8 +494,8 @@ public class ScoringAndFlatteningNodeVisitorTest
     test_AllScoresAreZero_AfterTraversalOfManyTargetElements
             () throws Exception {
 
-        NodeVisitorTestContainerSupplier oracle = new NodeVisitorTestContainerSupplier(AnnotatedElementTreeAssembler.Configuration.MIXED_TREE);
-        this.setNodeVisitorSUT(oracle.getSUT());
+        NodeVisitorTestContainerSupplier oracle = new NodeVisitorTestContainerSupplier();
+
         Element input = oracle.getInput();
         NodeTraversor nt = new NodeTraversor(this.nodeVisitorSUT);
         nt.traverse(input);
@@ -647,7 +565,4 @@ public class ScoringAndFlatteningNodeVisitorTest
 
         assertEquals(expectedOutput, actualOutput);
     }
-
-    */
-
 }
