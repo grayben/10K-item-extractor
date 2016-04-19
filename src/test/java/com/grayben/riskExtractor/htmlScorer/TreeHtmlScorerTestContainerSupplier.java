@@ -1,49 +1,57 @@
 package com.grayben.riskExtractor.htmlScorer;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.ElementScorerSetFunction;
 import com.grayben.tools.testOracle.SystemUnderTest;
-import com.grayben.tools.testOracle.oracle.active.ActiveOracle;
+import com.grayben.tools.testOracle.oracle.passive.PassiveOracle;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
-import com.sun.source.tree.Tree;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
  * Created by Ben Gray on 19/02/2016.
  */
-public class TreeHtmlScorerTestContainerSupplier implements Supplier<TestContainer<File, ScoredText>> {
+public class TreeHtmlScorerTestContainerSupplier implements Supplier<TestContainer<ScoredText, ScoredText>> {
+
+    private final Set<Scorer<Element>> elementScorers;
+
+    public TreeHtmlScorerTestContainerSupplier(Set<Scorer<Element>> elementScorers) {
+        this.elementScorers = elementScorers;
+    }
+
     @Override
-    public TestContainer<File, ScoredText> get() {
-        return new TestContainer.Builder<File, ScoredText>()
+    public TestContainer<ScoredText, ScoredText> get() {
+        return new TestContainer.Builder<ScoredText, ScoredText>()
                 .begin()
                 .systemUnderTest(systemUnderTest())
-                .oracle(activeOracle())
+                .oracle(passiveOracle())
                 .build();
     }
 
-    private ActiveOracle<? super File, ? extends ScoredText> activeOracle() {
-        return new ActiveOracle<File, ScoredText>() {
-            @Override
-            public ScoredText apply(File input) {
-                Set<ElementScorerSetFunction.Content> contents = new HashSet<>();
-                contents.add(ElementScorerSetFunction.Content.EMPHASIS_ELEMENT_SCORER);
-                contents.add(ElementScorerSetFunction.Content.SEGMENTATION_ELEMENT_SCORER);
-                Set<Scorer<Element>> elementScorerSet = new ElementScorerSetFunction().apply(contents);
-                //TODO: share nv setup with both test suites
-                ScoringAndFlatteningNodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorerSet);
-                TreeHtmlScorer htmlScorer = new TreeHtmlScorer(nv);
-                htmlScorer.scoreHtml(input, ???)
-            }
-        };
+    private PassiveOracle<ScoredText, ScoredText> passiveOracle(){
+        return (input, actualOutput) -> input.equals(actualOutput);
     }
 
-    private SystemUnderTest<? super File, ? extends ScoredText> systemUnderTest() {
-        TreeHtmlScorer treeHtmlScorer = new TreeHtmlScorer()
-        return null;
+    /**
+     *
+     * @param elementScorers the element scorers to be used in the forward function
+     * @param scoredText the target scored text
+     * @return a file for which a correct implementation of TreeHtmlScorer will produce the specified ScoredText
+     */
+    private Function<ScoredText, File> reverse(){
+        throw new UnsupportedOperationException("Not implemented");
     }
+
+    private Function<File, ScoredText> forward(){
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    private SystemUnderTest<? super ScoredText, ? extends ScoredText> systemUnderTest() {
+        return scoredText -> reverse().andThen(forward()).apply(scoredText);
+    }
+
+
 }
