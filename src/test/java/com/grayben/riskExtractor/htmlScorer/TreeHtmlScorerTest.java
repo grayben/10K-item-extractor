@@ -71,6 +71,7 @@ public class TreeHtmlScorerTest
     public void
     test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple
             () throws Exception {
+        // use a worked example - there's no way around testing a couple in this way
         fail("Test not implemented");
     }
 
@@ -79,6 +80,20 @@ public class TreeHtmlScorerTest
     public void
     test_ScoreHtmlReturnsExpected_WhenTextInputIsComplicated
             () throws Exception {
+        // use a worked example - there's no way around testing a couple in this way
         fail("Test not implemented");
     }
+
+    @Override
+    @Test
+    public void
+    test_ScoreHtmlReturnsExpected_WhenTextInputIsComplicated
+            () throws Exception {
+        // use a worked example - there's no way around testing a couple in this way
+        fail("Test not implemented");
+    }
+
+
+
+
 }

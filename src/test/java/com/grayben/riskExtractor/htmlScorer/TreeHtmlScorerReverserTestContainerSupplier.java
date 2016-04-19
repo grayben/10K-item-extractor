@@ -14,11 +14,11 @@ import java.util.function.Supplier;
 /**
  * Created by Ben Gray on 19/02/2016.
  */
-public class TreeHtmlScorerTestContainerSupplier implements Supplier<TestContainer<ScoredText, ScoredText>> {
+public class TreeHtmlScorerReverserTestContainerSupplier implements Supplier<TestContainer<ScoredText, ScoredText>> {
 
     private final Set<Scorer<Element>> elementScorers;
 
-    public TreeHtmlScorerTestContainerSupplier(Set<Scorer<Element>> elementScorers) {
+    public TreeHtmlScorerReverserTestContainerSupplier(Set<Scorer<Element>> elementScorers) {
         this.elementScorers = elementScorers;
     }
 
