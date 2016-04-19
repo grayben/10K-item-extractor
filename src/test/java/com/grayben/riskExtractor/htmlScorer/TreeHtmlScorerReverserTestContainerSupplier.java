@@ -16,10 +16,10 @@ import java.util.function.Supplier;
  */
 public class TreeHtmlScorerReverserTestContainerSupplier implements Supplier<TestContainer<ScoredText, ScoredText>> {
 
-    private final Set<Scorer<Element>> elementScorers;
+    private final Supplier<Set<Scorer<Element>>> elementScorersSupplier;
 
-    public TreeHtmlScorerReverserTestContainerSupplier(Set<Scorer<Element>> elementScorers) {
-        this.elementScorers = elementScorers;
+    public TreeHtmlScorerReverserTestContainerSupplier(Supplier<Set<Scorer<Element>>> elementScorersSupplier) {
+        this.elementScorersSupplier = elementScorersSupplier;
     }
 
     @Override

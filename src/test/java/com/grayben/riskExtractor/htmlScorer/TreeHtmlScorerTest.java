@@ -15,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import static junit.framework.TestCase.fail;
 
@@ -87,13 +88,23 @@ public class TreeHtmlScorerTest
     @Override
     @Test
     public void
-    test_ScoreHtmlReturnsExpected_WhenTextInputIsComplicated
+    test_ScoreHtmlReturnsExpected_OnManyRandomlyInputsReversedEngineeredFromExpectedOutputs
             () throws Exception {
-        // use a worked example - there's no way around testing a couple in this way
+
+        TreeHtmlScorerReverserTestContainerSupplier testContainerSupplier
+                = new TreeHtmlScorerReverserTestContainerSupplier(() -> null);
+
+        // use TreeHtmlScorerReverserTestContainerSuppler to apply reverse engineer to expected outputs
+        for(int i = 0; i < 100; i++){
+            ScoredText expectedOutput = randomScoredText();
+            testContainerSupplier.get().verify(expectedOutput);
+        }
         fail("Test not implemented");
     }
 
-
+    private ScoredText randomScoredText() {
+        throw new UnsupportedOperationException("Not implemented");
+    }
 
 
 }
