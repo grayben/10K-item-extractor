@@ -15,7 +15,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import static junit.framework.TestCase.fail;
 
@@ -85,7 +84,6 @@ public class TreeHtmlScorerTest
         fail("Test not implemented");
     }
 
-    @Override
     @Test
     public void
     test_ScoreHtmlReturnsExpected_OnManyRandomlyInputsReversedEngineeredFromExpectedOutputs
