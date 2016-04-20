@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * Created by beng on 20/04/2016.
  */
-public class ScoredTextReverseEngineerer {
+public final class ScoredTextReverseEngineerer {
 
     public static Node treeFrom(ScoredText scoredText, Set<Scorer<Element>> elementScorers){
         throw new UnsupportedOperationException("Not implemented");
