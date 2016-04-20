@@ -10,7 +10,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.File;
+import java.io.*;
 import java.net.URL;
 import java.net.UnknownHostException;
 
@@ -57,13 +57,13 @@ public abstract class HtmlScorerTest {
     public void
     test_ScoreHtmlThrowsNullPointerException_WhenHtmlFileIsNull
             () throws Exception {
-        File file = null;
+        InputStream inputStream = null;
 
         String charsetName = "UTF-8";
 
         thrown.expect(NullPointerException.class);
 
-        htmlScorerSUT.scoreHtml(file, charsetName);
+        htmlScorerSUT.scoreHtml(inputStream, charsetName, "");
     }
 
     @Test
@@ -71,12 +71,13 @@ public abstract class HtmlScorerTest {
     test_ScoreHtmlThrowsNullPointerException_WhenCharsetNameIsNull
             () throws Exception {
         File file = new File("src/test/resources/lengthy.html");
+        InputStream inputStream = new FileInputStream(file);
 
         String charsetName = null;
 
         thrown.expect(NullPointerException.class);
 
-        htmlScorerSUT.scoreHtml(file, charsetName);
+        htmlScorerSUT.scoreHtml(inputStream, charsetName, "");
     }
 
     @Test
@@ -84,12 +85,13 @@ public abstract class HtmlScorerTest {
     test_ScoreHtmlThrowsIllegalArgumentException_WhenCharsetNameIsNotRecognised
             () throws Exception {
         File file = new File("src/test/resources/lengthy.html");
+        InputStream inputStream = new FileInputStream(file);
 
         String charsetName = "foo bar baz";
 
         thrown.expect(IllegalArgumentException.class);
 
-        htmlScorerSUT.scoreHtml(file, charsetName);
+        htmlScorerSUT.scoreHtml(inputStream, charsetName, "");
     }
 
 
@@ -98,12 +100,13 @@ public abstract class HtmlScorerTest {
     test_ScoreHtmlThrowsIllegalArgumentException_WhenCharsetNameIsEmptyString
             () throws Exception {
         File file = new File("src/test/resources/lengthy.html");
+        InputStream inputStream = new FileInputStream(file);
 
         String charsetName = "";
 
         thrown.expect(IllegalArgumentException.class);
 
-        htmlScorerSUT.scoreHtml(file, charsetName);
+        htmlScorerSUT.scoreHtml(inputStream, charsetName, "");
     }
 
     @Test
@@ -144,10 +147,11 @@ public abstract class HtmlScorerTest {
     test_ScoreHtmlReturnsNonNull_WhenSimpleLocalInput
             () throws Exception {
         File file = new File("src/test/resources/simple.html");
+        InputStream inputStream = new FileInputStream(file);
 
         String charsetName = "UTF-8";
 
-        ScoredText returned = htmlScorerSUT.scoreHtml(file, charsetName);
+        ScoredText returned = htmlScorerSUT.scoreHtml(inputStream, charsetName, "");
 
         assertNotNull(returned);
     }
@@ -168,12 +172,13 @@ public abstract class HtmlScorerTest {
     test_ScoreHtmlReturnsNonNull_WhenLengthyLocalInput
             () throws Exception {
         File file = new File("src/test/resources/lengthy.html");
+        InputStream inputStream = new FileInputStream(file);
 
         String charsetName = null;
 
         thrown.expect(NullPointerException.class);
 
-        htmlScorerSUT.scoreHtml(file, charsetName);
+        htmlScorerSUT.scoreHtml(inputStream, charsetName, "");
     }
 
     @Test
@@ -192,10 +197,11 @@ public abstract class HtmlScorerTest {
     test_ScoreHtmlReturnsNonNull_WhenEmptyFile
             () throws Exception {
         File file = new File("src/test/resources/lengthy.html");
+        InputStream inputStream = new FileInputStream(file);
 
         String charsetName = "UTF-8";
 
-        ScoredText returned = htmlScorerSUT.scoreHtml(file, charsetName);
+        ScoredText returned = htmlScorerSUT.scoreHtml(inputStream, charsetName, "");
 
         assertNotNull(returned);
     }
@@ -205,6 +211,7 @@ public abstract class HtmlScorerTest {
     test_ScoreHtmlReturnsSameFromAnySignature_WhenTextInputIsSameSimple
             () throws Exception {
         File file = File.createTempFile("foo", "bar");
+        InputStream inputStream = new FileInputStream(file);
 
         String urlString = "https://en.wikipedia.org/wiki/Albert_Einstein";
         String charsetName = "UTF-8";
@@ -213,7 +220,7 @@ public abstract class HtmlScorerTest {
 
         FileUtils.copyURLToFile(url, file, 2000, 2000);
 
-        ScoredText returnedFromLocal = htmlScorerSUT.scoreHtml(file, charsetName);
+        ScoredText returnedFromLocal = htmlScorerSUT.scoreHtml(inputStream, charsetName, "");
         ScoredText returnedFromRemote = htmlScorerSUT.scoreHtml(urlString);
 
         assertEquals(returnedFromLocal, returnedFromRemote);
