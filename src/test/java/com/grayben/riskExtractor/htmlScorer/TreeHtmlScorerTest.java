@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer;
 
+import com.grayben.riskExtractor.helpers.TreeHtmlScorerReverserTestContainerSupplier;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;

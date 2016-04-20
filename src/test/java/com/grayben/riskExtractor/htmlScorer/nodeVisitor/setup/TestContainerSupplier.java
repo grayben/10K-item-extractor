@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup;
 
+import com.grayben.riskExtractor.helpers.AnnotatedElement;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;

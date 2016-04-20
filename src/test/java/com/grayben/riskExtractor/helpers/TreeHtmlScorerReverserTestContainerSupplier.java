@@ -1,5 +1,6 @@
-package com.grayben.riskExtractor.htmlScorer;
+package com.grayben.riskExtractor.helpers;
 
+import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.tools.testOracle.SystemUnderTest;
 import com.grayben.tools.testOracle.oracle.passive.PassiveOracle;
