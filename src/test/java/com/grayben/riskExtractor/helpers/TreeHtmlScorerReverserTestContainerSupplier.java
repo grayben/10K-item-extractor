@@ -8,6 +8,7 @@ import com.grayben.tools.testOracle.testContainer.TestContainer;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -42,15 +43,15 @@ public class TreeHtmlScorerReverserTestContainerSupplier implements Supplier<Tes
      * @param scoredText the target scored text
      * @return a file for which a correct implementation of TreeHtmlScorer will produce the specified ScoredText
      */
-    private Function<ScoredText, File> reverse(){
+    private Function<ScoredText, InputStream> reverse(){
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    private Function<File, ScoredText> forward(){
+    private Function<InputStream, ScoredText> forward(){
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    private SystemUnderTest<? super ScoredText, ? extends ScoredText> systemUnderTest() {
+    private SystemUnderTest<ScoredText, ScoredText> systemUnderTest() {
         return scoredText -> reverse().andThen(forward()).apply(scoredText);
     }
 
