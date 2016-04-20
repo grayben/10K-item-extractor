@@ -1,13 +1,15 @@
 package com.grayben.riskExtractor.helpers;
 
+import com.grayben.riskExtractor.htmlScorer.HtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
+import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
+import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.tools.testOracle.SystemUnderTest;
 import com.grayben.tools.testOracle.oracle.passive.PassiveOracle;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
 import org.jsoup.nodes.Element;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.Set;
 import java.util.function.Function;
@@ -39,16 +41,19 @@ public class TreeHtmlScorerReverserTestContainerSupplier implements Supplier<Tes
 
     /**
      *
-     * @param elementScorers the element scorers to be used in the forward function
-     * @param scoredText the target scored text
-     * @return a file for which a correct implementation of TreeHtmlScorer will produce the specified ScoredText
+     * @return an InputStream for which a correct implementation of TreeHtmlScorer will produce the specified ScoredText
      */
     private Function<ScoredText, InputStream> reverse(){
-        throw new UnsupportedOperationException("Not implemented");
+        return scoredText -> ScoredTextReverseEngineerer.inputSteamFrom(scoredText, elementScorersSupplier.get());
     }
 
     private Function<InputStream, ScoredText> forward(){
-        throw new UnsupportedOperationException("Not implemented");
+        return inputStream -> {
+            ScoringAndFlatteningNodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorersSupplier.get());
+            HtmlScorer htmlScorer = new TreeHtmlScorer(nv);
+            return htmlScorer.scoreHtml(inputStream, "ISO-8", "");
+        };
+
     }
 
     private SystemUnderTest<ScoredText, ScoredText> systemUnderTest() {
