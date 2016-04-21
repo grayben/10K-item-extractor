@@ -7,16 +7,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by beng on 20/04/2016.
  */
 public final class ScoredTextReverseEngineerer {
-
-    public static Node treeFrom(ScoredText scoredText, Set<Scorer<Element>> elementScorers){
-        throw new UnsupportedOperationException("Not implemented");
-    }
 
     public static String htmlFrom(Node tree){
         StringBuilder sb = new StringBuilder();
@@ -25,8 +22,9 @@ public final class ScoredTextReverseEngineerer {
     }
 
     public static String htmlFrom(ScoredText scoredText, Set<Scorer<Element>> elementScorers){
-        Node tree = treeFrom(scoredText, elementScorers);
-        return htmlFrom(tree);
+        List<String> textElementsSurroundedByAppropriateTags = null;
+        String taggedTextSurroundedByFrame = null;
+        return taggedTextSurroundedByFrame;
     }
 
     public static InputStream inputStreamFrom(String html){
