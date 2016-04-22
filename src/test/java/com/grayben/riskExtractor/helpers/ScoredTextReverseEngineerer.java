@@ -7,12 +7,10 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.MapScorer;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+import org.jsoup.parser.Tag;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by beng on 20/04/2016.
@@ -38,21 +36,46 @@ public final class ScoredTextReverseEngineerer {
         return sb.toString();
     }
 
+    public static <T> boolean mutuallyExclusiveNonZeroScores(Collection<? extends Scorer<T>> scorers, T item){
+        int numNonZeroScores = 0;
+        for(Scorer<T> scorer : scorers){
+            if (scorer.score(item) > 0) numNonZeroScores++;
+        }
+        return numNonZeroScores <= 1;
+    }
+
     //TODO: adapt to e.g. tags. Not elements: can't wrap text in an element!
-    public static String htmlFrom(ScoredText scoredText, Set<MapScorer<Element>> elementScorers){
-        List<String> textElementsSurroundedByAppropriateTags = new ArrayList<>();
+    public static String htmlFrom(ScoredText scoredText, Set<MapScorer<Tag>> tagScorers){
+        StringBuilder stringBuilder = new StringBuilder();
+
         for(ScoredTextElement scoredTextElement : scoredText.getList()){
-            String textElement = scoredTextElement.getTextElement();
+
+            String htmlForElement = scoredTextElement.getTextElement();
+
+
             Map<String, Integer> scores = scoredTextElement.getScores();
-            for(Map.Entry<String, Integer> labelScorePair : scores.entrySet()){
+
+            List<MapScorer<Tag>> scorerList = new ArrayList<>();
+            List<Tag> wrapWith = new ArrayList<>();
+            for(Map.Entry<String, Integer> labelScorePair : scores.entrySet()) {
+
                 String label = labelScorePair.getKey();
                 Integer score = labelScorePair.getValue();
-                MapScorer<Element> scorer = appropriateScorerFrom(elementScorers, label);
-                List<Element> wrapWith = keysSuchThatValuesSumTo(scorer.getScoresMap(), score);
+
+                MapScorer<Tag> scorer = appropriateScorerFrom(tagScorers, label);
+
+                scorerList.add(scorer);
+                wrapWith.addAll(keysSuchThatValuesSumTo(scorer.getScoresMap(), score));
             }
+
+            for(Tag tag : wrapWith){
+                assert mutuallyExclusiveNonZeroScores(scorerList, tag);
+                htmlForElement = new Element(tag, "").wrap(htmlForElement).html();
+            }
+
+            stringBuilder.append(htmlForElement);
         }
-        String taggedTextSurroundedByFrame = null;
-        return taggedTextSurroundedByFrame;
+        return stringBuilder.toString();
     }
 
     public static InputStream inputStreamFrom(String html){
@@ -64,7 +87,7 @@ public final class ScoredTextReverseEngineerer {
         return inputStreamFrom(html);
     }
 
-    public static InputStream inputSteamFrom(ScoredText scoredText, Set<Scorer<Element>> elementScorers){
+    public static InputStream inputSteamFrom(ScoredText scoredText, Set<MapScorer<Tag>> elementScorers){
         String html = htmlFrom(scoredText, elementScorers);
         return inputStreamFrom(html);
     }
