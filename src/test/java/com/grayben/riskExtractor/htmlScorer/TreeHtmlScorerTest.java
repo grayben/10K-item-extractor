@@ -135,15 +135,6 @@ public class TreeHtmlScorerTest
         assertEquals(expected, actual);
     }
 
-    @Override
-    @Test
-    public void
-    test_ScoreHtmlReturnsExpected_WhenTextInputIsComplicated
-            () throws Exception {
-        // use a worked example - there's no way around testing a couple in this way
-        fail("Test not implemented");
-    }
-
     @Test
     public void
     test_ScoreHtmlReturnsExpected_OnManyRandomlyInputsReversedEngineeredFromExpectedOutputs
