@@ -9,7 +9,6 @@ import org.jsoup.select.NodeTraversor;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ListIterator;
 
 /**
  * Parses HTML into a tree structure before processing its contents.
@@ -76,15 +75,10 @@ public class TreeHtmlScorer implements HtmlScorer {
      */
 	private Element getHtmlBody(Document doc) {
 		Elements elements = doc.select("html > body");
-		ListIterator<Element> iterator = elements.listIterator();
-		int i = 1;
-		while (iterator.hasNext()){
-			System.out.println(i++);
-			System.out.println(iterator.next().html());	
-		}
-
-		//TODO: implement
-		throw new UnsupportedOperationException("Not implemented");
+		if(elements.size() != 1){
+			throw new IllegalArgumentException("Document did not have one and only one html body");
+		};
+		return elements.first();
 	}
 
 	@Override
