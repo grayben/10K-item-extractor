@@ -4,56 +4,84 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ListIterator;
+import java.io.InputStream;
 
+/**
+ * Parses HTML into a tree structure before processing its contents.
+ * <p>
+ * Written by Ben Gray, 2015.
+ */
 public class TreeHtmlScorer implements HtmlScorer {
-	
-	NodeTraversor nt;
-	ScoringAndFlatteningNodeVisitor nv;
 
+    /**
+     * The node traversor to use to traverse the generated tree structure.
+     */
+	NodeTraversor nt;
+
+    /**
+     * The scoring and flattening node visitor to pass into {@link #nt}.
+     */
+    ScoringAndFlatteningNodeVisitor nv;
+
+    /**
+     * Instantiate relying upon the specified node visitor.
+     *
+     * @param nv the node visitor upon which to rely to score elements of the HTML tree
+     */
 	//TODO: refactor ScoringAndFlatteningNodeVisitor into intermediate abstraction
 	public TreeHtmlScorer(ScoringAndFlatteningNodeVisitor nv) {
 		super();
+		if (nv == null) {
+			throw new NullPointerException("nv may not be null");
+		}
 		this.nv = nv;
 		this.nt = new NodeTraversor(this.nv);
 	}
-	
-	private ScoredText traverse(Node node)
-			throws NullPointerException {
-		if(node != null){
-			nt.traverse(node);
-		} else {
-			throw new NullPointerException();
-		}
+
+    /**
+     * Traverse the specified <b>HTML tree</b> with the {@link ScoringAndFlatteningNodeVisitor} specified
+     * at construction, producing scored text.
+     * @param node the root of the HTML tree
+     * @return the text, decorated with scores
+     * @throws NullPointerException
+     */
+	private ScoredText traverse(Node node){
+		nt.traverse(node);
 		return nv.getFlatText();
 	}
 
 
-	@Override
-	public ScoredText scoreHtml(File htmlFile, String charsetName) {
-		Document doc = parseHtmlFile(htmlFile, charsetName);
+	public ScoredText scoreHtml(InputStream inputStream, String charsetName, String baseUri) throws IOException {
+		if (inputStream == null) {
+			throw new NullPointerException("inputStream was null");
+		}
+		if (charsetName == null) {
+			throw new NullPointerException("charsetName was null");
+		}
+		if (baseUri == null) {
+			throw new NullPointerException("baseUri was null");
+		}
+		Document doc = parseHtmlFileFromInputStream(inputStream, charsetName, baseUri);
 		Element body = getHtmlBody(doc);
 		return traverse(body);
 	}
-	
+
+    /**
+     * Extract only the HTML enclosed by body tags.
+     *
+     * @param doc the HTML document form which to extract the body
+     * @return the root of the tree extracted from within the body tags
+     */
 	private Element getHtmlBody(Document doc) {
 		Elements elements = doc.select("html > body");
-		ListIterator<Element> iterator = elements.listIterator();
-		int i = 1;
-		while (iterator.hasNext()){
-			System.out.println(i++);
-			System.out.println(iterator.next().html());	
-		}
-
-		//TODO: implement
-		
-		return null;
+		if(elements.size() != 1){
+			throw new IllegalArgumentException("Document did not have one and only one html body");
+		};
+		return elements.first();
 	}
 
 	@Override
@@ -62,47 +90,25 @@ public class TreeHtmlScorer implements HtmlScorer {
 		Document doc = parseHtmlUrl(url);
 		return traverse(doc);
 	}
-	
+
+    /**
+     * @param url the URL of the HTML to parse
+     * @return the HTML parsed as a tree
+     * @throws IOException
+     */
 	private Document parseHtmlUrl(String url) throws IOException {
 		Document doc = Jsoup.connect(url).get();
 		return doc;
 	}
 
-	private Document parseHtmlFile(File htmlFile, String charsetName){
-		Document doc = null;
-		try {
-			doc = Jsoup.parse(htmlFile, charsetName);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String crapHtml = "<SEC-DOCUMENT> all this crap\n"
-				+ "more crap"
-				+ "<html>"
-				+ "<head>a header</head>"
-				+ "<body>"
-				+ "real HTML"
-				+ "</body>"
-				+ "</html>"
-				+ "even more crap";
-		
-		System.out.println();
-		System.out.println("CRAP HTML");
-		System.out.println(crapHtml);
-		System.out.println();
-		
-		Whitelist wl = Whitelist.relaxed();
-		String cleanHtml = Jsoup.clean(crapHtml, wl);
-		
-		System.out.println("CLEANED HTML");
-		System.out.println();
-		System.out.print(cleanHtml);
-		System.out.println();
-		
-		doc = Jsoup.parse(cleanHtml);
-		System.out.println("PARSED HTML");
-		System.out.println();
-		System.out.print(doc.html());
-		System.out.println();
+    /**
+     * @param inputStream the input stream representing the html
+     * @param charsetName the name of the charset used to encode the file
+	 * @param baseUri the baseURI of the html
+     * @return the HTML parsed as a tree
+     */
+	private Document parseHtmlFileFromInputStream(InputStream inputStream, String charsetName, String baseUri) throws IOException {
+		Document doc = Jsoup.parse(inputStream, charsetName, baseUri);
 		return doc;
 	}
 }

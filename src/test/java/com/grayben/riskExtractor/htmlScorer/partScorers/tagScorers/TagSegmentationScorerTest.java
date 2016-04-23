@@ -11,7 +11,7 @@ import java.lang.Object;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.*;
+import static com.grayben.riskExtractor.helpers.TestHelper.*;
 import static org.junit.Assert.*;
 
 /**
