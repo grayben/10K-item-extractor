@@ -230,9 +230,4 @@ public abstract class HtmlScorerTest {
     abstract public void
     test_ScoreHtmlReturnsExpected_WhenTextInputIsSimple
             () throws Exception;
-
-    @Test
-    abstract public void
-    test_ScoreHtmlReturnsExpected_WhenTextInputIsComplicated
-            () throws Exception;
 }
