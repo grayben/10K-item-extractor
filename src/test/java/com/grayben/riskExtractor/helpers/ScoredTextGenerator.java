@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class ScoredTextGenerator {
     public static ScoredText randomScoredText(Random random, Set<Scorer<Element>> elementScorers){
-        Set<MapScorer<Tag>> tagScorers = equivalentScorersFrom(elementScorers);
+        Set<MapScorer<Tag>> tagScorers = ScoredTextReverseEngineerer.equivalentScorersFrom(elementScorers);
         List<MapScorer<Tag>> scorerList = new ArrayList<>();
         scorerList.addAll(tagScorers);
 
