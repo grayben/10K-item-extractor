@@ -28,8 +28,16 @@ public final class ScoredTextReverseEngineerer {
         throw new IllegalArgumentException("The specified Iterable did not contain a matching element");
     }
 
-    public static <K, Integer> List<K> keysSuchThatValuesSumTo(Map<K, Integer> map, Integer toSumTo){
-        throw new UnsupportedOperationException("Not implemented");
+    public static <K, V> K keySuchThatValueIs(Map<K, V> map, V targetValue){
+        if( ! map.containsValue(targetValue)){
+            throw new IllegalArgumentException(map.toString() + " did not contain " + targetValue.toString());
+        }
+
+        for(Map.Entry<K, V> entry: map.entrySet()){
+            if (entry.getValue().equals(targetValue)) return entry.getKey();
+        }
+
+        throw new IllegalArgumentException("Unexpected exception");
     }
 
     public static String htmlFrom(Node tree){
@@ -90,7 +98,7 @@ public final class ScoredTextReverseEngineerer {
                 MapScorer<Tag> scorer = appropriateScorerFrom(tagScorers, label);
 
                 scorerList.add(scorer);
-                wrapWith.addAll(keysSuchThatValuesSumTo(scorer.getScoresMap(), score));
+                wrapWith.add(keySuchThatValueIs(scorer.getScoresMap(), score));
             }
 
             for(Tag tag : wrapWith){
@@ -104,7 +112,7 @@ public final class ScoredTextReverseEngineerer {
     }
 
     public static String htmlFromElementScorers(ScoredText scoredText, Set<Scorer<Element>> elementScorers){
-        return htmlFromTagMapScorers(scoredText, equivalentScorersFrom(elementScorers));    
+        return htmlFromTagMapScorers(scoredText, equivalentScorersFrom(elementScorers));
     }
 
     public static InputStream inputStreamFrom(String html){
