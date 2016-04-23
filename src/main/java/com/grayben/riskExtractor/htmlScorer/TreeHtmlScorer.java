@@ -8,8 +8,8 @@ import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ListIterator;
 
 /**
@@ -59,9 +59,8 @@ public class TreeHtmlScorer implements HtmlScorer {
 	}
 
 
-	@Override
-	public ScoredText scoreHtml(File htmlFile, String charsetName) {
-		Document doc = parseHtmlFile(htmlFile, charsetName);
+	public ScoredText scoreHtml(InputStream inputStream, String charsetName, String baseUri) {
+		Document doc = parseHtmlFileFromInputStream(inputStream, charsetName, baseUri);
 		Element body = getHtmlBody(doc);
 		return traverse(body);
 	}
@@ -103,14 +102,15 @@ public class TreeHtmlScorer implements HtmlScorer {
 	}
 
     /**
-     * @param htmlFile the local location of the HMTL file to parse
+     * @param inputStream the input stream representing the html
      * @param charsetName the name of the charset used to encode the file
+	 * @param baseUri the baseURI of the html
      * @return the HTML parsed as a tree
      */
-	private Document parseHtmlFile(File htmlFile, String charsetName){
+	private Document parseHtmlFileFromInputStream(InputStream inputStream, String charsetName, String baseUri){
 		Document doc;
 		try {
-			doc = Jsoup.parse(htmlFile, charsetName);
+			doc = Jsoup.parse(inputStream, charsetName, baseUri);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

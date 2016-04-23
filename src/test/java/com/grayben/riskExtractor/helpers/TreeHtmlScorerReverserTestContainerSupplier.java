@@ -51,7 +51,7 @@ public class TreeHtmlScorerReverserTestContainerSupplier implements Supplier<Tes
         return inputStream -> {
             ScoringAndFlatteningNodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorersSupplier.get());
             HtmlScorer htmlScorer = new TreeHtmlScorer(nv);
-            return htmlScorer.scoreHtml(inputStream, "ISO-8", "");
+            return htmlScorer.scoreHtml(inputStream, "unicode", "");
         };
 
     }
