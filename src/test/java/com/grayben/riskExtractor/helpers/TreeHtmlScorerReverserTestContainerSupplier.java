@@ -44,7 +44,7 @@ public class TreeHtmlScorerReverserTestContainerSupplier implements Supplier<Tes
      * @return an InputStream for which a correct implementation of TreeHtmlScorer will produce the specified ScoredText
      */
     private Function<ScoredText, InputStream> reverse(){
-        return scoredText -> ScoredTextReverseEngineerer.inputSteamFrom(scoredText, elementScorersSupplier.get());
+        return scoredText -> ScoredTextReverseEngineerer.inputStreamFromElementScorers(scoredText, elementScorersSupplier.get());
     }
 
     private Function<InputStream, ScoredText> forward(){

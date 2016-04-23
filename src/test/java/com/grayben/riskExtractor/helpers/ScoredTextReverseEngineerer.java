@@ -3,6 +3,8 @@ package com.grayben.riskExtractor.helpers;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.MapScorer;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.nodes.Element;
@@ -44,8 +46,31 @@ public final class ScoredTextReverseEngineerer {
         return numNonZeroScores <= 1;
     }
 
+    public static MapScorer<Tag> equivalentScorerFrom(EmphasisElementScorer emphasisElementScorer){
+        return emphasisElementScorer.getTagEmphasisScorer();
+    }
+
+    public static MapScorer<Tag> equivalentScorerFrom(SegmentationElementScorer segmentationElementScorer){
+        Scorer<Tag> tagScorer = segmentationElementScorer.getTagScorer();
+        return (MapScorer<Tag>) tagScorer;
+    }
+
+    public static Set<MapScorer<Tag>> equivalentScorersFrom(Set<? extends Scorer<? extends Element>> elementScorers){
+        Set<MapScorer<Tag>> newSet = new HashSet<>();
+        for(Scorer<? extends Element> elementScorer: elementScorers){
+            if(SegmentationElementScorer.class.isAssignableFrom(elementScorer.getClass())){
+                newSet.add(equivalentScorerFrom((SegmentationElementScorer) elementScorer));
+            } else if(EmphasisElementScorer.class.isAssignableFrom(elementScorer.getClass())){
+                newSet.add(equivalentScorerFrom((EmphasisElementScorer) elementScorer));
+            } else {
+                throw new IllegalArgumentException(elementScorer.getClass().toString() + " was not a recognised subclass");
+            }
+        }
+        return newSet;
+    }
+
     //TODO: adapt to e.g. tags. Not elements: can't wrap text in an element!
-    public static String htmlFromTagScorers(ScoredText scoredText, Set<MapScorer<Tag>> tagScorers){
+    public static String htmlFromTagMapScorers(ScoredText scoredText, Set<MapScorer<Tag>> tagScorers){
         StringBuilder stringBuilder = new StringBuilder();
 
         for(ScoredTextElement scoredTextElement : scoredText.getList()){
@@ -78,6 +103,10 @@ public final class ScoredTextReverseEngineerer {
         return stringBuilder.toString();
     }
 
+    public static String htmlFromElementScorers(ScoredText scoredText, Set<Scorer<Element>> elementScorers){
+        return htmlFromTagMapScorers(scoredText, equivalentScorersFrom(elementScorers));    
+    }
+
     public static InputStream inputStreamFrom(String html){
         return IOUtils.toInputStream(html);
     }
@@ -87,9 +116,13 @@ public final class ScoredTextReverseEngineerer {
         return inputStreamFrom(html);
     }
 
-    public static InputStream inputSteamFromTagScorers(ScoredText scoredText, Set<MapScorer<Tag>> elementScorers){
-        String html = htmlFromTagScorers(scoredText, elementScorers);
+    public static InputStream inputSteamFromTagMapScorers(ScoredText scoredText, Set<MapScorer<Tag>> elementScorers){
+        String html = htmlFromTagMapScorers(scoredText, elementScorers);
         return inputStreamFrom(html);
+    }
+
+    public static InputStream inputStreamFromElementScorers(ScoredText scoredText, Set<Scorer<Element>> elementScorers){
+        return inputSteamFromTagMapScorers(scoredText, equivalentScorersFrom(elementScorers));
     }
 
 }
