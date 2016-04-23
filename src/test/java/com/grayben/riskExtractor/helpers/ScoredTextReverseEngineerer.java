@@ -98,7 +98,15 @@ public final class ScoredTextReverseEngineerer {
                 MapScorer<Tag> scorer = appropriateScorerFrom(tagScorers, label);
 
                 scorerList.add(scorer);
-                wrapWith.add(keySuchThatValueIs(scorer.getScoresMap(), score));
+                Map<Tag, Integer> scoresMap = scorer.getScoresMap();
+                if (scoresMap.containsValue(score)){
+                    wrapWith.add(keySuchThatValueIs(scorer.getScoresMap(), score));
+                } else {
+                    Tag dummyTag = Tag.valueOf("foobarbaz");
+                    assert ! scoresMap.containsKey(dummyTag);
+                    wrapWith.add(dummyTag);
+                }
+
             }
 
             for(Tag tag : wrapWith){
