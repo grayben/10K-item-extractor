@@ -44,11 +44,11 @@ public abstract class HtmlScorerTest {
 
     @Test
     public void
-    test_ScoreHtmlThrowsNullPointerException_WhenURLIsNull
+    test_ScoreHtmlThrowsIllegalArgumentException_WhenURLIsNull
             () throws Exception {
         String url = null;
 
-        thrown.expect(NullPointerException.class);
+        thrown.expect(IllegalArgumentException.class);
 
         htmlScorerSUT.scoreHtml(url);
     }
