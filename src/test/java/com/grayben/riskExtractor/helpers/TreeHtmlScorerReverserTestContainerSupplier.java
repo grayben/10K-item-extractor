@@ -10,6 +10,7 @@ import com.grayben.tools.testOracle.oracle.passive.PassiveOracle;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
 import org.jsoup.nodes.Element;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 import java.util.function.Function;
@@ -51,7 +52,13 @@ public class TreeHtmlScorerReverserTestContainerSupplier implements Supplier<Tes
         return inputStream -> {
             ScoringAndFlatteningNodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorersSupplier.get());
             HtmlScorer htmlScorer = new TreeHtmlScorer(nv);
-            return htmlScorer.scoreHtml(inputStream, "unicode", "");
+            ScoredText scoredText = null;
+            try {
+                scoredText = htmlScorer.scoreHtml(inputStream, "unicode", "");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return scoredText;
         };
 
     }
