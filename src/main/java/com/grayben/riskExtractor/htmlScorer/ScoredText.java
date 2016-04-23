@@ -65,4 +65,20 @@ public class ScoredText {
 	public List<ScoredTextElement> getList(){
         return Collections.unmodifiableList(this.text);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ScoredText that = (ScoredText) o;
+
+        return text != null ? text.equals(that.text) : that.text == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return text != null ? text.hashCode() : 0;
+    }
 }

@@ -12,10 +12,7 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisSc
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
 import org.jsoup.nodes.Element;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -79,13 +76,14 @@ public class RiskExtractor {
 		System.out.print(scoredText.toString());
 	}
 	
-	private static void takeArgs(String[] args){
+	private static void takeArgs(String[] args) throws IOException {
 		checkArgs(args);
 		String fileName = args[0];
 		File htmlFile = new File(fileName);
+		InputStream inputStream = new FileInputStream(htmlFile);
 		String charsetName = args[1];
 		HtmlScorer scorer = new TreeHtmlScorer(setupNodeVisitor());
-		ScoredText scoredText = scorer.scoreHtml(htmlFile, charsetName);
+		ScoredText scoredText = scorer.scoreHtml(inputStream, charsetName, "");
 		System.out.print(scoredText.toString());
 		File outFile = new File("/Volumes/MBS Data/EDGAR-Form10K/output.txt");
 		PrintWriter writer;

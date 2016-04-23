@@ -5,7 +5,7 @@ import org.apache.commons.collections4.list.SetUniqueList;
 
 import java.util.*;
 
-class MarkedTextOracle {
+public class MarkedTextOracle {
 
     private ElectedText testInput;
     private Set<String> testExpectedOutput;

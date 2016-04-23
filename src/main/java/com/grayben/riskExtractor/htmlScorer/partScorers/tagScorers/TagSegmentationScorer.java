@@ -19,7 +19,7 @@ extends MapScorer<Tag> {
      * <p>
      * Used to identify this class in a collection of {@link Scorer}s.
      */
-    public static final String SCORE_LABEL = "tag-emphasis";
+    public static final String SCORE_LABEL = "tag-segmentation";
 
     /**
      * Construct with the specified map.
