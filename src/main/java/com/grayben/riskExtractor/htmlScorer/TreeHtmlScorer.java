@@ -47,13 +47,8 @@ public class TreeHtmlScorer implements HtmlScorer {
      * @return the text, decorated with scores
      * @throws NullPointerException
      */
-	private ScoredText traverse(Node node)
-			throws NullPointerException {
-		if(node != null){
-			nt.traverse(node);
-		} else {
-			throw new NullPointerException();
-		}
+	private ScoredText traverse(Node node){
+		nt.traverse(node);
 		return nv.getFlatText();
 	}
 
@@ -89,7 +84,7 @@ public class TreeHtmlScorer implements HtmlScorer {
 		}
 
 		//TODO: implement
-		return null;
+		throw new UnsupportedOperationException("Not implemented");
 	}
 
 	@Override
