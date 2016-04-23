@@ -35,6 +35,9 @@ public class TreeHtmlScorer implements HtmlScorer {
 	//TODO: refactor ScoringAndFlatteningNodeVisitor into intermediate abstraction
 	public TreeHtmlScorer(ScoringAndFlatteningNodeVisitor nv) {
 		super();
+		if (nv == null) {
+			throw new NullPointerException("nv may not be null");
+		}
 		this.nv = nv;
 		this.nt = new NodeTraversor(this.nv);
 	}
