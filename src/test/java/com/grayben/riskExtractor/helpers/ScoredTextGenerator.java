@@ -66,6 +66,9 @@ public class ScoredTextGenerator {
         return new ImmutablePair<>(scoredText, htmlBuilder.toString());
     }
 
+    public static int randomInt(Random random, int min, int max){
+        return min + (int)(random.nextFloat() * ((max - min) + 1));
+    }
 
     public static ScoredText randomScoredText(Random random, Set<Scorer<Element>> elementScorers){
         Set<MapScorer<Tag>> tagScorers = ScoredTextReverseEngineerer.equivalentScorersFrom(elementScorers);
@@ -73,8 +76,7 @@ public class ScoredTextGenerator {
         scorerList.addAll(tagScorers);
 
         ScoredText scoredText = new ScoredText();
-
-        for(int i = 0; i < random.nextInt(); i++){
+        for(int i = 0; i < randomInt(random, 1, 100); i++){
             Map<String, Integer> textScores = new HashMap<>();
 
             for(MapScorer<Tag> tagMapScorer: scorerList){
@@ -83,15 +85,15 @@ public class ScoredTextGenerator {
                 String label = tagMapScorer.getScoreLabel();
                 Integer score = Scorer.DEFAULT_SCORE;
 
-                if(random.nextInt() % 2 > 0){
+                if(randomInt(random, 1, 100) % 2 > 0){
                     List<Integer> scoreList = new ArrayList<>();
                     scoreList.addAll(scoreMap.values());
-                    score = scoreList.get(random.nextInt() % scoreList.size());
+                    score = scoreList.get(randomInt(random, 1, Integer.MAX_VALUE - 1) % scoreList.size());
                 }
                 textScores.put(label, score);
 
             }
-            String text = ((Integer)random.nextInt()).toString();
+            String text = ((Integer)randomInt(random, 1, Integer.MAX_VALUE - 1)).toString();
 
             scoredText.add(new ScoredTextElement(text, textScores));
         }
