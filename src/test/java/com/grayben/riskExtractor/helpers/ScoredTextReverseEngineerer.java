@@ -45,7 +45,7 @@ public final class ScoredTextReverseEngineerer {
     }
 
     //TODO: adapt to e.g. tags. Not elements: can't wrap text in an element!
-    public static String htmlFrom(ScoredText scoredText, Set<MapScorer<Tag>> tagScorers){
+    public static String htmlFromTagScorers(ScoredText scoredText, Set<MapScorer<Tag>> tagScorers){
         StringBuilder stringBuilder = new StringBuilder();
 
         for(ScoredTextElement scoredTextElement : scoredText.getList()){
@@ -87,8 +87,8 @@ public final class ScoredTextReverseEngineerer {
         return inputStreamFrom(html);
     }
 
-    public static InputStream inputSteamFrom(ScoredText scoredText, Set<MapScorer<Tag>> elementScorers){
-        String html = htmlFrom(scoredText, elementScorers);
+    public static InputStream inputSteamFromTagScorers(ScoredText scoredText, Set<MapScorer<Tag>> elementScorers){
+        String html = htmlFromTagScorers(scoredText, elementScorers);
         return inputStreamFrom(html);
     }
 
