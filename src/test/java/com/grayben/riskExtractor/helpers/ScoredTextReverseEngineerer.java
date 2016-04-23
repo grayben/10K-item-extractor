@@ -30,7 +30,7 @@ public final class ScoredTextReverseEngineerer {
 
     public static <K, V> K keySuchThatValueIs(Map<K, V> map, V targetValue){
         if( ! map.containsValue(targetValue)){
-            throw new IllegalArgumentException(map.toString() + " did not contain " + targetValue.toString());
+            throw new IllegalArgumentException("map did not contain " + targetValue.toString());
         }
 
         for(Map.Entry<K, V> entry: map.entrySet()){
@@ -103,7 +103,7 @@ public final class ScoredTextReverseEngineerer {
 
             for(Tag tag : wrapWith){
                 assert mutuallyExclusiveNonZeroScores(scorerList, tag);
-                htmlForElement = new Element(tag, "").wrap(htmlForElement).html();
+                htmlForElement = new Element(tag, "").text(htmlForElement).html();
             }
 
             stringBuilder.append(htmlForElement);
@@ -124,13 +124,13 @@ public final class ScoredTextReverseEngineerer {
         return inputStreamFrom(html);
     }
 
-    public static InputStream inputSteamFromTagMapScorers(ScoredText scoredText, Set<MapScorer<Tag>> elementScorers){
+    public static InputStream inputStreamFromTagMapScorers(ScoredText scoredText, Set<MapScorer<Tag>> elementScorers){
         String html = htmlFromTagMapScorers(scoredText, elementScorers);
         return inputStreamFrom(html);
     }
 
     public static InputStream inputStreamFromElementScorers(ScoredText scoredText, Set<Scorer<Element>> elementScorers){
-        return inputSteamFromTagMapScorers(scoredText, equivalentScorersFrom(elementScorers));
+        return inputStreamFromTagMapScorers(scoredText, equivalentScorersFrom(elementScorers));
     }
 
 }
