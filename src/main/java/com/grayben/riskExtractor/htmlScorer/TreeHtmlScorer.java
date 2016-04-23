@@ -4,7 +4,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 
@@ -59,7 +58,16 @@ public class TreeHtmlScorer implements HtmlScorer {
 	}
 
 
-	public ScoredText scoreHtml(InputStream inputStream, String charsetName, String baseUri) {
+	public ScoredText scoreHtml(InputStream inputStream, String charsetName, String baseUri) throws IOException {
+		if (inputStream == null) {
+			throw new NullPointerException("inputStream was null");
+		}
+		if (charsetName == null) {
+			throw new NullPointerException("charsetName was null");
+		}
+		if (baseUri == null) {
+			throw new NullPointerException("baseUri was null");
+		}
 		Document doc = parseHtmlFileFromInputStream(inputStream, charsetName, baseUri);
 		Element body = getHtmlBody(doc);
 		return traverse(body);
@@ -107,41 +115,8 @@ public class TreeHtmlScorer implements HtmlScorer {
 	 * @param baseUri the baseURI of the html
      * @return the HTML parsed as a tree
      */
-	private Document parseHtmlFileFromInputStream(InputStream inputStream, String charsetName, String baseUri){
-		Document doc;
-		try {
-			doc = Jsoup.parse(inputStream, charsetName, baseUri);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String crapHtml = "<SEC-DOCUMENT> all this crap\n"
-				+ "more crap"
-				+ "<html>"
-				+ "<head>a header</head>"
-				+ "<body>"
-				+ "real HTML"
-				+ "</body>"
-				+ "</html>"
-				+ "even more crap";
-		
-		System.out.println();
-		System.out.println("CRAP HTML");
-		System.out.println(crapHtml);
-		System.out.println();
-		
-		Whitelist wl = Whitelist.relaxed();
-		String cleanHtml = Jsoup.clean(crapHtml, wl);
-		
-		System.out.println("CLEANED HTML");
-		System.out.println();
-		System.out.print(cleanHtml);
-		System.out.println();
-		
-		doc = Jsoup.parse(cleanHtml);
-		System.out.println("PARSED HTML");
-		System.out.println();
-		System.out.print(doc.html());
-		System.out.println();
+	private Document parseHtmlFileFromInputStream(InputStream inputStream, String charsetName, String baseUri) throws IOException {
+		Document doc = Jsoup.parse(inputStream, charsetName, baseUri);
 		return doc;
 	}
 }

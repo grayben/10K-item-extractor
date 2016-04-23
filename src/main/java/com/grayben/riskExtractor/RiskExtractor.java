@@ -76,7 +76,7 @@ public class RiskExtractor {
 		System.out.print(scoredText.toString());
 	}
 	
-	private static void takeArgs(String[] args) throws FileNotFoundException {
+	private static void takeArgs(String[] args) throws IOException {
 		checkArgs(args);
 		String fileName = args[0];
 		File htmlFile = new File(fileName);

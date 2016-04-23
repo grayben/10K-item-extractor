@@ -24,7 +24,7 @@ public interface HtmlScorer {
      * @return the scored text
      *
      */
-	ScoredText scoreHtml(InputStream htmlStream, String charsetName, String baseUri);
+	ScoredText scoreHtml(InputStream htmlStream, String charsetName, String baseUri) throws IOException;
 
     /**
      * Score HTML stored remotely.
