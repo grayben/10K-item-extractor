@@ -9,7 +9,7 @@ import java.util.*;
  * <p>
  * Created by Ben Gray, 2015.
  */
-final public class MarkedText
+final public class Marker
         extends Elector.ElectedText {
 
     /**
@@ -29,7 +29,7 @@ final public class MarkedText
      * Incrementally construct from an {@link Elector.ElectedText} precursor.
      * @param text the precursor
      */
-    public MarkedText(Elector.ElectedText text) {
+    public Marker(Elector.ElectedText text) {
         super(text);
         this.stringIndexPairs = new HashMap<>();
 
