@@ -28,17 +28,10 @@ final public class MarkedText
     /**
      * Incrementally construct from an {@link ElectedText} precursor.
      * @param text the precursor
-     * @param mapToUse an empty {@link Map} instance for use by this instance
      */
-    public MarkedText(ElectedText text, Map<Integer, Integer> mapToUse) {
+    public MarkedText(ElectedText text) {
         super(text);
-        if( ! mapToUse.isEmpty()){
-            throw new IllegalArgumentException(
-                    "The map to use must be empty"
-            );
-        } else {
-            this.stringIndexPairs = mapToUse;
-        }
+        this.stringIndexPairs = new HashMap<>();
 
         /**
          * Eager-compute data.
