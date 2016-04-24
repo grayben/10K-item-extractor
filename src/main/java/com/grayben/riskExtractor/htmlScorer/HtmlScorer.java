@@ -31,7 +31,7 @@ public interface HtmlScorer {
      *
      * @param url the URL of the file containing the HTML to score
      * @return the scored text
-     * @throws IOException
+     * @throws IOException if unable to connect to url
      */
 	ScoredText scoreHtml(String url) throws IOException;
 }
