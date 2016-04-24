@@ -12,9 +12,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.dummyAttributes;
-import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.stubElement;
-import static com.grayben.riskExtractor.htmlScorer.partScorers.TestHelper.stubTag;
+import static com.grayben.riskExtractor.helpers.TestHelper.dummyAttributes;
+import static com.grayben.riskExtractor.helpers.TestHelper.stubElement;
+import static com.grayben.riskExtractor.helpers.TestHelper.stubTag;
 
 /**
  * Created by beng on 23/12/2015.

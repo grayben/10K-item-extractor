@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
+import com.grayben.riskExtractor.headingMarker.ElectedText;
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextTest;
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.junit.After;
@@ -104,7 +105,7 @@ public class ElectedTextTest
         //setup expectations
 
         //exercise
-        SetUniqueList<Integer> electeesReturned = electedTextSUT.getElectees();
+        SetUniqueList<Integer> electeesReturned = electedTextSUT.getElecteeIndices();
         //verify
         assertNotNull(electeesReturned);
     }
@@ -182,9 +183,9 @@ public class ElectedTextTest
     public void
     test_ModifyingReturnedElecteesDoesNotAffectCopyHeldBySUT
             () throws Exception {
-        SetUniqueList<Integer> returnedFirst = electedTextSUT.getElectees();
+        SetUniqueList<Integer> returnedFirst = electedTextSUT.getElecteeIndices();
         returnedFirst.add(Integer.MAX_VALUE);
-        SetUniqueList<Integer> returnedSecond = electedTextSUT.getElectees();
+        SetUniqueList<Integer> returnedSecond = electedTextSUT.getElecteeIndices();
         assertNotEquals(returnedFirst, returnedSecond);
     }
 

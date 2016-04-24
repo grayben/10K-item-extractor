@@ -1,7 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.markedText;
 
 import com.grayben.riskExtractor.headingMarker.MarkedText;
-import com.grayben.riskExtractor.headingMarker.elector.ElectedText;
+import com.grayben.riskExtractor.headingMarker.ElectedText;
 import com.grayben.riskExtractor.headingMarker.elector.ElectedTextTest;
 import org.junit.After;
 import org.junit.Before;

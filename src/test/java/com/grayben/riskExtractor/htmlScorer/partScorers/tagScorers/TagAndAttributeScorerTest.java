@@ -89,17 +89,4 @@ public class TagAndAttributeScorerTest
         testHelper_ScoreGivesExpectedResult_WhenSimpleInput
                 (tagAndAttributeScorerSUT, expectedOutput);
     }
-
-    @Test
-    public void
-    test_ScoreThrowsIllegalArgumentException_WhenEmptyInput() throws Exception {
-        thrown.expect(IllegalArgumentException.class);
-
-        stubTagAndAttributeMock();
-
-        Mockito.when(tagAndAttributeToBeScoredMock.getAttribute().getValue())
-                .thenReturn("");
-
-        tagAndAttributeScorerSUT.score(tagAndAttributeToBeScoredMock);
-    }
 }

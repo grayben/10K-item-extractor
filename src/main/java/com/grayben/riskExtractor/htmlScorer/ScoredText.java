@@ -4,14 +4,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Represents a list of {@link ScoredTextElement}s.
+ */
 public class ScoredText {
 	private List<ScoredTextElement> text;
 
+    /**
+     * Construct an empty object.
+     */
 	public ScoredText() {
 		super();
 		text = new ArrayList<>();
 	}
 
+    /**
+     * @return the text only, without the scores.
+     */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -22,6 +31,10 @@ public class ScoredText {
 		return sb.toString().trim();
 	}
 
+    /**
+     * Append the specified element.
+     * @param st the element to append.
+     */
 	public void add(ScoredTextElement st) {
         if(st.getScores() == null){
             throw new NullPointerException(
@@ -46,7 +59,26 @@ public class ScoredText {
 		text.add(st);
 	}
 
+    /**
+     * @return the underlying list
+     */
 	public List<ScoredTextElement> getList(){
         return Collections.unmodifiableList(this.text);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ScoredText that = (ScoredText) o;
+
+        return text != null ? text.equals(that.text) : that.text == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return text != null ? text.hashCode() : 0;
     }
 }

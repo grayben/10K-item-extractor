@@ -1,21 +1,29 @@
 package com.grayben.riskExtractor;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-
 import com.grayben.riskExtractor.htmlScorer.HtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
+import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import org.jsoup.nodes.Element;
+
+import java.io.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RiskExtractor {
 	
 	static long startTime;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		startingMain();
 		
-		boolean testParse = false;
+		boolean testParse = true;
 		if(testParse == true){
 			testParse("http://google.com");
 		} else takeArgs(args);
@@ -43,20 +51,39 @@ public class RiskExtractor {
 		float secondsElapsed = (float)(currentTime - startTime)/1000;
 		System.out.println("Time elapsed: " + secondsElapsed + " seconds");
 	}
+
+	private static ScoringAndFlatteningNodeVisitor setupNodeVisitor(){
+		Set<Scorer<Element>> elementScorers = new HashSet<>();
+		elementScorers.add(
+				new SegmentationElementScorer(
+						new TagSegmentationScorer(TagSegmentationScorer.defaultMap())
+				)
+		);
+		elementScorers.add(
+				new EmphasisElementScorer(
+						new TagEmphasisScorer(TagEmphasisScorer.defaultMap()),
+						new TagAndAttributeScorer(TagAndAttributeScorer.defaultMap())
+				)
+		);
+		ScoringAndFlatteningNodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorers);
+		return nv;
+	}
 	
-	private static void testParse(String url){
-		HtmlScorer scorer = new TreeHtmlScorer();
+	private static void testParse(String url) throws IOException {
+		ScoringAndFlatteningNodeVisitor nv = setupNodeVisitor();
+		HtmlScorer scorer = new TreeHtmlScorer(nv);
 		ScoredText scoredText = scorer.scoreHtml(url);
 		System.out.print(scoredText.toString());
 	}
 	
-	private static void takeArgs(String[] args){
+	private static void takeArgs(String[] args) throws IOException {
 		checkArgs(args);
 		String fileName = args[0];
 		File htmlFile = new File(fileName);
+		InputStream inputStream = new FileInputStream(htmlFile);
 		String charsetName = args[1];
-		HtmlScorer scorer = new TreeHtmlScorer();
-		ScoredText scoredText = scorer.scoreHtml(htmlFile, charsetName);
+		HtmlScorer scorer = new TreeHtmlScorer(setupNodeVisitor());
+		ScoredText scoredText = scorer.scoreHtml(inputStream, charsetName, "");
 		System.out.print(scoredText.toString());
 		File outFile = new File("/Volumes/MBS Data/EDGAR-Form10K/output.txt");
 		PrintWriter writer;
