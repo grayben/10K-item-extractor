@@ -1,6 +1,6 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
-import com.grayben.riskExtractor.headingMarker.ElectedText;
+import com.grayben.riskExtractor.headingMarker.Elector;
 import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextTest;
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.junit.After;
@@ -23,13 +23,13 @@ public class ElectedTextTest
         extends
         NominatedTextTest {
 
-    private ElectedText electedTextSUT;
+    private Elector.ElectedText electedTextSUT;
 
-    public ElectedText getElectedTextSUT() {
+    public Elector.ElectedText getElectedTextSUT() {
         return electedTextSUT;
     }
 
-    public void setElectedTextSUT(ElectedText electedTextSUT) {
+    public void setElectedTextSUT(Elector.ElectedText electedTextSUT) {
         this.electedTextSUT = electedTextSUT;
         this.setNominatedTextSUT(this.electedTextSUT);
     }
@@ -56,7 +56,7 @@ public class ElectedTextTest
         electeesArgument.add(0);
 
         this.setElectedTextSUT(
-                new ElectedText(
+                new Elector.ElectedText(
                         stringListArgument,
                         nomineesArgument,
                         electeesArgument
@@ -91,7 +91,7 @@ public class ElectedTextTest
 
         thrown.expect(IllegalArgumentException.class);
 
-        new ElectedText(
+        new Elector.ElectedText(
                 stringList,
                 nominees,
                 electees
@@ -119,7 +119,7 @@ public class ElectedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new ElectedText(stringListArgument, nomineesArgument, electeesArgument);
+        new Elector.ElectedText(stringListArgument, nomineesArgument, electeesArgument);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class ElectedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new ElectedText(stringListArgument, nomineesArgument, electeesArgument);
+        new Elector.ElectedText(stringListArgument, nomineesArgument, electeesArgument);
     }
 
     @Test
@@ -142,7 +142,7 @@ public class ElectedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new ElectedText(stringListArgument, nomineesArgument, electeesArgument);
+        new Elector.ElectedText(stringListArgument, nomineesArgument, electeesArgument);
     }
 
     @Test
@@ -153,7 +153,7 @@ public class ElectedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new ElectedText(getNominatedTextSUT(), electeesArgument);
+        new Elector.ElectedText(getNominatedTextSUT(), electeesArgument);
     }
 
     @Test
@@ -164,7 +164,7 @@ public class ElectedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new ElectedText(getNominatedTextSUT(), electeesArgument);
+        new Elector.ElectedText(getNominatedTextSUT(), electeesArgument);
     }
 
     @Test
@@ -176,7 +176,7 @@ public class ElectedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new ElectedText(electedTextSUT);
+        new Elector.ElectedText(electedTextSUT);
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.markedText;
 
+import com.grayben.riskExtractor.headingMarker.Elector;
 import com.grayben.riskExtractor.headingMarker.MarkedText;
-import com.grayben.riskExtractor.headingMarker.ElectedText;
 import com.grayben.riskExtractor.headingMarker.elector.ElectedTextTest;
 import org.junit.After;
 import org.junit.Before;
@@ -177,7 +177,7 @@ public class MarkedTextTest
             () throws Exception {
         List<TextElementClass> textElementClasses = new ArrayList();
         this.markedTextSUT = new MarkedText(
-                new ElectedText(
+                new Elector.ElectedText(
                         new ArrayList<>(), nomineesArgument, electeesArgument),
                 new HashMap<>()
         );
@@ -194,7 +194,7 @@ public class MarkedTextTest
     test_SubSelectionsReturnsExpectedOutput_WhenSimpleInput
             () throws Exception {
         oracle = new MarkedTextOracle(defaultClassifications());
-        ElectedText input = oracle.getTestInput();
+        Elector.ElectedText input = oracle.getTestInput();
         markedTextSUT = new MarkedText(input, emptyMap);
         Set<String> expectedOutput = oracle.getTestExpectedOutput();
 
@@ -210,7 +210,7 @@ public class MarkedTextTest
             () throws Exception {
         List<TextElementClass> param = emptyList();
         oracle = new MarkedTextOracle(param);
-        ElectedText input = oracle.getTestInput();
+        Elector.ElectedText input = oracle.getTestInput();
         markedTextSUT = new MarkedText(input, emptyMap);
 
         Set<String> output = markedTextSUT.subSelections();
@@ -224,7 +224,7 @@ public class MarkedTextTest
             () throws Exception {
         List<TextElementClass> param = noHeadingList();
         oracle = new MarkedTextOracle(param);
-        ElectedText input = oracle.getTestInput();
+        Elector.ElectedText input = oracle.getTestInput();
         markedTextSUT = new MarkedText(input, emptyMap);
 
         Set<String> output = markedTextSUT.subSelections();
@@ -239,7 +239,7 @@ public class MarkedTextTest
             () throws Exception {
         List<TextElementClass> param = noElectedHeadingList();
         oracle = new MarkedTextOracle(param);
-        ElectedText input = oracle.getTestInput();
+        Elector.ElectedText input = oracle.getTestInput();
         markedTextSUT = new MarkedText(input, emptyMap);
 
         Set<String> output = markedTextSUT.subSelections();
@@ -254,7 +254,7 @@ public class MarkedTextTest
             () throws Exception {
         List<TextElementClass> param = solelyTargetTextList();
         oracle = new MarkedTextOracle(param);
-        ElectedText input = oracle.getTestInput();
+        Elector.ElectedText input = oracle.getTestInput();
         markedTextSUT = new MarkedText(input, emptyMap);
 
         Set<String> output = markedTextSUT.subSelections();
@@ -269,7 +269,7 @@ public class MarkedTextTest
             () throws Exception {
         List<TextElementClass> param = electedHeadingOnlyAtEndList();
         oracle = new MarkedTextOracle(param);
-        ElectedText input = oracle.getTestInput();
+        Elector.ElectedText input = oracle.getTestInput();
         markedTextSUT = new MarkedText(input, emptyMap);
 
         Set<String> output = markedTextSUT.subSelections();

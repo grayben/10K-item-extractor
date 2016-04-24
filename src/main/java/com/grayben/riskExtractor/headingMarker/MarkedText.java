@@ -10,7 +10,7 @@ import java.util.*;
  * Created by Ben Gray, 2015.
  */
 final public class MarkedText
-        extends ElectedText {
+        extends Elector.ElectedText {
 
     /**
      * Pairs of indices into {@link #stringList} corresponding to sections bounded by an elected entry and
@@ -26,10 +26,10 @@ final public class MarkedText
     private Set<String> selectedSections = null;
 
     /**
-     * Incrementally construct from an {@link ElectedText} precursor.
+     * Incrementally construct from an {@link Elector.ElectedText} precursor.
      * @param text the precursor
      */
-    public MarkedText(ElectedText text) {
+    public MarkedText(Elector.ElectedText text) {
         super(text);
         this.stringIndexPairs = new HashMap<>();
 
