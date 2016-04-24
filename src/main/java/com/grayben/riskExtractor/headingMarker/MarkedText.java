@@ -16,14 +16,14 @@ final public class MarkedText
      * Pairs of indices into {@link #stringList} corresponding to sections bounded by an elected entry and
      * a nominated entry immediately following, or, the end of the list of entries.
      */
-    Map<Integer, Integer> stringIndexPairs = null;
+    private Map<Integer, Integer> stringIndexPairs = null;
 
     /**
      * The set of selected strings, where each string is a concatenation of all strings in
      * a selected section.
      * @see #stringIndexPairs
      */
-    Set<String> selectedSections = null;
+    private Set<String> selectedSections = null;
 
     /**
      * Incrementally construct from an {@link ElectedText} precursor.
@@ -69,7 +69,7 @@ final public class MarkedText
             /**
              * The start index is the index of the electee.
              */
-            Integer startIndex = electee;
+            Integer startIndex;
 
             /**
              * Declare, but do not assign, the end index to compute.
