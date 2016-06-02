@@ -23,7 +23,6 @@ import java.io.FileInputStream;
 import java.util.*;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.fail;
 
 /**
  * Created by beng on 28/11/2015.
@@ -32,8 +31,8 @@ import static junit.framework.TestCase.fail;
 public class TreeHtmlScorerTest
         extends HtmlScorerTest {
 
-    TreeHtmlScorer validTreeHtmlScorerSUT;
-    Set<Scorer<Element>> elementScorersUsed;
+    private TreeHtmlScorer validTreeHtmlScorerSUT;
+    private Set<Scorer<Element>> elementScorersUsed;
 
     @Before
     public void setUp() throws Exception {
@@ -53,7 +52,6 @@ public class TreeHtmlScorerTest
         ScoringAndFlatteningNodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorers);
         validTreeHtmlScorerSUT = new TreeHtmlScorer(nv);
 
-        //TODO: inject the NodeTraversor into the TreeHtmlScorer constructor
         setHtmlScorerSUT(validTreeHtmlScorerSUT);
         super.setUp();
     }
@@ -68,11 +66,10 @@ public class TreeHtmlScorerTest
     public void
     test_InitThrowsNullPointerException_WhenNodeVisitorIsNull
             () throws Exception {
-        ScoringAndFlatteningNodeVisitor nv = null;
 
         thrown.expect(NullPointerException.class);
 
-        new TreeHtmlScorer(nv);
+        new TreeHtmlScorer(null);
     }
 
     @Override
@@ -145,7 +142,7 @@ public class TreeHtmlScorerTest
 
         // use TreeHtmlScorerReverserTestContainerSuppler to apply reverse engineer to expected outputs
         for(int i = 0; i < 100; i++){
-            ScoredText expectedOutput = ScoredTextGenerator.randomScoredText(new Random(444l), elementScorersUsed);
+            ScoredText expectedOutput = ScoredTextGenerator.randomScoredText(new Random(444L), elementScorersUsed);
             testContainerSupplier.get().verify(expectedOutput);
         }
     }
