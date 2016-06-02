@@ -24,19 +24,16 @@ public class MarkerTest
 
     //TODO: check setup methods
 
-    Marker markerSUT;
+    private Marker markerSUT;
 
-    MarkedTextOracle oracle;
-
-    Map<Integer, Integer> emptyMap;
+    private com.grayben.riskExtractor.headingMarker.markedText.MarkedTextOracle oracle;
 
     @Before
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        this.markerSUT = new Marker(getElectedTextSUT(), new HashMap<>());
+        this.markerSUT = new Marker(getElectedTextSUT());
         this.oracle = new MarkedTextOracle(defaultClassifications());
-        this.emptyMap = new HashMap<>();
     }
 
     private List<TextElementClass> defaultClassifications(){
@@ -129,28 +126,7 @@ public class MarkerTest
             () throws Exception {
         thrown.expect(NullPointerException.class);
 
-        markerSUT = new Marker(null, emptyMap);
-    }
-
-    @Test
-    public void
-    test_InitThrowsNullPointerException_WhenMapIsNull
-            () throws Exception {
-        thrown.expect(NullPointerException.class);
-        Map<Integer, Integer> map = null;
-
-        markerSUT = new Marker(oracle.getTestInput(), map);
-    }
-
-    @Test
-    public void
-    test_InitThrowsIllegalArgumentException_WhenMapIsNotEmpty
-            () throws Exception {
-        thrown.expect(IllegalArgumentException.class);
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(9, 81);
-
-        markerSUT = new Marker(oracle.getTestInput(), map);
+        markerSUT = new Marker(null);
     }
 
     @Test
@@ -166,7 +142,7 @@ public class MarkerTest
     public void
     test_SubselectionReturnsNonNull_Normally
             () throws Exception {
-        markerSUT = new Marker(oracle.getTestInput(), emptyMap);
+        markerSUT = new Marker(oracle.getTestInput());
 
         assertNotNull(markerSUT.subSelections());
     }
@@ -175,15 +151,14 @@ public class MarkerTest
     public void
     test_SubselectionsReturnsNonNull_WhenTextInputIsEmpty
             () throws Exception {
-        List<TextElementClass> textElementClasses = new ArrayList();
+        List<TextElementClass> textElementClasses = new ArrayList<>();
         this.markerSUT = new Marker(
                 new Elector.ElectedText(
-                        new ArrayList<>(), nomineesArgument, electeesArgument),
-                new HashMap<>()
+                        new ArrayList<>(), nomineesArgument, electeesArgument)
         );
         oracle = new MarkedTextOracle(textElementClasses);
 
-        markerSUT = new Marker(oracle.getTestInput(), emptyMap);
+        markerSUT = new Marker(oracle.getTestInput());
 
         assertNotNull("The returned object was null",
                 markerSUT.subSelections());
@@ -195,8 +170,7 @@ public class MarkerTest
             () throws Exception {
         oracle = new MarkedTextOracle(defaultClassifications());
         Elector.ElectedText input = oracle.getTestInput();
-        markerSUT = new Marker(input, emptyMap);
-        Set<String> expectedOutput = oracle.getTestExpectedOutput();
+        markerSUT = new Marker(input);
 
         Set<String> output = markerSUT.subSelections();
 
@@ -211,7 +185,7 @@ public class MarkerTest
         List<TextElementClass> param = emptyList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
-        markerSUT = new Marker(input, emptyMap);
+        markerSUT = new Marker(input);
 
         Set<String> output = markerSUT.subSelections();
 
@@ -225,7 +199,7 @@ public class MarkerTest
         List<TextElementClass> param = noHeadingList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
-        markerSUT = new Marker(input, emptyMap);
+        markerSUT = new Marker(input);
 
         Set<String> output = markerSUT.subSelections();
 
@@ -240,7 +214,7 @@ public class MarkerTest
         List<TextElementClass> param = noElectedHeadingList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
-        markerSUT = new Marker(input, emptyMap);
+        markerSUT = new Marker(input);
 
         Set<String> output = markerSUT.subSelections();
 
@@ -255,7 +229,7 @@ public class MarkerTest
         List<TextElementClass> param = solelyTargetTextList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
-        markerSUT = new Marker(input, emptyMap);
+        markerSUT = new Marker(input);
 
         Set<String> output = markerSUT.subSelections();
 
@@ -270,7 +244,7 @@ public class MarkerTest
         List<TextElementClass> param = electedHeadingOnlyAtEndList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
-        markerSUT = new Marker(input, emptyMap);
+        markerSUT = new Marker(input);
 
         Set<String> output = markerSUT.subSelections();
 
