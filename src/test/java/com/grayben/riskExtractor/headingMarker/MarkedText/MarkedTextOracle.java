@@ -31,12 +31,12 @@ public class MarkedTextOracle {
     private void generateTestExpectedOutput(List<TextElementClass> param, Elector.ElectedText testInput) {
 
         class IndexHelper {
-            Integer startIndex;
-            Integer endIndex;
-            Integer currentIndex;
-            Boolean onSelectedContent;
-            Map<Integer, Integer> targetIndexRanges;
-            List<TextElementClass> elementList;
+            private Integer startIndex;
+            private Integer endIndex;
+            private Integer currentIndex;
+            private Boolean onSelectedContent;
+            private Map<Integer, Integer> targetIndexRanges;
+            private List<TextElementClass> elementList;
 
             IndexHelper(List<TextElementClass> elementList){
                 startIndex = null;
@@ -47,7 +47,7 @@ public class MarkedTextOracle {
                 this.elementList = elementList;
             }
 
-            Map<Integer, Integer> process(){
+            private Map<Integer, Integer> process(){
                 ListIterator<TextElementClass> iterator
                         = elementList.listIterator();
 
@@ -78,7 +78,7 @@ public class MarkedTextOracle {
 
             }
 
-            void encounterElectedHeading(){
+            private void encounterElectedHeading(){
                 /* if we were already in a section,
                 we need to break off and start a new section */
                 if(onSelectedContent){
@@ -87,7 +87,7 @@ public class MarkedTextOracle {
                 beginMapEntry();
             }
 
-            void encounterNominatedHeading(){
+            private void encounterNominatedHeading(){
 
 
                 if (onSelectedContent) {
@@ -99,14 +99,14 @@ public class MarkedTextOracle {
                 onSelectedContent = false;
             }
 
-            void beginMapEntry(){
+            private void beginMapEntry(){
                 //assign(startIndex) -> startIndex was null
                 assert startIndex == null;
                 startIndex = currentIndex;
                 onSelectedContent = true;
             }
 
-            void completeMapEntry(){
+            private void completeMapEntry(){
                 //if(onSelectedContent) -> startIndex is assigned
                 assert startIndex != null;
 
@@ -129,7 +129,7 @@ public class MarkedTextOracle {
         this.testExpectedOutput = constructExpectedOutput(targetIndexRanges, testInput);
     }
 
-    protected Elector.ElectedText generateTestInput(List<TextElementClass> param){
+    private Elector.ElectedText generateTestInput(List<TextElementClass> param){
 
         List<String> textInput = new ArrayList<>();
         SetUniqueList<Integer> nomineeIndex
