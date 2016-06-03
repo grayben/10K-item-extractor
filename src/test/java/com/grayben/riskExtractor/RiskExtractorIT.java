@@ -2,23 +2,28 @@ package com.grayben.riskExtractor;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.jsoup.helper.Validate.fail;
 
 /**
  * Created by beng on 28/11/2015.
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class RiskExtractorIT {
 
+    private RiskExtractor riskExtractorSUT;
+    ExpectedException thrown = ExpectedException.none();
+
     @Before
     public void setUp() throws Exception {
-
+        riskExtractorSUT = new RiskExtractor();
     }
 
     @After
@@ -29,7 +34,11 @@ public class RiskExtractorIT {
     @Test
     public void test_MainThrowsIllegalArgumentException_WhenOneArgument
             () throws Exception {
-        fail("Test not written");
+        List<String> args = new ArrayList<>();
+        args.add("foo");
+        thrown.expect(IllegalArgumentException.class);
+        RiskExtractor.main(args.toArray(new String[args.size()]));
+        fail("Test broken");
     }
 
     @Test
