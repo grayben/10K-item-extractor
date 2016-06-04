@@ -1,10 +1,8 @@
 package com.grayben.riskExtractor;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -20,14 +18,14 @@ import static org.jsoup.helper.Validate.fail;
 @RunWith(MockitoJUnitRunner.class)
 public class RiskExtractorIT {
 
-    private RiskExtractor riskExtractorSUT;
-
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
     @Before
     public void setUp() throws Exception {
-        riskExtractorSUT = new RiskExtractor();
     }
 
     @After
@@ -65,19 +63,24 @@ public class RiskExtractorIT {
         RiskExtractor.main(args.toArray(new String[args.size()]));
     }
 
+    @Ignore
     @Test
     public void test_MainCreatesExpectedOutputFile
             () throws Exception {
+        String inputName = "input.csv";
+        String outputName = "output.csv";
         fail("Test not written");
+
     }
 
-
+    @Ignore
     @Test
     public void test_MainCreatesExpectedOutputFileContents_WhenEasyExample
             () throws Exception {
         fail("Test not written");
     }
 
+    @Ignore
     @Test
     public void test_MainCreatesExpectedOutputFileContents_WhenComplicatedExample
             () throws Exception {
