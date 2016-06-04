@@ -26,10 +26,7 @@ public class RiskExtractor {
 
 		startingMain();
 		
-		boolean isTestParse = true;
-		if(isTestParse){
-			testParse("http://google.com");
-		} else takeArgs(args);
+		takeArgs(args);
 		
 		completingMain();
 	}

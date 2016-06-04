@@ -8,6 +8,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +58,11 @@ public class RiskExtractorIT {
     @Test
     public void test_MainThrowsFileNotFoundException_WhenInvalidFileArgument
             () throws Exception {
-        fail("Test not written");
+        List<String> args = new ArrayList<>();
+        args.add("//////##$%foo");
+        args.add("bar");
+        thrown.expect(FileNotFoundException.class);
+        RiskExtractor.main(args.toArray(new String[args.size()]));
     }
 
     @Test
@@ -65,6 +70,7 @@ public class RiskExtractorIT {
             () throws Exception {
         fail("Test not written");
     }
+
 
     @Test
     public void test_MainCreatesExpectedOutputFileContents_WhenEasyExample
