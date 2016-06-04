@@ -2,6 +2,7 @@ package com.grayben.riskExtractor;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
@@ -19,7 +20,9 @@ import static org.jsoup.helper.Validate.fail;
 public class RiskExtractorIT {
 
     private RiskExtractor riskExtractorSUT;
-    ExpectedException thrown = ExpectedException.none();
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -38,7 +41,6 @@ public class RiskExtractorIT {
         args.add("foo");
         thrown.expect(IllegalArgumentException.class);
         RiskExtractor.main(args.toArray(new String[args.size()]));
-        fail("Test broken");
     }
 
     @Test
