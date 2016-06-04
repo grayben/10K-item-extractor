@@ -46,7 +46,12 @@ public class RiskExtractorIT {
     @Test
     public void test_MainThrowsIllegalArgumentException_WhenThreeArguments
             () throws Exception {
-        fail("Test not written");
+        List<String> args = new ArrayList<>();
+        args.add("foo");
+        args.add("bar");
+        args.add("baz");
+        thrown.expect(IllegalArgumentException.class);
+        RiskExtractor.main(args.toArray(new String[args.size()]));
     }
 
     @Test

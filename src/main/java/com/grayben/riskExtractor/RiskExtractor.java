@@ -21,10 +21,13 @@ public class RiskExtractor {
 	static long startTime;
 
 	public static void main(String[] args) throws IOException {
+
+		checkArgs(args);
+
 		startingMain();
 		
-		boolean testParse = true;
-		if(testParse == true){
+		boolean isTestParse = true;
+		if(isTestParse){
 			testParse("http://google.com");
 		} else takeArgs(args);
 		
@@ -65,8 +68,7 @@ public class RiskExtractor {
 						new TagAndAttributeScorer(TagAndAttributeScorer.defaultMap())
 				)
 		);
-		ScoringAndFlatteningNodeVisitor nv = new ScoringAndFlatteningNodeVisitor(elementScorers);
-		return nv;
+		return new ScoringAndFlatteningNodeVisitor(elementScorers);
 	}
 	
 	private static void testParse(String url) throws IOException {
@@ -97,12 +99,16 @@ public class RiskExtractor {
 		
 		
 	}
-	
-	private static void checkArgs(String[] args){
+
+	private static String mainUsageMessage(){
+		return "Usage\nprogram_name input_csv output_csv";
+	}
+
+	private static void checkArgs(String[] args) {
 		int argsLen = 2;
-		if(args.length != argsLen){
-			System.err.println("ERROR: must pass " + argsLen + " arguments.");
-			System.exit(1);
+		if (args.length != argsLen) {
+			System.out.println(mainUsageMessage());
+			throw new IllegalArgumentException(mainUsageMessage());
 		}
 	}
 
