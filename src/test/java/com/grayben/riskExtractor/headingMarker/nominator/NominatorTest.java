@@ -29,12 +29,15 @@ public class NominatorTest {
 
     private ScoredText input;
 
+    private Predicate<ScoredTextElement> isNominee;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
-        this.nominatorSUT = new Nominator(x -> true);
+        this.isNominee = scoredTextElement -> (scoredTextElement.hashCode() % 2 == 0);
+        this.nominatorSUT = new Nominator(this.isNominee);
         Set<ElementScorerSetFunction.Content> contents = new HashSet<>();
         contents.add(ElementScorerSetFunction.Content.EMPHASIS_ELEMENT_SCORER);
         contents.add(ElementScorerSetFunction.Content.SEGMENTATION_ELEMENT_SCORER);
@@ -65,7 +68,7 @@ public class NominatorTest {
     public void test_NominateReturnsExpectedResult_AccordingToAlternateImplementation
             () throws Exception {
 
-        Predicate<ScoredTextElement> isNominee = scoredTextElement -> false;
+
 
         this.nominatorSUT = new Nominator(isNominee);
 
