@@ -19,6 +19,9 @@ public class Elector {
     }
 
     public ElectedText elect(Nominator.NominatedText nominatedText){
+        if (nominatedText == null) {
+            throw new NullPointerException("NominatedText argument cannot be null");
+        }
         throw new UnsupportedOperationException("Not implemented");
     }
 
