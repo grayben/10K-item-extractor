@@ -14,7 +14,7 @@ import static org.junit.Assert.fail;
 @RunWith(MockitoJUnitRunner.class)
 public class NominatorTest {
 
-    Nominator nominatorSUT;
+    private Nominator nominatorSUT;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
