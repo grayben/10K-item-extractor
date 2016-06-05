@@ -1,17 +1,19 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
 import com.grayben.riskExtractor.headingMarker.Nominator;
+import com.grayben.riskExtractor.helpers.ElementScorerSetFunction;
+import com.grayben.riskExtractor.helpers.ScoredTextGenerator;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
-import com.grayben.tools.testOracle.oracle.active.ActiveOracle;
+import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import org.apache.commons.collections4.list.SetUniqueList;
+import org.jsoup.nodes.Element;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
@@ -25,12 +27,19 @@ public class NominatorTest {
 
     private Nominator nominatorSUT;
 
+    private ScoredText input;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
-        nominatorSUT = new Nominator(x -> true);
+        this.nominatorSUT = new Nominator(x -> true);
+        Set<ElementScorerSetFunction.Content> contents = new HashSet<>();
+        contents.add(ElementScorerSetFunction.Content.EMPHASIS_ELEMENT_SCORER);
+        contents.add(ElementScorerSetFunction.Content.SEGMENTATION_ELEMENT_SCORER);
+        Set<Scorer<Element>> elementScorerSet = new ElementScorerSetFunction().apply(contents);
+        this.input = ScoredTextGenerator.randomScoredText(new Random(42L), elementScorerSet);
     }
 
     @After
@@ -56,14 +65,13 @@ public class NominatorTest {
     @Ignore
     public void test_NominateReturnsExpectedResult_AccordingToAlternateImplentation
             () throws Exception {
-        ScoredText input = null;
-        ActiveOracle<ScoredText, Nominator.NominatedText> oracle;
+
         Predicate<ScoredTextElement> isNominee = scoredTextElement -> false;
 
         this.nominatorSUT = new Nominator(isNominee);
 
         List<Integer> nomineeIndices = new ArrayList<>();
-        List<ScoredTextElement> scoredTextElements = input.getList();
+        List<ScoredTextElement> scoredTextElements = this.input.getList();
         for (int i = 0; i < scoredTextElements.size(); i++){
             ScoredTextElement element = scoredTextElements.get(i);
             if (isNominee.test(element)){
@@ -72,7 +80,7 @@ public class NominatorTest {
         }
 
         Nominator.NominatedText expected = new Nominator.NominatedText(
-                input.getText(), SetUniqueList.setUniqueList(nomineeIndices)
+                this.input.getText(), SetUniqueList.setUniqueList(nomineeIndices)
         );
 
         Nominator.NominatedText actual = nominatorSUT.nominate(input);
