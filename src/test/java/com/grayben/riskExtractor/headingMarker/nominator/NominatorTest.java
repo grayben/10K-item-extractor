@@ -37,7 +37,6 @@ public class NominatorTest {
     }
 
     @Test
-    @Ignore
     public void test_NominateThrowsNullPointerException_WhenScoredTextIsNull
             () throws Exception {
         thrown.expect(NullPointerException.class);

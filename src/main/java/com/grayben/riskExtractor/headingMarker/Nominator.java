@@ -16,12 +16,15 @@ public class Nominator {
 
     public Nominator(Predicate<ScoredTextElement> isNominee) {
         if (isNominee == null) {
-            throw new NullPointerException("Predicate cannot be null");
+            throw new NullPointerException("isNominee cannot be null");
         }
         this.isNominee = isNominee;
     }
 
     public NominatedText nominate(ScoredText scoredText){
+        if (scoredText == null) {
+            throw new NullPointerException("scoredText cannot be null");
+        }
         throw new UnsupportedOperationException("Not implemented");
     }
 
