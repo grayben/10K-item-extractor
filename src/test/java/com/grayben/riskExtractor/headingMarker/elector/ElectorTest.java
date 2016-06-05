@@ -1,13 +1,15 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
 import com.grayben.riskExtractor.headingMarker.Elector;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import com.grayben.riskExtractor.headingMarker.Nominator;
+import com.grayben.riskExtractor.htmlScorer.ScoredText;
+import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.function.Predicate;
 
 /**
  * Created by beng on 4/06/2016.
@@ -22,6 +24,8 @@ public class ElectorTest {
 
     @Before
     public void setUp() throws Exception {
+        Predicate<ScoredTextElement> predicate = element -> true;
+        electorSUT = new Elector(predicate);
     }
 
     @After
@@ -30,9 +34,34 @@ public class ElectorTest {
     }
 
     @Test
-    public void test_InitThrowsNullPointerException_WhenFunctionIsNull() throws Exception {
+    public void test_InitThrowsNullPointerException_WhenFunctionIsNull
+            () throws Exception {
         thrown.expect(NullPointerException.class);
         electorSUT = new Elector(null);
+    }
+
+    @Ignore
+    @Test
+    public void test_ElectThrowsNullPointerException_WhenNominatedTextIsNull
+            () throws Exception {
+        thrown.expect(NullPointerException.class);
+        electorSUT.elect(null);
+    }
+
+    @Ignore
+    @Test
+    public void test_ElectedTextThrowsNullPointerException_WhenNominatorIsNull
+            () throws Exception {
+        thrown.expect(NullPointerException.class);
+        electorSUT.electedText(null, new ScoredText());
+    }
+
+    @Ignore
+    @Test
+    public void test_ElectedTextThrowsNullPointerException_WhenScoredTextIsNull
+            () throws Exception {
+        thrown.expect(NullPointerException.class);
+        electorSUT.electedText(new Nominator(x -> true), null);
     }
 
 

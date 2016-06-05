@@ -6,15 +6,15 @@ import org.apache.commons.collections4.list.SetUniqueList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Created by beng on 24/04/2016.
  */
 public class Nominator {
-    private final Function<ScoredTextElement, Boolean> isNominee;
+    private final Predicate<ScoredTextElement> isNominee;
 
-    public Nominator(Function<ScoredTextElement, Boolean> isNominee) {
+    public Nominator(Predicate<ScoredTextElement> isNominee) {
         this.isNominee = isNominee;
     }
 
