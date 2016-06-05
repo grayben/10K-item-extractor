@@ -25,7 +25,11 @@ public class Nominator {
         if (scoredText == null) {
             throw new NullPointerException("scoredText cannot be null");
         }
-        throw new UnsupportedOperationException("Not implemented");
+        List<Integer> nomineeIndices = new ArrayList<>();
+        for (ScoredTextElement element : scoredText.getList()){
+
+        }
+        return null;
     }
 
     /**
