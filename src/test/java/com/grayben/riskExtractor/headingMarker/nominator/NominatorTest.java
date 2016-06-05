@@ -30,7 +30,6 @@ public class NominatorTest {
     }
 
     @Test
-    @Ignore
     public void test_InitThrowsNullPointerException_WhenPredicateIsNull
             () throws Exception {
         thrown.expect(NullPointerException.class);

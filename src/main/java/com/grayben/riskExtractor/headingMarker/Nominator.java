@@ -15,6 +15,9 @@ public class Nominator {
     private final Predicate<ScoredTextElement> isNominee;
 
     public Nominator(Predicate<ScoredTextElement> isNominee) {
+        if (isNominee == null) {
+            throw new NullPointerException("Predicate cannot be null");
+        }
         this.isNominee = isNominee;
     }
 
