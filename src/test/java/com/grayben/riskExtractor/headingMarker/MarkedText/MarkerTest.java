@@ -3,6 +3,7 @@ package com.grayben.riskExtractor.headingMarker.markedText;
 import com.grayben.riskExtractor.headingMarker.Elector;
 import com.grayben.riskExtractor.headingMarker.Marker;
 import com.grayben.riskExtractor.headingMarker.elector.ElectedTextTest;
+import com.grayben.riskExtractor.helpers.TextElementClassListDefaults;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,85 +34,7 @@ public class MarkerTest
     public void setUp() throws Exception {
         super.setUp();
         this.markerSUT = new Marker(getElectedTextSUT());
-        this.oracle = new MarkedTextOracle(defaultClassifications());
-    }
-
-    private List<TextElementClass> defaultClassifications(){
-        List<TextElementClass> list = new ArrayList<>();
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.ELECTED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.ELECTED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.ELECTED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-
-        return list;
-    }
-
-    private List<TextElementClass> emptyList(){
-        return new ArrayList<>();
-    }
-
-    private List<TextElementClass> noHeadingList() {
-        List<TextElementClass> list = new ArrayList<>();
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-
-        return list;
-    }
-
-    private List<TextElementClass> noElectedHeadingList(){
-        List<TextElementClass> list = new ArrayList<>();
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NOMINATED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-
-        return list;
-    }
-
-    private List<TextElementClass> solelyTargetTextList(){
-        List<TextElementClass> list = new ArrayList<>();
-        list.add(TextElementClass.ELECTED_HEADING);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-
-        return list;
-    }
-
-    private List<TextElementClass> electedHeadingOnlyAtEndList(){
-        List<TextElementClass> list = new ArrayList<>();
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.NON_HEADING_CONTENT);
-        list.add(TextElementClass.ELECTED_HEADING);
-
-        return list;
+        this.oracle = new MarkedTextOracle(TextElementClassListDefaults.defaultClassifications());
     }
 
     @After
@@ -168,7 +91,7 @@ public class MarkerTest
     public void
     test_SubSelectionsReturnsExpectedOutput_WhenSimpleInput
             () throws Exception {
-        oracle = new MarkedTextOracle(defaultClassifications());
+        oracle = new MarkedTextOracle(TextElementClassListDefaults.defaultClassifications());
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);
 
@@ -182,7 +105,7 @@ public class MarkerTest
     public void
     test_SubselectionsReturnsExpectedOutput_WhenEmptyInput
             () throws Exception {
-        List<TextElementClass> param = emptyList();
+        List<TextElementClass> param = TextElementClassListDefaults.emptyList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);
@@ -196,7 +119,7 @@ public class MarkerTest
     public void
     test_SubselectionsReturnsExpectedOutput_WhenNoHeadings
             () throws Exception {
-        List<TextElementClass> param = noHeadingList();
+        List<TextElementClass> param = TextElementClassListDefaults.noHeadingList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);
@@ -211,7 +134,7 @@ public class MarkerTest
     public void
     test_SubselectionsReturnsExpectedOutput_WhenNoElectedHeadingList
             () throws Exception {
-        List<TextElementClass> param = noElectedHeadingList();
+        List<TextElementClass> param = TextElementClassListDefaults.noElectedHeadingList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);
@@ -226,7 +149,7 @@ public class MarkerTest
     public void
     test_SubselectionsReturnsExpectedOutput_WhenSolelyTargetTextList
             () throws Exception {
-        List<TextElementClass> param = solelyTargetTextList();
+        List<TextElementClass> param = TextElementClassListDefaults.solelyTargetTextList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);
@@ -241,7 +164,7 @@ public class MarkerTest
     public void
     test_SubselectionsReturnsExpectedOutput_WhenElectedHeadingOnlyAtEndList
             () throws Exception {
-        List<TextElementClass> param = electedHeadingOnlyAtEndList();
+        List<TextElementClass> param = TextElementClassListDefaults.electedHeadingOnlyAtEndList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);
