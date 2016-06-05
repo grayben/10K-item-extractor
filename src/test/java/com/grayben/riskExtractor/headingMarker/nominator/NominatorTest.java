@@ -4,6 +4,7 @@ import com.grayben.riskExtractor.headingMarker.Nominator;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.tools.testOracle.oracle.active.ActiveOracle;
+import org.apache.commons.collections4.list.SetUniqueList;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
@@ -59,6 +60,8 @@ public class NominatorTest {
         ActiveOracle<ScoredText, Nominator.NominatedText> oracle;
         Predicate<ScoredTextElement> isNominee = scoredTextElement -> false;
 
+        this.nominatorSUT = new Nominator(isNominee);
+
         List<Integer> nomineeIndices = new ArrayList<>();
         List<ScoredTextElement> scoredTextElements = input.getList();
         for (int i = 0; i < scoredTextElements.size(); i++){
@@ -68,8 +71,13 @@ public class NominatorTest {
             }
         }
 
-        //Nominator.NominatedText expected = new Nominator.NominatedText(input, SetUniqueList.setUniqueList(nomineeIndices));
-        fail("Not implemented");
+        Nominator.NominatedText expected = new Nominator.NominatedText(
+                input.getText(), SetUniqueList.setUniqueList(nomineeIndices)
+        );
+
+        Nominator.NominatedText actual = nominatorSUT.nominate(input);
+
+        assertEquals(expected, actual);
     }
 
     @Test
