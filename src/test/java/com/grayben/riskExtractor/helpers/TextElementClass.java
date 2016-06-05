@@ -1,4 +1,4 @@
-package com.grayben.riskExtractor.headingMarker.markedText;
+package com.grayben.riskExtractor.helpers;
 
 /**
  * Created by beng on 8/12/2015.

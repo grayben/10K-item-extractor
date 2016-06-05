@@ -1,7 +1,5 @@
 package com.grayben.riskExtractor.helpers;
 
-import com.grayben.riskExtractor.headingMarker.markedText.TextElementClass;
-
 import java.util.ArrayList;
 import java.util.List;
 
