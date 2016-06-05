@@ -62,8 +62,7 @@ public class NominatorTest {
     }
 
     @Test
-    @Ignore
-    public void test_NominateReturnsExpectedResult_AccordingToAlternateImplentation
+    public void test_NominateReturnsExpectedResult_AccordingToAlternateImplementation
             () throws Exception {
 
         Predicate<ScoredTextElement> isNominee = scoredTextElement -> false;
