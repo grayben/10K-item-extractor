@@ -9,36 +9,29 @@ import java.util.*;
  * <p>
  * Created by Ben Gray, 2015.
  */
-final public class MarkedText
-        extends ElectedText {
+final public class Marker
+        extends Elector.ElectedText {
 
     /**
      * Pairs of indices into {@link #stringList} corresponding to sections bounded by an elected entry and
      * a nominated entry immediately following, or, the end of the list of entries.
      */
-    Map<Integer, Integer> stringIndexPairs = null;
+    private Map<Integer, Integer> stringIndexPairs = null;
 
     /**
      * The set of selected strings, where each string is a concatenation of all strings in
      * a selected section.
      * @see #stringIndexPairs
      */
-    Set<String> selectedSections = null;
+    private Set<String> selectedSections = null;
 
     /**
-     * Incrementally construct from an {@link ElectedText} precursor.
+     * Incrementally construct from an {@link Elector.ElectedText} precursor.
      * @param text the precursor
-     * @param mapToUse an empty {@link Map} instance for use by this instance
      */
-    public MarkedText(ElectedText text, Map<Integer, Integer> mapToUse) {
+    public Marker(Elector.ElectedText text) {
         super(text);
-        if( ! mapToUse.isEmpty()){
-            throw new IllegalArgumentException(
-                    "The map to use must be empty"
-            );
-        } else {
-            this.stringIndexPairs = mapToUse;
-        }
+        this.stringIndexPairs = new HashMap<>();
 
         /**
          * Eager-compute data.
@@ -76,7 +69,7 @@ final public class MarkedText
             /**
              * The start index is the index of the electee.
              */
-            Integer startIndex = electee;
+            Integer startIndex;
 
             /**
              * Declare, but do not assign, the end index to compute.

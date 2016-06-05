@@ -2,15 +2,14 @@ package com.grayben.riskExtractor.htmlScorer;
 
 import org.apache.commons.io.FileUtils;
 import org.jsoup.HttpStatusException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.UnknownHostException;
 
@@ -131,6 +130,7 @@ public abstract class HtmlScorerTest {
         htmlScorerSUT.scoreHtml(url);
     }
 
+    @Ignore
     @Test
     public void
     test_ScoreHtmlThrowsHttpStatusException_IfResponseIsNotOK
@@ -156,6 +156,7 @@ public abstract class HtmlScorerTest {
         assertNotNull(returned);
     }
 
+    @Ignore
     @Test
     public void
     test_ScoreHtmlReturnsNonNull_WhenSimpleRemoteInput
@@ -181,6 +182,7 @@ public abstract class HtmlScorerTest {
         htmlScorerSUT.scoreHtml(inputStream, charsetName, "");
     }
 
+    @Ignore
     @Test
     public void
     test_ScoreHtmlReturnsNonNull_WhenLengthyRemoteInput
@@ -206,6 +208,7 @@ public abstract class HtmlScorerTest {
         assertNotNull(returned);
     }
 
+    @Ignore
     @Test
     public void
     test_ScoreHtmlReturnsSameFromAnySignature_WhenTextInputIsSameSimple

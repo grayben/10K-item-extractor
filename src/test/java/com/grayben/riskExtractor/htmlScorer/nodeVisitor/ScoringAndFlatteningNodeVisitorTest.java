@@ -1,12 +1,12 @@
 package com.grayben.riskExtractor.htmlScorer.nodeVisitor;
 
+import com.grayben.riskExtractor.helpers.AnnotatedElement;
+import com.grayben.riskExtractor.helpers.ElementScorerSetFunction;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
-import com.grayben.riskExtractor.helpers.AnnotatedElement;
 import com.grayben.riskExtractor.htmlScorer.nodeVisitor.setup.TestContainerSupplier;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
-import com.grayben.riskExtractor.helpers.ElementScorerSetFunction;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import com.grayben.tools.testOracle.testContainer.TestContainer;
@@ -19,6 +19,7 @@ import org.jsoup.parser.Tag;
 import org.jsoup.select.NodeTraversor;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -581,6 +582,7 @@ public class ScoringAndFlatteningNodeVisitorTest
     }
 
 
+    @Ignore
     @Test
     public void
     test_AllScoresAreZero_AfterTraversalOfManyTargetElements
