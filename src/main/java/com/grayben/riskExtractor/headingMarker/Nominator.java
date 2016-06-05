@@ -26,10 +26,14 @@ public class Nominator {
             throw new NullPointerException("scoredText cannot be null");
         }
         List<Integer> nomineeIndices = new ArrayList<>();
-        for (ScoredTextElement element : scoredText.getList()){
-
+        List<ScoredTextElement> scoredTextElementList = scoredText.getList();
+        for (int i = 0; i < scoredTextElementList.size(); i++){
+            ScoredTextElement element = scoredTextElementList.get(i);
+            if (isNominee.test(element)){
+                nomineeIndices.add(i);
+            }
         }
-        return null;
+        return new NominatedText(scoredText.getText(), SetUniqueList.setUniqueList(nomineeIndices));
     }
 
     /**
