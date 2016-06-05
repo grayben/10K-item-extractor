@@ -11,6 +11,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.function.Predicate;
 
+import static org.junit.Assert.fail;
+
 /**
  * Created by beng on 4/06/2016.
  */
@@ -62,6 +64,20 @@ public class ElectorTest {
             () throws Exception {
         thrown.expect(NullPointerException.class);
         electorSUT.electedText(new Nominator(x -> true), null);
+    }
+
+    @Ignore
+    @Test
+    public void test_ElectedTextGeneratesSameOutputAsElect_WithSameNominator
+            () throws Exception {
+        fail("Not implemented");
+    }
+
+    @Ignore
+    @Test
+    public void test_ElectedTextGeneratedCorrectOutput_OnRandomisedInputs
+            () throws Exception {
+        fail("Not implemented");
     }
 
 
