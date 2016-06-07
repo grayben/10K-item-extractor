@@ -19,7 +19,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 
@@ -109,7 +108,21 @@ public class NominatorTest {
         positiveScore.put(label, 1);
         Map<String, Integer> negativeScore = new HashMap<>();
         negativeScore.put(label, 0);
-        Predicate<ScoredTextElement> isNominee = element -> element.getScores().get(label) > 0;
+
+        this.computeNomineeIndices = scoredText -> {
+            List<ScoredTextElement> elements = scoredText.getList();
+            List<Integer> nomineeIndices = new ArrayList<>();
+            for (int i = 0; i < elements.size(); i++){
+                ScoredTextElement element = elements.get(i);
+                if (element.getScores().get(label).equals(1)){
+                    nomineeIndices.add(i);
+                }
+            }
+
+            return (nomineeIndices);
+        };
+
+        this.nominatorSUT = new Nominator(this.computeNomineeIndices);
 
         List<String> expectedStringList = new ArrayList<>();
         List<Integer> expectedNomineeIndices = new ArrayList<>();
@@ -128,20 +141,6 @@ public class NominatorTest {
         Nominator.NominatedText expectedOutput = new Nominator.NominatedText(
                 expectedStringList, SetUniqueList.setUniqueList(expectedNomineeIndices)
         );
-
-        this.computeNomineeIndices = scoredText -> {
-            List<ScoredTextElement> elements = scoredText.getList();
-            List<Integer> nomineeIndices = new ArrayList<>();
-            for (int i = 0; i < elements.size(); i++){
-                ScoredTextElement element = elements.get(i);
-                if (element.getScores().get(label).equals(1)){
-                    nomineeIndices.add(i);
-                }
-            }
-
-            return (nomineeIndices);
-        };
-
 
         Nominator.NominatedText actualOutput = this.nominatorSUT.nominate(input);
 
