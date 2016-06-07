@@ -6,6 +6,7 @@ import com.grayben.riskExtractor.helpers.ScoredTextGenerator;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.jsoup.nodes.Element;
 import org.junit.*;
@@ -17,7 +18,6 @@ import java.util.*;
 import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  * Created by beng on 5/06/2016.
@@ -68,8 +68,6 @@ public class NominatorTest {
     public void test_NominateReturnsExpectedResult_AccordingToAlternateImplementation
             () throws Exception {
 
-
-
         this.nominatorSUT = new Nominator(isNominee);
 
         List<Integer> nomineeIndices = new ArrayList<>();
@@ -91,15 +89,38 @@ public class NominatorTest {
     }
 
     @Test
-    @Ignore
     public void test_NominateReturnsExpectedResult_WithInput1
             () throws Exception {
 
-        fail("Not implemented");
+        Random random = new Random(1024L);
 
-        ScoredText input = null;
-        Nominator.NominatedText expectedOutput = null;
-        Predicate<ScoredTextElement> isNominee = scoredTextElement -> false;
+        input = new ScoredText();
+
+        String label = SegmentationElementScorer.SCORE_LABEL;
+        Map<String, Integer> positiveScore = new HashMap<>();
+        positiveScore.put(label, 1);
+        Map<String, Integer> negativeScore = new HashMap<>();
+        negativeScore.put(label, 0);
+        Predicate<ScoredTextElement> isNominee = element -> element.getScores().get(label) > 0;
+
+        List<String> expectedStringList = new ArrayList<>();
+        List<Integer> expectedNomineeIndices = new ArrayList<>();
+
+        for(int i = 0; i < 50; i++){
+            String text = Integer.toString(i);
+            expectedStringList.add(text);
+            if (random.nextInt() % 4 == 0){
+                input.add(new ScoredTextElement(text, positiveScore));
+                expectedNomineeIndices.add(i);
+            } else {
+                input.add(new ScoredTextElement(text, negativeScore));
+            }
+        }
+
+        Nominator.NominatedText expectedOutput = new Nominator.NominatedText(
+                expectedStringList, SetUniqueList.setUniqueList(expectedNomineeIndices)
+        );
+
         this.nominatorSUT = new Nominator(isNominee);
         Nominator.NominatedText actualOutput = this.nominatorSUT.nominate(input);
 

@@ -32,7 +32,7 @@ public class ScoredTextGenerator {
             List<MapScorer<Tag>> scorersCopy = new ArrayList<>(scorerList);
 
             for(int j = 0; j < maxNumScorersToUse; j++){
-                if(random.nextInt() % 2 > 0){
+                if(random.nextInt() % 6 == 0){
                     int scorersCopySize = scorersCopy.size();
                     MapScorer<Tag> selectedScorer = scorersCopy.remove(random.nextInt() % scorersCopySize);
                     List<Tag> tagList = new ArrayList<>();
