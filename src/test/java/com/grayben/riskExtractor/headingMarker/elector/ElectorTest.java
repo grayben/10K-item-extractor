@@ -9,6 +9,9 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.junit.Assert.fail;
@@ -64,7 +67,20 @@ public class ElectorTest {
     public void test_ElectedTextThrowsNullPointerException_WhenScoredTextIsNull
             () throws Exception {
         thrown.expect(NullPointerException.class);
-        electorSUT.electedText(new Nominator(x -> true), null);
+        Function<ScoredText, List<Integer>> getNomineeIndices = scoredText -> {
+            List<Integer> indices = new ArrayList<>();
+            List<ScoredTextElement> scoredTextElements = scoredText.getList();
+            for (int i = 0; i <  scoredTextElements.size(); i++){
+                ScoredTextElement element = scoredTextElements.get(i);
+                if (element.hashCode() % 4 == 0){
+                    indices.add(i);
+
+                }
+            }
+            return indices;
+        };
+
+        electorSUT.electedText(new Nominator(getNomineeIndices), null);
     }
 
     @Ignore

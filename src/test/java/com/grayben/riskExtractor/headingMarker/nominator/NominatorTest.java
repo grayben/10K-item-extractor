@@ -9,12 +9,16 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.jsoup.nodes.Element;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
@@ -29,15 +33,26 @@ public class NominatorTest {
 
     private ScoredText input;
 
-    private Predicate<ScoredTextElement> isNominee;
+    private Function<ScoredText, List<Integer>> computeNomineeIndices;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
-        this.isNominee = scoredTextElement -> (scoredTextElement.hashCode() % 2 == 0);
-        this.nominatorSUT = new Nominator(this.isNominee);
+        this.computeNomineeIndices = scoredText -> {
+            List<ScoredTextElement> elements = scoredText.getList();
+            List<Integer> nomineeIndices = new ArrayList<>();
+            for (int i = 0; i < elements.size(); i++){
+                ScoredTextElement element = elements.get(i);
+                if (element.hashCode() % 6 == 0){
+                    nomineeIndices.add(i);
+                }
+            }
+
+            return (nomineeIndices);
+        };
+        this.nominatorSUT = new Nominator(this.computeNomineeIndices);
         Set<ElementScorerSetFunction.Content> contents = new HashSet<>();
         contents.add(ElementScorerSetFunction.Content.EMPHASIS_ELEMENT_SCORER);
         contents.add(ElementScorerSetFunction.Content.SEGMENTATION_ELEMENT_SCORER);
@@ -68,16 +83,9 @@ public class NominatorTest {
     public void test_NominateReturnsExpectedResult_AccordingToAlternateImplementation
             () throws Exception {
 
-        this.nominatorSUT = new Nominator(isNominee);
+        this.nominatorSUT = new Nominator(computeNomineeIndices);
 
-        List<Integer> nomineeIndices = new ArrayList<>();
-        List<ScoredTextElement> scoredTextElements = this.input.getList();
-        for (int i = 0; i < scoredTextElements.size(); i++){
-            ScoredTextElement element = scoredTextElements.get(i);
-            if (isNominee.test(element)){
-                nomineeIndices.add(i);
-            }
-        }
+        List<Integer> nomineeIndices = computeNomineeIndices.apply(input);
 
         Nominator.NominatedText expected = new Nominator.NominatedText(
                 this.input.getText(), SetUniqueList.setUniqueList(nomineeIndices)
@@ -121,7 +129,20 @@ public class NominatorTest {
                 expectedStringList, SetUniqueList.setUniqueList(expectedNomineeIndices)
         );
 
-        this.nominatorSUT = new Nominator(isNominee);
+        this.computeNomineeIndices = scoredText -> {
+            List<ScoredTextElement> elements = scoredText.getList();
+            List<Integer> nomineeIndices = new ArrayList<>();
+            for (int i = 0; i < elements.size(); i++){
+                ScoredTextElement element = elements.get(i);
+                if (element.getScores().get(label).equals(1)){
+                    nomineeIndices.add(i);
+                }
+            }
+
+            return (nomineeIndices);
+        };
+
+
         Nominator.NominatedText actualOutput = this.nominatorSUT.nominate(input);
 
         assertEquals(expectedOutput, actualOutput);

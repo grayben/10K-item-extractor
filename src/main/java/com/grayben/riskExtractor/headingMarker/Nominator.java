@@ -1,38 +1,30 @@
 package com.grayben.riskExtractor.headingMarker;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
-import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import org.apache.commons.collections4.list.SetUniqueList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.function.Function;
 
 /**
  * Created by beng on 24/04/2016.
  */
 public class Nominator {
-    private final Predicate<ScoredTextElement> isNominee;
+    private final Function<ScoredText, List<Integer>> computeNomineeIndices;
 
-    public Nominator(Predicate<ScoredTextElement> isNominee) {
-        if (isNominee == null) {
+    public Nominator(Function<ScoredText, List<Integer>> computeNomineeIndices) {
+        if (computeNomineeIndices == null) {
             throw new NullPointerException("isNominee cannot be null");
         }
-        this.isNominee = isNominee;
+        this.computeNomineeIndices = computeNomineeIndices;
     }
 
     public NominatedText nominate(ScoredText scoredText){
         if (scoredText == null) {
             throw new NullPointerException("scoredText cannot be null");
         }
-        List<Integer> nomineeIndices = new ArrayList<>();
-        List<ScoredTextElement> scoredTextElementList = scoredText.getList();
-        for (int i = 0; i < scoredTextElementList.size(); i++){
-            ScoredTextElement element = scoredTextElementList.get(i);
-            if (isNominee.test(element)){
-                nomineeIndices.add(i);
-            }
-        }
+        List<Integer> nomineeIndices = computeNomineeIndices.apply(scoredText);
         return new NominatedText(scoredText.getText(), SetUniqueList.setUniqueList(nomineeIndices));
     }
 
