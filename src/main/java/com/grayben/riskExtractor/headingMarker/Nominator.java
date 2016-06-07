@@ -105,14 +105,14 @@ public class Nominator {
             NominatedText that = (NominatedText) o;
 
             if (!getNomineeIndices().equals(that.getNomineeIndices())) return false;
-            return unmodifiableText.equals(that.unmodifiableText);
+            return getUnmodifiableText().equals(that.getUnmodifiableText());
 
         }
 
         @Override
         public int hashCode() {
             int result = getNomineeIndices().hashCode();
-            result = 31 * result + unmodifiableText.hashCode();
+            result = 31 * result + getUnmodifiableText().hashCode();
             return result;
         }
 
