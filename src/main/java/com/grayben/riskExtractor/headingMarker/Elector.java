@@ -36,8 +36,6 @@ public class Elector {
      * Created by Ben Gray, 2015.
      */
     public static class ElectedText
-            extends
-            Nominator.NominatedText
             implements
             EntriesRetrievable.ElecteesRetrievable<String> {
 
@@ -45,6 +43,12 @@ public class Elector {
          * The list of indices to the list of Strings corresponding to electees.
          */
         SetUniqueList<Integer> electees;
+
+        public Nominator.NominatedText getNominatedText() {
+            return nominatedText;
+        }
+
+        private Nominator.NominatedText nominatedText;
 
         /**
          * Constructs ElectedText 'from scratch'.
@@ -55,7 +59,7 @@ public class Elector {
          * @apiNote electees must be a subset of nominees
          */
         public ElectedText(List<String> textList, SetUniqueList<Integer> nominees, SetUniqueList<Integer> electees){
-            super(textList, nominees);
+            this.nominatedText = new Nominator.NominatedText(textList, nominees);
             if (electees == null) {
                 throw new NullPointerException("Attempted to pass illegal null argument");
             }
@@ -74,7 +78,7 @@ public class Elector {
          */
         public ElectedText(Nominator.NominatedText nominatedText, SetUniqueList<Integer> electees){
             this(
-                    nominatedText.getStringList(),
+                    nominatedText.getEntries(),
                     nominatedText.getNomineeIndices(),
                     electees
             );
@@ -85,7 +89,7 @@ public class Elector {
          * @param electedText the ElectedText to copy
          */
         public ElectedText(ElectedText electedText){
-            this(electedText, electedText.getElecteeIndices());
+            this(electedText.getNominatedText(), electedText.getElecteeIndices());
         }
 
         @Override
@@ -97,6 +101,16 @@ public class Elector {
             newSetUniqueList.addAll(this.electees);
 
             return newSetUniqueList;
+        }
+
+        @Override
+        public SetUniqueList<Integer> getNomineeIndices() {
+            return this.nominatedText.getNomineeIndices();
+        }
+
+        @Override
+        public List<String> getEntries() {
+            return getNominatedText().getEntries();
         }
     }
 

@@ -77,7 +77,7 @@ public class MarkerTest
         List<TextElementClass> textElementClasses = new ArrayList<>();
         this.markerSUT = new Marker(
                 new Elector.ElectedText(
-                        new ArrayList<>(), nomineesArgument, electeesArgument)
+                        new ArrayList<>(), this.markerSUT.getElecteeIndices(), electeesArgument)
         );
         oracle = new MarkedTextOracle(textElementClasses);
 

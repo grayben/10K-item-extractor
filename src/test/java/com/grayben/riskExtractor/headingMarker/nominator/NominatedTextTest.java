@@ -1,15 +1,17 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
 import com.grayben.riskExtractor.headingMarker.Nominator;
-import com.grayben.riskExtractor.headingMarker.UnmodifiableTextTest;
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -18,10 +20,15 @@ import static org.junit.Assert.assertNotNull;
  * Created by beng on 28/11/2015.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class NominatedTextTest
-            extends UnmodifiableTextTest {
+public class NominatedTextTest {
+
+    private List<String> stringListArgument;
 
     private Nominator.NominatedText nominatedTextSUT = null;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
 
     public Nominator.NominatedText getNominatedTextSUT() {
         return nominatedTextSUT;
@@ -29,15 +36,12 @@ public class NominatedTextTest
 
     public void setNominatedTextSUT(Nominator.NominatedText nominatedTextSUT) {
         this.nominatedTextSUT = nominatedTextSUT;
-        this.setUnmodifiableTextSUT(this.nominatedTextSUT);
     }
 
     protected SetUniqueList<Integer> nomineesArgument = null;
 
     @Before
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
         this.stringListArgument = new ArrayList<>();
         this.stringListArgument.add("one");
         this.stringListArgument.add("two");
@@ -53,9 +57,7 @@ public class NominatedTextTest
     }
 
     @After
-    @Override
     public void tearDown() throws Exception {
-        super.tearDown();
         nominatedTextSUT = null;
     }
 
@@ -89,7 +91,7 @@ public class NominatedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new Nominator.NominatedText(this.getUnmodifiableTextSUT(), nomineesArgument);
+        new Nominator.NominatedText(this.nominatedTextSUT.getUnmodifiableText(), nomineesArgument);
     }
 
     @Test
@@ -100,7 +102,7 @@ public class NominatedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new Nominator.NominatedText(this.getUnmodifiableTextSUT(), nomineesArgument);
+        new Nominator.NominatedText(this.nominatedTextSUT.getUnmodifiableText(), nomineesArgument);
     }
 
     @Test

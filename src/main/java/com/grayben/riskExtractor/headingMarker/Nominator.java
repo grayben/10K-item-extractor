@@ -42,13 +42,15 @@ public class Nominator {
      * Created by Ben Gray, 2015.
      */
     public static class NominatedText
-            extends UnmodifiableText
             implements EntriesRetrievable.NomineesRetrievable<String> {
 
-        /**
-         * The indices into {@link #stringList} identifying nominees.
-         */
         private SetUniqueList<Integer> nomineeIndices;
+
+        public UnmodifiableText getUnmodifiableText() {
+            return unmodifiableText;
+        }
+
+        private UnmodifiableText unmodifiableText;
 
         /**
          * Construct 'from scratch'.
@@ -56,7 +58,7 @@ public class Nominator {
          * @param nomineeIndices the indices identifying nominees
          */
         public NominatedText(List<String> stringList, SetUniqueList<Integer> nomineeIndices) {
-            super(stringList);
+            this.unmodifiableText = new UnmodifiableText(stringList);
             if (nomineeIndices == null) {
                 throw new NullPointerException("Attempted to pass null argument");
             }
@@ -71,7 +73,7 @@ public class Nominator {
         public NominatedText(
                 UnmodifiableText unmodifiableText,
                 SetUniqueList<Integer> nomineeIndices){
-            super(unmodifiableText);
+            this.unmodifiableText = unmodifiableText;
             if (nomineeIndices == null) {
                 throw new NullPointerException("Attempted to pass null argument");
             }
@@ -83,7 +85,7 @@ public class Nominator {
          * @param nominatedText the object to copy
          */
         public NominatedText(NominatedText nominatedText){
-            this(nominatedText, nominatedText.getNomineeIndices());
+            this(nominatedText.getEntries(), nominatedText.getNomineeIndices());
         }
 
         @Override
@@ -93,6 +95,30 @@ public class Nominator {
             );
             newList.addAll(this.nomineeIndices);
             return newList;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            NominatedText that = (NominatedText) o;
+
+            if (!getNomineeIndices().equals(that.getNomineeIndices())) return false;
+            return unmodifiableText.equals(that.unmodifiableText);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = getNomineeIndices().hashCode();
+            result = 31 * result + unmodifiableText.hashCode();
+            return result;
+        }
+
+        @Override
+        public List<String> getEntries() {
+            return this.unmodifiableText.getEntries();
         }
     }
 
