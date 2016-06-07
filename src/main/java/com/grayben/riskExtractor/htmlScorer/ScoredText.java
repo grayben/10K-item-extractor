@@ -1,5 +1,7 @@
 package com.grayben.riskExtractor.htmlScorer;
 
+import com.grayben.riskExtractor.headingMarker.UnmodifiableText;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -64,6 +66,14 @@ public class ScoredText {
      */
 	public List<ScoredTextElement> getList(){
         return Collections.unmodifiableList(this.text);
+    }
+
+    public UnmodifiableText getText() {
+        List<String> textList = new ArrayList<>();
+        for (ScoredTextElement element : this.getList()){
+            textList.add(element.getTextElement());
+        }
+        return new UnmodifiableText(textList);
     }
 
     @Override

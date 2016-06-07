@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor.headingMarker.markedText;
 
 import com.grayben.riskExtractor.headingMarker.Elector;
+import com.grayben.riskExtractor.helpers.TextElementClass;
 import org.apache.commons.collections4.list.SetUniqueList;
 
 import java.util.*;
@@ -172,7 +173,7 @@ public class MarkedTextOracle {
             int endIndex = entry.getValue();
 
             //endIndex + 1 because subList is exclusive of endIndex index argument
-            List<String> subList = testInput.getStringList().subList(startIndex, endIndex + 1);
+            List<String> subList = testInput.getEntries().subList(startIndex, endIndex + 1);
 
             StringBuilder sb = new StringBuilder();
             for (String string : subList

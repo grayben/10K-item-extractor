@@ -13,7 +13,7 @@ final public class Marker
         extends Elector.ElectedText {
 
     /**
-     * Pairs of indices into {@link #stringList} corresponding to sections bounded by an elected entry and
+     * Pairs of indices into the stringList corresponding to sections bounded by an elected entry and
      * a nominated entry immediately following, or, the end of the list of entries.
      */
     private Map<Integer, Integer> stringIndexPairs = null;
@@ -192,7 +192,7 @@ final public class Marker
                  * extract every string from {@link startIndex} to the end of the list of entries.
                  */
                 if(entry.getValue() == null){
-                    endIndex = getStringList().size() - 1;
+                    endIndex = getEntries().size() - 1;
                 }
                 /**
                  * Otherwise, use the index given by the {@link entry}.
@@ -207,7 +207,7 @@ final public class Marker
                  * these strings.
                  */
                 List<String> textSectionElements
-                        = getStringList().subList(
+                        = getEntries().subList(
                         startIndex,
                         /**
                          * {@code {@link endIndex} + 1}, because sublist is exclusive of the end index.

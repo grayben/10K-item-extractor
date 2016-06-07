@@ -3,7 +3,7 @@ package com.grayben.riskExtractor.headingMarker.markedText;
 import com.grayben.riskExtractor.headingMarker.Elector;
 import com.grayben.riskExtractor.headingMarker.Marker;
 import com.grayben.riskExtractor.headingMarker.elector.ElectedTextTest;
-import com.grayben.riskExtractor.helpers.TextElementClassListDefaults;
+import com.grayben.riskExtractor.helpers.TextElementClass;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class MarkerTest
     public void setUp() throws Exception {
         super.setUp();
         this.markerSUT = new Marker(getElectedTextSUT());
-        this.oracle = new MarkedTextOracle(TextElementClassListDefaults.defaultClassifications());
+        this.oracle = new MarkedTextOracle(TextElementClass.defaultClassifications());
     }
 
     @After
@@ -77,7 +77,7 @@ public class MarkerTest
         List<TextElementClass> textElementClasses = new ArrayList<>();
         this.markerSUT = new Marker(
                 new Elector.ElectedText(
-                        new ArrayList<>(), nomineesArgument, electeesArgument)
+                        new ArrayList<>(), this.markerSUT.getElecteeIndices(), electeesArgument)
         );
         oracle = new MarkedTextOracle(textElementClasses);
 
@@ -91,7 +91,7 @@ public class MarkerTest
     public void
     test_SubSelectionsReturnsExpectedOutput_WhenSimpleInput
             () throws Exception {
-        oracle = new MarkedTextOracle(TextElementClassListDefaults.defaultClassifications());
+        oracle = new MarkedTextOracle(TextElementClass.defaultClassifications());
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);
 
@@ -105,7 +105,7 @@ public class MarkerTest
     public void
     test_SubselectionsReturnsExpectedOutput_WhenEmptyInput
             () throws Exception {
-        List<TextElementClass> param = TextElementClassListDefaults.emptyList();
+        List<TextElementClass> param = TextElementClass.emptyList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);
@@ -119,7 +119,7 @@ public class MarkerTest
     public void
     test_SubselectionsReturnsExpectedOutput_WhenNoHeadings
             () throws Exception {
-        List<TextElementClass> param = TextElementClassListDefaults.noHeadingList();
+        List<TextElementClass> param = TextElementClass.noHeadingList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);
@@ -134,7 +134,7 @@ public class MarkerTest
     public void
     test_SubselectionsReturnsExpectedOutput_WhenNoElectedHeadingList
             () throws Exception {
-        List<TextElementClass> param = TextElementClassListDefaults.noElectedHeadingList();
+        List<TextElementClass> param = TextElementClass.noElectedHeadingList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);
@@ -149,7 +149,7 @@ public class MarkerTest
     public void
     test_SubselectionsReturnsExpectedOutput_WhenSolelyTargetTextList
             () throws Exception {
-        List<TextElementClass> param = TextElementClassListDefaults.solelyTargetTextList();
+        List<TextElementClass> param = TextElementClass.solelyTargetTextList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);
@@ -164,7 +164,7 @@ public class MarkerTest
     public void
     test_SubselectionsReturnsExpectedOutput_WhenElectedHeadingOnlyAtEndList
             () throws Exception {
-        List<TextElementClass> param = TextElementClassListDefaults.electedHeadingOnlyAtEndList();
+        List<TextElementClass> param = TextElementClass.electedHeadingOnlyAtEndList();
         oracle = new MarkedTextOracle(param);
         Elector.ElectedText input = oracle.getTestInput();
         markerSUT = new Marker(input);

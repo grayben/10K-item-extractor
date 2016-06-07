@@ -40,6 +40,22 @@ public class UnmodifiableText implements EntriesRetrievable<String> {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UnmodifiableText that = (UnmodifiableText) o;
+
+        return getStringList().equals(that.getStringList());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getStringList().hashCode();
+    }
+
     /**
      * @return an immutable view of the text encapsulated by this object
      */

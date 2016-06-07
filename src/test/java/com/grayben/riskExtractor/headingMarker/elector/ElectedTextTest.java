@@ -1,11 +1,12 @@
 package com.grayben.riskExtractor.headingMarker.elector;
 
 import com.grayben.riskExtractor.headingMarker.Elector;
-import com.grayben.riskExtractor.headingMarker.nominator.NominatedTextTest;
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -19,27 +20,25 @@ import static org.junit.Assert.assertNotNull;
  * Created by beng on 28/11/2015.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ElectedTextTest
-        extends
-        NominatedTextTest {
+public class ElectedTextTest {
 
     private Elector.ElectedText electedTextSUT;
+
+    private List<String> stringListArgument;
+
+    private SetUniqueList<Integer> nomineesArgument;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     public Elector.ElectedText getElectedTextSUT() {
         return electedTextSUT;
     }
 
-    public void setElectedTextSUT(Elector.ElectedText electedTextSUT) {
-        this.electedTextSUT = electedTextSUT;
-        this.setNominatedTextSUT(this.electedTextSUT);
-    }
-
     protected SetUniqueList<Integer> electeesArgument;
 
     @Before
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
         this.stringListArgument = new ArrayList<>();
         stringListArgument.add("one");
         stringListArgument.add("two");
@@ -55,19 +54,17 @@ public class ElectedTextTest
                 = SetUniqueList.setUniqueList(new ArrayList<>());
         electeesArgument.add(0);
 
-        this.setElectedTextSUT(
-                new Elector.ElectedText(
-                        stringListArgument,
-                        nomineesArgument,
-                        electeesArgument
-                )
+        this.electedTextSUT =
+            new Elector.ElectedText(
+                    stringListArgument,
+                    nomineesArgument,
+                    electeesArgument
+
         );
     }
 
     @After
-    @Override
     public void tearDown() throws Exception {
-        super.tearDown();
     }
 
     @Test
@@ -111,7 +108,6 @@ public class ElectedTextTest
     }
 
     @Test
-    @Override
     public void
     test_BasicConstructorThrowsNullPointerException_WhenStringListIsNull
             () throws Exception {
@@ -123,7 +119,6 @@ public class ElectedTextTest
     }
 
     @Test
-    @Override
     public void
     test_BasicConstructorThrowsNullPointerException_WhenNomineesIsNull
             () throws Exception {
@@ -149,11 +144,10 @@ public class ElectedTextTest
     public void
     test_IncrementalConstructorThrowsNullPointerException_WhenNominatedTextIsNull
             () throws Exception {
-        this.setNominatedTextSUT(null);
 
         thrown.expect(NullPointerException.class);
 
-        new Elector.ElectedText(getNominatedTextSUT(), electeesArgument);
+        new Elector.ElectedText(null, electeesArgument);
     }
 
     @Test
@@ -164,15 +158,15 @@ public class ElectedTextTest
 
         thrown.expect(NullPointerException.class);
 
-        new Elector.ElectedText(getNominatedTextSUT(), electeesArgument);
+        new Elector.ElectedText(electedTextSUT.getNominatedText(), electeesArgument);
     }
 
     @Test
-    @Override
     public void
     test_PrototypeConstructorThrowsNullPointerException_WhenPrototypeIsNull
             () throws Exception {
-        this.setElectedTextSUT(null);
+
+        this.electedTextSUT = null;
 
         thrown.expect(NullPointerException.class);
 
