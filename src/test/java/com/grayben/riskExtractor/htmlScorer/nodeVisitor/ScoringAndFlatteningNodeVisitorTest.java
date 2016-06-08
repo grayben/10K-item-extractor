@@ -19,7 +19,6 @@ import org.jsoup.parser.Tag;
 import org.jsoup.select.NodeTraversor;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -581,8 +580,6 @@ public class ScoringAndFlatteningNodeVisitorTest
         assertEquals(expectedText, output);
     }
 
-
-    @Ignore
     @Test
     public void
     test_AllScoresAreZero_AfterTraversalOfManyTargetElements
