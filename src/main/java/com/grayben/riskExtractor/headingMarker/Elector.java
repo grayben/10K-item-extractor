@@ -1,31 +1,34 @@
 package com.grayben.riskExtractor.headingMarker;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
-import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import org.apache.commons.collections4.list.SetUniqueList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.function.Function;
 
 /**
  * Created by beng on 24/04/2016.
  */
 public class Elector {
-    private final Predicate<ScoredTextElement> isElectee;
+    private final Function<Nominator.NominatedText, List<Integer>> computeElecteeIndices;
 
-    public Elector(Predicate<ScoredTextElement> isElectee) {
-        this.isElectee = isElectee;
+    public Elector(Function<Nominator.NominatedText, List<Integer>> computeElecteeIndices) {
+        if (computeElecteeIndices == null) {
+            throw new NullPointerException("computeElecteeIndices cannot be null");
+        }
+        this.computeElecteeIndices = computeElecteeIndices;
     }
 
     public ElectedText elect(Nominator.NominatedText nominatedText){
         if (nominatedText == null) {
             throw new NullPointerException("NominatedText argument cannot be null");
         }
-        throw new UnsupportedOperationException("Not implemented");
+        List<Integer> electeeIndices = computeElecteeIndices.apply(nominatedText);
+        return new ElectedText(nominatedText, SetUniqueList.setUniqueList(electeeIndices));
     }
 
-    public ElectedText electedText(Nominator nominator, ScoredText scoredText){
+    public ElectedText elect(Nominator nominator, ScoredText scoredText){
         Nominator.NominatedText nominatedText = nominator.nominate(scoredText);
         return elect(nominatedText);
     }
@@ -111,6 +114,25 @@ public class Elector {
         @Override
         public List<String> getEntries() {
             return getNominatedText().getEntries();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ElectedText that = (ElectedText) o;
+
+            if (!electees.equals(that.electees)) return false;
+            return getNominatedText().equals(that.getNominatedText());
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = electees.hashCode();
+            result = 31 * result + getNominatedText().hashCode();
+            return result;
         }
     }
 

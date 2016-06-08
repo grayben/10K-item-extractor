@@ -1,14 +1,11 @@
 package com.grayben.riskExtractor.headingMarker.nominator;
 
 import com.grayben.riskExtractor.headingMarker.Nominator;
-import com.grayben.riskExtractor.helpers.ElementScorerSetFunction;
 import com.grayben.riskExtractor.helpers.ScoredTextGenerator;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
-import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import org.apache.commons.collections4.list.SetUniqueList;
-import org.jsoup.nodes.Element;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,12 +31,8 @@ public class NominatorTest {
 
     private Function<ScoredText, List<Integer>> computeNomineeIndices;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Before
-    public void setUp() throws Exception {
-        this.computeNomineeIndices = scoredText -> {
+    public static Function<ScoredText, List<Integer>> buildDefaultNominatorFunction(){
+        return scoredText -> {
             List<ScoredTextElement> elements = scoredText.getList();
             List<Integer> nomineeIndices = new ArrayList<>();
             for (int i = 0; i < elements.size(); i++){
@@ -51,12 +44,20 @@ public class NominatorTest {
 
             return (nomineeIndices);
         };
-        this.nominatorSUT = new Nominator(this.computeNomineeIndices);
-        Set<ElementScorerSetFunction.Content> contents = new HashSet<>();
-        contents.add(ElementScorerSetFunction.Content.EMPHASIS_ELEMENT_SCORER);
-        contents.add(ElementScorerSetFunction.Content.SEGMENTATION_ELEMENT_SCORER);
-        Set<Scorer<Element>> elementScorerSet = new ElementScorerSetFunction().apply(contents);
-        this.input = ScoredTextGenerator.randomScoredText(new Random(42L), elementScorerSet);
+    }
+
+    public static Nominator buildDefaultNominator(){
+        return new Nominator(buildDefaultNominatorFunction());
+    }
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Before
+    public void setUp() throws Exception {
+        this.computeNomineeIndices = buildDefaultNominatorFunction();
+        this.nominatorSUT = buildDefaultNominator();
+        this.input = ScoredTextGenerator.randomScoredTextWithDefaultScorers();
     }
 
     @After

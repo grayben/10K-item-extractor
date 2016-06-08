@@ -70,6 +70,14 @@ public class ScoredTextGenerator {
         return min + (int)(random.nextFloat() * ((max - min) + 1));
     }
 
+    public static ScoredText randomScoredTextWithDefaultScorers(){
+        Set<ElementScorerSetFunction.Content> contents = new HashSet<>();
+        contents.add(ElementScorerSetFunction.Content.EMPHASIS_ELEMENT_SCORER);
+        contents.add(ElementScorerSetFunction.Content.SEGMENTATION_ELEMENT_SCORER);
+        Set<Scorer<Element>> elementScorerSet = new ElementScorerSetFunction().apply(contents);
+        return ScoredTextGenerator.randomScoredText(new Random(42L), elementScorerSet);
+    }
+
     public static ScoredText randomScoredText(Random random, Set<Scorer<Element>> elementScorers){
         Set<MapScorer<Tag>> tagScorers = ScoredTextReverseEngineerer.equivalentScorersFrom(elementScorers);
         List<MapScorer<Tag>> scorerList = new ArrayList<>();
