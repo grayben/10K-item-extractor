@@ -77,7 +77,6 @@ public class ElectorTest {
         electorSUT.electedText(null, new ScoredText());
     }
 
-    @Ignore
     @Test
     public void test_ElectedTextThrowsNullPointerException_WhenScoredTextIsNull
             () throws Exception {
