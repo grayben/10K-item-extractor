@@ -6,7 +6,10 @@ import com.grayben.riskExtractor.headingMarker.nominator.NominatorTest;
 import com.grayben.riskExtractor.helpers.ScoredTextGenerator;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import org.apache.commons.collections4.list.SetUniqueList;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -16,7 +19,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  * Created by beng on 4/06/2016.
@@ -116,11 +118,11 @@ public class ElectorTest {
         assertEquals(expected, actual);
     }
 
-    @Ignore
     @Test
     public void test_ElectedTextGeneratesSameOutputAsElect_WithSameNominator
             () throws Exception {
-        fail("Not implemented");
+        Nominator.NominatedText nominatedText = nominator.nominate(scoredText);
+        assertEquals(electorSUT.elect(nominatedText), electorSUT.elect(nominator, scoredText));
     }
 
 
