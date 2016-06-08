@@ -130,7 +130,6 @@ public abstract class HtmlScorerTest {
         htmlScorerSUT.scoreHtml(url);
     }
 
-    @Ignore
     @Test
     public void
     test_ScoreHtmlThrowsHttpStatusException_IfResponseIsNotOK
@@ -156,7 +155,6 @@ public abstract class HtmlScorerTest {
         assertNotNull(returned);
     }
 
-    @Ignore
     @Test
     public void
     test_ScoreHtmlReturnsNonNull_WhenSimpleRemoteInput
@@ -182,7 +180,6 @@ public abstract class HtmlScorerTest {
         htmlScorerSUT.scoreHtml(inputStream, charsetName, "");
     }
 
-    @Ignore
     @Test
     public void
     test_ScoreHtmlReturnsNonNull_WhenLengthyRemoteInput
@@ -208,7 +205,6 @@ public abstract class HtmlScorerTest {
         assertNotNull(returned);
     }
 
-    @Ignore
     @Test
     public void
     test_ScoreHtmlReturnsSameFromAnySignature_WhenTextInputIsSameSimple
