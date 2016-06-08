@@ -6,11 +6,13 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.jsoup.helper.Validate.fail;
+import static org.junit.Assert.*;
 
 /**
  * Created by beng on 28/11/2015.
@@ -63,14 +65,24 @@ public class RiskExtractorIT {
         RiskExtractor.main(args.toArray(new String[args.size()]));
     }
 
-    @Ignore
     @Test
     public void test_MainCreatesExpectedOutputFile
             () throws Exception {
         String inputName = "input.csv";
+        String charsetName = "UTF-8";
         String outputName = "output.csv";
-        fail("Test not written");
+        File tempFolder = folder.newFolder();
+        File inputFile = folder.newFile(inputName);
+        File outputFileToBeCreated = new File(tempFolder.getAbsolutePath().concat("/").concat(outputName));
 
+        List<String> argsList = new ArrayList<>();
+        argsList.add(inputFile.getAbsolutePath());
+        argsList.add(charsetName);
+        argsList.add(outputFileToBeCreated.getAbsolutePath());
+
+        assertFalse(outputFileToBeCreated.exists());
+        RiskExtractor.main(argsList.toArray(new String[argsList.size()]));
+        assertTrue(outputFileToBeCreated.exists());
     }
 
     @Ignore

@@ -77,14 +77,16 @@ public class RiskExtractor {
 	
 	private static void takeArgs(String[] args) throws IOException {
 		checkArgs(args);
-		String fileName = args[0];
-		File htmlFile = new File(fileName);
-		InputStream inputStream = new FileInputStream(htmlFile);
+		String inileName = args[0];
 		String charsetName = args[1];
+		String outfileName = args[2];
+		File infile = new File(inileName);
+		InputStream inputStream = new FileInputStream(infile);
+
 		HtmlScorer scorer = new TreeHtmlScorer(setupNodeVisitor());
 		ScoredText scoredText = scorer.scoreHtml(inputStream, charsetName, "");
 		System.out.print(scoredText.toString());
-		File outFile = new File("/Volumes/MBS Data/EDGAR-Form10K/output.txt");
+		File outFile = new File(outfileName);
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter(outFile);
@@ -98,11 +100,11 @@ public class RiskExtractor {
 	}
 
 	private static String mainUsageMessage(){
-		return "Usage\nprogram_name input_csv output_csv";
+		return "Usage\nprogram_name input_csv charset_name output_csv";
 	}
 
 	private static void checkArgs(String[] args) {
-		int argsLen = 2;
+		int argsLen = 3;
 		if (args.length != argsLen) {
 			System.out.println(mainUsageMessage());
 			throw new IllegalArgumentException(mainUsageMessage());
