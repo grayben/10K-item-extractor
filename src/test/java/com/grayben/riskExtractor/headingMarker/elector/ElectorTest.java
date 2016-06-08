@@ -64,7 +64,6 @@ public class ElectorTest {
         electorSUT = new Elector(null);
     }
 
-    @Ignore
     @Test
     public void test_ElectThrowsNullPointerException_WhenNominatedTextIsNull
             () throws Exception {
@@ -72,7 +71,6 @@ public class ElectorTest {
         electorSUT.elect(null);
     }
 
-    @Ignore
     @Test
     public void test_ElectedTextThrowsNullPointerException_WhenNominatorIsNull
             () throws Exception {
