@@ -27,7 +27,7 @@ public class Elector {
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    public ElectedText electedText(Nominator nominator, ScoredText scoredText){
+    public ElectedText elect(Nominator nominator, ScoredText scoredText){
         Nominator.NominatedText nominatedText = nominator.nominate(scoredText);
         return elect(nominatedText);
     }

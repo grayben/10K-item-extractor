@@ -74,11 +74,11 @@ public class ElectorTest {
     public void test_ElectedTextThrowsNullPointerException_WhenNominatorIsNull
             () throws Exception {
         thrown.expect(NullPointerException.class);
-        electorSUT.electedText(null, new ScoredText());
+        electorSUT.elect(null, new ScoredText());
     }
 
     @Test
-    public void test_ElectedTextThrowsNullPointerException_WhenScoredTextIsNull
+    public void test_ElectThrowsNullPointerException_WhenScoredTextIsNull
             () throws Exception {
         thrown.expect(NullPointerException.class);
         Function<ScoredText, List<Integer>> getNomineeIndices = scoredText -> {
@@ -94,14 +94,7 @@ public class ElectorTest {
             return indices;
         };
 
-        electorSUT.electedText(new Nominator(getNomineeIndices), null);
-    }
-
-    @Ignore
-    @Test
-    public void test_ElectedTextGeneratedCorrectOutput_OnRandomisedInputs
-            () throws Exception {
-        fail("Not implemented");
+        electorSUT.elect(new Nominator(getNomineeIndices), null);
     }
 
     @Ignore
