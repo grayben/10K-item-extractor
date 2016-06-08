@@ -1,21 +1,20 @@
 package com.grayben.riskExtractor.headingMarker;
 
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
-import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
 import org.apache.commons.collections4.list.SetUniqueList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.function.Function;
 
 /**
  * Created by beng on 24/04/2016.
  */
 public class Elector {
-    private final Predicate<ScoredTextElement> isElectee;
+    private final Function<Nominator.NominatedText, List<Integer>> computeElecteeIndices;
 
-    public Elector(Predicate<ScoredTextElement> isElectee) {
-        this.isElectee = isElectee;
+    public Elector(Function<Nominator.NominatedText, List<Integer>> computeElecteeIndices) {
+        this.computeElecteeIndices = computeElecteeIndices;
     }
 
     public ElectedText elect(Nominator.NominatedText nominatedText){
