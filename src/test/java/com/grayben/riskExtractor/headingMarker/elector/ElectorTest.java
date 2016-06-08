@@ -12,7 +12,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import static org.junit.Assert.fail;
 
@@ -22,6 +21,7 @@ import static org.junit.Assert.fail;
 @RunWith(MockitoJUnitRunner.class)
 public class ElectorTest {
 
+    private Function<Nominator.NominatedText, List<Integer>> computeElecteeIndices;
     private Elector electorSUT;
 
     @Rule
@@ -29,8 +29,26 @@ public class ElectorTest {
 
     @Before
     public void setUp() throws Exception {
-        Predicate<ScoredTextElement> predicate = element -> true;
-        electorSUT = new Elector(predicate);
+        this.computeElecteeIndices = nominatedText -> {
+            List<String> text = nominatedText.getUnmodifiableText().getStringList();
+            List<Integer> nomineeIndices = nominatedText.getNomineeIndices();
+            int highestHashcode = Integer.MIN_VALUE;
+            int bestIndex = 0;
+            for (int index :
+                    nomineeIndices) {
+                String element = text.get(index);
+                int hashCode = element.hashCode();
+                if (hashCode > highestHashcode){
+                    bestIndex = index;
+                    highestHashcode = hashCode;
+                }
+            }
+            List<Integer> electeeIndices = new ArrayList<>();
+            electeeIndices.add(bestIndex);
+            return electeeIndices;
+
+        };
+        electorSUT = new Elector(this.computeElecteeIndices);
     }
 
     @After
@@ -85,14 +103,21 @@ public class ElectorTest {
 
     @Ignore
     @Test
-    public void test_ElectedTextGeneratesSameOutputAsElect_WithSameNominator
+    public void test_ElectedTextGeneratedCorrectOutput_OnRandomisedInputs
             () throws Exception {
         fail("Not implemented");
     }
 
     @Ignore
     @Test
-    public void test_ElectedTextGeneratedCorrectOutput_OnRandomisedInputs
+    public void test_ElectedTextGeneratedCorrectOutput_OnInput1
+            () throws Exception {
+        fail("Not implemented");
+    }
+
+    @Ignore
+    @Test
+    public void test_ElectedTextGeneratesSameOutputAsElect_WithSameNominator
             () throws Exception {
         fail("Not implemented");
     }
