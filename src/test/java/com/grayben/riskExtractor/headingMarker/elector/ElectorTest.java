@@ -2,8 +2,10 @@ package com.grayben.riskExtractor.headingMarker.elector;
 
 import com.grayben.riskExtractor.headingMarker.Elector;
 import com.grayben.riskExtractor.headingMarker.Nominator;
+import com.grayben.riskExtractor.headingMarker.nominator.NominatorTest;
+import com.grayben.riskExtractor.helpers.ScoredTextGenerator;
 import com.grayben.riskExtractor.htmlScorer.ScoredText;
-import com.grayben.riskExtractor.htmlScorer.ScoredTextElement;
+import org.apache.commons.collections4.list.SetUniqueList;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
@@ -23,13 +26,15 @@ public class ElectorTest {
 
     private Function<Nominator.NominatedText, List<Integer>> computeElecteeIndices;
     private Elector electorSUT;
+    private Nominator nominator;
+    private ScoredText scoredText;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public static Elector buildDefaultElector(){
+        return new Elector(buildDefaultElectorFunction());
+    }
 
-    @Before
-    public void setUp() throws Exception {
-        this.computeElecteeIndices = nominatedText -> {
+    public static Function<Nominator.NominatedText, List<Integer>> buildDefaultElectorFunction(){
+        return nominatedText -> {
             List<String> text = nominatedText.getUnmodifiableText().getStringList();
             List<Integer> nomineeIndices = nominatedText.getNomineeIndices();
             int highestHashcode = Integer.MIN_VALUE;
@@ -48,7 +53,17 @@ public class ElectorTest {
             return electeeIndices;
 
         };
-        electorSUT = new Elector(this.computeElecteeIndices);
+    }
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Before
+    public void setUp() throws Exception {
+        this.computeElecteeIndices = buildDefaultElectorFunction();
+        this.electorSUT = buildDefaultElector();
+        this.scoredText = ScoredTextGenerator.randomScoredTextWithDefaultScorers();
+        this.nominator = NominatorTest.buildDefaultNominator();
     }
 
     @After
@@ -81,27 +96,24 @@ public class ElectorTest {
     public void test_ElectThrowsNullPointerException_WhenScoredTextIsNull
             () throws Exception {
         thrown.expect(NullPointerException.class);
-        Function<ScoredText, List<Integer>> getNomineeIndices = scoredText -> {
-            List<Integer> indices = new ArrayList<>();
-            List<ScoredTextElement> scoredTextElements = scoredText.getList();
-            for (int i = 0; i <  scoredTextElements.size(); i++){
-                ScoredTextElement element = scoredTextElements.get(i);
-                if (element.hashCode() % 4 == 0){
-                    indices.add(i);
-
-                }
-            }
-            return indices;
-        };
-
-        electorSUT.elect(new Nominator(getNomineeIndices), null);
+        Nominator nominator = NominatorTest.buildDefaultNominator();
+        electorSUT.elect(nominator, null);
     }
 
-    @Ignore
     @Test
     public void test_ElectedTextGeneratedCorrectOutput_OnInput1
             () throws Exception {
-        fail("Not implemented");
+
+        Nominator.NominatedText nominatedText = nominator.nominate(scoredText);
+        List<Integer> expectedElecteeIndices = this.computeElecteeIndices.apply(nominatedText);
+        Elector.ElectedText expected = new Elector.ElectedText(
+                nominatedText,
+                SetUniqueList.setUniqueList(expectedElecteeIndices)
+        );
+
+        Elector.ElectedText actual = this.electorSUT.elect(nominatedText);
+
+        assertEquals(expected, actual);
     }
 
     @Ignore

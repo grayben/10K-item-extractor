@@ -24,7 +24,8 @@ public class Elector {
         if (nominatedText == null) {
             throw new NullPointerException("NominatedText argument cannot be null");
         }
-        throw new UnsupportedOperationException("Not implemented");
+        List<Integer> electeeIndices = computeElecteeIndices.apply(nominatedText);
+        return new ElectedText(nominatedText, SetUniqueList.setUniqueList(electeeIndices));
     }
 
     public ElectedText elect(Nominator nominator, ScoredText scoredText){
@@ -113,6 +114,25 @@ public class Elector {
         @Override
         public List<String> getEntries() {
             return getNominatedText().getEntries();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ElectedText that = (ElectedText) o;
+
+            if (!electees.equals(that.electees)) return false;
+            return getNominatedText().equals(that.getNominatedText());
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = electees.hashCode();
+            result = 31 * result + getNominatedText().hashCode();
+            return result;
         }
     }
 
