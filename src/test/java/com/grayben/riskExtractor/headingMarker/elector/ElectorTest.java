@@ -56,7 +56,6 @@ public class ElectorTest {
 
     }
 
-    @Ignore
     @Test
     public void test_InitThrowsNullPointerException_WhenFunctionIsNull
             () throws Exception {

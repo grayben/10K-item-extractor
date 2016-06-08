@@ -14,6 +14,9 @@ public class Elector {
     private final Function<Nominator.NominatedText, List<Integer>> computeElecteeIndices;
 
     public Elector(Function<Nominator.NominatedText, List<Integer>> computeElecteeIndices) {
+        if (computeElecteeIndices == null) {
+            throw new NullPointerException("computeElecteeIndices cannot be null");
+        }
         this.computeElecteeIndices = computeElecteeIndices;
     }
 
