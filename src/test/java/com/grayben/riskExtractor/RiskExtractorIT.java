@@ -36,21 +36,23 @@ public class RiskExtractorIT {
     }
 
     @Test
-    public void test_MainThrowsIllegalArgumentException_WhenOneArgument
+    public void test_MainThrowsIllegalArgumentException_WhenTwoArgument
             () throws Exception {
         List<String> args = new ArrayList<>();
         args.add("foo");
+        args.add("bar");
         thrown.expect(IllegalArgumentException.class);
         RiskExtractor.main(args.toArray(new String[args.size()]));
     }
 
     @Test
-    public void test_MainThrowsIllegalArgumentException_WhenThreeArguments
+    public void test_MainThrowsIllegalArgumentException_WhenFourArguments
             () throws Exception {
         List<String> args = new ArrayList<>();
         args.add("foo");
         args.add("bar");
         args.add("baz");
+        args.add("buzz");
         thrown.expect(IllegalArgumentException.class);
         RiskExtractor.main(args.toArray(new String[args.size()]));
     }
