@@ -1,13 +1,14 @@
 package com.grayben.riskExtractor;
 
+import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
+import org.apache.commons.io.FileUtils;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +92,43 @@ public class RiskExtractorIT {
     @Test
     public void test_MainCreatesExpectedOutputFileContents_WhenEasyExample
             () throws Exception {
+        // requires input file
+        String inputFilePath = null;
+
+        // produces output file
+        String actualOutputFilePath = null;
+
+        // requires expected output file
+        String expectedOutputFilePath = null;
+
+        // requires that scorer parameters are stored somewhere
+        ScoringAndFlatteningNodeVisitor nv = null;
+
+        // requires that extraction parameters are stored somewhere
+
+        // set working directory to temp dir (deleted on test finish)
+        // copy relevant files into temp dir
+            // input file
+            // system files
+
+        // construct String[] args
+        List<String> argsList = new ArrayList<>();
+        String[] args = argsList.toArray(new String[argsList.size()]);
+
+        // run main
+            // loads parameters from system files
+            // takes input from input file(s)
+            // creates output file(s)
+        RiskExtractor.main(args);
+
+        // load actualOutput from newly created output file
+        String actualOutput = FileUtils.readFileToString(new File(actualOutputFilePath));
+
+        // load expectedOutput from file in resources
+        String expectedOutput = FileUtils.readFileToString(new File(expectedOutputFilePath));
+
+        assertEquals(expectedOutput, actualOutput);
+
         fail("Test not written");
     }
 
