@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class RiskExtractor {
+
+	static final String scoringAndFlatteningNodeVisitorRelativePath = "scorer.ser";
 	
 	static long startTime;
 
@@ -52,7 +54,21 @@ public class RiskExtractor {
 		System.out.println("Time elapsed: " + secondsElapsed + " seconds");
 	}
 
-	private static ScoringAndFlatteningNodeVisitor setupNodeVisitor(){
+	public static ScoringAndFlatteningNodeVisitor loadScoringAndFlatteningNodeVisitorFrom(File infile){
+		ScoringAndFlatteningNodeVisitor nv = null;
+		try {
+			FileInputStream fileInputStream = new FileInputStream(infile);
+			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+			nv = (ScoringAndFlatteningNodeVisitor) objectInputStream.readObject();
+			objectInputStream.close();
+			fileInputStream.close();
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return nv;
+	}
+
+	public static ScoringAndFlatteningNodeVisitor setupNodeVisitor(){
 		Set<Scorer<Element>> elementScorers = new HashSet<>();
 		elementScorers.add(
 				new SegmentationElementScorer(

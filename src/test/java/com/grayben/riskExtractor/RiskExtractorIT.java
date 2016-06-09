@@ -8,8 +8,7 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,13 +88,26 @@ public class RiskExtractorIT {
         assertTrue(outputFileToBeCreated.exists());
     }
 
+    private void saveDefaultScoringAndFlatteningNodeVisitorTo(File outfile){
+        ScoringAndFlatteningNodeVisitor nv = RiskExtractor.setupNodeVisitor();
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(outfile);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(nv);
+            objectOutputStream.close();
+            fileOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Test
     public void test_MainCreatesExpectedOutputFileContents_WhenEasyExample
             () throws Exception {
 
         String resourcesRelativePath = "src/test/resources";
         // requires knowing charset
-        String charsetName = null;
+        String charsetName = "UTF-8";
         // requires input file
         String inputFileResourceRelativePath = resourcesRelativePath.concat("/simple.html");
         String inputFileCopyRelativePath = "easy.html";
@@ -111,19 +123,16 @@ public class RiskExtractorIT {
         // requires expected output file
         File expectedOutputFile = folder.newFile();
         // ensure that the physical file doesn't exist before we run main
+        //noinspection ResultOfMethodCallIgnored
         expectedOutputFile.delete();
         assert ! expectedOutputFile.exists();
         String outputFileArgument = expectedOutputFile.getAbsolutePath();
 
         // requires that scorer parameters are stored somewhere
-        ScoringAndFlatteningNodeVisitor nv = null;
+        File nvFile = new File(RiskExtractor.scoringAndFlatteningNodeVisitorRelativePath);
+        saveDefaultScoringAndFlatteningNodeVisitorTo(nvFile);
 
         // requires that extraction parameters are stored somewhere
-
-        // set working directory to temp dir (deleted on test finish)
-        // copy relevant files into temp dir
-            // input file
-            // system files
 
         // construct String[] args
         List<String> argsList = new ArrayList<>();
