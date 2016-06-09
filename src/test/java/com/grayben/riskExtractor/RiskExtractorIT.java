@@ -92,14 +92,26 @@ public class RiskExtractorIT {
     @Test
     public void test_MainCreatesExpectedOutputFileContents_WhenEasyExample
             () throws Exception {
+        // requires knowing charset
+        String charsetName = null;
         // requires input file
-        String inputFilePath = null;
+        String inputFileResourceAbsolutePath = null;
+        String inputFileCopyRelativePath = null;
+        File inputFileResource = new File(inputFileResourceAbsolutePath);
+        File inputFileCopy = folder.newFile(inputFileCopyRelativePath);
+        FileUtils.copyFile(inputFileResource, inputFileCopy);
+        String inputFileArgument = inputFileCopy.getAbsolutePath();
 
         // produces output file
-        String actualOutputFilePath = null;
+        String actualOutputFileResourceAbsolutePath = null;
+        File actualOutputFileResource = new File(actualOutputFileResourceAbsolutePath);
 
         // requires expected output file
-        String expectedOutputFilePath = null;
+        File expectedOutputFile = folder.newFile();
+        // ensure that the physical file doesn't exist before we run main
+        expectedOutputFile.delete();
+        assert ! expectedOutputFile.exists();
+        String outputFileArgument = expectedOutputFile.getAbsolutePath();
 
         // requires that scorer parameters are stored somewhere
         ScoringAndFlatteningNodeVisitor nv = null;
@@ -113,6 +125,9 @@ public class RiskExtractorIT {
 
         // construct String[] args
         List<String> argsList = new ArrayList<>();
+        argsList.add(inputFileArgument);
+        argsList.add(charsetName);
+        argsList.add(outputFileArgument);
         String[] args = argsList.toArray(new String[argsList.size()]);
 
         // run main
@@ -122,10 +137,10 @@ public class RiskExtractorIT {
         RiskExtractor.main(args);
 
         // load actualOutput from newly created output file
-        String actualOutput = FileUtils.readFileToString(new File(actualOutputFilePath));
+        String actualOutput = FileUtils.readFileToString(actualOutputFileResource);
 
         // load expectedOutput from file in resources
-        String expectedOutput = FileUtils.readFileToString(new File(expectedOutputFilePath));
+        String expectedOutput = FileUtils.readFileToString(expectedOutputFile);
 
         assertEquals(expectedOutput, actualOutput);
 
