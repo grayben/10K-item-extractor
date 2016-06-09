@@ -8,7 +8,8 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,23 +89,24 @@ public class RiskExtractorIT {
         assertTrue(outputFileToBeCreated.exists());
     }
 
-    @Ignore
     @Test
     public void test_MainCreatesExpectedOutputFileContents_WhenEasyExample
             () throws Exception {
+
+        String resourcesRelativePath = "src/test/resources";
         // requires knowing charset
         String charsetName = null;
         // requires input file
-        String inputFileResourceAbsolutePath = null;
-        String inputFileCopyRelativePath = null;
-        File inputFileResource = new File(inputFileResourceAbsolutePath);
+        String inputFileResourceRelativePath = resourcesRelativePath.concat("/simple.html");
+        String inputFileCopyRelativePath = "easy.html";
+        File inputFileResource = new File(inputFileResourceRelativePath);
         File inputFileCopy = folder.newFile(inputFileCopyRelativePath);
         FileUtils.copyFile(inputFileResource, inputFileCopy);
         String inputFileArgument = inputFileCopy.getAbsolutePath();
 
         // produces output file
-        String actualOutputFileResourceAbsolutePath = null;
-        File actualOutputFileResource = new File(actualOutputFileResourceAbsolutePath);
+        String actualOutputFileResourceRelativePath = "src/test/resources/easy.out.html";
+        File actualOutputFileResource = new File(actualOutputFileResourceRelativePath);
 
         // requires expected output file
         File expectedOutputFile = folder.newFile();
