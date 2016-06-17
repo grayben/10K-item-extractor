@@ -96,24 +96,26 @@ public class RiskExtractorIT {
         // requires knowing charset
         String charsetName = "UTF-8";
         // requires input file
-        String inputFileResourceRelativePath = resourcesRelativePath.concat("/simple.html");
+        String inputFileResourceRelativePath = resourcesRelativePath.concat("/easy.html");
         String inputFileCopyRelativePath = "easy.html";
         File inputFileResource = new File(inputFileResourceRelativePath);
         File inputFileCopy = folder.newFile(inputFileCopyRelativePath);
         FileUtils.copyFile(inputFileResource, inputFileCopy);
         String inputFileArgument = inputFileCopy.getAbsolutePath();
 
+        String expectedOutputFileRelativePath = resourcesRelativePath.concat("/easy.out.txt");
+        File expectedOutputFile = new File(expectedOutputFileRelativePath);
+
         // produces output file
-        String actualOutputFileResourceRelativePath = "src/test/resources/easy.out.html";
-        File actualOutputFileResource = new File(actualOutputFileResourceRelativePath);
+        String targetOutputFileResourceRelativePath = "easy.out.txt";
 
         // requires expected output file
-        File expectedOutputFile = folder.newFile();
+        File targetOutputFile = folder.newFile(targetOutputFileResourceRelativePath);
         // ensure that the physical file doesn't exist before we run main
         //noinspection ResultOfMethodCallIgnored
-        expectedOutputFile.delete();
-        assert ! expectedOutputFile.exists();
-        String outputFileArgument = expectedOutputFile.getAbsolutePath();
+        targetOutputFile.delete();
+        assert ! targetOutputFile.exists();
+        String outputFileArgument = targetOutputFile.getAbsolutePath();
 
         // construct String[] args
         List<String> argsList = new ArrayList<>();
@@ -129,7 +131,7 @@ public class RiskExtractorIT {
         RiskExtractor.main(args);
 
         // load actualOutput from newly created output file
-        String actualOutput = FileUtils.readFileToString(actualOutputFileResource);
+        String actualOutput = FileUtils.readFileToString(targetOutputFile);
 
         // load expectedOutput from file in resources
         String expectedOutput = FileUtils.readFileToString(expectedOutputFile);
