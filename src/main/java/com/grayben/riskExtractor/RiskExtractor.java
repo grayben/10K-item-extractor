@@ -84,6 +84,7 @@ public class RiskExtractor {
 		try {
 			writer = new PrintWriter(outFile);
 			writer.print(scoredText.toString());
+			writer.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
