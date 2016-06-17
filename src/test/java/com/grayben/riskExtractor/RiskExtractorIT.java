@@ -1,6 +1,5 @@
 package com.grayben.riskExtractor;
 
-import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import org.apache.commons.io.FileUtils;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
@@ -8,7 +7,8 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,19 +88,6 @@ public class RiskExtractorIT {
         assertTrue(outputFileToBeCreated.exists());
     }
 
-    private void saveDefaultScoringAndFlatteningNodeVisitorTo(File outfile){
-        ScoringAndFlatteningNodeVisitor nv = RiskExtractor.setupNodeVisitor();
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(outfile);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(nv);
-            objectOutputStream.close();
-            fileOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Test
     public void test_MainCreatesExpectedOutputFileContents_WhenEasyExample
             () throws Exception {
@@ -127,12 +114,6 @@ public class RiskExtractorIT {
         expectedOutputFile.delete();
         assert ! expectedOutputFile.exists();
         String outputFileArgument = expectedOutputFile.getAbsolutePath();
-
-        // requires that scorer parameters are stored somewhere
-        File nvFile = new File(RiskExtractor.scoringAndFlatteningNodeVisitorRelativePath);
-        saveDefaultScoringAndFlatteningNodeVisitorTo(nvFile);
-
-        // requires that extraction parameters are stored somewhere
 
         // construct String[] args
         List<String> argsList = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
+import com.grayben.riskExtractor.RiskExtractor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.parser.Tag;
@@ -31,7 +32,7 @@ public class TagAndAttributeScorerTest
     @Before
     public void setUp() throws Exception {
         tagAndAttributeScorerSUT = new TagAndAttributeScorer(
-                TagAndAttributeScorer.defaultMap()
+                RiskExtractor.setupTagAndAttributeScoreMap()
         );
         super.setArgumentToBeScored(tagAndAttributeToBeScoredMock);
         super.setMapScorerSUT(tagAndAttributeScorerSUT);
@@ -82,7 +83,7 @@ public class TagAndAttributeScorerTest
     @Test
     public void
     test_ScoreGivesExpectedResult_WhenSimpleInput() throws Exception {
-        Map expectedOutput = new HashMap<>(TagAndAttributeScorer.defaultMap());
+        Map expectedOutput = new HashMap<>(RiskExtractor.setupTagAndAttributeScoreMap());
         stubTagAndAttributeMock();
         assert expectedOutput.put(tagAndAttributeToBeScoredMock, 0) == null;
 

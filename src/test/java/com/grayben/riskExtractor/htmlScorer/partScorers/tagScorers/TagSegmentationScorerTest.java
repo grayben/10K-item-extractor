@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
+import com.grayben.riskExtractor.RiskExtractor;
 import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
@@ -28,7 +29,7 @@ public class TagSegmentationScorerTest extends MapScorerTest<Tag> {
     public void setUp() throws Exception {
         this.tagSegmentationScorerSUT
                 = new TagSegmentationScorer(
-                TagSegmentationScorer.defaultMap()
+                RiskExtractor.setupTagSegmentationScoreMap()
         );
         this.tagToBeScoredMock = stubTag("some-name-to-use");
         super.setArgumentToBeScored(this.tagToBeScoredMock);

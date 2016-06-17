@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
+import com.grayben.riskExtractor.RiskExtractor;
 import org.jsoup.parser.Tag;
 import org.junit.After;
 import org.junit.Before;
@@ -30,7 +31,7 @@ public class TagEmphasisScorerTest
     @Override
     public void setUp() throws Exception {
         this.tagEmphasisScorerSUT = new TagEmphasisScorer
-                (TagEmphasisScorer.defaultMap());
+                (RiskExtractor.setupTagEmphasisScoreMap());
         super.setMapScorerSUT(tagEmphasisScorerSUT);
 
         assert this.tagToBeScoredMock != null;

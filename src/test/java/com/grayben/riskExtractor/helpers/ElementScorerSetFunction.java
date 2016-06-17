@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.helpers;
 
+import com.grayben.riskExtractor.RiskExtractor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
@@ -55,8 +56,8 @@ public class ElementScorerSetFunction implements Function<Set<ElementScorerSetFu
             switch (content) {
                 case EMPHASIS_ELEMENT_SCORER:
                     Scorer<Element> emphasisElementScorer = new EmphasisElementScorer(
-                            new TagEmphasisScorer(TagEmphasisScorer.defaultMap()),
-                            new TagAndAttributeScorer(TagAndAttributeScorer.defaultMap())
+                            new TagEmphasisScorer(RiskExtractor.setupTagEmphasisScoreMap()),
+                            new TagAndAttributeScorer(RiskExtractor.setupTagAndAttributeScoreMap())
                     );
                     elementScorers.add(emphasisElementScorer);
 
@@ -64,7 +65,7 @@ public class ElementScorerSetFunction implements Function<Set<ElementScorerSetFu
 
                 case SEGMENTATION_ELEMENT_SCORER:
                     Scorer<Element> segmentationElementScorer = new SegmentationElementScorer(
-                            new TagSegmentationScorer(TagSegmentationScorer.defaultMap())
+                            new TagSegmentationScorer(RiskExtractor.setupTagSegmentationScoreMap())
                     );
                     elementScorers.add(segmentationElementScorer);
 

@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers;
 
+import com.grayben.riskExtractor.RiskExtractor;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
@@ -36,9 +37,9 @@ public class EmphasisElementScorerTest extends ElementScorerBaseTest {
     public void setUp() throws Exception {
         TagAndAttributeScorer tagAndAttributeScorer
                 = new TagAndAttributeScorer(
-                TagAndAttributeScorer.defaultMap());
+                RiskExtractor.setupTagAndAttributeScoreMap());
         TagEmphasisScorer tagEmphasisScorer
-                = new TagEmphasisScorer(TagEmphasisScorer.defaultMap());
+                = new TagEmphasisScorer(RiskExtractor.setupTagEmphasisScoreMap());
         this.emphasisElementScorerSUT
                 = new EmphasisElementScorer(
                 tagEmphasisScorer,
@@ -60,7 +61,7 @@ public class EmphasisElementScorerTest extends ElementScorerBaseTest {
             () throws Exception {
         TagEmphasisScorer scorer1 = null;
         TagAndAttributeScorer scorer2 = new TagAndAttributeScorer(
-                TagAndAttributeScorer.defaultMap()
+                RiskExtractor.setupTagAndAttributeScoreMap()
         );
 
         thrown.expect(NullPointerException.class);
@@ -73,7 +74,7 @@ public class EmphasisElementScorerTest extends ElementScorerBaseTest {
     test_InitThrowsNullPointerException_WhenTagAndAttributeScorerIsNull
             () throws Exception {
         TagEmphasisScorer scorer1 = new TagEmphasisScorer(
-                TagEmphasisScorer.defaultMap()
+                RiskExtractor.setupTagEmphasisScoreMap()
         );
         TagAndAttributeScorer scorer2 = null;
 
@@ -130,7 +131,7 @@ public class EmphasisElementScorerTest extends ElementScorerBaseTest {
         //based on the tagAndAttributeScoreMap
         Map<Element, Integer> scoredMapBasedOnTagAndAttributes
                 = stubElementsAndScoresByTagAndAttributeScores(
-                TagAndAttributeScorer.defaultMap()
+                RiskExtractor.setupTagAndAttributeScoreMap()
         );
         targetOutput.putAll(scoredMapBasedOnTagAndAttributes);
 
@@ -138,7 +139,7 @@ public class EmphasisElementScorerTest extends ElementScorerBaseTest {
         //based on the tagEmphasisScoreMap
         Map<Element, Integer> scoresMapBasedOnTags
                 = stubElementsAndScoresByTagScores(
-                TagEmphasisScorer.defaultMap()
+                RiskExtractor.setupTagEmphasisScoreMap()
         );
         targetOutput.putAll(scoresMapBasedOnTags);
 

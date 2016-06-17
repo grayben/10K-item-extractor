@@ -5,22 +5,29 @@ import com.grayben.riskExtractor.htmlScorer.ScoredText;
 import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
 import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
+import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.SegmentationElementScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class RiskExtractor {
 
-	static final String scoringAndFlatteningNodeVisitorRelativePath = "scorer.ser";
+	static final String elementScorerSetRelativePath = "scorer.ser";
 	
 	static long startTime;
+
+
 
 	public static void main(String[] args) throws IOException {
 
@@ -54,43 +61,13 @@ public class RiskExtractor {
 		System.out.println("Time elapsed: " + secondsElapsed + " seconds");
 	}
 
-	public static ScoringAndFlatteningNodeVisitor loadScoringAndFlatteningNodeVisitorFrom(File infile){
-		ScoringAndFlatteningNodeVisitor nv = null;
-		try {
-			FileInputStream fileInputStream = new FileInputStream(infile);
-			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-			nv = (ScoringAndFlatteningNodeVisitor) objectInputStream.readObject();
-			objectInputStream.close();
-			fileInputStream.close();
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return nv;
-	}
-
-	public static ScoringAndFlatteningNodeVisitor setupNodeVisitor(){
-		Set<Scorer<Element>> elementScorers = new HashSet<>();
-		elementScorers.add(
-				new SegmentationElementScorer(
-						new TagSegmentationScorer(TagSegmentationScorer.defaultMap())
-				)
-		);
-		elementScorers.add(
-				new EmphasisElementScorer(
-						new TagEmphasisScorer(TagEmphasisScorer.defaultMap()),
-						new TagAndAttributeScorer(TagAndAttributeScorer.defaultMap())
-				)
-		);
-		return new ScoringAndFlatteningNodeVisitor(elementScorers);
-	}
-	
 	private static void testParse(String url) throws IOException {
 		ScoringAndFlatteningNodeVisitor nv = setupNodeVisitor();
 		HtmlScorer scorer = new TreeHtmlScorer(nv);
 		ScoredText scoredText = scorer.scoreHtml(url);
 		System.out.print(scoredText.toString());
 	}
-	
+
 	private static void takeArgs(String[] args) throws IOException {
 		checkArgs(args);
 		String inileName = args[0];
@@ -99,7 +76,7 @@ public class RiskExtractor {
 		File infile = new File(inileName);
 		InputStream inputStream = new FileInputStream(infile);
 
-		HtmlScorer scorer = new TreeHtmlScorer(setupNodeVisitor());
+		HtmlScorer scorer = setupTreeHtmlScorer();
 		ScoredText scoredText = scorer.scoreHtml(inputStream, charsetName, "");
 		System.out.print(scoredText.toString());
 		File outFile = new File(outfileName);
@@ -111,8 +88,8 @@ public class RiskExtractor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 	}
 
 	private static String mainUsageMessage(){
@@ -127,4 +104,114 @@ public class RiskExtractor {
 		}
 	}
 
+	public static TreeHtmlScorer setupTreeHtmlScorer(){
+		return new TreeHtmlScorer(setupNodeVisitor());
+	}
+
+	public static ScoringAndFlatteningNodeVisitor setupNodeVisitor(){
+		Set<Scorer<Element>> elementScorers = new HashSet<>();
+		elementScorers.add(
+				new SegmentationElementScorer(
+						new TagSegmentationScorer(setupTagSegmentationScoreMap())
+				)
+		);
+		elementScorers.add(
+				new EmphasisElementScorer(
+						new TagEmphasisScorer(setupTagEmphasisScoreMap()),
+						new TagAndAttributeScorer(setupTagAndAttributeScoreMap())
+				)
+		);
+		return new ScoringAndFlatteningNodeVisitor(elementScorers);
+	}
+
+	/**
+     * @return the default score map for this class
+     */
+    public static final Map<Tag, Integer> setupTagEmphasisScoreMap() {
+
+        //Map<Tag, Integer> tagScores = this.getTagScores();
+        Map<Tag, Integer> tagScoreMap = new HashMap<>();
+        tagScoreMap.put(Tag.valueOf("b"), 1);
+        tagScoreMap.put(Tag.valueOf("strong"), 1);
+        tagScoreMap.put(Tag.valueOf("h1"), 1);
+        tagScoreMap.put(Tag.valueOf("h2"), 1);
+        tagScoreMap.put(Tag.valueOf("h3"), 1);
+        tagScoreMap.put(Tag.valueOf("h4"), 1);
+        tagScoreMap.put(Tag.valueOf("h5"), 1);
+        tagScoreMap.put(Tag.valueOf("u"), 1);
+
+        return tagScoreMap;
+
+    }
+
+	/**
+     * @return the default score map for this class
+     */
+    public static Map<TagAndAttribute, Integer> setupTagAndAttributeScoreMap() {
+
+        String[] tagNames = {"font", "div", "p"};
+        Set<Tag> tags = new HashSet<>();
+        /**
+         * {@link tags} := ("font", "div", "p")
+         */
+        for (String tagName: tagNames) {
+            tags.add(Tag.valueOf(tagName));
+        }
+
+        Set<Attribute> attributes = new HashSet<>();
+        /**
+         * {@link attributes} := ("style" => "bold", "style" => "underline")
+         */
+        attributes.add(new Attribute("style", "bold"));
+        attributes.add(new Attribute("style", "underline"));
+
+        Set<TagAndAttribute> tagAndAttributes = new HashSet<>();
+        /**
+         * {@link tagAndAttributes} := cartesianProduct({@link tags}, {@link attributes})
+         */
+        for (Tag tag: tags)
+            for (Attribute attribute : attributes)
+                tagAndAttributes.add(
+                        new TagAndAttribute(
+                                tag,
+                                attribute
+                        )
+                );
+
+        Map<TagAndAttribute, Integer> scoresMap = new HashMap<>();
+        for (TagAndAttribute tagAndAttribute : tagAndAttributes) {
+            scoresMap.put(tagAndAttribute, 1);
+        }
+
+        return scoresMap;
+
+    }
+
+	/**
+     * @return the default score map for this class
+     */
+    public static final Map<Tag, Integer> setupTagSegmentationScoreMap() {
+
+        Map<Tag, Integer> tagScoreMap = new HashMap<>();
+        tagScoreMap.put(Tag.valueOf("br"), 1);
+        tagScoreMap.put(Tag.valueOf("dd"), 1);
+        tagScoreMap.put(Tag.valueOf("dl"), 1);
+        tagScoreMap.put(Tag.valueOf("dt"), 1);
+        tagScoreMap.put(Tag.valueOf("form"), 1);
+        tagScoreMap.put(Tag.valueOf("hr"), 1);
+        tagScoreMap.put(Tag.valueOf("li"), 1);
+        tagScoreMap.put(Tag.valueOf("p"), 1);
+        tagScoreMap.put(Tag.valueOf("pre"), 1);
+        tagScoreMap.put(Tag.valueOf("table"), 1);
+        tagScoreMap.put(Tag.valueOf("tbody"), 1);
+        tagScoreMap.put(Tag.valueOf("td"), 1);
+        tagScoreMap.put(Tag.valueOf("th"), 1);
+        tagScoreMap.put(Tag.valueOf("title"), 1);
+        tagScoreMap.put(Tag.valueOf("tr"), 1);
+        tagScoreMap.put(Tag.valueOf("ul"), 1);
+        tagScoreMap.put(Tag.valueOf("div"), 1);
+
+        return tagScoreMap;
+
+    }
 }

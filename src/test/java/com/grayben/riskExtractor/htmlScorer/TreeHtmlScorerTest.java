@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor.htmlScorer;
 
+import com.grayben.riskExtractor.RiskExtractor;
 import com.grayben.riskExtractor.helpers.ScoredTextGenerator;
 import com.grayben.riskExtractor.helpers.TreeHtmlScorerReverserTestContainerSupplier;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
@@ -39,13 +40,13 @@ public class TreeHtmlScorerTest
         Set<Scorer<Element>> elementScorers = new HashSet<>();
         elementScorers.add(
                 new EmphasisElementScorer(
-                        new TagEmphasisScorer(TagEmphasisScorer.defaultMap()),
-                        new TagAndAttributeScorer(TagAndAttributeScorer.defaultMap())
+                        new TagEmphasisScorer(RiskExtractor.setupTagEmphasisScoreMap()),
+                        new TagAndAttributeScorer(RiskExtractor.setupTagAndAttributeScoreMap())
                 )
         );
         elementScorers.add(
                 new SegmentationElementScorer(
-                        new TagSegmentationScorer(TagSegmentationScorer.defaultMap())
+                        new TagSegmentationScorer(RiskExtractor.setupTagSegmentationScoreMap())
                 )
         );
         elementScorersUsed = elementScorers;

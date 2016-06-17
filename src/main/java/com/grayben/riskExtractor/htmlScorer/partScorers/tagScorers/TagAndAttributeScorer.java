@@ -2,13 +2,8 @@ package com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers;
 
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
-import org.jsoup.nodes.Attribute;
-import org.jsoup.parser.Tag;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Scores {@link TagAndAttribute} objects.
@@ -74,46 +69,4 @@ public class TagAndAttributeScorer extends MapScorer<TagAndAttribute> {
         }
     }
 
-    /**
-     * @return the default score map for this class
-     */
-	public static Map<TagAndAttribute, Integer> defaultMap() {
-
-        String[] tagNames = {"font", "div", "p"};
-        Set<Tag> tags = new HashSet<>();
-        /**
-         * {@link tags} := ("font", "div", "p")
-         */
-        for (String tagName: tagNames) {
-            tags.add(Tag.valueOf(tagName));
-        }
-
-        Set<Attribute> attributes = new HashSet<>();
-        /**
-         * {@link attributes} := ("style" => "bold", "style" => "underline")
-         */
-        attributes.add(new Attribute("style", "bold"));
-        attributes.add(new Attribute("style", "underline"));
-
-        Set<TagAndAttribute> tagAndAttributes = new HashSet<>();
-        /**
-         * {@link tagAndAttributes} := cartesianProduct({@link tags}, {@link attributes})
-         */
-        for (Tag tag: tags)
-            for (Attribute attribute : attributes)
-                tagAndAttributes.add(
-                        new TagAndAttribute(
-                                tag,
-                                attribute
-                        )
-                );
-
-        Map<TagAndAttribute, Integer> scoresMap = new HashMap<>();
-        for (TagAndAttribute tagAndAttribute : tagAndAttributes) {
-            scoresMap.put(tagAndAttribute, 1);
-        }
-
-        return scoresMap;
-
-	}
 }
