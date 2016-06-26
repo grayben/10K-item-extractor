@@ -1,5 +1,6 @@
 package com.grayben.riskExtractor;
 
+import com.grayben.riskExtractor.headingMarker.Elector;
 import com.grayben.riskExtractor.headingMarker.Nominator;
 import com.grayben.riskExtractor.htmlScorer.*;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
@@ -113,21 +114,32 @@ public class RiskExtractor {
 
 	private static Nominator setupNominator() {
 		Function<ScoredText, List<Integer>> computeNomineeIndices = scoredText -> {
-            List<Integer> nominees;
-            nominees = filterCandidatesViaTextRegexPredicate(HEADING_NOMINEE_REGEX.asPredicate()).apply(scoredText, null);
+            List<Integer> nominees = null;
+            nominees = filterScoredTextViaTextRegexPredicate(HEADING_NOMINEE_REGEX.asPredicate()).apply(scoredText, nominees);
             nominees = filterNomineeHeadingsViaHtmlScores(sumAllScoresWithLabelIn(scoreLabels())).apply(scoredText, nominees);
             return null;
         };
 		return new Nominator(computeNomineeIndices);
 	}
 
-	private static int highestAggregateScore(List<ScoredTextElement> scoredTextElements, Iterable<Integer> candidateIndices, Function<Map<String, Integer>, Integer> scoreMapAggregator){
+	private static Elector setupElector(){
+		Function<Nominator.NominatedText, List<Integer>> computeElecteeIndices = nominatedText -> {
+			List<Integer> electees = null;
+			electees = filterNominatedTextViaTextRegexPredicate(HEADING_ELECTEE_REGEX.asPredicate()).apply(nominatedText, electees);
+			return electees;
+		};
+		return new Elector(computeElecteeIndices);
+	}
+
+	private static int highestAggregateScore(List<ScoredTextElement> scoredTextElements, Collection<Integer> candidateIndices, Function<Map<String, Integer>, Integer> scoreMapAggregator){
 		int largestSum = Integer.MIN_VALUE;
 		for (int i = 0; i < scoredTextElements.size(); i++){
-			ScoredTextElement element = scoredTextElements.get(i);
-			int elementScoreAggregate = scoreMapAggregator.apply(element.getScores());
-			if (elementScoreAggregate > largestSum){
-				largestSum = elementScoreAggregate;
+			if (candidateIndices.contains(i)) {
+				ScoredTextElement element = scoredTextElements.get(i);
+				int elementScoreAggregate = scoreMapAggregator.apply(element.getScores());
+				if (elementScoreAggregate > largestSum) {
+					largestSum = elementScoreAggregate;
+				}
 			}
 		}
 		return largestSum;
@@ -154,7 +166,7 @@ public class RiskExtractor {
 	public static Pattern HEADING_NOMINEE_REGEX = Pattern.compile("item [0-9]+.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 	public static Pattern HEADING_ELECTEE_REGEX = Pattern.compile("item 1A.*?Risk.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
-	public static BiFunction<ScoredText, List<Integer>, List<Integer>> filterCandidatesViaTextRegexPredicate(Predicate<String> regex) {
+	public static BiFunction<ScoredText, List<Integer>, List<Integer>> filterScoredTextViaTextRegexPredicate(Predicate<String> regex) {
 		return (scoredText, candidateIndices) -> {
 			List<Integer> nomineeTextIndices = new ArrayList<>();
 			List<ScoredTextElement> scoredTextElements = scoredText.getList();;
@@ -162,6 +174,22 @@ public class RiskExtractor {
 				if(candidateIndices == null || candidateIndices.contains(i)) {
 					ScoredTextElement element = scoredTextElements.get(i);
 					if (regex.test(element.getTextElement())) {
+						nomineeTextIndices.add(i);
+					}
+				}
+			}
+			return nomineeTextIndices;
+		};
+	}
+
+	public static BiFunction<Nominator.NominatedText, List<Integer>, List<Integer>> filterNominatedTextViaTextRegexPredicate(Predicate<String> regex) {
+		return (nominatedText, candidateIndices) -> {
+			List<Integer> nomineeTextIndices = new ArrayList<>();
+			List<String> textElements = nominatedText.getEntries();
+			for (int i = 0; i < textElements.size(); i++){
+				if(candidateIndices == null || candidateIndices.contains(i)) {
+					String text = textElements.get(i);
+					if (regex.test(text)) {
 						nomineeTextIndices.add(i);
 					}
 				}
