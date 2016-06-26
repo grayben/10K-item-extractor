@@ -1,9 +1,7 @@
 package com.grayben.riskExtractor;
 
-import com.grayben.riskExtractor.htmlScorer.HtmlScorer;
-import com.grayben.riskExtractor.htmlScorer.ScoredText;
-import com.grayben.riskExtractor.htmlScorer.ScoringAndFlatteningNodeVisitor;
-import com.grayben.riskExtractor.htmlScorer.TreeHtmlScorer;
+import com.grayben.riskExtractor.headingMarker.Nominator;
+import com.grayben.riskExtractor.htmlScorer.*;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.TagAndAttribute;
 import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.EmphasisElementScorer;
@@ -11,15 +9,17 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.Segmentat
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public class RiskExtractor {
 
@@ -78,6 +78,9 @@ public class RiskExtractor {
 
 		HtmlScorer scorer = setupTreeHtmlScorer();
 		ScoredText scoredText = scorer.scoreHtml(inputStream, charsetName, "");
+
+		Nominator nominator = setupNominator();
+
 		System.out.print(scoredText.toString());
 		File outFile = new File(outfileName);
 		PrintWriter writer;
@@ -91,6 +94,61 @@ public class RiskExtractor {
 		}
 
 
+	}
+
+	private static Nominator setupNominator() {
+		return null;
+	}
+
+	private static int highestAggregateScore(List<ScoredTextElement> scoredTextElements, Set<Integer> candidateIndices, Function<Map<String, Integer>, Integer> scoreMapAggregator){
+		int largestSum = Integer.MIN_VALUE;
+		for (int i = 0; i < scoredTextElements.size(); i++){
+			ScoredTextElement element = scoredTextElements.get(i);
+			int elementScoreAggregate = scoreMapAggregator.apply(element.getScores());
+			if (elementScoreAggregate > largestSum){
+				largestSum = elementScoreAggregate;
+			}
+		}
+		return largestSum;
+	}
+
+	public static BiFunction<ScoredText, Set<Integer>, Set<Integer>> filterNomineeHeadingsViaHtmlScores(Function<Map<String, Integer>, Integer> scoreMapAggregator){
+		return (scoredText, candidateIndices) -> {
+			Set<Integer> nomineeTextIndices = new HashSet<>();
+			List<ScoredTextElement> scoredTextElementList = scoredText.getList();
+			int thresholdAggregateScore = highestAggregateScore(scoredTextElementList, candidateIndices, scoreMapAggregator);
+			for (int i = 0; i < scoredTextElementList.size(); i++){
+				if (candidateIndices.contains(i)){
+					ScoredTextElement element = scoredTextElementList.get(i);
+					int aggregateHtmlScore = scoreMapAggregator.apply(element.getScores());
+					if (aggregateHtmlScore >= thresholdAggregateScore){
+						nomineeTextIndices.add(i);
+					}
+				}
+			}
+			return nomineeTextIndices;
+		};
+	}
+
+	public static Pattern HEADING_NOMINEE_REGEX = Pattern.compile("item [0-9]+.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+	public static Pattern HEADING_ELECTEE_REGEX = Pattern.compile("item 1A.*?Risk.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+
+	public static Function<Pair<ScoredText, Set<Integer>>, Set<Integer>> filterNomineeHeadingsViaTextRegex() {
+		return scoredTextAndCandidateIndices -> {
+            Set<Integer> nomineeTextIndices = new HashSet<>();
+            Predicate<String> matches = HEADING_NOMINEE_REGEX.asPredicate();
+            List<ScoredTextElement> scoredTextElements = scoredTextAndCandidateIndices.getLeft().getList();
+			Set<Integer> candidateIndices = scoredTextAndCandidateIndices.getRight();
+            for (int i = 0; i < scoredTextElements.size(); i++){
+				if(candidateIndices == null || candidateIndices.contains(i)) {
+					ScoredTextElement element = scoredTextElements.get(i);
+					if (matches.test(element.getTextElement())) {
+						nomineeTextIndices.add(i);
+					}
+				}
+            }
+            return nomineeTextIndices;
+        };
 	}
 
 	private static String mainUsageMessage(){
