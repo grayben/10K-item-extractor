@@ -1,6 +1,7 @@
 package com.grayben.riskExtractor;
 
 import com.grayben.riskExtractor.headingMarker.Elector;
+import com.grayben.riskExtractor.headingMarker.Marker;
 import com.grayben.riskExtractor.headingMarker.Nominator;
 import com.grayben.riskExtractor.htmlScorer.*;
 import com.grayben.riskExtractor.htmlScorer.partScorers.Scorer;
@@ -80,13 +81,27 @@ public class RiskExtractor {
 		ScoredText scoredText = scorer.scoreHtml(inputStream, charsetName, "");
 
 		Nominator nominator = setupNominator();
+		Nominator.NominatedText nominatedText = nominator.nominate(scoredText);
+		Elector elector = setupElector();
+		Elector.ElectedText electedText = elector.elect(nominatedText);
 
-		System.out.print(scoredText.toString());
+		Marker marker = new Marker(electedText);
+		Set<String> riskSections = marker.subSelections();
+		StringBuilder stringBuilder = new StringBuilder();
+
+		for (String riskSection:
+			 riskSections) {
+			stringBuilder.append(riskSection).append(" ");
+		}
+
+		String output = stringBuilder.toString();
+
+		System.out.print(output);
 		File outFile = new File(outfileName);
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter(outFile);
-			writer.print(scoredText.toString());
+			writer.print(output);
 			writer.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
