@@ -177,7 +177,7 @@ public class RiskExtractor {
 	}
 
 	public static Pattern HEADING_NOMINEE_REGEX = Pattern.compile("item [0-9]+.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-	public static Pattern HEADING_ELECTEE_REGEX = Pattern.compile("item 1A.*?Risk.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+	public static Pattern HEADING_ELECTEE_REGEX = Pattern.compile("item 1A.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
 	public static BiFunction<ScoredText, List<Integer>, List<Integer>> filterScoredTextViaTextRegexPredicate(Predicate<String> regex) {
 		return (scoredText, candidateIndices) -> {
