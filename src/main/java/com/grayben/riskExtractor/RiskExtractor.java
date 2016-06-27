@@ -95,8 +95,6 @@ public class RiskExtractor {
 		}
 
 		String output = stringBuilder.toString();
-
-		System.out.print(output);
 		File outFile = new File(outfileName);
 		PrintWriter writer;
 		try {
