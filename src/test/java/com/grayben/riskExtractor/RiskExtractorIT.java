@@ -97,8 +97,8 @@ public class RiskExtractorIT {
         // requires knowing charset
         String charsetName = "UTF-8";
         // requires input file
-        String inputFileResourceRelativePath = resourcesRelativePath.concat("/easy.html");
         String inputFileCopyRelativePath = "easy.html";
+        String inputFileResourceRelativePath = resourcesRelativePath.concat("/").concat(inputFileCopyRelativePath);
 
         // produces output file
         String targetOutputFileResourceRelativePath = "easy.out.txt";
@@ -143,16 +143,16 @@ public class RiskExtractorIT {
 
 
     @Test
-    public void test_MainCreatesEmptyOutputFileContents_WhenGarbageExample
+    public void test_MainCreatesEmptyOutputFileContents_WhenNoTargetSection
             () throws Exception {
 
         // requires knowing charset
         String charsetName = "UTF-8";
         // requires input file
-        String inputFileResourceRelativePath = resourcesRelativePath.concat("/easy.html");
-        String inputFileCopyRelativePath = "garbage.html";
+        String inputFileCopyRelativePath = "no-target-heading.html";
+        String inputFileResourceRelativePath = resourcesRelativePath.concat("/").concat(inputFileCopyRelativePath);
         // produces output file
-        String targetOutputFileResourceRelativePath = "garbage.out.txt";
+        String targetOutputFileResourceRelativePath = "no-target-heading.out.txt";
         File inputFileResource = new File(inputFileResourceRelativePath);
         File inputFileCopy = folder.newFile(inputFileCopyRelativePath);
         FileUtils.copyFile(inputFileResource, inputFileCopy);
