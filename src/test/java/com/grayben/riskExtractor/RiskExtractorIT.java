@@ -136,7 +136,7 @@ public class RiskExtractorIT {
         // load expectedOutput from file in resources
         String expectedOutput = FileUtils.readFileToString(expectedOutputFile);
 
-        assertEquals(expectedOutput, actualOutput);
+        assertEquals(expectedOutput.trim(), actualOutput.trim());
 
         fail("Test not written");
     }
