@@ -132,7 +132,7 @@ public class ScoringAndFlatteningNodeVisitor implements NodeVisitor {
     private void processElement(Element element, Operation operation){
         this.currentString = element.ownText();
         updateScores(element, operation);
-        if(operation == Operation.HEAD && ! element.ownText().isEmpty())
+        if(operation == Operation.HEAD && ! element.ownText().matches("^\\p{Z}*$"))
             addScoredTextEntry();
     }
 
