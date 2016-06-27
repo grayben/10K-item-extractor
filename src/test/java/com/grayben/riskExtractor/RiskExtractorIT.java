@@ -64,6 +64,7 @@ public class RiskExtractorIT {
             () throws Exception {
         List<String> args = new ArrayList<>();
         args.add("//////##$%foo");
+        args.add("UTF-8");
         args.add("bar");
         thrown.expect(FileNotFoundException.class);
         RiskExtractor.main(args.toArray(new String[args.size()]));
