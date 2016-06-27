@@ -25,6 +25,9 @@ public class Nominator {
             throw new NullPointerException("scoredText cannot be null");
         }
         List<Integer> nomineeIndices = computeNomineeIndices.apply(scoredText);
+        if (nomineeIndices == null) {
+            throw new NullPointerException("computeNomineeIndices must not return null");
+        }
         return new NominatedText(scoredText.getText(), SetUniqueList.setUniqueList(nomineeIndices));
     }
 

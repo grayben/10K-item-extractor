@@ -25,6 +25,9 @@ public class Elector {
             throw new NullPointerException("NominatedText argument cannot be null");
         }
         List<Integer> electeeIndices = computeElecteeIndices.apply(nominatedText);
+        if (electeeIndices == null) {
+            throw new NullPointerException("computeElecteeIndices must not return null");
+        }
         return new ElectedText(nominatedText, SetUniqueList.setUniqueList(electeeIndices));
     }
 
