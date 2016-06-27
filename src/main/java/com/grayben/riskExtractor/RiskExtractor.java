@@ -132,7 +132,7 @@ public class RiskExtractor {
             List<Integer> nominees = null;
             nominees = filterScoredTextViaTextRegexPredicate(HEADING_NOMINEE_REGEX.asPredicate()).apply(scoredText, nominees);
             nominees = filterNomineeHeadingsViaHtmlScores(sumAllScoresWithLabelIn(scoreLabels())).apply(scoredText, nominees);
-            return null;
+            return nominees;
         };
 		return new Nominator(computeNomineeIndices);
 	}
