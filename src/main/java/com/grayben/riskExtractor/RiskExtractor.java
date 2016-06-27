@@ -200,7 +200,7 @@ public class RiskExtractor {
 		return (scoredText, candidateIndices) -> {
 			List<Integer> nomineeTextIndices = new ArrayList<>();
 			List<ScoredTextElement> scoredTextElementList = scoredText.getList();
-			int thresholdAggregateScore = backgroundAggregateScore(0.10, scoredText, scoreMapAggregator);
+			int thresholdAggregateScore = backgroundAggregateScore(0.0001, scoredText, scoreMapAggregator);
 			for (int i = 0; i < scoredTextElementList.size(); i++){
 				if (candidateIndices.contains(i)){
 					ScoredTextElement element = scoredTextElementList.get(i);
@@ -214,8 +214,8 @@ public class RiskExtractor {
 		};
 	}
 
-	public static Pattern HEADING_NOMINEE_REGEX = Pattern.compile("item [0-9]+.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-	public static Pattern HEADING_ELECTEE_REGEX = Pattern.compile("item 1A.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+	public static Pattern HEADING_NOMINEE_REGEX = Pattern.compile("^\\s*item [0-9]+.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+	public static Pattern HEADING_ELECTEE_REGEX = Pattern.compile("^\\s*item 1A.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
 	public static BiFunction<ScoredText, List<Integer>, List<Integer>> filterScoredTextViaTextRegexPredicate(Predicate<String> regex) {
 		return (scoredText, candidateIndices) -> {
