@@ -117,9 +117,9 @@ final public class Marker
             }
 
             /**
-             * The start index for the section of interest is the index after that of the elected heading.
+             * The start index for the section of interest is the index of the elected heading.
              */
-            int startIndex = electee + 1;
+            int startIndex = electee;
 
             /**
              * Having determined the values of {@link startIndex} and {@link endIndex}, store them.
