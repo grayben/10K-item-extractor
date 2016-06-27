@@ -125,9 +125,9 @@ public class RiskExtractorIT {
         String[] args = argsList.toArray(new String[argsList.size()]);
 
         // run main
-            // loads parameters from system files
-            // takes input from input file(s)
-            // creates output file(s)
+        // loads parameters from system files
+        // takes input from input file(s)
+        // creates output file(s)
         RiskExtractor.main(args);
 
         // load actualOutput from newly created output file
@@ -137,8 +137,6 @@ public class RiskExtractorIT {
         String expectedOutput = FileUtils.readFileToString(expectedOutputFile);
 
         assertEquals(expectedOutput.trim(), actualOutput.trim());
-
-        fail("Test not written");
     }
 
     @Ignore
