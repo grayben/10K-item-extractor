@@ -66,25 +66,20 @@ final public class Marker
          * For each electee:
          */
         for (Integer electee : electeeIndices) {
-            /**
-             * The start index is the index of the electee.
-             */
-            Integer startIndex;
 
             /**
              * Declare, but do not assign, the end index to compute.
              */
             Integer endIndex;
-            startIndex = electee;
 
             /**
              * Remember, we assume (and verify) that {@link electeeIndices} is a subset
              * of {@link nomineeIndices}. Therefore, {@link nomineeIndices} shall contain
-             * any element of the set {@link electeeIndices}. Since {@link startIndex} is
+             * any element of the set {@link electeeIndices}. Since {@link electee} is
              * {@link electee} and {@link electee is an element of {@link electeeIndices},
-             * {@link nomineeIndices} contains {@link startIndex).
+             * {@link nomineeIndices} contains {@link electee ).
              * <p>
-             * We are interested in the <b>index of</b> {@link startIndex} in {@link nomineeIndices} so that
+             * We are interested in the <b>index of</b> {@link electee } in {@link nomineeIndices} so that
              * we can retrive the nominee index immediately following, if it exists. In the case that it exists,
              * that index represents the nominated heading immediately following the elected heading,
              * and thus, represents the index of the entry immediately following the last string in
@@ -93,7 +88,7 @@ final public class Marker
              * is the last string in the entire list of entries.
              */
             int indexOfStartIndexInNominees
-                    = nomineeIndices.indexOf(startIndex);
+                    = nomineeIndices.indexOf(electee);
 
             /**
              * If there is no nominated entry immediately following:
@@ -120,6 +115,12 @@ final public class Marker
                  */
                 endIndex = endIndex - 1;
             }
+
+            /**
+             * The start index for the section of interest is the index after that of the elected heading.
+             */
+            int startIndex = electee + 1;
+
             /**
              * Having determined the values of {@link startIndex} and {@link endIndex}, store them.
              */
