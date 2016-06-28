@@ -144,7 +144,45 @@ public class RiskExtractor {
 		return new Elector(computeElecteeIndices);
 	}
 
-	private static int highestAggregateScore(List<ScoredTextElement> scoredTextElements, Collection<Integer> candidateIndices, Function<Map<String, Integer>, Integer> scoreMapAggregator){
+	private static int backgroundAggregateScore(double thresholdCumulativeProportion, ScoredText scoredText, Function<Map<String, Integer>, Integer> scoreMapAggregator){
+		if (thresholdCumulativeProportion <= 0.0 || thresholdCumulativeProportion >= 1.0){
+			throw new IllegalArgumentException("thresholdCumulativeProportion must be between 0.0 and 1.0, exclusive");
+		}
+		List<ScoredTextElement> scoredTextElements = scoredText.getList();
+		Map<Integer, Integer> aggregateScoreCounts = new HashMap<>();
+		for (ScoredTextElement element :
+				scoredTextElements) {
+			int aggregateScore = scoreMapAggregator.apply(element.getScores());
+			int existingCount;
+			if (! aggregateScoreCounts.containsKey(aggregateScore)){
+				existingCount = 0;
+			}
+			else {
+				existingCount = aggregateScoreCounts.get(aggregateScore);
+			}
+			aggregateScoreCounts.put(aggregateScore, existingCount + 1);
+		}
+
+		int numElements = scoredTextElements.size();
+
+		List<Integer> ascendingScores = new ArrayList<>();
+		ascendingScores.addAll(aggregateScoreCounts.keySet());
+		Collections.sort(ascendingScores);
+
+		double cumulativeProportion = 0.0;
+		for (int score :
+				ascendingScores) {
+			double scoreProb = aggregateScoreCounts.get(score) / (double) numElements;
+			cumulativeProportion += scoreProb;
+			if (cumulativeProportion >= thresholdCumulativeProportion){
+				return score;
+			}
+		}
+		return Integer.MIN_VALUE;
+	}
+
+	private static int highestAggregateScore(ScoredText scoredText, Collection<Integer> candidateIndices, Function<Map<String, Integer>, Integer> scoreMapAggregator){
+		List<ScoredTextElement> scoredTextElements = scoredText.getList();
 		int largestSum = Integer.MIN_VALUE;
 		for (int i = 0; i < scoredTextElements.size(); i++){
 			if (candidateIndices.contains(i)) {
@@ -162,7 +200,7 @@ public class RiskExtractor {
 		return (scoredText, candidateIndices) -> {
 			List<Integer> nomineeTextIndices = new ArrayList<>();
 			List<ScoredTextElement> scoredTextElementList = scoredText.getList();
-			int thresholdAggregateScore = highestAggregateScore(scoredTextElementList, candidateIndices, scoreMapAggregator);
+			int thresholdAggregateScore = backgroundAggregateScore(0.0001, scoredText, scoreMapAggregator);
 			for (int i = 0; i < scoredTextElementList.size(); i++){
 				if (candidateIndices.contains(i)){
 					ScoredTextElement element = scoredTextElementList.get(i);
@@ -176,8 +214,8 @@ public class RiskExtractor {
 		};
 	}
 
-	public static Pattern HEADING_NOMINEE_REGEX = Pattern.compile("item [0-9]+.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-	public static Pattern HEADING_ELECTEE_REGEX = Pattern.compile("item 1A.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+	public static Pattern HEADING_NOMINEE_REGEX = Pattern.compile("^\\p{Z}*item\\p{Z}+[0-9]+.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+	public static Pattern HEADING_ELECTEE_REGEX = Pattern.compile("^\\p{Z}*item\\p{Z}+1A.*?$", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
 	public static BiFunction<ScoredText, List<Integer>, List<Integer>> filterScoredTextViaTextRegexPredicate(Predicate<String> regex) {
 		return (scoredText, candidateIndices) -> {
