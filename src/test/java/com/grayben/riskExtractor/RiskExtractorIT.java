@@ -1,7 +1,10 @@
 package com.grayben.riskExtractor;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
@@ -9,8 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -239,7 +241,43 @@ public class RiskExtractorIT {
 
         // load expectedOutput from file in resources
         String expectedOutput = FileUtils.readFileToString(expectedOutputFile);
+        assertFalse(isSubsetByWordsStripPunctuationIgnoreCase("the quick brown fox fox", "the quick brown fox"));
+        assertTrue("actual output must contain expected output words", isSubsetByWordsStripPunctuationIgnoreCase(expectedOutput, actualOutput));
+    }
 
-        assertEquals(expectedOutput.trim(), actualOutput.trim());
+    public static boolean isSubsetByWordsStripPunctuationIgnoreCase(String subset, String superset){StringTokenizer supersetTokeniser = new StringTokenizer(superset, " \t\n\r\f,.:;?![]'");
+        String[] subsetWords = subset.replaceAll("\\p{P}", "").toLowerCase().split("\\p{Z}+");
+        String[] supersetWords = superset.replaceAll("\\p{P}", "").toLowerCase().split("\\p{Z}+");
+
+        Map<String, Integer> subsetWordCounter = counter(subsetWords);
+        Map<String, Integer> supersetWordCounter = counter(supersetWords);
+
+        for (String subsetWord:
+             subsetWordCounter.keySet()) {
+            Integer subsetCount = subsetWordCounter.get(subsetWord);
+            Integer supersetCount = supersetWordCounter.get(subsetWord);
+
+            // if the superset doesn't contain the word, or if it contains less instances
+            // then the subset-superset relation is false
+            if (supersetCount == null || supersetCount < subsetCount) {
+                return false;
+            }
+        }
+        // if we haven't proven otherwise by now, the relationship holds
+        return true;
+    }
+
+    public static <T> Map<T, Integer> counter(T[] instances){
+        Map<T, Integer> counter = new HashMap<>();
+        for (T instance : instances) {
+            if (counter.containsKey(instance)) {
+                int oldCount = counter.get(instance);
+                counter.put(instance, oldCount + 1);
+            } else {
+                counter.put(instance, 1);
+            }
+        }
+        return counter;
+
     }
 }
