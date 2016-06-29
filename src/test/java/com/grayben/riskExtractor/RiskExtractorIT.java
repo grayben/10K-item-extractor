@@ -245,7 +245,7 @@ public class RiskExtractorIT {
         assertTrue("actual output must contain expected output words", isSubsetByWordsStripPunctuationIgnoreCase(expectedOutput, actualOutput));
     }
 
-    public static boolean isSubsetByWordsStripPunctuationIgnoreCase(String subset, String superset){StringTokenizer supersetTokeniser = new StringTokenizer(superset, " \t\n\r\f,.:;?![]'");
+    public static boolean isSubsetByWordsStripPunctuationIgnoreCase(String subset, String superset) {
         String[] subsetWords = subset.replaceAll("\\p{P}", "").toLowerCase().split("\\p{Z}+");
         String[] supersetWords = superset.replaceAll("\\p{P}", "").toLowerCase().split("\\p{Z}+");
 
