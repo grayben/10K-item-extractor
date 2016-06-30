@@ -195,13 +195,13 @@ public class RiskExtractorIT {
     }
 
     @Test
-    public void test_MainCreatesExpectedOutputFileContents_WhenComplicatedExample
+    public void test_MainCreatesExpectedOutputFileContents_ForAAPL
             () throws Exception {
 
         // requires knowing charset
         String charsetName = "UTF-8";
         // requires input file
-        String inputFileCopyRelativePath = "AAPL_10-K.html";
+        String inputFileCopyRelativePath = "AAPL_10-K.htm";
         String inputFileResourceRelativePath = resourcesRelativePath.concat("/").concat(inputFileCopyRelativePath);
         File inputFileResource = new File(inputFileResourceRelativePath);
         File inputFileCopy = folder.newFile(inputFileCopyRelativePath);
@@ -241,13 +241,65 @@ public class RiskExtractorIT {
 
         // load expectedOutput from file in resources
         String expectedOutput = FileUtils.readFileToString(expectedOutputFile);
-        assertFalse(isSubsetByWordsStripPunctuationIgnoreCase("the quick brown fox fox", "the quick brown fox"));
-        assertTrue("actual output must contain expected output words", isSubsetByWordsStripPunctuationIgnoreCase(expectedOutput, actualOutput));
+        assertFalse(isSubsetByWordsStripPunctuationNewlinesIgnoreCase("the quick brown fox fox", "the quick brown fox"));
+        assertTrue("actual output must contain expected output words", isSubsetByWordsStripPunctuationNewlinesIgnoreCase(expectedOutput, actualOutput));
     }
 
-    public static boolean isSubsetByWordsStripPunctuationIgnoreCase(String subset, String superset) {
-        String[] subsetWords = subset.replaceAll("\\p{P}", "").toLowerCase().split("\\p{Z}+");
-        String[] supersetWords = superset.replaceAll("\\p{P}", "").toLowerCase().split("\\p{Z}+");
+    @Test
+    public void test_MainCreatesExpectedOutputFileContents_ForGOOG
+            () throws Exception {
+
+        // requires knowing charset
+        String charsetName = "UTF-8";
+        // requires input file
+        String inputFileCopyRelativePath = "GOOG_10-K.htm";
+        String inputFileResourceRelativePath = resourcesRelativePath.concat("/").concat(inputFileCopyRelativePath);
+        File inputFileResource = new File(inputFileResourceRelativePath);
+        File inputFileCopy = folder.newFile(inputFileCopyRelativePath);
+        FileUtils.copyFile(inputFileResource, inputFileCopy);
+        String inputFileArgument = inputFileCopy.getAbsolutePath();
+
+        // produces output file
+        String targetOutputFileResourceRelativePath = "GOOG_10-K.out.txt";
+
+        String expectedOutputFileRelativePath = resourcesRelativePath.concat("/").concat(targetOutputFileResourceRelativePath);
+        File expectedOutputFile = new File(expectedOutputFileRelativePath);
+
+
+        // requires expected output file
+        File targetOutputFile = folder.newFile(targetOutputFileResourceRelativePath);
+        // ensure that the physical file doesn't exist before we run main
+        //noinspection ResultOfMethodCallIgnored
+        targetOutputFile.delete();
+        assert ! targetOutputFile.exists();
+        String outputFileArgument = targetOutputFile.getAbsolutePath();
+
+        // construct String[] args
+        List<String> argsList = new ArrayList<>();
+        argsList.add(inputFileArgument);
+        argsList.add(charsetName);
+        argsList.add(outputFileArgument);
+        String[] args = argsList.toArray(new String[argsList.size()]);
+
+        // run main
+        // loads parameters from system files
+        // takes input from input file(s)
+        // creates output file(s)
+        RiskExtractor.main(args);
+
+        // load actualOutput from newly created output file
+        String actualOutput = FileUtils.readFileToString(targetOutputFile);
+
+        // load expectedOutput from file in resources
+        String expectedOutput = FileUtils.readFileToString(expectedOutputFile);
+        assertFalse(isSubsetByWordsStripPunctuationNewlinesIgnoreCase("the quick brown fox fox", "the quick brown fox"));
+        // assertEquals(expectedOutput, actualOutput);
+        assertTrue("actual output must contain expected output words", isSubsetByWordsStripPunctuationNewlinesIgnoreCase(expectedOutput, actualOutput));
+    }
+
+    public static boolean isSubsetByWordsStripPunctuationNewlinesIgnoreCase(String subset, String superset) {
+        String[] subsetWords = subset.replaceAll("\\p{P}", "").replaceAll("\\p{Space}", " ").replaceAll("\\p{Z}", " ").toLowerCase().trim().split(" ");
+        String[] supersetWords = superset.replaceAll("\\p{P}", "").replaceAll("\\p{Space}", " ").replaceAll("\\p{Z}", " ").toLowerCase().trim().split(" ");
 
         Map<String, Integer> subsetWordCounter = counter(subsetWords);
         Map<String, Integer> supersetWordCounter = counter(supersetWords);
