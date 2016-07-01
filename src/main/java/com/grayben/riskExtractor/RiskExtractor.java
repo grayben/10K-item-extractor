@@ -11,6 +11,10 @@ import com.grayben.riskExtractor.htmlScorer.partScorers.elementScorers.Segmentat
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagAndAttributeScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagEmphasisScorer;
 import com.grayben.riskExtractor.htmlScorer.partScorers.tagScorers.TagSegmentationScorer;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
@@ -31,8 +35,6 @@ public class RiskExtractor {
 
 
 	public static void main(String[] args) throws IOException {
-
-		checkArgs(args);
 
 		startingMain();
 		
@@ -69,12 +71,8 @@ public class RiskExtractor {
 		System.out.print(scoredText.toString());
 	}
 
-	private static void takeArgs(String[] args) throws IOException {
-		checkArgs(args);
-		String inileName = args[0];
-		String charsetName = args[1];
-		String outfileName = args[2];
-		File infile = new File(inileName);
+	private static void process(String infileName, String outfileName, String charsetName) throws IOException {
+		File infile = new File(infileName);
 		InputStream inputStream = new FileInputStream(infile);
 
 		HtmlScorer scorer = setupTreeHtmlScorer();
@@ -90,7 +88,7 @@ public class RiskExtractor {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		for (String riskSection:
-			 riskSections) {
+				riskSections) {
 			stringBuilder.append(riskSection).append(" ");
 		}
 
@@ -105,6 +103,58 @@ public class RiskExtractor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private static void takeArgs(String[] args) throws IOException {
+		OptionParser optionParser = new OptionParser();
+		optionParser.accepts("infile", "the location of a file to process").withRequiredArg().ofType(String.class);
+		optionParser.accepts("outfile", "the location to which to write output").withRequiredArg().ofType(String.class);
+		optionParser.accepts("csv", "the location of a CSV file containing input and output file pairs").withRequiredArg().ofType(String.class);
+		optionParser.accepts("charset", "the charset with which input files are encoded").withRequiredArg().required().ofType(String.class);
+		optionParser.accepts("help").forHelp();
+		OptionSet options = optionParser.parse(args);
+		checkOptions(options);
+		List<Pair<String, String>> inOutPairs = extractInOutPairs(options);
+		String charsetName = (String) options.valueOf("charset");
+		for (Pair<String, String> filePathPair:
+			 inOutPairs) {
+			process(filePathPair.getLeft(), filePathPair.getRight(), charsetName);
+
+		}
+	}
+
+	private static List<Pair<String, String>> extractInOutPairs(OptionSet options) throws IOException {
+		List<Pair<String, String>> inOutPairs = new ArrayList<>();
+		if (options.has("infile")){
+			Pair<String, String> pair = new ImmutablePair<>((String)options.valueOf("infile"), (String)options.valueOf("outfile"));
+			inOutPairs.add(pair);
+		}
+		if (options.has("csv")){
+			String csvFilePath = (String) options.valueOf("csv");
+			BufferedReader bufferedReader = new BufferedReader(new FileReader(csvFilePath));
+			String line;
+			while ((line = bufferedReader.readLine()) != null){
+				String[] rowElements = line.trim().split(",");
+				if (rowElements.length != 2){
+					throw new IllegalArgumentException("The input csv file must have exactly two comma-separated entries per newline-separated row");
+				}
+				String infilePath = rowElements[0];
+				String outfilePath = rowElements[1];
+				inOutPairs.add(new ImmutablePair<>(infilePath, outfilePath));
+			}
+		}
+		return inOutPairs;
+	}
+
+	private static void checkOptions(OptionSet optionSet){
+		if (
+				(optionSet.has("infile") && ! optionSet.has("outfile"))
+				||
+				(! optionSet.has("infile") && optionSet.has("outfile"))
+				){
+			throw new IllegalArgumentException("infile and outfile must both be specified, or neither");
+		}
+
 	}
 
 	private static Set<String> scoreLabels(){
@@ -251,14 +301,6 @@ public class RiskExtractor {
 
 	private static String mainUsageMessage(){
 		return "Usage\nprogram_name input_csv charset_name output_csv";
-	}
-
-	private static void checkArgs(String[] args) {
-		int argsLen = 3;
-		if (args.length != argsLen) {
-			System.out.println(mainUsageMessage());
-			throw new IllegalArgumentException(mainUsageMessage());
-		}
 	}
 
 	public static TreeHtmlScorer setupTreeHtmlScorer(){

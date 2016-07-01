@@ -40,33 +40,14 @@ public class RiskExtractorIT {
     }
 
     @Test
-    public void test_MainThrowsIllegalArgumentException_WhenTwoArgument
-            () throws Exception {
-        List<String> args = new ArrayList<>();
-        args.add("foo");
-        args.add("bar");
-        thrown.expect(IllegalArgumentException.class);
-        RiskExtractor.main(args.toArray(new String[args.size()]));
-    }
-
-    @Test
-    public void test_MainThrowsIllegalArgumentException_WhenFourArguments
-            () throws Exception {
-        List<String> args = new ArrayList<>();
-        args.add("foo");
-        args.add("bar");
-        args.add("baz");
-        args.add("buzz");
-        thrown.expect(IllegalArgumentException.class);
-        RiskExtractor.main(args.toArray(new String[args.size()]));
-    }
-
-    @Test
     public void test_MainThrowsFileNotFoundException_WhenInvalidFileArgument
             () throws Exception {
         List<String> args = new ArrayList<>();
+        args.add("--infile");
         args.add("//////##$%foo");
+        args.add("--charset");
         args.add("UTF-8");
+        args.add("--outfile");
         args.add("bar");
         thrown.expect(FileNotFoundException.class);
         RiskExtractor.main(args.toArray(new String[args.size()]));
@@ -83,8 +64,11 @@ public class RiskExtractorIT {
         File outputFileToBeCreated = new File(tempFolder.getAbsolutePath().concat("/").concat(outputName));
 
         List<String> argsList = new ArrayList<>();
+        argsList.add("--infile");
         argsList.add(inputFile.getAbsolutePath());
+        argsList.add("--charset");
         argsList.add(charsetName);
+        argsList.add("--outfile");
         argsList.add(outputFileToBeCreated.getAbsolutePath());
 
         assertFalse(outputFileToBeCreated.exists());
@@ -122,8 +106,11 @@ public class RiskExtractorIT {
 
         // construct String[] args
         List<String> argsList = new ArrayList<>();
+        argsList.add("--infile");
         argsList.add(inputFileArgument);
+        argsList.add("--charset");
         argsList.add(charsetName);
+        argsList.add("--outfile");
         argsList.add(outputFileArgument);
         String[] args = argsList.toArray(new String[argsList.size()]);
 
@@ -174,8 +161,11 @@ public class RiskExtractorIT {
 
         // construct String[] args
         List<String> argsList = new ArrayList<>();
+        argsList.add("--infile");
         argsList.add(inputFileArgument);
+        argsList.add("--charset");
         argsList.add(charsetName);
+        argsList.add("--outfile");
         argsList.add(outputFileArgument);
         String[] args = argsList.toArray(new String[argsList.size()]);
 
@@ -225,8 +215,11 @@ public class RiskExtractorIT {
 
         // construct String[] args
         List<String> argsList = new ArrayList<>();
+        argsList.add("--infile");
         argsList.add(inputFileArgument);
+        argsList.add("--charset");
         argsList.add(charsetName);
+        argsList.add("--outfile");
         argsList.add(outputFileArgument);
         String[] args = argsList.toArray(new String[argsList.size()]);
 
@@ -276,8 +269,11 @@ public class RiskExtractorIT {
 
         // construct String[] args
         List<String> argsList = new ArrayList<>();
+        argsList.add("--infile");
         argsList.add(inputFileArgument);
+        argsList.add("--charset");
         argsList.add(charsetName);
+        argsList.add("--outfile");
         argsList.add(outputFileArgument);
         String[] args = argsList.toArray(new String[argsList.size()]);
 
@@ -293,7 +289,6 @@ public class RiskExtractorIT {
         // load expectedOutput from file in resources
         String expectedOutput = FileUtils.readFileToString(expectedOutputFile);
         assertFalse(isSubsetByWordsStripPunctuationNewlinesIgnoreCase("the quick brown fox fox", "the quick brown fox"));
-        // assertEquals(expectedOutput, actualOutput);
         assertTrue("actual output must contain expected output words", isSubsetByWordsStripPunctuationNewlinesIgnoreCase(expectedOutput, actualOutput));
     }
 
@@ -306,13 +301,15 @@ public class RiskExtractorIT {
 
         for (String subsetWord:
              subsetWordCounter.keySet()) {
-            Integer subsetCount = subsetWordCounter.get(subsetWord);
-            Integer supersetCount = supersetWordCounter.get(subsetWord);
+            if (! subsetWord.equals("")){
+                Integer subsetCount = subsetWordCounter.get(subsetWord);
+                Integer supersetCount = supersetWordCounter.get(subsetWord);
 
-            // if the superset doesn't contain the word, or if it contains less instances
-            // then the subset-superset relation is false
-            if (supersetCount == null || supersetCount < subsetCount) {
-                return false;
+                // if the superset doesn't contain the word, or if it contains less instances
+                // then the subset-superset relation is false
+                if (supersetCount == null || supersetCount < subsetCount) {
+                    return false;
+                }
             }
         }
         // if we haven't proven otherwise by now, the relationship holds
