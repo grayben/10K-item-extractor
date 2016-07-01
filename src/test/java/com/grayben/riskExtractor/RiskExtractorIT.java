@@ -234,7 +234,6 @@ public class RiskExtractorIT {
 
         // load expectedOutput from file in resources
         String expectedOutput = FileUtils.readFileToString(expectedOutputFile);
-        assertFalse(isSubsetByWordsStripPunctuationNewlinesIgnoreCase("the quick brown fox fox", "the quick brown fox"));
         assertTrue("actual output must contain expected output words", isSubsetByWordsStripPunctuationNewlinesIgnoreCase(expectedOutput, actualOutput));
     }
 
@@ -288,7 +287,59 @@ public class RiskExtractorIT {
 
         // load expectedOutput from file in resources
         String expectedOutput = FileUtils.readFileToString(expectedOutputFile);
-        assertFalse(isSubsetByWordsStripPunctuationNewlinesIgnoreCase("the quick brown fox fox", "the quick brown fox"));
+        assertTrue("actual output must contain expected output words", isSubsetByWordsStripPunctuationNewlinesIgnoreCase(expectedOutput, actualOutput));
+    }
+
+    @Test
+    public void test_MainCreatesExpectedOutputFileContents_ForCVX
+            () throws Exception {
+
+        // requires knowing charset
+        String charsetName = "UTF-8";
+        // requires input file
+        String inputFileCopyRelativePath = "CVX_10-K.htm";
+        String inputFileResourceRelativePath = resourcesRelativePath.concat("/").concat(inputFileCopyRelativePath);
+        File inputFileResource = new File(inputFileResourceRelativePath);
+        File inputFileCopy = folder.newFile(inputFileCopyRelativePath);
+        FileUtils.copyFile(inputFileResource, inputFileCopy);
+        String inputFileArgument = inputFileCopy.getAbsolutePath();
+
+        // produces output file
+        String targetOutputFileResourceRelativePath = "CVX_10-K.out.txt";
+
+        String expectedOutputFileRelativePath = resourcesRelativePath.concat("/").concat(targetOutputFileResourceRelativePath);
+        File expectedOutputFile = new File(expectedOutputFileRelativePath);
+
+
+        // requires expected output file
+        File targetOutputFile = folder.newFile(targetOutputFileResourceRelativePath);
+        // ensure that the physical file doesn't exist before we run main
+        //noinspection ResultOfMethodCallIgnored
+        targetOutputFile.delete();
+        assert ! targetOutputFile.exists();
+        String outputFileArgument = targetOutputFile.getAbsolutePath();
+
+        // construct String[] args
+        List<String> argsList = new ArrayList<>();
+        argsList.add("--infile");
+        argsList.add(inputFileArgument);
+        argsList.add("--charset");
+        argsList.add(charsetName);
+        argsList.add("--outfile");
+        argsList.add(outputFileArgument);
+        String[] args = argsList.toArray(new String[argsList.size()]);
+
+        // run main
+        // loads parameters from system files
+        // takes input from input file(s)
+        // creates output file(s)
+        RiskExtractor.main(args);
+
+        // load actualOutput from newly created output file
+        String actualOutput = FileUtils.readFileToString(targetOutputFile);
+
+        // load expectedOutput from file in resources
+        String expectedOutput = FileUtils.readFileToString(expectedOutputFile);
         assertTrue("actual output must contain expected output words", isSubsetByWordsStripPunctuationNewlinesIgnoreCase(expectedOutput, actualOutput));
     }
 

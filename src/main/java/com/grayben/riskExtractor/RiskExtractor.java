@@ -290,7 +290,7 @@ public class RiskExtractor {
 			for (int i = 0; i < textElements.size(); i++){
 				if(candidateIndices == null || candidateIndices.contains(i)) {
 					String text = textElements.get(i);
-					if (regex.test(text)) {
+						if (regex.test(text)) {
 						nomineeTextIndices.add(i);
 					}
 				}
